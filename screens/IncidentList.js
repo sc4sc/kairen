@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import { Icon } from '@shoutem/ui';
 
+import { getBottomSpace } from 'react-native-iphone-x-helper'
+
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors'
 
@@ -35,7 +37,7 @@ export default class IncidentList extends React.Component {
             {[...Array(8)].map(() => <Incident onPress={() => this.props.navigation.navigate('IncidentDetail')}/>)}
           </ScrollView>
         </SafeAreaView>
-        <TouchableOpacity style={styles.reportButton}>
+        <TouchableOpacity style={styles.reportButton} onPress={() => this.props.navigation.navigate('Modal')}>
           <Text style={styles.reportButtonText}>Send Report</Text>
         </TouchableOpacity>
       </View>
@@ -45,8 +47,7 @@ export default class IncidentList extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    width: Layout.window.width,
-    height: Layout.window.height,
+    flex: 1,
     backgroundColor: '#fff',
   },
   notchMargin: { height: Platform.select({ android: 40, ios: 0 }) },
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     alignItems: 'center',
     padding: 16,
-    paddingBottom: 25
+    paddingBottom: 16 + getBottomSpace()
   },
   reportButtonText: { color: 'white', fontWeight: '500', fontSize: 24 },
 });

@@ -133,6 +133,7 @@ export default class IncidentDetail extends React.Component {
               longitudeDelta: 0.00221,
             }}
           />
+            <TouchableOpacity onPress={() => this.props.navigation.goBack()}><Text>Close</Text></TouchableOpacity>
         </View>
         <View style={{ paddingVertical: 18, paddingHorizontal: 20 }}>
           {this.renderHeader()}
@@ -156,7 +157,7 @@ export default class IncidentDetail extends React.Component {
 }
 
 const ConfirmedText = ({ children }) => (
-  <View style={{ flexDirection: 'row' }}>
+  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
     <Ionicons
       name={'ios-checkmark-circle'}
       size={14}
