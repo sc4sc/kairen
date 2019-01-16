@@ -38,7 +38,6 @@ export default class IncidentList extends React.Component {
         <TouchableOpacity style={styles.reportButton}>
           <Text style={styles.reportButtonText}>Send Report</Text>
         </TouchableOpacity>
-        <View style={{ height: 20 }} />
       </View>
     );
   }
@@ -47,18 +46,19 @@ export default class IncidentList extends React.Component {
 const styles = StyleSheet.create({
   container: {
     width: Layout.window.width,
-    height: Layout.window.height + 40,
+    height: Layout.window.height,
     backgroundColor: '#fff',
   },
   notchMargin: { height: Platform.select({ android: 40, ios: 0 }) },
   headerContainer: { margin: 8, marginLeft: 16, flexDirection: 'row' },
   header: { fontSize: 28, fontWeight: '800', color: Colors.defaultBlack },
   reportButton: {
-    backgroundColor: 'grey',
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    backgroundColor: Colors.buttonGrey,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     alignItems: 'center',
-    padding: 8,
+    padding: 16,
+    paddingBottom: 25
   },
-  reportButtonText: { color: Colors.buttonGrey, fontWeight: '500', fontSize: 24 },
+  reportButtonText: { color: 'white', fontWeight: '500', fontSize: 24 },
 });
