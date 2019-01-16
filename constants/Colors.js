@@ -18,4 +18,5 @@ export default {
 
   defaultBlack: '#0c0c0c',
   defaultGrey: '#4a4a4a',
+  buttonGrey: '#6b6b6b',
 };

@@ -60,5 +60,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 8,
   },
-  reportButtonText: { color: '#FEFEFE', fontWeight: '500', fontSize: 24 },
+  reportButtonText: { color: Colors.buttonGrey, fontWeight: '500', fontSize: 24 },
 });
