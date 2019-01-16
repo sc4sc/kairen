@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
-import {MapView} from "expo";
+import { MapView } from 'expo';
 
 export default class Incident extends React.Component {
   render() {
@@ -15,33 +15,28 @@ export default class Incident extends React.Component {
     return (
       <View style={styles.container}>
         <View style={[styles.indicator, indicatorColor]} />
-        <TouchableOpacity
-          style={styles.content}
-          onPress={onPress}
-        >
+        <TouchableOpacity style={styles.content} onPress={onPress}>
           <View>
-            <Text style={styles.title}>
-              Conflagration
-            </Text>
+            <Text style={styles.title}>Conflagration</Text>
             <Text style={styles.addressText}>Yuseong 291, Daejeon</Text>
             <View style={{ flex: 1 }} />
             <Text style={styles.dateText}>Jan 14, 2019</Text>
           </View>
-          <View style={{ flex: 1 }} />
-          <MapView
-              style={styles.mapContainer}
-              liteMode
-              initialRegion={{
-                latitude: 36.374159,
-                longitude: 127.365864,
-                latitudeDelta: 0.002522,
-                longitudeDelta: 0.00121,
-              }}
-          />
           {/*<View style={styles.mapContainer}>*/}
-            {/*<Text>Map ?Here</Text>*/}
+          {/*<Text>Map ?Here</Text>*/}
           {/*</View>*/}
         </TouchableOpacity>
+        <View style={{ flex: 1 }} />
+        <MapView
+          style={styles.mapContainer}
+          liteMode
+          initialRegion={{
+            latitude: 36.374159,
+            longitude: 127.365864,
+            latitudeDelta: 0.002522,
+            longitudeDelta: 0.00121,
+          }}
+        />
       </View>
     );
   }
@@ -53,6 +48,6 @@ const styles = StyleSheet.create({
   content: { flex: 1, flexDirection: 'row', padding: 12 },
   title: { fontWeight: '800', fontSize: 20 },
   addressText: { fontSize: 16 },
-  dateText: { fontSize: 14 },
-  mapContainer: { width: 80, height: 120 }
+  dateText: { fontSize: 13, color: Colors.dateLightGrey },
+  mapContainer: { width: 80, height: 120 },
 });

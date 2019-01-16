@@ -10,6 +10,9 @@ import {
 } from 'react-native';
 import { Icon } from '@shoutem/ui';
 
+import Layout from '../constants/Layout';
+import Colors from '../constants/Colors'
+
 import Incident from '../components/Incident';
 
 export default class IncidentList extends React.Component {
@@ -43,12 +46,13 @@ export default class IncidentList extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: Layout.window.width,
+    height: Layout.window.height + 40,
     backgroundColor: '#fff',
   },
   notchMargin: { height: Platform.select({ android: 40, ios: 0 }) },
   headerContainer: { margin: 8, marginLeft: 16, flexDirection: 'row' },
-  header: { fontSize: 28, fontWeight: '800' },
+  header: { fontSize: 28, fontWeight: '800', color: Colors.defaultBlack },
   reportButton: {
     backgroundColor: 'grey',
     borderTopLeftRadius: 10,

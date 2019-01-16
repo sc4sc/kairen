@@ -12,6 +12,10 @@ export default {
   noticeBackground: tintColor,
   noticeText: '#fff',
 
+  dateLightGrey: '#9e9e9e',
   dangerRed: '#bb2020',
   cautionYellow: '#ffdd2f',
+
+  defaultBlack: '#0c0c0c',
+  defaultGrey: '#4a4a4a',
 };
