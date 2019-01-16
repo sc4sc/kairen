@@ -216,7 +216,7 @@ const Comment = ({ confirmed, likes }) => {
         </Text>
         <View style={{ width: 5 }} />
         <AntDesign
-          name={'like1'}
+          name={ likes > 5 ? 'like1' : 'like2'}
           size={20}
           style={{ color: Colors.likeBlue }}
         />
