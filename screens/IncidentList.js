@@ -12,7 +12,7 @@ import { Icon } from '@shoutem/ui';
 
 import Incident from '../components/Incident';
 
-export default class HomeScreen extends React.Component {
+export default class IncidentList extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -26,18 +26,10 @@ export default class HomeScreen extends React.Component {
           <View style={styles.headerContainer}>
             <Text style={styles.header}>Recent</Text>
             <View style={{ flex: 1 }} />
-            {/* 설정 버튼임!!!! */}
-            <Icon name="search" />
+            <Icon name="settings" />
           </View>
           <ScrollView style={{ flex: 1 }}>
-            <Incident />
-            <Incident />
-            <Incident />
-            <Incident />
-            <Incident />
-            <Incident />
-            <Incident />
-            <Incident />
+            {[...Array(8)].map(() => <Incident onPress={() => this.props.navigation.navigate('IncidentDetail')}/>)}
           </ScrollView>
         </SafeAreaView>
         <TouchableOpacity style={styles.reportButton}>

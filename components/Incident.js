@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
+import {MapView} from "expo";
 
 export default class Incident extends React.Component {
   render() {
@@ -9,14 +10,17 @@ export default class Incident extends React.Component {
         Math.random() > 0.5 ? Colors.dangerRed : Colors.cautionYellow,
     };
 
+    const { onPress } = this.props;
+
     return (
       <View style={styles.container}>
         <View style={[styles.indicator, indicatorColor]} />
         <TouchableOpacity
           style={styles.content}
+          onPress={onPress}
         >
           <View>
-            <Text style={}>
+            <Text style={styles.title}>
               Conflagration
             </Text>
             <Text style={styles.addressText}>Yuseong 291, Daejeon</Text>
@@ -24,9 +28,19 @@ export default class Incident extends React.Component {
             <Text style={styles.dateText}>Jan 14, 2019</Text>
           </View>
           <View style={{ flex: 1 }} />
-          <View style={styles.mapContainer}>
-            <Text>Map ?Here</Text>
-          </View>
+          <MapView
+              style={styles.mapContainer}
+              liteMode
+              initialRegion={{
+                latitude: 36.374159,
+                longitude: 127.365864,
+                latitudeDelta: 0.002522,
+                longitudeDelta: 0.00121,
+              }}
+          />
+          {/*<View style={styles.mapContainer}>*/}
+            {/*<Text>Map ?Here</Text>*/}
+          {/*</View>*/}
         </TouchableOpacity>
       </View>
     );
@@ -40,5 +54,5 @@ const styles = StyleSheet.create({
   title: { fontWeight: '800', fontSize: 20 },
   addressText: { fontSize: 16 },
   dateText: { fontSize: 14 },
-  mapContainer: { height: 120 }
+  mapContainer: { width: 80, height: 120 }
 });
