@@ -10,7 +10,7 @@ import { MapView } from 'expo';
 
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { Feather, Ionicons, AntDesign } from '@expo/vector-icons';
 
 export default class IncidentDetail extends React.Component {
   renderHeader() {
@@ -108,15 +108,7 @@ export default class IncidentDetail extends React.Component {
             },
           ]}
         >
-          <View style={{ flexDirection: 'row' }}>
-            <Ionicons
-              name={'ios-checkmark-circle'}
-              size={14}
-              style={{ color: '#84c571' }}
-            />
-            <View style={{ width: 4 }} />
-            <Text style={{ fontSize: 14, color: '#84c571' }}>안전팀</Text>
-          </View>
+          <ConfirmedText>안전팀</ConfirmedText>
           <Text>
             화재 진압되었습니다. 유성구 소방서와 함께 사고 원인 조사중 입니다.
           </Text>
@@ -155,21 +147,83 @@ export default class IncidentDetail extends React.Component {
           <TouchableOpacity style={styles.commentButton}>
             <Text style={styles.commentButtonText}>새로운 의견 등록하기</Text>
           </TouchableOpacity>
-          <View
-            style={[
-              styles.borderedContentBox,
-              {
-                borderColor: '#84c571',
-              },
-            ]}
-          >
-            <Text>화재 원인은 담배꽁초였던 것 같습니다.</Text>
-          </View>
+          <Comment confirmed likes={20} />
+          <Comment likes={4} />
         </View>
       </ScrollView>
     );
   }
 }
+
+const ConfirmedText = ({ children }) => (
+  <View style={{ flexDirection: 'row' }}>
+    <Ionicons
+      name={'ios-checkmark-circle'}
+      size={14}
+      style={{ color: '#84c571' }}
+    />
+    <View style={{ width: 4 }} />
+    <Text style={{ fontSize: 14, color: '#84c571' }}>{children}</Text>
+  </View>
+);
+
+// TODO:: Component 추출, Comment와 Progress간 Border랑 Content 레이아웃이 겹치는 부분이 조금 있는 것 같다!
+const Comment = ({ confirmed, likes }) => {
+  return (
+    <View
+      style={[
+        styles.borderedContentBox,
+        {
+          flexDirection: 'row',
+          alignItems: 'stretch',
+          marginTop: 10,
+          borderColor: Colors.borderGrey,
+        },
+      ]}
+    >
+      <View style={{ flex: 1 }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'baseline',
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 13,
+              fontWeight: 'bold',
+              color: Colors.defaultGrey,
+            }}
+          >
+            #2 김철수
+          </Text>
+          <View style={{ width: 9 }} />
+          <Text style={{ fontSize: 11, color: Colors.dateLightGrey }}>
+            Jan 1, 2019
+          </Text>
+        </View>
+        <Text style={{ marginVertical: 10 }}>
+          화재 원인은 담배꽁초였던 것 같습니다.
+        </Text>
+        <View style={{ flex: 1 }} />
+        {confirmed ? <ConfirmedText>안전팀 확인</ConfirmedText> : null}
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', padding: 5 }}>
+        <Text
+          style={{ fontWeight: 'bold', fontSize: 16, color: Colors.likeBlue }}
+        >
+          {likes}
+        </Text>
+        <View style={{ width: 5 }} />
+        <AntDesign
+          name={'like1'}
+          size={20}
+          style={{ color: Colors.likeBlue }}
+        />
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   map: { height: Layout.window.width },
@@ -191,7 +245,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 10,
-    paddingVertical: 13,
+    paddingTop: 13,
+    paddingBottom: 10,
     minHeight: 100,
   },
 });

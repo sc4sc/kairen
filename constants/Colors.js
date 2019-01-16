@@ -18,5 +18,8 @@ export default {
 
   defaultBlack: '#0c0c0c',
   defaultGrey: '#4a4a4a',
+  borderGrey: '#e4e4e4',
   buttonGrey: '#6b6b6b',
+
+  likeBlue: '#4a90e2',
 };
