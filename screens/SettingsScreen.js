@@ -20,7 +20,7 @@ export default class SettingsScreen extends React.Component {
         <View style={styles.notchMargin} />
         <View style={styles.headerContainer}>
           <Text style={styles.header}> 설정 </Text>
-          <Icon name="settings" />
+          <Icon name="close" style={{ flex: 1 }} />
         </View>
         
         <View style={styles.cardContainer}>
@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   notchMargin: { height: Platform.select({ android: 40, ios: 0 }) },
-  headerContainer: { flexDirection: 'row', paddingLeft: 20, paddingBottom: 10 },
-  header: { fontSize: 20, fontWeight: '800', color: Colors.defaultBlack},
+  headerContainer: { flexDirection: 'row', justifyContent: 'center', paddingLeft: 20, paddingBottom: 10 },
+  header: { flex: 6, textAlign: 'center', fontSize: 20, fontWeight: '800', color: Colors.defaultBlack},
   
   cardContainer: { margin: 20 },
   cardTitle: { fontSize: 13, color: Colors.lightGrey },
