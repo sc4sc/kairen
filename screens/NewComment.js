@@ -3,22 +3,32 @@ import { View, Text, TextInput, StyleSheet, Platform } from 'react-native';
 
 import Colors from '../constants/Colors';
 import { Icon, TouchableOpacity } from '@shoutem/ui';
+import AndroidTopMargin from '../components/AndroidTopMargin';
 
 export class NewComment extends React.Component {
-  state = { text: '' }
+  state = { text: '' };
 
   render() {
-    return(
+    return (
       <View style={styles.container}>
-        <View style={styles.notchMargin} />
+        <AndroidTopMargin />
         <View style={styles.headerContainer}>
           <Text style={styles.header}> 새로운 의견 등록하기 </Text>
-          <Icon name="close" onPress={() => {this.props.navigation.pop()}} />
+          <Icon
+            name="close"
+            onPress={() => {
+              this.props.navigation.pop();
+            }}
+          />
         </View>
         <View style={{ padding: 20 }}>
           <TextInput
-            style={{ padding: 10, borderColor: Colors.lightGrey, borderWidth: 1}}
-            onChangeText={(text) => this.setState({text})}
+            style={{
+              padding: 10,
+              borderColor: Colors.lightGrey,
+              borderWidth: 1,
+            }}
+            onChangeText={text => this.setState({ text })}
             value={this.state.text}
             multiline={true}
           />
@@ -27,30 +37,29 @@ export class NewComment extends React.Component {
           </TouchableOpacity>
         </View>
       </View>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#fff' },
-    notchMargin: { height: Platform.select({ android: 40, ios: 0 })},
-    headerContainer: { 
-      flexDirection: 'row',
-      justifyContent: 'space-between', 
-      paddingHorizontal: 20, 
-      paddingBottom: 10 
-    },
-    header: { fontSize: 20, fontWeight: '800', color: Colors.defaultBlack },
-    enrollButton: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 13,
-      marginTop: 20,
-      backgroundColor: Colors.buttonGrey,
-      borderRadius: 10,
-    },
-    buttonText: {
-      fontSize: 15,
-      color: 'white',
-    }  
-})
+  container: { flex: 1, backgroundColor: '#fff' },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+  },
+  header: { fontSize: 20, fontWeight: '800', color: Colors.defaultBlack },
+  enrollButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 13,
+    marginTop: 20,
+    backgroundColor: Colors.buttonGrey,
+    borderRadius: 10,
+  },
+  buttonText: {
+    fontSize: 15,
+    color: 'white',
+  },
+});
