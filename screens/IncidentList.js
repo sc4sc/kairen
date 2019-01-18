@@ -40,6 +40,7 @@ export default class IncidentList extends React.Component {
         <TouchableOpacity style={styles.reportButton} onPress={() => this.props.navigation.navigate('Modal')}>
           <Text style={styles.reportButtonText}>Send Report</Text>
         </TouchableOpacity>
+        <View style={{ backgroundColor: 'black', height: getBottomSpace() }}></View>
       </View>
     );
   }
@@ -49,6 +50,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    alignItems: 'stretch'
   },
   notchMargin: { height: Platform.select({ android: 40, ios: 0 }) },
   headerContainer: { margin: 8, marginLeft: 16, flexDirection: 'row' },
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     alignItems: 'center',
     padding: 16,
-    paddingBottom: 16 + getBottomSpace()
+    paddingBottom: 16
   },
   reportButtonText: { color: 'white', fontWeight: '500', fontSize: 24 },
 });

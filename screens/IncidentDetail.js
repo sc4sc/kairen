@@ -133,9 +133,14 @@ export default class IncidentDetail extends React.Component {
               longitudeDelta: 0.00221,
             }}
           />
-            <TouchableOpacity onPress={() => this.props.navigation.goBack()}><Text>Close</Text></TouchableOpacity>
+          <TouchableOpacity
+            style={{ position: 'absolute', top: 50, right: 16 }}
+            onPress={() => this.props.navigation.goBack()}
+          >
+            <AntDesign name={"closecircle"} style={{ opacity: 0.3 }} size={32}/>
+          </TouchableOpacity>
         </View>
-        <View style={{ paddingVertical: 18, paddingHorizontal: 20 }}>
+        <View style={{ paddingVertical: 18, paddingHorizontal: 15 }}>
           {this.renderHeader()}
           <View style={{ height: 28 }} />
           {this.renderProtocol()}
@@ -217,7 +222,7 @@ const Comment = ({ confirmed, likes }) => {
         </Text>
         <View style={{ width: 5 }} />
         <AntDesign
-          name={ likes > 5 ? 'like1' : 'like2'}
+          name={likes > 5 ? 'like1' : 'like2'}
           size={20}
           style={{ color: Colors.likeBlue }}
         />
