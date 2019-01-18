@@ -8,14 +8,17 @@ import {
 } from 'react-native';
 import { MapView } from 'expo';
 import { Feather, AntDesign } from '@expo/vector-icons';
+import { connect } from 'react-redux';
 
-import ProgressCard from '../components/ProgressCard';
 import ConfirmedText from '../components/ConfirmedText';
+import ProgressCard from "../components/ProgressCard";
+
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
 import { getBottomSpace } from '../utils';
+import { sayHello } from '../actions';
 
-export class IncidentDetail extends React.Component {
+class IncidentDetail extends React.Component {
   renderHeader() {
     return (
       <View>
@@ -75,7 +78,7 @@ export class IncidentDetail extends React.Component {
           </Text>
           <Text style={{ color: 'white' }}>자세한 행동 강령 보기</Text>
         </View>
-        <View
+        <TouchableOpacity
           style={{
             width: 46,
             height: 46,
@@ -84,9 +87,10 @@ export class IncidentDetail extends React.Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}
+          onPress={() => this.props.sayHello()}
         >
           <Feather name="arrow-right" size={32} style={{ color: 'white' }} />
-        </View>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -169,6 +173,11 @@ export class IncidentDetail extends React.Component {
     );
   }
 }
+
+export default connect(
+  null,
+  { sayHello }
+)(IncidentDetail);
 
 // TODO:: Component 추출, Comment와 Progress간 Border랑 Content 레이아웃이 겹치는 부분이 조금 있는 것 같다!
 const Comment = ({ confirmed, likes }) => {
