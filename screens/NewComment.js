@@ -4,7 +4,7 @@ import { View, Text, TextInput, StyleSheet, Platform } from 'react-native';
 import Colors from '../constants/Colors';
 import { Icon, TouchableOpacity } from '@shoutem/ui';
 
-export class CommentInput extends React.Component {
+export class NewComment extends React.Component {
   state = { text: '' }
 
   render() {

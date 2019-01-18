@@ -5,7 +5,7 @@ import {
   createStackNavigator,
 } from 'react-navigation';
 
-import { CommentInput, IncidentDetail, IncidentList, NewIncident, ProgressList, SettingsScreen } from '../screens';
+import { NewComment, IncidentDetail, IncidentList, NewIncident, ProgressList, SettingsScreen } from '../screens';
 
 
 export default createAppContainer(
@@ -22,7 +22,7 @@ export default createAppContainer(
           { headerMode: 'none' }
         ),
         Modal: NewIncident,
-        Comment: CommentInput,
+        Comment: NewComment,
         Progress: ProgressList,
         Setting: SettingsScreen
       },
