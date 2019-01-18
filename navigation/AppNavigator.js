@@ -7,6 +7,7 @@ import {
 
 import IncidentList from '../screens/IncidentList';
 import IncidentDetail from '../screens/IncidentDetail';
+import SettingScreen from '../screens/SettingsScreen'
 
 export default createAppContainer(
   createSwitchNavigator({
@@ -17,7 +18,8 @@ export default createAppContainer(
         IncidentList,
         IncidentDetail,
       }, { headerMode: 'none'}),
-      Modal: IncidentDetail
+      Modal: IncidentDetail,
+      Setting: SettingScreen
     }, { mode: 'modal', headerMode: 'none' }),
   })
 );
