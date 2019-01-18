@@ -5,8 +5,15 @@ import {
   createStackNavigator,
 } from 'react-navigation';
 
-import { CommentInput, IncidentDetail, IncidentList, NewIncident, ProgressList, SettingsScreen } from '../screens';
-
+import {
+  CommentInput,
+  IncidentDetail,
+  IncidentList,
+  NewIncident,
+  NewIncidentDetail,
+  ProgressList,
+  SettingsScreen,
+} from '../screens';
 
 export default createAppContainer(
   createSwitchNavigator({
@@ -22,17 +29,18 @@ export default createAppContainer(
           { headerMode: 'none' }
         ),
         Modal: NewIncident,
+        NewIncidentDetail: NewIncidentDetail,
         Comment: CommentInput,
         Progress: ProgressList,
-        Setting: SettingsScreen
+        Setting: SettingsScreen,
       },
       {
         mode: 'modal',
         headerMode: 'none',
         cardStyle: {
-          backgroundColor: 'rgba(0, 0, 0, 0)'
-        }
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+        },
       }
-    )
+    ),
   })
 );

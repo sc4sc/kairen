@@ -31,7 +31,10 @@ export class IncidentList extends React.Component {
           <View style={styles.headerContainer}>
             <Text style={styles.header}>Recent</Text>
             <View style={{ flex: 1 }} />
-            <Icon name="settings" onPress={() => this.props.navigation.navigate('Setting')}/>
+            <Icon
+              name="settings"
+              onPress={() => this.props.navigation.navigate('Setting')}
+            />
           </View>
           <ScrollView style={{ flex: 1 }}>
             {[...Array(8)].map(() => (
@@ -60,7 +63,14 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   notchMargin: { height: Platform.select({ android: 40, ios: 0 }) },
-  headerContainer: { paddingLeft: 20, paddingBottom: 10, paddingRight: 16, flexDirection: 'row', borderBottomWidth: 1, borderColor: Colors.borderGrey },
+  headerContainer: {
+    paddingLeft: 20,
+    paddingBottom: 10,
+    paddingRight: 16,
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: Colors.borderGrey,
+  },
   header: { fontSize: 28, fontWeight: '800', color: Colors.defaultBlack },
   reportButton: {
     backgroundColor: Colors.buttonGrey,
