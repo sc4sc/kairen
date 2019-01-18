@@ -7,13 +7,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { MapView } from 'expo';
+import { Feather, AntDesign } from '@expo/vector-icons';
+
 import ProgressCard from '../components/ProgressCard';
 import ConfirmedText from '../components/ConfirmedText';
-
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
-import { Feather, AntDesign } from '@expo/vector-icons';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { getBottomSpace } from '../utils';
 
 export class IncidentDetail extends React.Component {
   renderHeader() {
