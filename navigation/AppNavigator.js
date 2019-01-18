@@ -5,9 +5,8 @@ import {
   createStackNavigator,
 } from 'react-navigation';
 
-import IncidentList from '../screens/IncidentList';
-import IncidentDetail from '../screens/IncidentDetail';
-import SettingScreen from '../screens/SettingsScreen'
+import { CommentInput, IncidentDetail, IncidentList, ProgressList, SettingsScreen } from '../screens';
+
 
 export default createAppContainer(
   createSwitchNavigator({
@@ -17,9 +16,11 @@ export default createAppContainer(
       Main: createStackNavigator({
         IncidentList,
         IncidentDetail,
-      }, { headerMode: 'none'}),
+      }, { headerMode: 'none' }),
       Modal: IncidentDetail,
-      Setting: SettingScreen
+      Setting: SettingsScreen,
+      Comment: CommentInput,
+      Progress: ProgressList
     }, { mode: 'modal', headerMode: 'none' }),
   })
 );

@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { MapView } from 'expo';
+import ProgressCard from '../components/ProgressCard';
+import ConfirmedText from '../components/ConfirmedText';
 
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
-import { Feather, Ionicons, AntDesign } from '@expo/vector-icons';
+import { Feather, AntDesign } from '@expo/vector-icons';
 
-export default class IncidentDetail extends React.Component {
+export class IncidentDetail extends React.Component {
   renderHeader() {
     return (
       <View>
@@ -62,7 +64,7 @@ export default class IncidentDetail extends React.Component {
           paddingVertical: 6,
           paddingLeft: 27,
           paddingRight: 6,
-          marginHorizontal: 19,
+          marginHorizontal: 10,
           backgroundColor: '#44aa25',
         }}
       >
@@ -98,21 +100,18 @@ export default class IncidentDetail extends React.Component {
           ]}
         >
           <Text style={styles.subheaderText}>Progress</Text>
-          <Text style={styles.subheaderText}>더보기</Text>
+          <Text 
+            style={styles.subheaderText}
+            onPress={() => {this.props.navigation.navigate("Progress")}}
+          >
+            더보기
+          </Text>
         </View>
-        <View
-          style={[
-            styles.borderedContentBox,
-            {
-              borderColor: '#84c571',
-            },
-          ]}
-        >
-          <ConfirmedText>안전팀</ConfirmedText>
+        <ProgressCard author="안전팀" date="Jan 1, 2019">
           <Text>
             화재 진압되었습니다. 유성구 소방서와 함께 사고 원인 조사중 입니다.
           </Text>
-        </View>
+        </ProgressCard>
       </View>
     );
   }
@@ -145,7 +144,10 @@ export default class IncidentDetail extends React.Component {
           <Text style={[styles.subheaderContainer, styles.subheaderText]}>
             Comment
           </Text>
-          <TouchableOpacity style={styles.commentButton}>
+          <TouchableOpacity 
+            style={styles.commentButton}
+            onPress={() => {this.props.navigation.navigate('Comment')}}
+          >
             <Text style={styles.commentButtonText}>새로운 의견 등록하기</Text>
           </TouchableOpacity>
           <Comment confirmed likes={20} />
@@ -155,18 +157,6 @@ export default class IncidentDetail extends React.Component {
     );
   }
 }
-
-const ConfirmedText = ({ children }) => (
-  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-    <Ionicons
-      name={'ios-checkmark-circle'}
-      size={14}
-      style={{ color: '#84c571' }}
-    />
-    <View style={{ width: 4 }} />
-    <Text style={{ fontSize: 14, color: '#84c571' }}>{children}</Text>
-  </View>
-);
 
 // TODO:: Component 추출, Comment와 Progress간 Border랑 Content 레이아웃이 겹치는 부분이 조금 있는 것 같다!
 const Comment = ({ confirmed, likes }) => {
@@ -249,5 +239,5 @@ const styles = StyleSheet.create({
     paddingTop: 13,
     paddingBottom: 10,
     minHeight: 100,
-  },
+  }
 });

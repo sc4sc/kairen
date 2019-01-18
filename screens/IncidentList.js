@@ -17,7 +17,7 @@ import Colors from '../constants/Colors'
 
 import Incident from '../components/Incident';
 
-export default class IncidentList extends React.Component {
+export class IncidentList extends React.Component {
   static navigationOptions = {
     header: null,
   };

@@ -7,7 +7,7 @@ import Colors from '../constants/Colors'
 import { Icon } from '@shoutem/ui';
 
 
-export default class SettingsScreen extends React.Component {
+export class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'app.json',
   };
@@ -20,7 +20,11 @@ export default class SettingsScreen extends React.Component {
         <View style={styles.notchMargin} />
         <View style={styles.headerContainer}>
           <Text style={styles.header}> 설정 </Text>
-          <Icon name="close" style={{ flex: 1 }} />
+          <Icon 
+            name="close" 
+            style={{ flex: 1 }}
+            onPress={() => {this.props.navigation.pop()}}
+          />
         </View>
         
         <View style={styles.cardContainer}>
