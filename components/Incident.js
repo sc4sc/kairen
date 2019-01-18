@@ -43,11 +43,16 @@ export default class Incident extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: { flexDirection: 'row', alignItems: 'stretch' },
+  container: { 
+    flexDirection: 'row', 
+    alignItems: 'stretch', 
+    borderBottomWidth: 1, 
+    borderColor: Colors.borderGrey 
+  },
   indicator: { width: 5 },
   content: { flex: 1, flexDirection: 'row', padding: 12 },
-  title: { fontWeight: '800', fontSize: 20 },
-  addressText: { fontSize: 16 },
+  title: { fontWeight: '800', fontSize: 18 },
+  addressText: { fontSize: 13 },
   dateText: { fontSize: 13, color: Colors.dateLightGrey },
   mapContainer: { width: 80, height: 120 },
 });

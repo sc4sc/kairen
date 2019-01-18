@@ -5,9 +5,8 @@ import {
   createStackNavigator,
 } from 'react-navigation';
 
-import IncidentList from '../screens/IncidentList';
-import IncidentDetail from '../screens/IncidentDetail';
-import NewIncident from '../screens/NewIncident';
+import { CommentInput, IncidentDetail, IncidentList, NewIncident, ProgressList, SettingsScreen } from '../screens';
+
 
 export default createAppContainer(
   createSwitchNavigator({
@@ -23,14 +22,17 @@ export default createAppContainer(
           { headerMode: 'none' }
         ),
         Modal: NewIncident,
+        Comment: CommentInput,
+        Progress: ProgressList,
+        Setting: SettingsScreen
       },
       {
         mode: 'modal',
         headerMode: 'none',
         cardStyle: {
           backgroundColor: 'rgba(0, 0, 0, 0)'
-        },
+        }
       }
-    ),
+    )
   })
 );
