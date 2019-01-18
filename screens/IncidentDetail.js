@@ -13,6 +13,7 @@ import ConfirmedText from '../components/ConfirmedText';
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
 import { Feather, AntDesign } from '@expo/vector-icons';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 export class IncidentDetail extends React.Component {
   renderHeader() {
@@ -120,7 +121,7 @@ export class IncidentDetail extends React.Component {
     return (
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ alignItems: 'stretch' }}
+        contentContainerStyle={styles.scrollingContainer}
       >
         <View>
           <MapView
@@ -228,6 +229,10 @@ const Comment = ({ confirmed, likes }) => {
 };
 
 const styles = StyleSheet.create({
+  scrollingContainer: {
+    alignItems: 'stretch',
+    paddingBottom: getBottomSpace(),
+  },
   map: { height: Layout.window.width },
   subheaderContainer: { marginBottom: 6 },
   subheaderText: { fontSize: 16, color: Colors.defaultGrey },
