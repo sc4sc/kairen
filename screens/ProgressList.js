@@ -22,7 +22,7 @@ export class ProgressList extends React.Component {
             }}
           />
         </View>
-        <View style={{ padding: 20 }}>
+        <View style={{ padding: 15 }}>
           <ProgressCard author="유성소방서" date="Jan 8, 2019">
             화재 진압되었습니다. 사고원인 조사중입니다.
           </ProgressCard>
