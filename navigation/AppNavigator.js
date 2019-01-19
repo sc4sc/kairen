@@ -6,9 +6,9 @@ import {
 } from 'react-navigation';
 
 import {
-  CommentInput,
   IncidentDetail,
   IncidentList,
+  NewComment,
   NewIncident,
   NewIncidentDetail,
   ProgressList,
@@ -30,7 +30,7 @@ export default createAppContainer(
         ),
         Modal: NewIncident,
         NewIncidentDetail: NewIncidentDetail,
-        Comment: CommentInput,
+        Comment: NewComment,
         Progress: ProgressList,
         Setting: SettingsScreen,
       },

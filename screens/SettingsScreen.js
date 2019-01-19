@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, Platform, SafeAreaView } from 'react-native';
-
 import SwitchToggle from 'react-native-switch-toggle';
 
 import Colors from '../constants/Colors';
 import { Icon } from '@shoutem/ui';
+import AndroidTopMargin from '../components/AndroidTopMargin';
 
 export class SettingsScreen extends React.Component {
   static navigationOptions = {
@@ -16,16 +16,18 @@ export class SettingsScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.notchMargin} />
         <SafeAreaView style={styles.headerContainer}>
-          <Text style={styles.header}> 설정 </Text>
-          <Icon
-            name="close"
-            style={{ flex: 1 }}
-            onPress={() => {
-              this.props.navigation.pop();
-            }}
-          />
+          <AndroidTopMargin />
+          <View style={styles.headerContainer}>
+            <Text style={styles.header}> 설정 </Text>
+            <Icon
+              name="close"
+              style={{ flex: 1 }}
+              onPress={() => {
+                this.props.navigation.pop();
+              }}
+            />
+          </View>
         </SafeAreaView>
 
         <View style={styles.cardContainer}>
@@ -76,7 +78,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  notchMargin: { height: Platform.select({ android: 40, ios: 0 }) },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'center',

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   View,
   Text,
@@ -11,14 +12,16 @@ import {
 import Colors from '../constants/Colors';
 import { Icon, TouchableOpacity } from '@shoutem/ui';
 
-export class CommentInput extends React.Component {
+import AndroidTopMargin from '../components/AndroidTopMargin';
+
+export class NewComment extends React.Component {
   state = { text: '' };
 
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.notchMargin} />
         <SafeAreaView style={styles.headerContainer}>
+          <AndroidTopMargin />
           <Text style={styles.header}> 새로운 의견 등록하기 </Text>
           <Icon
             name="close"
@@ -49,7 +52,6 @@ export class CommentInput extends React.Component {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  notchMargin: { height: Platform.select({ android: 40, ios: 0 }) },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

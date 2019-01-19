@@ -7,12 +7,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { MapView } from 'expo';
+import { Feather, AntDesign } from '@expo/vector-icons';
+
 import ProgressCard from '../components/ProgressCard';
 import ConfirmedText from '../components/ConfirmedText';
-
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
-import { Feather, AntDesign } from '@expo/vector-icons';
+import { getBottomSpace } from '../utils';
 
 export class IncidentDetail extends React.Component {
   renderHeader() {
@@ -100,17 +101,17 @@ export class IncidentDetail extends React.Component {
           ]}
         >
           <Text style={styles.subheaderText}>Progress</Text>
-          <Text 
+          <Text
             style={styles.subheaderText}
-            onPress={() => {this.props.navigation.navigate("Progress")}}
+            onPress={() => {
+              this.props.navigation.navigate('Progress');
+            }}
           >
             더보기
           </Text>
         </View>
         <ProgressCard author="안전팀" date="Jan 1, 2019">
-          <Text>
-            화재 진압되었습니다. 유성구 소방서와 함께 사고 원인 조사중 입니다.
-          </Text>
+          화재 진압되었습니다. 유성구 소방서와 함께 사고 원인 조사중 입니다.
         </ProgressCard>
       </View>
     );
@@ -120,7 +121,7 @@ export class IncidentDetail extends React.Component {
     return (
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ alignItems: 'stretch' }}
+        contentContainerStyle={styles.scrollingContainer}
       >
         <View>
           <MapView
@@ -136,7 +137,11 @@ export class IncidentDetail extends React.Component {
             style={{ position: 'absolute', top: 50, right: 16 }}
             onPress={() => this.props.navigation.goBack()}
           >
-            <AntDesign name={"closecircle"} style={{ opacity: 0.3 }} size={32}/>
+            <AntDesign
+              name={'closecircle'}
+              style={{ opacity: 0.3 }}
+              size={32}
+            />
           </TouchableOpacity>
         </View>
         <View style={{ paddingVertical: 18, paddingHorizontal: 15 }}>
@@ -149,9 +154,11 @@ export class IncidentDetail extends React.Component {
           <Text style={[styles.subheaderContainer, styles.subheaderText]}>
             Comment
           </Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.commentButton}
-            onPress={() => {this.props.navigation.navigate('Comment')}}
+            onPress={() => {
+              this.props.navigation.navigate('Comment');
+            }}
           >
             <Text style={styles.commentButtonText}>새로운 의견 등록하기</Text>
           </TouchableOpacity>
@@ -222,6 +229,10 @@ const Comment = ({ confirmed, likes }) => {
 };
 
 const styles = StyleSheet.create({
+  scrollingContainer: {
+    alignItems: 'stretch',
+    paddingBottom: getBottomSpace(),
+  },
   map: { height: Layout.window.width },
   subheaderContainer: { marginBottom: 6 },
   subheaderText: { fontSize: 16, color: Colors.defaultGrey },
@@ -244,5 +255,5 @@ const styles = StyleSheet.create({
     paddingTop: 13,
     paddingBottom: 10,
     minHeight: 100,
-  }
+  },
 });

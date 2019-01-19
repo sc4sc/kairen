@@ -4,6 +4,7 @@ import ProgressCard from '../components/ProgressCard';
 
 import Colors from '../constants/Colors';
 import { Icon } from '@shoutem/ui';
+import AndroidTopMargin from '../components/AndroidTopMargin';
 
 export class ProgressList extends React.Component {
   state = { text: '' };
@@ -11,17 +12,20 @@ export class ProgressList extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.notchMargin} />
         <SafeAreaView style={styles.headerContainer}>
-          <Text style={styles.header}> Progress </Text>
-          <Icon
-            name="close"
-            onPress={() => {
-              this.props.navigation.pop();
-            }}
-          />
+          <AndroidTopMargin />
+          <View style={styles.headerContainer}>
+            <Text style={styles.header}> Progress </Text>
+            <Icon
+              name="close"
+              onPress={() => {
+                this.props.navigation.pop();
+              }}
+            />
+          </View>
         </SafeAreaView>
-        <View style={{ padding: 20 }}>
+
+        <View style={{ padding: 15 }}>
           <ProgressCard author="유성소방서" date="Jan 8, 2019">
             화재 진압되었습니다. 사고원인 조사중입니다.
           </ProgressCard>
@@ -40,7 +44,6 @@ export class ProgressList extends React.Component {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  notchMargin: { height: Platform.select({ android: 40, ios: 0 }) },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
