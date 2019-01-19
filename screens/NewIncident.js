@@ -1,10 +1,12 @@
 import React from 'react';
 import { View, Platform, StyleSheet, Text } from 'react-native';
 import ReportItem from '../components/ReportItem';
-
+import AndroidTopMargin from '../components/AndroidTopMargin';
 import { SafeAreaView } from 'react-navigation';
+
 import Colors from '../constants/Colors';
 import { Icon, TouchableOpacity } from '@shoutem/ui';
+import { getStatusBarHeight } from '../utils';
 
 export class NewIncident extends React.Component {
   state = { isFirstStage: true, selected: null };
@@ -31,13 +33,13 @@ export class NewIncident extends React.Component {
               <Icon
                 name="close"
                 onPress={() => {
-                  this.props.navigation.pop();
+                  this.props.navigation.goBack();
                 }}
               />
               <Text
                 style={styles.headerText}
                 onPress={() => {
-                  this.props.navigation.pop();
+                  this.props.navigation.goBack();
                 }}
               >
                 {' '}
@@ -62,7 +64,9 @@ export class NewIncident extends React.Component {
                   type="가스유출"
                   selectedType={this.state.selected}
                   onPress={() => {
-                    this.props.navigation.navigate('NewIncidentDetail');
+                    this.props.navigation.navigate('NewIncidentDetail', {
+                      type: this.state.selected,
+                    });
                   }}
                   isFirstStage
                 />
@@ -76,7 +80,9 @@ export class NewIncident extends React.Component {
                   type="화재"
                   selectedType={this.state.selected}
                   onPress={() => {
-                    this.props.navigation.navigate('NewIncidentDetail');
+                    this.props.navigation.navigate('NewIncidentDetail', {
+                      type: this.state.selected,
+                    });
                   }}
                   isFirstStage
                 />
@@ -90,7 +96,9 @@ export class NewIncident extends React.Component {
                   type="독극물"
                   selectedType={this.state.selected}
                   onPress={() => {
-                    this.props.navigation.navigate('NewIncidentDetail');
+                    this.props.navigation.navigate('NewIncidentDetail', {
+                      type: this.state.selected,
+                    });
                   }}
                   isFirstStage
                 />
@@ -104,7 +112,9 @@ export class NewIncident extends React.Component {
                   type="폭발"
                   selectedType={this.state.selected}
                   onPress={() => {
-                    this.props.navigation.navigate('NewIncidentDetail');
+                    this.props.navigation.navigate('NewIncidentDetail', {
+                      type: this.state.selected,
+                    });
                   }}
                   isFirstStage
                 />
@@ -118,7 +128,9 @@ export class NewIncident extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  notchMargin: { height: Platform.select({ android: 23.5, ios: 0 }) },
+  notchMargin: {
+    height: Platform.select({ android: getStatusBarHeight(), ios: 0 }),
+  },
   headerContainer: {
     flexDirection: 'row',
     marginVertical: 20,

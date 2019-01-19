@@ -19,7 +19,7 @@ export class ProgressList extends React.Component {
             <Icon
               name="close"
               onPress={() => {
-                this.props.navigation.pop();
+                this.props.navigation.goBack();
               }}
             />
           </View>

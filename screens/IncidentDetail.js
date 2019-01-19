@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import { MapView } from 'expo';
 import { Feather, AntDesign } from '@expo/vector-icons';
@@ -14,6 +15,7 @@ import ConfirmedText from '../components/ConfirmedText';
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
 import { getBottomSpace } from '../utils';
+import AndroidTopMargin from '../components/AndroidTopMargin';
 
 export class IncidentDetail extends React.Component {
   renderHeader() {
@@ -123,7 +125,8 @@ export class IncidentDetail extends React.Component {
         style={{ flex: 1 }}
         contentContainerStyle={styles.scrollingContainer}
       >
-        <View>
+        <AndroidTopMargin />
+        <SafeAreaView>
           <MapView
             style={styles.map}
             initialRegion={{
@@ -143,7 +146,7 @@ export class IncidentDetail extends React.Component {
               size={32}
             />
           </TouchableOpacity>
-        </View>
+        </SafeAreaView>
         <View style={{ paddingVertical: 18, paddingHorizontal: 15 }}>
           {this.renderHeader()}
           <View style={{ height: 28 }} />

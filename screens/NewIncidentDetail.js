@@ -5,17 +5,19 @@ import ReportItem from '../components/ReportItem';
 import { SafeAreaView } from 'react-navigation';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import { Icon, TouchableOpacity } from '@shoutem/ui';
+import { Icon } from '@shoutem/ui';
+import { getStatusBarHeight } from '../utils';
 import { MapView } from 'expo';
 
 export class NewIncidentDetail extends React.Component {
-  state = { isFirstStage: false, selected: null };
-
   selectItem(item) {
     this.setState({ selected: item });
   }
 
   render() {
+    const { navigation } = this.props;
+    const type = navigation.getParam('type', 'whatthe');
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         {/* White background for safe area */}
@@ -32,7 +34,7 @@ export class NewIncidentDetail extends React.Component {
             <View
               style={styles.headerContainer}
               onPress={() => {
-                this.props.navigation.pop();
+                this.props.navigation.goBack();
               }}
             >
               <Icon name="close" />
@@ -60,8 +62,8 @@ export class NewIncidentDetail extends React.Component {
 
             <View style={{ marginHorizontal: 20 }}>
               <ReportItem
-                type="가스유출"
-                selectedType={this.state.selected}
+                type={type}
+                selectedType={type}
                 isFirstStage={false}
               />
             </View>
@@ -91,7 +93,9 @@ export class NewIncidentDetail extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  notchMargin: { height: Platform.select({ android: 23.5, ios: 0 }) },
+  notchMargin: {
+    height: Platform.select({ android: getStatusBarHeight(), ios: 0 }),
+  },
   headerContainer: {
     flexDirection: 'row',
     marginVertical: 20,

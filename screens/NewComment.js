@@ -1,13 +1,6 @@
 import React from 'react';
 
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Platform,
-  SafeAreaView,
-} from 'react-native';
+import { View, Text, TextInput, StyleSheet, SafeAreaView } from 'react-native';
 
 import Colors from '../constants/Colors';
 import { Icon, TouchableOpacity } from '@shoutem/ui';
@@ -20,13 +13,13 @@ export class NewComment extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <AndroidTopMargin />
         <SafeAreaView style={styles.headerContainer}>
-          <AndroidTopMargin />
           <Text style={styles.header}> 새로운 의견 등록하기 </Text>
           <Icon
             name="close"
             onPress={() => {
-              this.props.navigation.pop();
+              this.props.navigation.goBack();
             }}
           />
         </SafeAreaView>

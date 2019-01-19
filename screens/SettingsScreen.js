@@ -16,18 +16,16 @@ export class SettingsScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <AndroidTopMargin />
         <SafeAreaView style={styles.headerContainer}>
-          <AndroidTopMargin />
-          <View style={styles.headerContainer}>
-            <Text style={styles.header}> 설정 </Text>
-            <Icon
-              name="close"
-              style={{ flex: 1 }}
-              onPress={() => {
-                this.props.navigation.pop();
-              }}
-            />
-          </View>
+          <Text style={styles.header}> 설정 </Text>
+          <Icon
+            name="close"
+            style={{ flex: 1 }}
+            onPress={() => {
+              this.props.navigation.goBack();
+            }}
+          />
         </SafeAreaView>
 
         <View style={styles.cardContainer}>
