@@ -2,15 +2,17 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const ConfirmedText = ({ children }) => (
+const ConfirmedText = ({ children, fontWeight }) => (
   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
     <Ionicons
       name={'ios-checkmark-circle'}
-      size={14}
+      size={13}
       style={{ color: '#84c571' }}
     />
     <View style={{ width: 4 }} />
-    <Text style={{ fontSize: 14, color: '#84c571' }}>{children}</Text>
+    <Text style={{ fontSize: 13, color: '#84c571', fontWeight: fontWeight }}>
+      {children}
+    </Text>
   </View>
 );
 

@@ -12,8 +12,8 @@ export class ProgressList extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <SafeAreaView style={styles.headerContainer}>
-          <AndroidTopMargin />
+        <AndroidTopMargin />
+        <SafeAreaView>
           <View style={styles.headerContainer}>
             <Text style={styles.header}> Progress </Text>
             <Icon
@@ -25,7 +25,7 @@ export class ProgressList extends React.Component {
           </View>
         </SafeAreaView>
 
-        <View style={{ padding: 15 }}>
+        <View style={{ paddingHorizontal: 15 }}>
           <ProgressCard author="유성소방서" date="Jan 8, 2019">
             화재 진압되었습니다. 사고원인 조사중입니다.
           </ProgressCard>
@@ -45,10 +45,10 @@ export class ProgressList extends React.Component {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   headerContainer: {
+    marginVertical: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingBottom: 10,
   },
   header: { fontSize: 20, fontWeight: '800', color: Colors.defaultBlack },
   enrollButton: {

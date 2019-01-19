@@ -1,4 +1,4 @@
-import produce from "immer";
+import produce from 'immer';
 
 const defaultState = {
   byId: {},
@@ -7,6 +7,8 @@ const defaultState = {
 };
 
 export default (state = defaultState, action) => {
-  produce()
+  produce(() => {
+    [];
+  });
   return state;
 };

@@ -8,12 +8,9 @@ import Layout from '../constants/Layout';
 import { Icon } from '@shoutem/ui';
 import { getStatusBarHeight } from '../utils';
 import { MapView } from 'expo';
+import AndroidTopMargin from '../components/AndroidTopMargin';
 
 export class NewIncidentDetail extends React.Component {
-  selectItem(item) {
-    this.setState({ selected: item });
-  }
-
   render() {
     const { navigation } = this.props;
     const type = navigation.getParam('type', 'whatthe');
@@ -22,13 +19,13 @@ export class NewIncidentDetail extends React.Component {
       <SafeAreaView style={{ flex: 1 }}>
         {/* White background for safe area */}
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-          <View style={styles.notchMargin} />
+          <AndroidTopMargin />
           <SafeAreaView
             style={{
               flex: 1,
               borderTopLeftRadius: 10,
               borderTopRightRadius: 10,
-              backgroundColor: Colors.defaultGrey,
+              backgroundColor: Colors.buttonGrey,
             }}
           >
             <View
@@ -122,6 +119,7 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.22,
     shadowRadius: 2,
+    elevation: 5,
     backgroundColor: 'white',
   },
   searchText: {
@@ -132,13 +130,18 @@ const styles = StyleSheet.create({
     width: 55,
     height: 55,
     borderRadius: 50,
-    backgroundColor: '#727272',
+    backgroundColor: Colors.buttonGrey,
     marginBottom: 21,
     marginRight: 13,
     alignSelf: 'flex-end',
+    shadowOffset: { width: 0, height: 2 },
+    shadowColor: 'black',
+    shadowOpacity: 0.22,
+    shadowRadius: 2,
+    elevation: 5,
   },
   confirmButton: {
-    backgroundColor: Colors.defaultGrey,
+    backgroundColor: Colors.buttonGrey,
     marginHorizontal: 8,
     marginBottom: 34,
     paddingVertical: 18,
@@ -147,5 +150,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     color: 'white',
+    shadowOffset: { width: 0, height: 2 },
+    shadowColor: 'black',
+    shadowOpacity: 0.22,
+    shadowRadius: 2,
+    elevation: 5,
   },
 });

@@ -10,6 +10,6 @@ export default props => (
 
 const styles = StyleSheet.create({
   notchMargin: {
-    paddingTop: Platform.select({ android: getStatusBarHeight() + 15, ios: 0 }),
+    paddingTop: Platform.select({ android: getStatusBarHeight(), ios: 0 }),
   },
 });
