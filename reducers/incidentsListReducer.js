@@ -17,18 +17,21 @@ const defaultState = {
 };
 
 export default (state = defaultState, action) => {
-  return produce(draft => {
+  return produce(state, draft => {
     switch (action.type) {
       case INCIDENTS_LIST_LOAD_REQUESTED: {
         draft.loading = true;
+        return;
       }
 
       case INCIDENTS_LIST_LOAD_SUCCESS: {
         draft.loading = false;
+        return;
       }
 
       case INCIDENTS_LIST_LOAD_FAILED: {
         draft.loading = false;
+        return;
       }
 
       case INCIDENTS_LIST_APPEND: {
@@ -48,6 +51,7 @@ export default (state = defaultState, action) => {
         );
 
         draft.readUntil = incidents[incidents.length - 1].createdAt;
+        return;
       }
 
       case INCIDENTS_LIST_RESET: {

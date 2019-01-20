@@ -9,8 +9,8 @@ export function incidentsListLoadSuccess() {
 }
 
 export const INCIDENTS_LIST_LOAD_FAILED = 'INCIDENTS_LIST_LOAD_FAILED';
-export function incidentsListLoadFailed() {
-  return { type: INCIDENTS_LIST_LOAD_FAILED };
+export function incidentsListLoadFailed(error) {
+  return { type: INCIDENTS_LIST_LOAD_FAILED, payload: error, error: true };
 }
 
 export const INCIDENTS_LIST_RESET = 'INCIDENTS_LIST_RESET';

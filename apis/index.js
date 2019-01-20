@@ -5,5 +5,5 @@ function getQueryString(q) {
 }
 
 export function listIncidents(query) {
-  return fetch(`${serverURL}/incidents?${getQueryString(query)}`);
+  return fetch(`${serverURL}/incidents?${getQueryString(query)}`).then(r => r.json());
 }

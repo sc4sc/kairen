@@ -33,17 +33,18 @@ export function* loadMoreIncidents() {
     return;
   }
 
-  const appending = fork(function* load() {
+  const appending = yield fork(function* load() {
     yield put(incidentsListLoadRequested());
 
     let nextIncidents = [];
     try {
-      nextIncidents = yield call(
-        apis.listIncidents({ before: readUntil, size: 100 })
-      );
+      nextIncidents = yield call(apis.listIncidents, {
+        before: readUntil,
+        size: 100,
+      });
       yield put(incidentsListLoadSuccess());
     } catch (error) {
-      yield put(incidentsListLoadFailed());
+      yield put(incidentsListLoadFailed(error));
     }
 
     // indicates the end of a task
