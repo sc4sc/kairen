@@ -6,10 +6,3 @@ export function sayHello(message) {
     },
   };
 }
-
-export const LIST_INCIDENTS_REQUESTED = 'LIST_INCIDENTS_REQUESTED';
-export function requestListIncidents() {
-  return {
-    type: LIST_INCIDENTS_REQUESTED
-  }
-}
