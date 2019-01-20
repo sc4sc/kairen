@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import incidentsReducer from './incidentsReducer';
+import incidentsReducer from './incidentsListReducer';
 
 export default combineReducers({
-  incidents: incidentsReducer,
+  incidentsList: incidentsReducer,
 });
