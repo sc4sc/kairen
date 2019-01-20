@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform, SafeAreaView } from 'react-native';
 import ProgressCard from '../components/ProgressCard';
 
 import Colors from '../constants/Colors';
@@ -13,16 +13,19 @@ export class ProgressList extends React.Component {
     return (
       <View style={styles.container}>
         <AndroidTopMargin />
-        <View style={styles.headerContainer}>
-          <Text style={styles.header}> Progress </Text>
-          <Icon
-            name="close"
-            onPress={() => {
-              this.props.navigation.pop();
-            }}
-          />
-        </View>
-        <View style={{ padding: 20 }}>
+        <SafeAreaView>
+          <View style={styles.headerContainer}>
+            <Text style={styles.header}> Progress </Text>
+            <Icon
+              name="close"
+              onPress={() => {
+                this.props.navigation.goBack();
+              }}
+            />
+          </View>
+        </SafeAreaView>
+
+        <View style={{ paddingHorizontal: 15 }}>
           <ProgressCard author="유성소방서" date="Jan 8, 2019">
             화재 진압되었습니다. 사고원인 조사중입니다.
           </ProgressCard>
@@ -42,10 +45,10 @@ export class ProgressList extends React.Component {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   headerContainer: {
+    marginVertical: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingBottom: 10,
   },
   header: { fontSize: 20, fontWeight: '800', color: Colors.defaultBlack },
   enrollButton: {

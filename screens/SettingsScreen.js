@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
-
+import { View, Text, StyleSheet, Platform, SafeAreaView } from 'react-native';
 import SwitchToggle from 'react-native-switch-toggle';
 
 import Colors from '../constants/Colors';
@@ -18,16 +17,16 @@ export class SettingsScreen extends React.Component {
     return (
       <View style={styles.container}>
         <AndroidTopMargin />
-        <View style={styles.headerContainer}>
+        <SafeAreaView style={styles.headerContainer}>
           <Text style={styles.header}> 설정 </Text>
           <Icon
             name="close"
             style={{ flex: 1 }}
             onPress={() => {
-              this.props.navigation.pop();
+              this.props.navigation.goBack();
             }}
           />
-        </View>
+        </SafeAreaView>
 
         <View style={styles.cardContainer}>
           <Text style={styles.cardTitle}> 계정 </Text>
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     paddingLeft: 20,
-    paddingBottom: 10,
+    marginVertical: 10,
   },
   header: {
     flex: 6,

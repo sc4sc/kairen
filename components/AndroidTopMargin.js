@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar, Platform } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { getStatusBarHeight } from '../utils';
 
 export default props => (
-    <View {...props} style={[styles.notchMargin, props.style]}>
-      {props.children}
-    </View>
+  <View {...props} style={[styles.notchMargin, props.style]}>
+    {props.children}
+  </View>
 );
 
 const styles = StyleSheet.create({

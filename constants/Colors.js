@@ -21,8 +21,9 @@ export default {
   lightGrey: '#c1c1c1',
   borderGrey: '#e4e4e4',
   buttonGrey: '#6b6b6b',
+  lichen: '#84c571',
 
   textRed: '#d0021b',
   likeBlue: '#4a90e2',
-  switchGreen: '#7ed321'
+  switchGreen: '#7ed321',
 };

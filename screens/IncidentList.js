@@ -18,6 +18,13 @@ import AndroidTopMargin from '../components/AndroidTopMargin';
 
 export class IncidentList extends React.Component {
   static navigationOptions = { header: null };
+  state = { isSecureTeam: false };
+
+  componentWillMount() {
+    const { navigation } = this.props;
+    const _isSecureTeam = navigation.getParam('isSecureTeam', false);
+    this.setState({ isSecureTeam: _isSecureTeam });
+  }
 
   render() {
     return (
@@ -35,7 +42,11 @@ export class IncidentList extends React.Component {
           <ScrollView style={{ flex: 1 }}>
             {[...Array(8)].map(() => (
               <Incident
-                onPress={() => this.props.navigation.navigate('IncidentDetail')}
+                onPress={() =>
+                  this.props.navigation.navigate('IncidentDetail', {
+                    isSecureTeam: this.state.isSecureTeam,
+                  })
+                }
               />
             ))}
           </ScrollView>
@@ -59,7 +70,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     paddingLeft: 20,
-    paddingBottom: 10,
+    paddingVertical: 10,
     paddingRight: 16,
     flexDirection: 'row',
     borderBottomWidth: 1,

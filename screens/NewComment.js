@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Platform } from 'react-native';
+
+import { View, Text, TextInput, StyleSheet, SafeAreaView } from 'react-native';
 
 import Colors from '../constants/Colors';
 import { Icon, TouchableOpacity } from '@shoutem/ui';
+
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
 export class NewComment extends React.Component {
@@ -12,15 +14,16 @@ export class NewComment extends React.Component {
     return (
       <View style={styles.container}>
         <AndroidTopMargin />
-        <View style={styles.headerContainer}>
+        <SafeAreaView style={styles.headerContainer}>
           <Text style={styles.header}> 새로운 의견 등록하기 </Text>
           <Icon
             name="close"
             onPress={() => {
-              this.props.navigation.pop();
+              this.props.navigation.goBack();
             }}
           />
-        </View>
+        </SafeAreaView>
+
         <View style={{ padding: 20 }}>
           <TextInput
             style={{
@@ -47,7 +50,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingBottom: 10,
+    marginVertical: 20,
   },
   header: { fontSize: 20, fontWeight: '800', color: Colors.defaultBlack },
   enrollButton: {
@@ -57,6 +60,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: Colors.buttonGrey,
     borderRadius: 10,
+    shadowOffset: { width: 0, height: 2 },
+    shadowColor: 'black',
+    shadowOpacity: 0.22,
+    shadowRadius: 2,
+    elevation: 5,
   },
   buttonText: {
     fontSize: 15,
