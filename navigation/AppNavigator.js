@@ -13,6 +13,7 @@ import {
   NewIncidentDetail,
   ProgressList,
   SettingsScreen,
+  Login,
 } from '../screens';
 
 export default createAppContainer(
@@ -23,6 +24,7 @@ export default createAppContainer(
       {
         Main: createStackNavigator(
           {
+            Login,
             IncidentList,
             IncidentDetail,
           },
@@ -33,6 +35,7 @@ export default createAppContainer(
         Comment: NewComment,
         Progress: ProgressList,
         Setting: SettingsScreen,
+        Login: Login,
       },
       {
         mode: 'modal',

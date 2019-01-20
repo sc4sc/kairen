@@ -23,6 +23,7 @@ export class NewComment extends React.Component {
             }}
           />
         </SafeAreaView>
+
         <View style={{ padding: 20 }}>
           <TextInput
             style={{
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingBottom: 10,
+    marginVertical: 20,
   },
   header: { fontSize: 20, fontWeight: '800', color: Colors.defaultBlack },
   enrollButton: {
@@ -59,6 +60,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: Colors.buttonGrey,
     borderRadius: 10,
+    shadowOffset: { width: 0, height: 2 },
+    shadowColor: 'black',
+    shadowOpacity: 0.22,
+    shadowRadius: 2,
+    elevation: 5,
   },
   buttonText: {
     fontSize: 15,

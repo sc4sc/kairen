@@ -20,13 +20,13 @@ export class NewIncident extends React.Component {
       <SafeAreaView style={{ flex: 1 }}>
         {/* White background for safe area */}
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-          <View style={styles.notchMargin} />
+          <AndroidTopMargin />
           <View
             style={{
               flex: 1,
               borderTopLeftRadius: 10,
               borderTopRightRadius: 10,
-              backgroundColor: Colors.defaultGrey,
+              backgroundColor: Colors.buttonGrey,
             }}
           >
             <View style={styles.headerContainer}>

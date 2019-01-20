@@ -9,15 +9,27 @@ import {
 } from 'react-native';
 import { MapView } from 'expo';
 import { Feather, AntDesign } from '@expo/vector-icons';
+import { connect } from 'react-redux';
 
-import ProgressCard from '../components/ProgressCard';
 import ConfirmedText from '../components/ConfirmedText';
+import ProgressCard from '../components/ProgressCard';
+import CommentCard from '../components/CommentCard';
+
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
 import { getBottomSpace } from '../utils';
+
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
-export class IncidentDetail extends React.Component {
+import { sayHello } from '../actions';
+
+class IncidentDetail extends React.Component {
+  componentWillMount() {
+    const { navigation } = this.props;
+    const _isSecureTeam = navigation.getParam('isSecureTeam', false);
+    this.setState({ isSecureTeam: _isSecureTeam });
+  }
+
   renderHeader() {
     return (
       <View>
@@ -77,7 +89,7 @@ export class IncidentDetail extends React.Component {
           </Text>
           <Text style={{ color: 'white' }}>자세한 행동 강령 보기</Text>
         </View>
-        <View
+        <TouchableOpacity
           style={{
             width: 46,
             height: 46,
@@ -86,11 +98,32 @@ export class IncidentDetail extends React.Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}
+          onPress={() => this.props.sayHello()}
         >
           <Feather name="arrow-right" size={32} style={{ color: 'white' }} />
-        </View>
+        </TouchableOpacity>
       </View>
     );
+  }
+
+  renderProgressButton() {
+    if (this.state.isSecureTeam) {
+      return (
+        <TouchableOpacity
+          style={[
+            styles.commentButton,
+            { backgroundColor: Colors.lichen, marginBottom: 10 },
+          ]}
+          onPress={() => {
+            this.props.navigation.navigate('Progress');
+          }}
+        >
+          <Text style={styles.commentButtonText}>진행 상황 등록하기</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    return null;
   }
 
   renderProgress() {
@@ -104,7 +137,7 @@ export class IncidentDetail extends React.Component {
         >
           <Text style={styles.subheaderText}>Progress</Text>
           <Text
-            style={styles.subheaderText}
+            style={[styles.subheaderText, { fontSize: 13 }]}
             onPress={() => {
               this.props.navigation.navigate('Progress');
             }}
@@ -112,6 +145,7 @@ export class IncidentDetail extends React.Component {
             더보기
           </Text>
         </View>
+        {this.renderProgressButton()}
         <ProgressCard author="안전팀" date="Jan 1, 2019">
           화재 진압되었습니다. 유성구 소방서와 함께 사고 원인 조사중 입니다.
         </ProgressCard>
@@ -165,71 +199,34 @@ export class IncidentDetail extends React.Component {
           >
             <Text style={styles.commentButtonText}>새로운 의견 등록하기</Text>
           </TouchableOpacity>
-          <Comment confirmed likes={20} />
-          <Comment likes={4} />
+          <CommentCard
+            author="#2 김철수"
+            date="Jan 1, 2019"
+            confirmed
+            likes={20}
+            isSecureTeam={this.state.isSecureTeam}
+          >
+            화재 원인은담배꽁초였던 것 같습니다.
+          </CommentCard>
+
+          <CommentCard
+            author="#1 김영희"
+            date="Jan 1, 2019"
+            likes={4}
+            isSecureTeam={this.state.isSecureTeam}
+          >
+            최초 발견자입니다.
+          </CommentCard>
         </View>
       </ScrollView>
     );
   }
 }
 
-// TODO:: Component 추출, Comment와 Progress간 Border랑 Content 레이아웃이 겹치는 부분이 조금 있는 것 같다!
-const Comment = ({ confirmed, likes }) => {
-  return (
-    <View
-      style={[
-        styles.borderedContentBox,
-        {
-          flexDirection: 'row',
-          alignItems: 'stretch',
-          marginTop: 10,
-          borderColor: Colors.borderGrey,
-        },
-      ]}
-    >
-      <View style={{ flex: 1 }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'baseline',
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 13,
-              fontWeight: 'bold',
-              color: Colors.defaultGrey,
-            }}
-          >
-            #2 김철수
-          </Text>
-          <View style={{ width: 9 }} />
-          <Text style={{ fontSize: 11, color: Colors.dateLightGrey }}>
-            Jan 1, 2019
-          </Text>
-        </View>
-        <Text style={{ marginVertical: 10 }}>
-          화재 원인은 담배꽁초였던 것 같습니다.
-        </Text>
-        <View style={{ flex: 1 }} />
-        {confirmed ? <ConfirmedText>안전팀 확인</ConfirmedText> : null}
-      </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center', padding: 5 }}>
-        <Text
-          style={{ fontWeight: 'bold', fontSize: 16, color: Colors.likeBlue }}
-        >
-          {likes}
-        </Text>
-        <View style={{ width: 5 }} />
-        <AntDesign
-          name={likes > 5 ? 'like1' : 'like2'}
-          size={20}
-          style={{ color: Colors.likeBlue }}
-        />
-      </View>
-    </View>
-  );
-};
+export default connect(
+  null,
+  { sayHello }
+)(IncidentDetail);
 
 const styles = StyleSheet.create({
   scrollingContainer: {
@@ -250,13 +247,5 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     color: 'white',
-  },
-  borderedContentBox: {
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    paddingTop: 13,
-    paddingBottom: 10,
-    minHeight: 100,
   },
 });
