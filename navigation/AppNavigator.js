@@ -10,7 +10,6 @@ import {
   IncidentList,
   NewComment,
   NewIncident,
-  NewIncidentDetail,
   ProgressList,
   SettingsScreen,
   Login,
@@ -31,7 +30,6 @@ export default createAppContainer(
           { headerMode: 'none' }
         ),
         Modal: NewIncident,
-        NewIncidentDetail: NewIncidentDetail,
         Comment: NewComment,
         Progress: ProgressList,
         Setting: SettingsScreen,

@@ -12,6 +12,7 @@ import { renderChildElements } from '@shoutem/ui/html';
 export default class CommentCard extends React.Component {
   renderReplyBox() {
     const { onPressReply, confirmed } = this.props;
+
     if (onPressReply && confirmed) {
       return (
         <TouchableOpacity style={styles.replyBoxStyle}>
