@@ -29,11 +29,10 @@ export default createAppContainer(
           },
           { headerMode: 'none' }
         ),
-        Modal: NewIncident,
+        NewIncident,
         Comment: NewComment,
         Progress: ProgressList,
         Setting: SettingsScreen,
-        Login: Login,
       },
       {
         mode: 'modal',

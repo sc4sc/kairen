@@ -54,7 +54,7 @@ export class IncidentList extends React.Component {
         </SafeAreaView>
         <TouchableOpacity
           style={styles.reportButton}
-          onPress={() => this.props.navigation.navigate('Modal')}
+          onPress={() => this.props.navigation.navigate('NewIncident')}
         >
           <Text style={styles.reportButtonText}>Send Report</Text>
         </TouchableOpacity>

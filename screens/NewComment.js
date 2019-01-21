@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { View, Text, TextInput, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
+
 
 import Colors from '../constants/Colors';
 import { Icon, TouchableOpacity } from '@shoutem/ui';

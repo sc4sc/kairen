@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform, SafeAreaView } from 'react-native';
-import ProgressCard from '../components/ProgressCard';
+import { StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-navigation';
 
+import ProgressCard from '../components/ProgressCard';
 import Colors from '../constants/Colors';
-import { Icon } from '@shoutem/ui';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
 export class ProgressList extends React.Component {
@@ -16,8 +17,9 @@ export class ProgressList extends React.Component {
         <SafeAreaView>
           <View style={styles.headerContainer}>
             <Text style={styles.header}> Progress </Text>
-            <Icon
-              name="close"
+            <Ionicons
+              name="md-close"
+              size={26}
               onPress={() => {
                 this.props.navigation.goBack();
               }}
