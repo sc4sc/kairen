@@ -5,12 +5,12 @@ import {
   Text,
   SafeAreaView,
   TextInput,
-  CheckBox,
   TouchableOpacity,
 } from 'react-native';
-import AndroidTopMargin from '../components/AndroidTopMargin';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
+import { CheckBox } from 'react-native-elements';
+
+import AndroidTopMargin from '../components/AndroidTopMargin';
 import { authLoginRequest } from '../actions/auth';
 
 class Login extends React.Component {
@@ -43,8 +43,13 @@ class Login extends React.Component {
 
           <View style={checkBoxContainer}>
             <CheckBox
-              onValueChange={isSecureTeam => this.setState({ isSecureTeam })}
-              value={this.state.isSecureTeam}
+              onPress={() =>
+                this.setState(s => ({
+                  ...s,
+                  isSecureTeam: !s.isSecureTeam,
+                }))
+              }
+              checked={this.state.isSecureTeam}
             />
             <Text style={mainText}>나는 안전팀입니다.</Text>
           </View>
