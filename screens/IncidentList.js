@@ -57,9 +57,9 @@ class IncidentList extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <AndroidTopMargin />
-        <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
           <View style={styles.headerContainer}>
             <Text style={styles.header}>Recent</Text>
             <View style={{ flex: 1 }} />
@@ -76,14 +76,14 @@ class IncidentList extends React.Component {
             onRefresh={this.handleRefresh}
             onEndReached={this.handleEndReached}
           />
-        </SafeAreaView>
+        </View>
         <TouchableOpacity
           style={styles.reportButton}
           onPress={() => this.props.navigation.navigate('NewIncident')}
         >
           <Text style={styles.reportButtonText}>Send Report</Text>
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     );
   }
 }

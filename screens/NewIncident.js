@@ -7,12 +7,12 @@ import {
   LayoutAnimation,
   UIManager,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import { connect } from 'react-redux';
 
 import ReportItem from '../components/ReportItem';
 import AndroidTopMargin from '../components/AndroidTopMargin';
-import { SafeAreaView } from 'react-navigation';
 
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
@@ -56,7 +56,7 @@ class NewIncident extends React.Component {
 
   renderTypeSelector() {
     return (
-      <View style={{ paddingHorizontal: 20 }}>
+      <View style={{ paddingHorizontal: 20, flex: 1 }}>
         <Text style={styles.subHeaderText}>긴급제보</Text>
         <FlatList data={this.props.incidents} renderItem={this.renderItem} />
       </View>
@@ -75,22 +75,21 @@ class NewIncident extends React.Component {
           <Text style={styles.searchText}> 한국과학기술원 N1 404 </Text>
           <Ionicons name="md-search" size={26} />
         </View>
-        <View style={{ height: Layout.window.height / 3 }}>
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: 36.374159,
-              longitude: 127.365864,
-              latitudeDelta: 0.00522,
-              longitudeDelta: 0.00221,
-            }}
-          />
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: 36.374159,
+            longitude: 127.365864,
+            latitudeDelta: 0.00522,
+            longitudeDelta: 0.00221,
+          }}
+        />
+        <View style={styles.buttonContainer}>
+          <View style={styles.gpsButton} />
+          <TouchableOpacity style={styles.confirmButton}>
+            <Text style={styles.buttonText}>제보 등록</Text>
+          </TouchableOpacity>
         </View>
-
-        <View style={styles.gpsButton} />
-        <TouchableOpacity style={styles.confirmButton}>
-          <Text style={styles.buttonText}>제보 등록</Text>
-        </TouchableOpacity>
       </View>
     );
   }
@@ -114,33 +113,30 @@ class NewIncident extends React.Component {
     } = styles;
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-        {/* White background for safe area */}
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
-          <AndroidTopMargin />
-          <View style={container}>
-            <View style={headerContainer}>
-              <Ionicons
-                name="ios-close"
-                size={26}
-                style={{ color: 'white' }}
-                onPress={() => this.goBackScreen()}
-              />
-              <View style={{ width: 5 }} />
-              <Text style={headerText} onPress={() => this.goBackScreen()}>
-                취소
-              </Text>
-            </View>
-
-            <View style={barContainer}>
-              {this.renderStageIndicator(isFirstStage)}
-              <View style={{ width: 5 }} />
-              {this.renderStageIndicator(!isFirstStage)}
-            </View>
-            {isFirstStage
-              ? this.renderTypeSelector()
-              : this.renderLocationSelector()}
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+        <AndroidTopMargin />
+        <View style={container}>
+          <View style={headerContainer}>
+            <Ionicons
+              name="ios-close"
+              size={26}
+              style={{ color: 'white' }}
+              onPress={() => this.goBackScreen()}
+            />
+            <View style={{ width: 5 }} />
+            <Text style={headerText} onPress={() => this.goBackScreen()}>
+              취소
+            </Text>
           </View>
+
+          <View style={barContainer}>
+            {this.renderStageIndicator(isFirstStage)}
+            <View style={{ width: 5 }} />
+            {this.renderStageIndicator(!isFirstStage)}
+          </View>
+          {isFirstStage
+            ? this.renderTypeSelector()
+            : this.renderLocationSelector()}
         </View>
       </SafeAreaView>
     );
@@ -221,7 +217,6 @@ const styles = StyleSheet.create({
   confirmButton: {
     backgroundColor: Colors.buttonGrey,
     marginHorizontal: 8,
-    marginBottom: 34,
     paddingVertical: 18,
     borderRadius: 8,
     shadowOffset: { width: 0, height: 2 },
@@ -229,11 +224,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2,
     elevation: 5,
+    marginBottom: 150,
   },
   buttonText: {
     fontSize: 19,
     fontWeight: 'bold',
     textAlign: 'center',
     color: 'white',
+  },
+  buttonContainer: {
+    position: 'absolute',
+    justifyContent: 'flex-end',
+    width: Layout.window.width,
+    height: Layout.window.height,
   },
 });

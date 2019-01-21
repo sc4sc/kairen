@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import SwitchToggle from 'react-native-switch-toggle';
-import { SafeAreaView } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
@@ -16,9 +15,9 @@ export class SettingsScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <AndroidTopMargin />
-        <SafeAreaView style={styles.headerContainer}>
+        <View style={styles.headerContainer}>
           <Text style={styles.header}> 설정 </Text>
           <Ionicons
             name="md-close"
@@ -28,7 +27,7 @@ export class SettingsScreen extends React.Component {
               this.props.navigation.goBack();
             }}
           />
-        </SafeAreaView>
+        </View>
 
         <View style={styles.cardContainer}>
           <Text style={styles.cardTitle}> 계정 </Text>
@@ -68,7 +67,7 @@ export class SettingsScreen extends React.Component {
         <View style={styles.cardContainer}>
           <Text style={{ fontSize: 15 }}> 이 앱에 대하여 </Text>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }

@@ -12,9 +12,9 @@ export class ProgressList extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <AndroidTopMargin />
-        <SafeAreaView>
+        <View>
           <View style={styles.headerContainer}>
             <Text style={styles.header}> Progress </Text>
             <Ionicons
@@ -25,7 +25,7 @@ export class ProgressList extends React.Component {
               }}
             />
           </View>
-        </SafeAreaView>
+        </View>
 
         <View style={{ paddingHorizontal: 15 }}>
           <ProgressCard author="유성소방서" date="Jan 8, 2019">
@@ -39,7 +39,7 @@ export class ProgressList extends React.Component {
             화재 신고 접수, 소방서에 연락 중입니다.
           </ProgressCard>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }

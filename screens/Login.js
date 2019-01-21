@@ -28,9 +28,9 @@ class Login extends React.Component {
     } = styles;
 
     return (
-      <View style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
         <AndroidTopMargin />
-        <SafeAreaView style={container}>
+        <View style={container}>
           <Text style={headerText}> SC4SC </Text>
 
           <Text style={nameText}> 이름 </Text>
@@ -71,8 +71,8 @@ class Login extends React.Component {
           >
             <Text style={mainText}>로그인</Text>
           </TouchableOpacity>
-        </SafeAreaView>
-      </View>
+        </View>
+      </SafeAreaView>
     );
   }
 }
