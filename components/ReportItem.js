@@ -1,13 +1,21 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-
+import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { Icon } from '@shoutem/ui';
 import * as actions from '../actions';
 
 class ReportItem extends React.Component {
   renderIcon() {
     return <Icon name="checkbox-on" style={{ flex: 1 }} />;
+  }
+
+  renderVectorIcon() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center' }}>
+        <Feather name={'check'} size={24} />
+      </View>
+    );
   }
 
   renderNextButton() {
@@ -39,7 +47,7 @@ class ReportItem extends React.Component {
             { backgroundColor: selected ? '#d5d5d5' : '#5f5f5f' },
           ]}
         >
-          {showSelected ? this.renderIcon() : empty}
+          {showSelected ? this.renderVectorIcon() : empty}
           <Text
             style={[
               styles.itemContent,
