@@ -1,13 +1,18 @@
 import React from 'react';
 
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
-
 import Colors from '../constants/Colors';
-import { Icon, TouchableOpacity } from '@shoutem/ui';
 
 import AndroidTopMargin from '../components/AndroidTopMargin';
+import { Ionicons } from '@expo/vector-icons';
 
 export class NewComment extends React.Component {
   state = { text: '' };
@@ -18,8 +23,9 @@ export class NewComment extends React.Component {
         <AndroidTopMargin />
         <SafeAreaView style={styles.headerContainer}>
           <Text style={styles.header}> 새로운 의견 등록하기 </Text>
-          <Icon
-            name="close"
+          <Ionicons
+            name="md-close"
+            size={26}
             onPress={() => {
               this.props.navigation.goBack();
             }}

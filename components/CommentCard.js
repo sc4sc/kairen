@@ -7,7 +7,6 @@ import ProgressCard from '../components/ProgressCard';
 
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
-import { renderChildElements } from '@shoutem/ui/html';
 
 export default class CommentCard extends React.Component {
   renderReplyBox() {

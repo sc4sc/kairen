@@ -6,6 +6,7 @@ import {
   FlatList,
   LayoutAnimation,
   UIManager,
+  TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -15,11 +16,10 @@ import { SafeAreaView } from 'react-navigation';
 
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import { Icon, TouchableOpacity } from '@shoutem/ui';
-import { getStatusBarHeight } from '../utils';
 import { MapView } from 'expo';
 
 import * as actions from '../actions';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 class NewIncident extends React.Component {
   componentWillMount() {
@@ -78,7 +78,7 @@ class NewIncident extends React.Component {
 
         <View style={styles.searchBox}>
           <Text style={styles.searchText}> 한국과학기술원 N1 404 </Text>
-          <Icon name="search" />
+          <Ionicons name="md-search" size={26} />
         </View>
         <MapView
           style={styles.map}
@@ -118,7 +118,13 @@ class NewIncident extends React.Component {
           <AndroidTopMargin />
           <View style={container}>
             <View style={headerContainer}>
-              <Icon name="close" onPress={this.goBackScreen()} />
+              <Ionicons
+                  name="md-close"
+                  size={26}
+                  onPress={() => {
+                    this.props.navigation.goBack();
+                  }}
+              />
               <Text style={headerText} onPress={this.goBackScreen()}>
                 취소
               </Text>
