@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Alert,
   View,
   Text,
   SafeAreaView,
@@ -9,8 +10,10 @@ import {
 } from 'react-native';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
+import { authLoginRequest } from '../actions/auth';
 
-export class Login extends React.Component {
+class Login extends React.Component {
   state = { text: '', isSecureTeam: false };
 
   render() {
@@ -49,9 +52,19 @@ export class Login extends React.Component {
           <TouchableOpacity
             style={loginButton}
             onPress={() => {
-              this.props.navigation.navigate('IncidentList', {
-                isSecureTeam: this.state.isSecureTeam,
-              });
+              const { text, isSecureTeam } = this.state;
+              this.props.authLoginRequest(
+                text,
+                isSecureTeam,
+                () => {
+                  this.props.navigation.navigate('App', {
+                    isSecureTeam: this.state.isSecureTeam,
+                  });
+                },
+                () => {
+                  Alert.alert('Login failed', 'Sorry, login has failed.');
+                }
+              );
             }}
           >
             <Text style={mainText}>로그인</Text>
@@ -61,6 +74,11 @@ export class Login extends React.Component {
     );
   }
 }
+
+export default connect(
+  null,
+  { authLoginRequest }
+)(Login);
 
 const styles = {
   container: { flex: 1, backgroundColor: '#424242', padding: 15 },
