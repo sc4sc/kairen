@@ -10,7 +10,7 @@ const defaultState = {
   loginInProgress: false,
   user: {},
   deviceToken: '',
-  isSecureTeam: false,
+  isSecureTeam: true,
   pushToken: '',
 };
 

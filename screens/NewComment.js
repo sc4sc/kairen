@@ -1,12 +1,14 @@
 import React from 'react';
-
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 
 import Colors from '../constants/Colors';
@@ -19,35 +21,37 @@ export class NewComment extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <AndroidTopMargin />
-        <SafeAreaView style={styles.headerContainer}>
-          <Text style={styles.header}> 새로운 의견 등록하기 </Text>
-          <Ionicons
-            name="md-close"
-            size={26}
-            onPress={() => {
-              this.props.navigation.goBack();
-            }}
-          />
-        </SafeAreaView>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <AndroidTopMargin />
+          <SafeAreaView style={styles.headerContainer}>
+            <Text style={styles.header}> 새로운 의견 등록하기 </Text>
+            <Ionicons
+              name="md-close"
+              size={26}
+              onPress={() => {
+                this.props.navigation.goBack();
+              }}
+            />
+          </SafeAreaView>
 
-        <View style={{ padding: 20 }}>
-          <TextInput
-            style={{
-              padding: 10,
-              borderColor: Colors.lightGrey,
-              borderWidth: 1,
-            }}
-            onChangeText={text => this.setState({ text })}
-            value={this.state.text}
-            multiline={true}
-          />
-          <TouchableOpacity style={styles.enrollButton}>
-            <Text style={styles.buttonText}> 등록하기 </Text>
-          </TouchableOpacity>
+          <View style={{ padding: 20 }}>
+            <TextInput
+              style={{
+                padding: 10,
+                borderColor: Colors.lightGrey,
+                borderWidth: 1,
+              }}
+              onChangeText={text => this.setState({ text })}
+              value={this.state.text}
+              multiline={true}
+            />
+            <TouchableOpacity style={styles.enrollButton}>
+              <Text style={styles.buttonText}> 등록하기 </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

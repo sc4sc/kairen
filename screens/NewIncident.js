@@ -68,9 +68,6 @@ class NewIncident extends React.Component {
       <View>
         <View style={{ marginHorizontal: 20 }}>
           <ReportItem type={this.props.selectedIncident} />
-        </View>
-
-        <View style={{ marginLeft: 20 }}>
           <Text style={styles.subHeaderText}> 위치 선택 </Text>
         </View>
 
@@ -78,15 +75,22 @@ class NewIncident extends React.Component {
           <Text style={styles.searchText}> 한국과학기술원 N1 404 </Text>
           <Ionicons name="md-search" size={26} />
         </View>
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: 36.374159,
-            longitude: 127.365864,
-            latitudeDelta: 0.00522,
-            longitudeDelta: 0.00221,
-          }}
-        />
+        <View style={{ height: Layout.window.height / 3 }}>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: 36.374159,
+              longitude: 127.365864,
+              latitudeDelta: 0.00522,
+              longitudeDelta: 0.00221,
+            }}
+          />
+        </View>
+
+        <View style={styles.gpsButton} />
+        <TouchableOpacity style={styles.confirmButton}>
+          <Text style={styles.buttonText}>제보 등록</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -220,14 +224,16 @@ const styles = StyleSheet.create({
     marginBottom: 34,
     paddingVertical: 18,
     borderRadius: 8,
-    fontSize: 19,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: 'white',
     shadowOffset: { width: 0, height: 2 },
     shadowColor: 'black',
     shadowOpacity: 0.22,
     shadowRadius: 2,
     elevation: 5,
+  },
+  buttonText: {
+    fontSize: 19,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'white',
   },
 });

@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import { connect } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 
 import ConfirmedText from '../components/ConfirmedText';
@@ -8,11 +15,13 @@ import ProgressCard from '../components/ProgressCard';
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
 
-export default class CommentCard extends React.Component {
-  renderReplyBox() {
-    const { onPressReply, confirmed } = this.props;
+class CommentCard extends React.Component {
+  state = { like: false };
 
-    if (onPressReply && confirmed) {
+  renderReplyBox() {
+    const { onPressReply, replyExist } = this.props;
+
+    if (onPressReply && !replyExist) {
       return (
         <TouchableOpacity style={styles.replyBoxStyle}>
           <View style={{ flex: 1 }} />
@@ -21,7 +30,7 @@ export default class CommentCard extends React.Component {
           </View>
         </TouchableOpacity>
       );
-    } else if (onPressReply) {
+    } else if (replyExist) {
       return (
         <ProgressCard isComment author="안전팀" date="Jan 1, 2019">
           화재
@@ -33,7 +42,7 @@ export default class CommentCard extends React.Component {
   }
 
   render() {
-    const { author, date, likes, children } = this.props;
+    const { author, date, totalLikes, children } = this.props;
 
     const {
       borderedContentBox,
@@ -56,21 +65,27 @@ export default class CommentCard extends React.Component {
 
             <Text style={commentStyle}>{children}</Text>
             <View style={{ flex: 1 }} />
-            {this.props.confirmed ? (
-              <ConfirmedText>안전팀 확인</ConfirmedText>
-            ) : null}
           </View>
 
           <View
             style={{ flexDirection: 'row', alignItems: 'center', padding: 5 }}
           >
-            <Text style={likeStyle}>{likes}</Text>
+            {/* TODO : 좋아요 갯수 서버 연동. 지금은 보여주기용 임시방편 */}
+            <Text style={likeStyle}>
+              {this.state.like ? totalLikes + 1 : totalLikes}
+            </Text>
             <View style={{ width: 5 }} />
-            <AntDesign
-              name={likes > 5 ? 'like1' : 'like2'}
-              size={20}
-              style={{ color: Colors.likeBlue }}
-            />
+            <TouchableWithoutFeedback
+              onPress={() => {
+                this.setState({ like: !this.state.like });
+              }}
+            >
+              <AntDesign
+                name={this.state.like ? 'like1' : 'like2'}
+                size={20}
+                style={{ color: Colors.likeBlue }}
+              />
+            </TouchableWithoutFeedback>
           </View>
         </View>
         {this.renderReplyBox()}
@@ -78,6 +93,14 @@ export default class CommentCard extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    onPressReply: state.auth.isSecureTeam,
+  };
+};
+
+export default connect(mapStateToProps)(CommentCard);
 
 const styles = StyleSheet.create({
   authorContainer: {
