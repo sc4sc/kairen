@@ -27,23 +27,24 @@ class NewIncident extends React.Component {
       UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
+  componentWillUnmount() {
+    this.props.resetSelection();
+  }
+
   /* TODO : 애니메이션 보강 및 뒤로가기 버튼 눌렀을 때의 처리 */
 
-  renderItem(incident) {
+  renderItem = incident => {
     return (
       <ReportItem
         type={incident.item.type}
-        showButton
-        showNext
         onPress={this.changeWithAnimation}
       />
     );
-  }
+  };
 
   goBackScreen() {
     if (this.props.isFirstStage) {
       return () => {
-        this.props.resetSelection();
         this.props.navigation.goBack();
       };
     }
@@ -55,19 +56,16 @@ class NewIncident extends React.Component {
     this.props.changeStage();
   };
 
-  renderComponent() {
-    if (this.props.isFirstStage) {
-      return (
-        <View style={{ paddingHorizontal: 20 }}>
-          <Text style={styles.subHeaderText}>긴급제보</Text>
-          <FlatList
-            data={this.props.incidents}
-            renderItem={this.renderItem.bind(this)}
-          />
-        </View>
-      );
-    }
+  renderTypeSelector() {
+    return (
+      <View style={{ paddingHorizontal: 20 }}>
+        <Text style={styles.subHeaderText}>긴급제보</Text>
+        <FlatList data={this.props.incidents} renderItem={this.renderItem} />
+      </View>
+    );
+  }
 
+  renderLocationSelector() {
     return (
       <View>
         <View style={{ marginHorizontal: 20 }}>
@@ -95,6 +93,14 @@ class NewIncident extends React.Component {
     );
   }
 
+  renderStageIndicator(on) {
+    return (
+      <View
+        style={[styles.stageBar, { backgroundColor: on ? 'white' : '#868686' }]}
+      />
+    );
+  }
+
   render() {
     const { isFirstStage } = this.props;
     const {
@@ -119,21 +125,13 @@ class NewIncident extends React.Component {
             </View>
 
             <View style={barContainer}>
-              <View
-                style={[
-                  stageBar,
-                  { backgroundColor: isFirstStage ? 'white' : '#868686' },
-                ]}
-              />
+              {this.renderStageIndicator(isFirstStage)}
               <View style={{ width: 5 }} />
-              <View
-                style={[
-                  stageBar,
-                  { backgroundColor: isFirstStage ? '#868686' : 'white' },
-                ]}
-              />
+              {this.renderStageIndicator(!isFirstStage)}
             </View>
-            {this.renderComponent()}
+            {isFirstStage
+              ? this.renderTypeSelector()
+              : this.renderLocationSelector()}
           </View>
         </View>
       </SafeAreaView>
@@ -142,10 +140,11 @@ class NewIncident extends React.Component {
 }
 
 const mapStateToProps = state => {
+  const { incidentList, selectedIncident, isFirstStage } = state.newIncident;
   return {
-    incidents: state.newIncident.incidentList,
-    selectedIncident: state.newIncident.selectedIncident,
-    isFirstStage: state.newIncident.isFirstStage,
+    incidents: incidentList,
+    selectedIncident,
+    isFirstStage,
   };
 };
 

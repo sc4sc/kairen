@@ -7,55 +7,48 @@ import * as actions from '../actions';
 
 class ReportItem extends React.Component {
   renderIcon() {
-    const { isSelected, showButton } = this.props;
-
-    return isSelected && showButton ? (
-      <Icon name="checkbox-on" style={{ flex: 1 }} />
-    ) : (
-      <View style={{ flex: 1 }} />
-    );
+    return <Icon name="checkbox-on" style={{ flex: 1 }} />;
   }
 
   renderNextButton() {
-    const { onPress, isSelected, showNext, children } = this.props;
-
-    return isSelected && showNext ? (
+    return (
       <Text
         style={{ flex: 1, fontSize: 16, fontWeight: 'bold' }}
-        onPress={onPress}
+        onPress={this.props.onPress}
       >
         다음
       </Text>
-    ) : (
-      <View style={{ flex: 1 }} />
     );
   }
 
-  onButtonPressed() {
+  onButtonPressed = () => {
     this.props.selectIncident(this.props.type);
-  }
+  };
 
   render() {
-    const { type, isSelected } = this.props;
+    const { type, selected, onPress: selectable } = this.props;
+
+    const showSelected = selectable && selected;
+    const empty = <View style={{ flex: 1 }} />;
 
     return (
-      <TouchableOpacity onPress={this.onButtonPressed.bind(this)}>
+      <TouchableOpacity onPress={this.onButtonPressed}>
         <View
           style={[
             styles.itemContainer,
-            { backgroundColor: isSelected ? '#d5d5d5' : '#5f5f5f' },
+            { backgroundColor: selected ? '#d5d5d5' : '#5f5f5f' },
           ]}
         >
-          {this.renderIcon()}
+          {showSelected ? this.renderIcon() : empty}
           <Text
             style={[
               styles.itemContent,
-              { color: isSelected ? 'black' : 'white' },
+              { color: selected ? 'black' : 'white' },
             ]}
           >
             {type}
           </Text>
-          {this.renderNextButton()}
+          {showSelected ? this.renderNextButton() : empty}
         </View>
       </TouchableOpacity>
     );
@@ -80,7 +73,7 @@ const styles = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    isSelected: state.newIncident.selectedIncident === ownProps.type,
+    selected: state.newIncident.selectedIncident === ownProps.type,
   };
 };
 
