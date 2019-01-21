@@ -3,6 +3,5 @@ export IncidentDetail from './IncidentDetail';
 export * from './IncidentList';
 export * from './ProgressList';
 export * from './SettingsScreen';
-export * from './NewIncident';
-export * from './NewIncidentDetail';
+export NewIncident from './NewIncident';
 export Login from './Login';

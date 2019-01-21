@@ -1,51 +1,56 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 
 import { Icon } from '@shoutem/ui';
+import * as actions from '../actions';
 
-export default class ReportItem extends React.Component {
+class ReportItem extends React.Component {
   renderIcon() {
-    const { type, selectedType, isFirstStage } = this.props;
-
-    return type == selectedType && isFirstStage ? (
-      <Icon name="checkbox-on" style={{ flex: 1 }} />
-    ) : (
-      <View style={{ flex: 1 }} />
-    );
+    return <Icon name="checkbox-on" style={{ flex: 1 }} />;
   }
 
   renderNextButton() {
-    const { type, selectedType, onPress, isFirstStage } = this.props;
-
-    return type == selectedType && isFirstStage ? (
-      <Text style={[styles.itemContent, { flex: 1 }]} onPress={onPress}>
+    return (
+      <Text
+        style={{ flex: 1, fontSize: 16, fontWeight: 'bold' }}
+        onPress={this.props.onPress}
+      >
         다음
       </Text>
-    ) : (
-      <View style={{ flex: 1 }} />
     );
   }
 
+  onButtonPressed = () => {
+    this.props.selectIncident(this.props.type);
+  };
+
   render() {
-    const { type, selectedType } = this.props;
+    const { type, selected, onPress: selectable } = this.props;
+
+    const showSelected = selectable && selected;
+    const empty = <View style={{ flex: 1 }} />;
+
     return (
-      <View
-        style={[
-          styles.itemContainer,
-          { backgroundColor: type == selectedType ? '#d5d5d5' : '#5f5f5f' },
-        ]}
-      >
-        {this.renderIcon()}
-        <Text
+      <TouchableOpacity onPress={this.onButtonPressed}>
+        <View
           style={[
-            styles.itemContent,
-            { color: type == selectedType ? 'black' : 'white' },
+            styles.itemContainer,
+            { backgroundColor: selected ? '#d5d5d5' : '#5f5f5f' },
           ]}
         >
-          {type}
-        </Text>
-        {this.renderNextButton()}
-      </View>
+          {showSelected ? this.renderIcon() : empty}
+          <Text
+            style={[
+              styles.itemContent,
+              { color: selected ? 'black' : 'white' },
+            ]}
+          >
+            {type}
+          </Text>
+          {showSelected ? this.renderNextButton() : empty}
+        </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -65,3 +70,14 @@ const styles = {
     fontSize: 16,
   },
 };
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    selected: state.newIncident.selectedIncident === ownProps.type,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  actions
+)(ReportItem);
