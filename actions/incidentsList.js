@@ -14,7 +14,18 @@ export function incidentsListLoadFailed(error) {
 }
 
 export const INCIDENTS_LIST_RESET = 'INCIDENTS_LIST_RESET';
+export function incidentsListReset() {
+  return {
+    type: INCIDENTS_LIST_RESET,
+  };
+}
 export const INCIDENTS_LIST_LOAD_MORE = 'INCIDENTS_LIST_LOAD_MORE';
+export function incidentsListLoadMore() {
+  return {
+    type: INCIDENTS_LIST_LOAD_MORE,
+  };
+}
+
 export const INCIDENTS_LIST_APPEND = 'INCIDENTS_LIST_APPEND';
 export function incidentsListAppend(incidents) {
   return { type: INCIDENTS_LIST_APPEND, payload: incidents };

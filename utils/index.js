@@ -1,5 +1,6 @@
 import { Platform, StatusBar } from 'react-native';
 import { getStatusBarHeight as getIOSStatusBarHeight } from 'react-native-iphone-x-helper';
+import moment from 'moment';
 
 export const getStatusBarHeight = () => {
   if (Platform.OS === 'android') {
@@ -15,8 +16,12 @@ export const getStatusBarHeight = () => {
       return 0;
     }
   } else {
-      return getIOSStatusBarHeight();
+    return getIOSStatusBarHeight();
   }
 };
 
 export { getBottomSpace } from 'react-native-iphone-x-helper';
+
+export function formatDate(dateString) {
+  return moment(dateString).format('MMM d, YYYY');
+}

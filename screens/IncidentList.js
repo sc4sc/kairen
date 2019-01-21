@@ -6,7 +6,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  FlatList,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
 import { getBottomSpace } from '../utils';
@@ -16,19 +18,35 @@ import Colors from '../constants/Colors';
 import Incident from '../components/Incident';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import { Notifications } from 'expo';
+import {
+  incidentsListLoadMore,
+  incidentsListReset,
+} from '../actions/incidentsList';
 
-export default class IncidentList extends React.Component {
+class IncidentList extends React.Component {
   static navigationOptions = { header: null };
 
   componentDidMount() {
     this._notificationSubscription = Notifications.addListener(notification =>
       console.log('Notification arrived:', notification)
     );
+
+    this.props.incidentsListReset();
+    this.props.incidentsListLoadMore();
   }
 
   componentWillUnmount() {
     this._notificationSubscription.remove();
   }
+
+  renderItem = ({ item, index }) => {
+    return (
+      <Incident
+        data={item}
+        onPress={() => this.props.navigation.navigate('IncidentDetail')}
+      />
+    );
+  };
 
   render() {
     return (
@@ -44,13 +62,14 @@ export default class IncidentList extends React.Component {
               onPress={() => this.props.navigation.navigate('Setting')}
             />
           </View>
-          <ScrollView style={{ flex: 1 }}>
-            {[...Array(8)].map(() => (
-              <Incident
-                onPress={() => this.props.navigation.navigate('IncidentDetail')}
-              />
-            ))}
-          </ScrollView>
+          <FlatList data={this.props.incidents} renderItem={this.renderItem} />
+          {/*<ScrollView style={{ flex: 1 }}>*/}
+          {/*{[...Array(8)].map(() => (*/}
+          {/*<Incident*/}
+          {/*onPress={() => this.props.navigation.navigate('IncidentDetail')}*/}
+          {/*/>*/}
+          {/*))}*/}
+          {/*</ScrollView>*/}
         </SafeAreaView>
         <TouchableOpacity
           style={styles.reportButton}
@@ -62,6 +81,19 @@ export default class IncidentList extends React.Component {
     );
   }
 }
+
+export default connect(
+  state => {
+    const { byId, idList } = state.incidentsList;
+    return {
+      incidents: idList.map(id => byId[id]),
+    };
+  },
+  {
+    incidentsListLoadMore,
+    incidentsListReset,
+  }
+)(IncidentList);
 
 export const styles = StyleSheet.create({
   container: {
