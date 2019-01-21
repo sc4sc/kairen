@@ -5,10 +5,6 @@ import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import * as actions from '../actions';
 
 class ReportItem extends React.Component {
-  renderIcon() {
-    return <Icon name="checkbox-on" style={{ flex: 1 }} />;
-  }
-
   renderVectorIcon() {
     return (
       <View style={{ flex: 1, alignItems: 'center' }}>
@@ -39,7 +35,7 @@ class ReportItem extends React.Component {
     const empty = <View style={{ flex: 1 }} />;
 
     return (
-      <TouchableOpacity onPress={this.onButtonPressed}>
+      <TouchableOpacity onPress={this.onButtonPressed} disabled={!selectable}>
         <View
           style={[
             styles.itemContainer,

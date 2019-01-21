@@ -3,12 +3,14 @@ import {
   AUTH_LOGIN_FAILED,
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
+  AUTH_TOGGLE_SECURE_TEAM,
 } from '../actions/auth';
 
 const defaultState = {
   loginInProgress: false,
   user: {},
   deviceToken: '',
+  isSecureTeam: false,
 };
 
 export default (state = defaultState, action) =>
@@ -26,6 +28,9 @@ export default (state = defaultState, action) =>
       case AUTH_LOGIN_FAILED: {
         draft.loginInProgress = false;
         return;
+      }
+      case AUTH_TOGGLE_SECURE_TEAM: {
+        draft.isSecureTeam = !draft.isSecureTeam;
       }
       default:
         return;

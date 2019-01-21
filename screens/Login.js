@@ -11,10 +11,10 @@ import { connect } from 'react-redux';
 import { CheckBox } from 'react-native-elements';
 
 import AndroidTopMargin from '../components/AndroidTopMargin';
-import { authLoginRequest } from '../actions/auth';
+import { authLoginRequest, authToggleSecureTeam } from '../actions/auth';
 
 class Login extends React.Component {
-  state = { text: '', isSecureTeam: false };
+  state = { text: '' };
 
   render() {
     const {
@@ -48,13 +48,8 @@ class Login extends React.Component {
                 borderWidth: 0,
               }}
               textStyle={mainText}
-              onPress={() =>
-                this.setState(s => ({
-                  ...s,
-                  isSecureTeam: !s.isSecureTeam,
-                }))
-              }
-              checked={this.state.isSecureTeam}
+              onPress={this.props.authToggleSecureTeam}
+              checked={this.props.isSecureTeam}
               title={'나는 안전팀입니다.'}
             />
           </View>
@@ -62,14 +57,11 @@ class Login extends React.Component {
           <TouchableOpacity
             style={loginButton}
             onPress={() => {
-              const { text, isSecureTeam } = this.state;
               this.props.authLoginRequest(
-                text,
-                isSecureTeam,
+                this.state.text,
+                this.props.isSecureTeam,
                 () => {
-                  this.props.navigation.navigate('App', {
-                    isSecureTeam: this.state.isSecureTeam,
-                  });
+                  this.props.navigation.navigate('App');
                 },
                 () => {
                   Alert.alert('Login failed', 'Sorry, login has failed.');
@@ -85,9 +77,15 @@ class Login extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    isSecureTeam: state.auth.isSecureTeam,
+  };
+};
+
 export default connect(
-  null,
-  { authLoginRequest }
+  mapStateToProps,
+  { authLoginRequest, authToggleSecureTeam }
 )(Login);
 
 const styles = {

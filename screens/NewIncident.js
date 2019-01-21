@@ -32,7 +32,7 @@ class NewIncident extends React.Component {
     this.props.resetSelection();
   }
 
-  /* TODO : 애니메이션 보강 및 뒤로가기 버튼 눌렀을 때의 처리 */
+  /* TODO : 애니메이션 보강 처리 */
 
   renderItem = incident => {
     return (

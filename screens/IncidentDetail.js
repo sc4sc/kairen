@@ -10,6 +10,7 @@ import {
 import { MapView } from 'expo';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import * as actions from '../actions';
 
 import ConfirmedText from '../components/ConfirmedText';
 import ProgressCard from '../components/ProgressCard';
@@ -21,15 +22,7 @@ import { getBottomSpace } from '../utils';
 
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
-import { sayHello } from '../actions';
-
 class IncidentDetail extends React.Component {
-  componentWillMount() {
-    const { navigation } = this.props;
-    const _isSecureTeam = navigation.getParam('isSecureTeam', false);
-    this.setState({ isSecureTeam: _isSecureTeam });
-  }
-
   renderHeader() {
     return (
       <View>
@@ -107,7 +100,7 @@ class IncidentDetail extends React.Component {
   }
 
   renderProgressButton() {
-    if (this.state.isSecureTeam) {
+    if (this.props.isSecureTeam) {
       return (
         <TouchableOpacity
           style={[
@@ -204,7 +197,7 @@ class IncidentDetail extends React.Component {
             date="Jan 1, 2019"
             confirmed
             likes={20}
-            onPressReply={this.state.isSecureTeam}
+            onPressReply={this.props.isSecureTeam}
           >
             화재 원인은담배꽁초였던 것 같습니다.
           </CommentCard>
@@ -213,7 +206,7 @@ class IncidentDetail extends React.Component {
             author="#1 김영희"
             date="Jan 1, 2019"
             likes={4}
-            onPressReply={this.state.isSecureTeam}
+            onPressReply={this.props.isSecureTeam}
           >
             최초 발견자입니다.
           </CommentCard>
@@ -223,9 +216,15 @@ class IncidentDetail extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    isSecureTeam: state.auth.isSecureTeam,
+  };
+};
+
 export default connect(
-  null,
-  { sayHello }
+  mapStateToProps,
+  actions
 )(IncidentDetail);
 
 const styles = StyleSheet.create({

@@ -16,15 +16,8 @@ import Colors from '../constants/Colors';
 import Incident from '../components/Incident';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
-export class IncidentList extends React.Component {
+export default class IncidentList extends React.Component {
   static navigationOptions = { header: null };
-  state = { isSecureTeam: false };
-
-  componentWillMount() {
-    const { navigation } = this.props;
-    const _isSecureTeam = navigation.getParam('isSecureTeam', false);
-    this.setState({ isSecureTeam: _isSecureTeam });
-  }
 
   render() {
     return (
@@ -43,11 +36,7 @@ export class IncidentList extends React.Component {
           <ScrollView style={{ flex: 1 }}>
             {[...Array(8)].map(() => (
               <Incident
-                onPress={() =>
-                  this.props.navigation.navigate('IncidentDetail', {
-                    isSecureTeam: this.state.isSecureTeam,
-                  })
-                }
+                onPress={() => this.props.navigation.navigate('IncidentDetail')}
               />
             ))}
           </ScrollView>
@@ -63,7 +52,7 @@ export class IncidentList extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
