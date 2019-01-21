@@ -11,9 +11,9 @@ export function listIncidents(query) {
 }
 
 // TODO:: Replace with the real one
-export function requestAuthentication(username, isAdmin) {
+export function requestAuthentication(username, isAdmin, pushToken) {
   return Promise.resolve({
-    data: { id: '12341234', username, isAdmin },
+    data: { id: '12341234', username, isAdmin, pushToken },
     error: false,
   });
 }

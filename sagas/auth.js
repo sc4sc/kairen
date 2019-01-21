@@ -1,15 +1,45 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { Permissions, Notifications } from 'expo';
+
 import * as apis from '../apis';
+
 import {
   AUTH_LOGIN_FAILED,
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
 } from '../actions/auth';
 
+function* getPushToken() {
+  let pushToken = '',
+    finalStatus = '';
+  const { status: existingStatus } = yield call(
+    Permissions.getAsync,
+    Permissions.NOTIFICATIONS
+  );
+
+  if (existingStatus !== 'granted') {
+    finalStatus = yield call(Permissions.askAsync, Permissions.NOTIFICATIONS);
+  } else {
+    finalStatus = existingStatus;
+  }
+  if (finalStatus === 'granted') {
+    pushToken = yield call(Notifications.getExpoPushTokenAsync);
+  }
+
+  return pushToken;
+}
+
 function* authLogin(action) {
   const { username, isAdmin, onSuccess, onFailed } = action.payload;
   try {
-    const result = yield call(apis.requestAuthentication, username, isAdmin);
+    const pushToken = yield call(getPushToken);
+
+    const result = yield call(
+      apis.requestAuthentication,
+      username,
+      isAdmin,
+      pushToken
+    );
 
     if (result.error) {
       throw result.data;

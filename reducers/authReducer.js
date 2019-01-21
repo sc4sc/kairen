@@ -8,7 +8,7 @@ import {
 const defaultState = {
   loginInProgress: false,
   user: {},
-  deviceToken: '',
+  pushToken: '',
 };
 
 export default (state = defaultState, action) =>
