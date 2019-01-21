@@ -20,6 +20,7 @@ import { MapView } from 'expo';
 
 import * as actions from '../actions';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { FontAwesome } from '@expo/vector-icons';
 
 class NewIncident extends React.Component {
   componentWillMount() {
@@ -35,26 +36,23 @@ class NewIncident extends React.Component {
 
   renderItem = incident => {
     return (
-      <ReportItem
-        type={incident.item.type}
-        onPress={this.changeWithAnimation}
-      />
+      <ReportItem type={incident.item.type} onPress={this.onChangeScreen} />
     );
+  };
+
+  onChangeScreen = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    this.props.changeStage();
   };
 
   goBackScreen() {
     if (this.props.isFirstStage) {
-      return () => {
-        this.props.navigation.goBack();
-      };
+      this.props.navigation.goBack();
+      return;
     }
-    return this.changeWithAnimation;
-  }
 
-  changeWithAnimation = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
-    this.props.changeStage();
-  };
+    this.onChangeScreen();
+  }
 
   renderTypeSelector() {
     return (
@@ -119,13 +117,13 @@ class NewIncident extends React.Component {
           <View style={container}>
             <View style={headerContainer}>
               <Ionicons
-                  name="md-close"
-                  size={26}
-                  onPress={() => {
-                    this.props.navigation.goBack();
-                  }}
+                name="ios-close"
+                size={26}
+                style={{ color: 'white' }}
+                onPress={() => this.goBackScreen()}
               />
-              <Text style={headerText} onPress={this.goBackScreen()}>
+              <View style={{ width: 5 }} />
+              <Text style={headerText} onPress={() => this.goBackScreen()}>
                 취소
               </Text>
             </View>
