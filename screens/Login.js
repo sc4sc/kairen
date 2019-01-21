@@ -43,6 +43,11 @@ class Login extends React.Component {
 
           <View style={checkBoxContainer}>
             <CheckBox
+              containerStyle={{
+                backgroundColor: 'transparent',
+                borderWidth: 0,
+              }}
+              textStyle={mainText}
               onPress={() =>
                 this.setState(s => ({
                   ...s,
@@ -50,8 +55,8 @@ class Login extends React.Component {
                 }))
               }
               checked={this.state.isSecureTeam}
+              title={'나는 안전팀입니다.'}
             />
-            <Text style={mainText}>나는 안전팀입니다.</Text>
           </View>
 
           <TouchableOpacity
