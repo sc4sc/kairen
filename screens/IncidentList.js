@@ -30,9 +30,7 @@ class IncidentList extends React.Component {
     this._notificationSubscription = Notifications.addListener(notification =>
       console.log('Notification arrived:', notification)
     );
-
-    this.props.incidentsListReset();
-    this.props.incidentsListLoadMore();
+    this.handleRefresh();
   }
 
   componentWillUnmount() {
@@ -46,6 +44,15 @@ class IncidentList extends React.Component {
         onPress={() => this.props.navigation.navigate('IncidentDetail')}
       />
     );
+  };
+
+  handleRefresh = () => {
+    this.props.incidentsListReset();
+    this.props.incidentsListLoadMore();
+  };
+
+  handleEndReached = () => {
+    this.props.incidentsListLoadMore();
   };
 
   render() {
@@ -62,14 +69,13 @@ class IncidentList extends React.Component {
               onPress={() => this.props.navigation.navigate('Setting')}
             />
           </View>
-          <FlatList data={this.props.incidents} renderItem={this.renderItem} />
-          {/*<ScrollView style={{ flex: 1 }}>*/}
-          {/*{[...Array(8)].map(() => (*/}
-          {/*<Incident*/}
-          {/*onPress={() => this.props.navigation.navigate('IncidentDetail')}*/}
-          {/*/>*/}
-          {/*))}*/}
-          {/*</ScrollView>*/}
+          <FlatList
+            data={this.props.incidents}
+            renderItem={this.renderItem}
+            refreshing={this.props.loading}
+            onRefresh={this.handleRefresh}
+            onEndReached={this.handleEndReached}
+          />
         </SafeAreaView>
         <TouchableOpacity
           style={styles.reportButton}
@@ -84,9 +90,10 @@ class IncidentList extends React.Component {
 
 export default connect(
   state => {
-    const { byId, idList } = state.incidentsList;
+    const { byId, idList, loading } = state.incidentsList;
     return {
       incidents: idList.map(id => byId[id]),
+      loading,
     };
   },
   {

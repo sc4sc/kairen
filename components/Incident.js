@@ -45,7 +45,6 @@ export default class Incident extends React.Component {
           {/*<Text>Map ?Here</Text>*/}
           {/*</View>*/}
         </TouchableOpacity>
-        <View style={{ flex: 1 }} />
         <MapView
           style={styles.mapContainer}
           liteMode
