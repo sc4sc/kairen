@@ -10,10 +10,16 @@ export function listIncidents(query) {
   );
 }
 
-// TODO:: Replace with the real one
 export function requestAuthentication(username, isAdmin, pushToken) {
-  return Promise.resolve({
-    data: { id: '12341234', username, isAdmin, pushToken },
-    error: false,
-  });
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  const body = JSON.stringify({ username, isAdmin, expotoken: pushToken });
+
+  return fetch(`${serverURL}/authenticate`, {
+    method: 'POST',
+    headers,
+    body,
+  })
+    .then(r => r.json())
+    .then(result => ({ id: result.id, username, isAdmin, pushToken }));
 }
