@@ -204,7 +204,7 @@ class IncidentDetail extends React.Component {
             date="Jan 1, 2019"
             confirmed
             likes={20}
-            isSecureTeam={this.state.isSecureTeam}
+            onPressReply={this.state.isSecureTeam}
           >
             화재 원인은담배꽁초였던 것 같습니다.
           </CommentCard>
@@ -213,7 +213,7 @@ class IncidentDetail extends React.Component {
             author="#1 김영희"
             date="Jan 1, 2019"
             likes={4}
-            isSecureTeam={this.state.isSecureTeam}
+            onPressReply={this.state.isSecureTeam}
           >
             최초 발견자입니다.
           </CommentCard>

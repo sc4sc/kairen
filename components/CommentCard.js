@@ -10,15 +10,9 @@ import Colors from '../constants/Colors';
 import { renderChildElements } from '@shoutem/ui/html';
 
 export default class CommentCard extends React.Component {
-  state = { isSecureTeam: false, confirmed: false };
-
-  componentWillMount() {
-    const { isSecureTeam, confirmed } = this.props;
-    this.setState({ isSecureTeam: isSecureTeam, confirmed: confirmed });
-  }
-
   renderReplyBox() {
-    if (this.state.isSecureTeam && !this.state.confirmed) {
+    const { onPressReply, confirmed } = this.props;
+    if (onPressReply && confirmed) {
       return (
         <TouchableOpacity style={styles.replyBoxStyle}>
           <View style={{ flex: 1 }} />
@@ -27,7 +21,7 @@ export default class CommentCard extends React.Component {
           </View>
         </TouchableOpacity>
       );
-    } else if (this.state.isSecureTeam) {
+    } else if (onPressReply) {
       return (
         <ProgressCard isComment author="안전팀" date="Jan 1, 2019">
           화재
@@ -35,7 +29,6 @@ export default class CommentCard extends React.Component {
         </ProgressCard>
       );
     }
-
     return null;
   }
 
@@ -63,7 +56,7 @@ export default class CommentCard extends React.Component {
 
             <Text style={commentStyle}>{children}</Text>
             <View style={{ flex: 1 }} />
-            {this.state.confirmed ? (
+            {this.props.confirmed ? (
               <ConfirmedText>안전팀 확인</ConfirmedText>
             ) : null}
           </View>
