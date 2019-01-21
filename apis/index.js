@@ -5,5 +5,15 @@ function getQueryString(q) {
 }
 
 export function listIncidents(query) {
-  return fetch(`${serverURL}/incidents?${getQueryString(query)}`).then(r => r.json());
+  return fetch(`${serverURL}/incidents?${getQueryString(query)}`).then(r =>
+    r.json()
+  );
+}
+
+// TODO:: Replace with the real one
+export function requestAuthentication(username, isAdmin) {
+  return Promise.resolve({
+    data: { id: '12341234', username, isAdmin },
+    error: false,
+  });
 }

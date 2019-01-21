@@ -4,4 +4,4 @@ export * from './IncidentList';
 export * from './ProgressList';
 export * from './SettingsScreen';
 export NewIncident from './NewIncident';
-export * from './Login';
+export Login from './Login';
