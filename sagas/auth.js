@@ -34,6 +34,8 @@ function* authLogin(action) {
   try {
     const pushToken = yield call(getPushToken);
 
+    console.log('Push Token:', pushToken);
+
     const result = yield call(
       apis.requestAuthentication,
       username,

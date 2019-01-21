@@ -15,9 +15,20 @@ import Colors from '../constants/Colors';
 
 import Incident from '../components/Incident';
 import AndroidTopMargin from '../components/AndroidTopMargin';
+import { Notifications } from 'expo';
 
 export default class IncidentList extends React.Component {
   static navigationOptions = { header: null };
+
+  componentDidMount() {
+    this._notificationSubscription = Notifications.addListener(notification =>
+      console.log('Notification arrived:', notification)
+    );
+  }
+
+  componentWillUnmount() {
+    this._notificationSubscription.remove();
+  }
 
   render() {
     return (
