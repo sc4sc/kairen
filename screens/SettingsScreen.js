@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import SwitchToggle from 'react-native-switch-toggle';
+import { SafeAreaView } from 'react-navigation';
+import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
-import { Icon } from '@shoutem/ui';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
 export class SettingsScreen extends React.Component {
@@ -19,8 +20,9 @@ export class SettingsScreen extends React.Component {
         <AndroidTopMargin />
         <SafeAreaView style={styles.headerContainer}>
           <Text style={styles.header}> 설정 </Text>
-          <Icon
-            name="close"
+          <Ionicons
+            name="md-close"
+            size={26}
             style={{ flex: 1 }}
             onPress={() => {
               this.props.navigation.goBack();

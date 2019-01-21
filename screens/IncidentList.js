@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Icon } from '@shoutem/ui';
+import { Ionicons } from '@expo/vector-icons';
 
 import { getBottomSpace } from '../utils';
 
@@ -34,8 +34,9 @@ export class IncidentList extends React.Component {
           <View style={styles.headerContainer}>
             <Text style={styles.header}>Recent</Text>
             <View style={{ flex: 1 }} />
-            <Icon
-              name="settings"
+            <Ionicons
+              name="md-settings"
+              size={26}
               onPress={() => this.props.navigation.navigate('Setting')}
             />
           </View>
