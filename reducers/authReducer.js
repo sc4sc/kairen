@@ -11,6 +11,7 @@ const defaultState = {
   user: {},
   deviceToken: '',
   isSecureTeam: false,
+  pushToken: '',
 };
 
 export default (state = defaultState, action) =>
