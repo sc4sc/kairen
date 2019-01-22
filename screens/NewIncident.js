@@ -71,7 +71,7 @@ class NewIncident extends React.Component {
 
   renderLocationSelector() {
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <View style={{ marginHorizontal: 20 }}>
           <ReportItem
             type={this.props.selectedIncident}
@@ -79,13 +79,13 @@ class NewIncident extends React.Component {
           />
           <Text style={styles.subHeaderText}> 위치 선택 </Text>
         </View>
-
         <View style={styles.searchBox}>
           <Text style={styles.searchText}> 한국과학기술원 N1 404 </Text>
           <Ionicons name="md-search" size={26} />
         </View>
         <MapView
-          style={styles.map}
+          // style={styles.map}
+          style={{ flex: 1 }}
           initialRegion={{
             latitude: 36.374159,
             longitude: 127.365864,
@@ -93,12 +93,27 @@ class NewIncident extends React.Component {
             longitudeDelta: 0.00221,
           }}
         />
-        <View style={styles.buttonContainer}>
-          <View style={styles.gpsButton} />
+        {/* 큰 View를 만들면 지도를 가려 인터랙션이 안 됨 */}
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            width: Layout.window.width,
+            padding: 12,
+          }}
+        >
           <TouchableOpacity style={styles.confirmButton}>
             <Text style={styles.buttonText}>제보 등록</Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.gpsButton} />
+        <View style={{ position: 'absolute', top: 150, right: 10, width: 200, height: 100, backgroundColor: 'rgba(0, 0, 0, 0.12)' }} />
+        {/*<View style={styles.buttonContainer}>*/}
+        {/*<View style={styles.gpsButton} />*/}
+        {/*<TouchableOpacity style={styles.confirmButton}>*/}
+        {/*<Text style={styles.buttonText}>제보 등록</Text>*/}
+        {/*</TouchableOpacity>*/}
+        {/*</View>*/}
       </View>
     );
   }
@@ -122,7 +137,10 @@ class NewIncident extends React.Component {
     } = styles;
 
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+      <SafeAreaView
+        forceInset={{ top: 'always' }}
+        style={{ flex: 1, backgroundColor: 'white' }}
+      >
         <AndroidTopMargin />
         <View style={container}>
           <View style={headerContainer}>
@@ -209,6 +227,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   gpsButton: {
+    position: 'absolute',
+    bottom: 80,
+    right: 12,
     width: 55,
     height: 55,
     borderRadius: 50,
@@ -232,7 +253,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2,
     elevation: 5,
-    marginBottom: 150,
   },
   buttonText: {
     fontSize: 19,
