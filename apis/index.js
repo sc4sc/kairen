@@ -1,6 +1,6 @@
-const serverURL = 'https://4348005f-4254-4628-883a-40baa7dfdbea.mock.pstmn.io';
-
 import URLSearchParams from '@ungap/url-search-params';
+
+const serverURL = 'http://849bc4b1.ngrok.io';
 
 function getQueryString(q) {
   return new URLSearchParams(q).toString();
@@ -23,7 +23,7 @@ export function requestAuthentication(username, isAdmin, pushToken) {
     body,
   })
     .then(r => r.json())
-    .then(result => ({ id: result.id, username, isAdmin, pushToken }));
+    .then(result => ({ id: result.id, username, isAdmin, pushToken }))
 }
 
 export function listComments(query) {

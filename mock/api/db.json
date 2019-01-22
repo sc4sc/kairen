@@ -1,0 +1,49 @@
+{
+  "incidents": [
+    {
+      "id": 3,
+      "type": "chem",
+      "contract": "0xb69A23178B44191AA8509E047F68BdF436769073",
+      "userId": "0x281cf8d3ea50c4ec654fada79a4080ff4fa20858",
+      "lat": "36.37444",
+      "lng": "127.36572",
+      "createdAt": "2019-01-18T08:57:37.245Z",
+      "updatedAt": "2019-01-18T08:57:37.245Z"
+    },
+    {
+      "id": 2,
+      "type": "fire",
+      "contract": "0x58e80455B87dB3600A1580C340a28FC5CD9F9d55",
+      "userId": "0x281cf8d3ea50c4ec654fada79a4080ff4fa20858",
+      "lat": "36.37444",
+      "lng": "127.36572",
+      "createdAt": "2019-01-18T08:57:23.448Z",
+      "updatedAt": "2019-01-18T08:57:23.448Z"
+    },
+    {
+      "id": 1,
+      "type": "conflagration",
+      "contract": "0xC3B2BBe0365417fBa371De2854129bf8D79c096b",
+      "userId": "0x281cf8d3ea50c4ec654fada79a4080ff4fa20858",
+      "lat": "36.37444",
+      "lng": "127.36572",
+      "createdAt": "2019-01-18T08:57:14.955Z",
+      "updatedAt": "2019-01-18T08:57:14.955Z"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "authenticate": {
+    "username": "",
+    "isAdmin": true,
+    "expotoken": "ExponentPushToken[FDZwSSBmyBOuhSv6vk49DO]"
+  }
+}
