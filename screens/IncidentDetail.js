@@ -27,25 +27,16 @@ import { getBottomSpace } from '../utils';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
 class IncidentDetail extends React.Component {
-  state = { commentList: [], recentProgress: [] };
+  state = { commentList: [], totalCommentNum: 0, recentProgress: [] };
   _keyExtractor = (item, index) => item.id;
 
   componentWillMount() {
-    axios
-      .get(
-        'https://4348005f-4254-4628-883a-40baa7dfdbea.mock.pstmn.io/incidents/1/comments'
-      )
-      .then(response => {
-        this.setState({ commentList: response.data.reverse() });
-      });
-
-    axios
-      .get(
-        'https://4348005f-4254-4628-883a-40baa7dfdbea.mock.pstmn.io/incidents/1/progresses?size=1&sortBy=createdAt&order=desc'
-      )
-      .then(response => {
-        this.setState({ recentProgress: response.data });
-      });
+    apis
+      .getIncidentComments(1)
+      .then(response => this.setState({ commentList: response.data }));
+    apis
+      .getRecentProgress(1)
+      .then(response => this.setState({ recentProgress: response.data }));
   }
 
   renderHeader() {
@@ -87,8 +78,7 @@ class IncidentDetail extends React.Component {
   }
 
   renderProtocol() {
-    const url =
-      'http://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/prevent/SDIJKM5116_LIST.html?menuSeq=127';
+    const url = 'http://m.safekorea.go.kr/idsiSFK/neo/main_m/sot/fire.html';
 
     return (
       <View
@@ -199,7 +189,7 @@ class IncidentDetail extends React.Component {
   }
 
   renderComment(data) {
-    const { id, Like, content, createdAt, totalLike } = data.item;
+    const { userId, Like, content, createdAt, totalLike } = data.item;
     const dateObject = new Date(Date.parse(createdAt));
     const year = dateObject.getFullYear(createdAt);
     const month = dateObject.getMonth(createdAt) + 1;
@@ -209,7 +199,13 @@ class IncidentDetail extends React.Component {
       month.toString() + '/' + date.toString() + ', ' + year.toString();
 
     return (
-      <CommentCard like={Like} totalLike={totalLike} date={dateString}>
+      <CommentCard
+        author={userId}
+        like={Like}
+        totalLike={totalLike}
+        date={dateString}
+        index={data.index + 1}
+      >
         {content}
       </CommentCard>
     );
@@ -267,6 +263,7 @@ class IncidentDetail extends React.Component {
           </TouchableOpacity>
 
           <FlatList
+            inverted
             data={this.state.commentList}
             renderItem={this.renderComment}
             keyExtractor={this._keyExtractor}

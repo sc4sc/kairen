@@ -18,6 +18,10 @@ import Colors from '../constants/Colors';
 class CommentCard extends React.Component {
   state = { like: false };
 
+  componentWillMount() {
+    this.setState({ like: this.props.like });
+  }
+
   renderReplyBox() {
     const { onPressReply, replyExist } = this.props;
 
@@ -42,7 +46,7 @@ class CommentCard extends React.Component {
   }
 
   render() {
-    const { author, date, totalLike, children } = this.props;
+    const { index, author, date, totalLike, children } = this.props;
 
     const {
       borderedContentBox,
@@ -58,7 +62,9 @@ class CommentCard extends React.Component {
         <View style={styles.borderedContentBox}>
           <View style={{ flex: 1 }}>
             <View style={authorContainer}>
-              <Text style={styles.authorText}>{author}</Text>
+              <Text style={styles.authorText}>
+                #{index} {author}
+              </Text>
               <View style={{ width: 9 }} />
               <Text style={dateStyle}>{date}</Text>
             </View>

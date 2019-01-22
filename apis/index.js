@@ -1,6 +1,8 @@
 import URLSearchParams from '@ungap/url-search-params';
+import axios from 'axios';
 
-const serverURL = 'http://849bc4b1.ngrok.io';
+// const serverURL = 'http://66721670.ngrok.io';
+const serverURL = 'http://6770ced5.ngrok.io';
 
 function getQueryString(q) {
   return new URLSearchParams(q).toString();
@@ -26,8 +28,18 @@ export function requestAuthentication(username, isAdmin, pushToken) {
     .then(result => ({ id: result.id, username, isAdmin, pushToken }));
 }
 
-export function listComments(query) {
-  return fetch(`${serverURL}/incidents/1/comments`).then(response =>
-    response.json()
-  );
+export function getIncidentComments(incidentId) {
+  return axios.get(`${serverURL}/incidents/${incidentId}/comments`);
+}
+
+export function postComment(incidentId, body) {
+  return axios.post(`${serverURL}/incidents/${incidentId}/comments`, body);
+}
+
+export function getRecentProgress(incidentId) {
+  return axios.get(`${serverURL}/incidents/${incidentId}/comments`);
+}
+
+export function getProgressList(incidentId) {
+  return axios.get(`${serverURL}/incidents/${incidentId}/progresses`);
 }
