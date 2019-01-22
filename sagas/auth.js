@@ -44,13 +44,13 @@ function* authLogin(action) {
     );
 
     if (result.error) {
-      throw result.data;
+      throw result;
     }
 
     yield put({ type: AUTH_LOGIN_SUCCESS, payload: result });
     yield call(onSuccess);
-
   } catch (error) {
+    console.log('Login Error', error);
     yield put({ type: AUTH_LOGIN_FAILED, payload: error, error: true });
     yield call(onFailed);
     return;

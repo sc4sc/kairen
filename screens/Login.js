@@ -57,6 +57,11 @@ class Login extends React.Component {
           <TouchableOpacity
             style={loginButton}
             onPress={() => {
+              if (this.state.text.trim() === '') {
+                Alert.alert('Name is empty', 'Please fill in the form.');
+                return;
+              }
+
               this.props.authLoginRequest(
                 this.state.text,
                 this.props.isSecureTeam,
