@@ -50,7 +50,7 @@ function* authLogin(action) {
     yield put({ type: AUTH_LOGIN_SUCCESS, payload: result.data });
     yield call(onSuccess);
   } catch (error) {
-    yield put({ type: AUTH_LOGIN_FAIL, payload: error, error: true });
+    yield put({ type: AUTH_LOGIN_FAILED, payload: error, error: true });
     yield call(onFailed);
     return;
   }
