@@ -111,7 +111,7 @@ class NewIncident extends React.Component {
       longitudeDelta,
     } = this.state.region;
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <View style={{ marginHorizontal: 20 }}>
           <ReportItem
             type={this.props.selectedIncident}
@@ -119,13 +119,13 @@ class NewIncident extends React.Component {
           />
           <Text style={styles.subHeaderText}> 위치 선택 </Text>
         </View>
-
         <View style={styles.searchBox}>
           <Text style={styles.searchText}> 한국과학기술원 N1 </Text>
           <Ionicons name="md-search" size={26} />
         </View>
         <MapView
-          style={styles.map}
+          // style={styles.map}
+          style={{ flex: 1 }}
           initialRegion={{
             latitude: 36.374159,
             longitude: 127.365864,
@@ -195,7 +195,10 @@ class NewIncident extends React.Component {
     } = styles;
 
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+      <SafeAreaView
+        forceInset={{ top: 'always' }}
+        style={{ flex: 1, backgroundColor: 'white' }}
+      >
         <AndroidTopMargin />
         <View style={container}>
           <View style={headerContainer}>
@@ -282,6 +285,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   gpsButton: {
+    position: 'absolute',
+    bottom: 80,
+    right: 12,
     width: 55,
     height: 55,
     borderRadius: 50,
@@ -305,7 +311,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2,
     elevation: 5,
-    marginBottom: 150,
   },
   buttonText: {
     fontSize: 19,
