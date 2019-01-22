@@ -3,21 +3,8 @@ import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 import { MapView } from 'expo';
 import { formatDate } from '../utils';
+import {typeMap} from "../constants/Incidents";
 
-const typeMap = {
-  chem: {
-    title: '화학물질사고',
-    danger: true,
-  },
-  fire: {
-    title: '불이야',
-    danger: true,
-  },
-  conflagration: {
-    title: '화재',
-    danger: true,
-  },
-};
 
 export default class Incident extends React.Component {
   render() {
@@ -28,7 +15,7 @@ export default class Incident extends React.Component {
     const doc = typeMap[type];
 
     const indicatorColor = {
-      backgroundColor: doc.danger ? Colors.dangerRed : Colors.cautionYellow,
+      backgroundColor: !doc.caution ? Colors.dangerRed : Colors.cautionYellow,
     };
 
     return (

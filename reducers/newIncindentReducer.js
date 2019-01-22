@@ -6,12 +6,6 @@ import {
 } from '../actions';
 
 const defaultState = {
-  incidentList: [
-    { type: '가스유출' },
-    { type: '화재' },
-    { type: '독극물' },
-    { type: '폭발' },
-  ],
   selectedIncident: null,
   isFirstStage: true,
 
@@ -25,9 +19,6 @@ const defaultState = {
 export default (state = defaultState, action) => {
   return produce(state, draft => {
     switch (action.type) {
-      case 'incident_list': {
-        return;
-      }
 
       case NEW_INCIDENT_RESET: {
         draft.isFirstStage = true;

@@ -19,7 +19,7 @@ import { MapView } from 'expo';
 
 import * as actions from '../actions';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { FontAwesome } from '@expo/vector-icons';
+import { types as incidentTypes } from '../constants/Incidents';
 
 class NewIncident extends React.Component {
   componentWillMount() {
@@ -33,9 +33,13 @@ class NewIncident extends React.Component {
 
   /* TODO : 애니메이션 보강 처리 */
 
-  renderItem = incident => {
+  renderItem = ({ item: incident }) => {
     return (
-      <ReportItem type={incident.item.type} onPress={this.onChangeScreen} />
+      <ReportItem
+        type={incident.type}
+        title={incident.title}
+        onPressNext={this.onChangeScreen}
+      />
     );
   };
 
@@ -57,7 +61,7 @@ class NewIncident extends React.Component {
     return (
       <View style={{ paddingHorizontal: 20, flex: 1 }}>
         <Text style={styles.subHeaderText}>긴급제보</Text>
-        <FlatList data={this.props.incidents} renderItem={this.renderItem} />
+        <FlatList data={incidentTypes} renderItem={this.renderItem} />
       </View>
     );
   }
@@ -143,9 +147,8 @@ class NewIncident extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { incidentList, selectedIncident, isFirstStage } = state.newIncident;
+  const { selectedIncident, isFirstStage } = state.newIncident;
   return {
-    incidents: incidentList,
     selectedIncident,
     isFirstStage,
   };
