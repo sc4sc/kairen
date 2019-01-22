@@ -7,8 +7,8 @@ import {
   LayoutAnimation,
   UIManager,
   TouchableOpacity,
-  SafeAreaView,
 } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import ReportItem from '../components/ReportItem';
 import AndroidTopMargin from '../components/AndroidTopMargin';
