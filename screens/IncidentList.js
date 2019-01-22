@@ -72,7 +72,7 @@ class IncidentList extends React.Component {
           <FlatList
             data={this.props.incidents}
             renderItem={this.renderItem}
-            refreshing={this.props.loading}
+            refreshing={this.props.loading && (this.props.incidents.length === 0)}
             onRefresh={this.handleRefresh}
             onEndReached={this.handleEndReached}
           />
