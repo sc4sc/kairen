@@ -69,13 +69,45 @@
   "comments": [
     {
       "id": 1,
-      "body": "some comment",
-      "postId": 1
+      "content": "first comment",
+      "userId": "Yaejoon",
+      "createdAt": "2019-01-18T08:57:14.955Z",
+      "totalLike": 13,
+      "Like": false
+    },
+    {
+      "id": 1,
+      "content": "second comment",
+      "userId": "Hyein",
+      "createdAt": "2019-01-18T08:57:14.955Z",
+      "totalLike": 17,
+      "Like": true
+    },
+    {
+      "userId": "최민성",
+      "content": "스팍스 스팍스",
+      "id": 2
+    },
+    {
+      "userId": "최민성",
+      "content": "ㄴㄹ러액ㄹ",
+      "id": 3
     }
   ],
-  "profile": {
-    "name": "typicode"
-  },
+  "progresses": [
+    {
+      "id": 1,
+      "content": "progress",
+      "userId": "Minseong",
+      "createdAt": "2019-01-18T08:57:14.955Z"
+    },
+    {
+      "id": 1,
+      "content": "second progress",
+      "userId": "Red",
+      "createdAt": "2019-01-18T08:57:14.955Z"
+    }
+  ],
   "authenticate": {
     "username": "123",
     "isAdmin": true,

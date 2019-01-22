@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import axios from 'axios';
+import * as apis from '../apis';
 import { connect } from 'react-redux';
 
 import Colors from '../constants/Colors';
@@ -22,15 +23,12 @@ export class NewComment extends React.Component {
 
   onButtonPress() {
     this.setState({ statusMsg: '' });
-    axios
-      .post(
-        'https://4348005f-4254-4628-883a-40baa7dfdbea.mock.pstmn.io/incidents/1/comments',
-        {
-          userId: '최민성',
-          content: this.state.text,
-        }
-      )
-      .then(response => this.setState({ statusMsg: response }))
+    apis
+      .postComment(1, {
+        userId: '최민성',
+        content: this.state.text,
+      })
+      .then(response => this.setState({ statusMsg: response.message }))
       .catch(error => this.setState({ statusMsg: error.message }));
   }
 

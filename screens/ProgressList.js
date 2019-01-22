@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-navigation';
 
+import * as apis from '../apis';
 import ProgressCard from '../components/ProgressCard';
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
@@ -11,10 +12,8 @@ import AndroidTopMargin from '../components/AndroidTopMargin';
 export class ProgressList extends React.Component {
   state = { progressList: [] };
   componentWillMount() {
-    axios
-      .get(
-        'https://4348005f-4254-4628-883a-40baa7dfdbea.mock.pstmn.io/incidents/1/progresses'
-      )
+    apis
+      .getProgressList()
       .then(response =>
         this.setState({ progressList: response.data.reverse() })
       );
