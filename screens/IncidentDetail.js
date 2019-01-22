@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   FlatList,
+  Linking,
 } from 'react-native';
 import { MapView } from 'expo';
 import axios from 'axios';
@@ -86,6 +87,9 @@ class IncidentDetail extends React.Component {
   }
 
   renderProtocol() {
+    const url =
+      'http://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/prevent/SDIJKM5116_LIST.html?menuSeq=127';
+
     return (
       <View
         style={{
@@ -115,7 +119,7 @@ class IncidentDetail extends React.Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          onPress={() => this.props.sayHello()}
+          onPress={() => Linking.openURL(url)}
         >
           <Feather name="arrow-right" size={32} style={{ color: 'white' }} />
         </TouchableOpacity>
