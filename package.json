@@ -5,7 +5,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
+    "test": "node ./node_modules/jest/bin/jest.js --watchAll",
+    "json-server": "json-server --watch .mock/db.json --routes .mock/routes.json --port 8000"
   },
   "jest": {
     "preset": "jest-expo"
