@@ -23,7 +23,7 @@ export function requestAuthentication(username, isAdmin, pushToken) {
     body,
   })
     .then(r => r.json())
-    .then(result => ({ id: result.id, username, isAdmin, pushToken }))
+    .then(result => ({ id: result.id, username, isAdmin, pushToken }));
 }
 
 export function listComments(query) {
