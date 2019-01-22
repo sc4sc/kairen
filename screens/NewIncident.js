@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-  View,
-  StyleSheet,
-  Text,
+  Alert,
   FlatList,
   LayoutAnimation,
-  UIManager,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  UIManager,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -16,15 +17,26 @@ import AndroidTopMargin from '../components/AndroidTopMargin';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import { MapView } from 'expo';
-
-import * as actions from '../actions';
+import * as actions from '../actions/newIncident';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {
-  types as incidentTypes,
   typeMap as incidentTypeMap,
+  types as incidentTypes,
 } from '../constants/Incidents';
+import { incidentsListRefresh } from '../actions/incidentsList';
+
+const { Marker } = MapView;
 
 class NewIncident extends React.Component {
+  state = {
+    region: {
+      latitude: 0,
+      longitude: 0,
+      latitudeDelta: 0,
+      longitudeDelta: 0,
+    },
+  };
+
   componentWillMount() {
     UIManager.setLayoutAnimationEnabledExperimental &&
       UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -41,12 +53,12 @@ class NewIncident extends React.Component {
       <ReportItem
         type={incident.type}
         title={incident.title}
-        onPressNext={this.onChangeScreen}
+        onPressNext={this.handleChangeScreen}
       />
     );
   };
 
-  onChangeScreen = () => {
+  handleChangeScreen = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
     this.props.changeStage();
   };
@@ -57,8 +69,30 @@ class NewIncident extends React.Component {
       return;
     }
 
-    this.onChangeScreen();
+    this.handleChangeScreen();
   }
+
+  handlePressReport = () => {
+    Alert.alert(
+      '제보하시겠습니까?',
+      '자세한 현장 상황 확인을 위해 카이스트 안전팀이 곧 연락합니다',
+      [{ text: '취소' }, { text: '확인', onPress: this.report }]
+    );
+  };
+
+  report = () => {
+    const { latitude, longitude } = this.state.region;
+    this.props.newIncidentPostRequested(
+      {
+        type: this.props.selectedIncident,
+        lat: latitude,
+        lng: longitude,
+      },
+      () => {
+        this.props.navigation.goBack();
+      }
+    );
+  };
 
   renderTypeSelector() {
     return (
@@ -70,6 +104,12 @@ class NewIncident extends React.Component {
   }
 
   renderLocationSelector() {
+    const {
+      latitude,
+      longitude,
+      latitudeDelta,
+      longitudeDelta,
+    } = this.state.region;
     return (
       <View>
         <View style={{ marginHorizontal: 20 }}>
@@ -81,7 +121,7 @@ class NewIncident extends React.Component {
         </View>
 
         <View style={styles.searchBox}>
-          <Text style={styles.searchText}> 한국과학기술원 N1 404 </Text>
+          <Text style={styles.searchText}> 한국과학기술원 N1 </Text>
           <Ionicons name="md-search" size={26} />
         </View>
         <MapView
@@ -92,13 +132,46 @@ class NewIncident extends React.Component {
             latitudeDelta: 0.00522,
             longitudeDelta: 0.00221,
           }}
-        />
-        <View style={styles.buttonContainer}>
-          <View style={styles.gpsButton} />
-          <TouchableOpacity style={styles.confirmButton}>
+          onRegionChange={region => this.setState({ region })}
+        >
+          <Marker coordinate={this.state.region} />
+        </MapView>
+        {/* 큰 View를 만들면 지도를 가려 인터랙션이 안 됨 */}
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            width: Layout.window.width,
+            padding: 12,
+          }}
+        >
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={this.handlePressReport}
+          >
             <Text style={styles.buttonText}>제보 등록</Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.gpsButton} />
+        <View
+          style={{
+            position: 'absolute',
+            top: 150,
+            right: 10,
+            backgroundColor: 'rgba(0, 0, 0, 0.12)',
+          }}
+        >
+          <Text>lat {latitude}</Text>
+          <Text>lng {longitude}</Text>
+          <Text>lng-d {longitudeDelta}</Text>
+          <Text>lng-d {longitudeDelta}</Text>
+        </View>
+        {/*<View style={styles.buttonContainer}>*/}
+        {/*<View style={styles.gpsButton} />*/}
+        {/*<TouchableOpacity style={styles.confirmButton}>*/}
+        {/*<Text style={styles.buttonText}>제보 등록</Text>*/}
+        {/*</TouchableOpacity>*/}
+        {/*</View>*/}
       </View>
     );
   }
@@ -162,7 +235,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  actions
+  { ...actions, incidentsListRefresh }
 )(NewIncident);
 
 const styles = StyleSheet.create({

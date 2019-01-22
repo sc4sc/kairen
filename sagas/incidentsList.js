@@ -1,4 +1,5 @@
 import {
+  all,
   call,
   cancel,
   fork,
@@ -6,17 +7,30 @@ import {
   select,
   take,
   takeLatest,
+  takeEvery,
 } from 'redux-saga/effects';
 import {
   INCIDENTS_LIST_APPEND,
   INCIDENTS_LIST_LOAD_MORE,
+  INCIDENTS_LIST_REFRESH,
   INCIDENTS_LIST_RESET,
   incidentsListAppend,
   incidentsListLoadFailed,
+  incidentsListLoadMore,
   incidentsListLoadRequested,
   incidentsListLoadSuccess,
+  incidentsListReset,
 } from '../actions/incidentsList';
 import * as apis from '../apis';
+
+export function* refreshIncidents() {
+  yield put(incidentsListReset());
+  yield put(incidentsListLoadMore());
+}
+
+export function* watchRefreshIncidents() {
+  yield takeEvery(INCIDENTS_LIST_REFRESH, refreshIncidents);
+}
 
 export function* loadMoreIncidents() {
   const { listEnded, readUntil } = (yield select()).incidentsList;
@@ -53,4 +67,8 @@ export function* loadMoreIncidents() {
 export function* watchLoadMoreIncidents() {
   // prevent an inconsistent state
   yield takeLatest(INCIDENTS_LIST_LOAD_MORE, loadMoreIncidents);
+}
+
+export default function* rootSaga() {
+  yield all([watchLoadMoreIncidents(), watchRefreshIncidents()]);
 }

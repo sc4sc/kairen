@@ -20,6 +20,7 @@ import AndroidTopMargin from '../components/AndroidTopMargin';
 import { Notifications } from 'expo';
 import {
   incidentsListLoadMore,
+  incidentsListRefresh,
   incidentsListReset,
 } from '../actions/incidentsList';
 
@@ -30,12 +31,21 @@ class IncidentList extends React.Component {
     this._notificationSubscription = Notifications.addListener(notification =>
       console.log('Notification arrived:', notification)
     );
+    this._willFocusSubscription = this.props.navigation.addListener(
+      'willFocus',
+      this.willFocus
+    );
     this.handleRefresh();
   }
 
   componentWillUnmount() {
     this._notificationSubscription.remove();
+    this._willFocusSubscription.remove();
   }
+
+  willFocus = () => {
+    this.handleRefresh();
+  };
 
   renderItem = ({ item, index }) => {
     return (
@@ -47,8 +57,7 @@ class IncidentList extends React.Component {
   };
 
   handleRefresh = () => {
-    this.props.incidentsListReset();
-    this.props.incidentsListLoadMore();
+    this.props.incidentsListRefresh();
   };
 
   handleEndReached = () => {
@@ -99,6 +108,7 @@ export default connect(
   {
     incidentsListLoadMore,
     incidentsListReset,
+    incidentsListRefresh,
   }
 )(IncidentList);
 
