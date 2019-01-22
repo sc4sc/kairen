@@ -19,7 +19,10 @@ import { MapView } from 'expo';
 
 import * as actions from '../actions';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { types as incidentTypes } from '../constants/Incidents';
+import {
+  types as incidentTypes,
+  typeMap as incidentTypeMap,
+} from '../constants/Incidents';
 
 class NewIncident extends React.Component {
   componentWillMount() {
@@ -70,7 +73,10 @@ class NewIncident extends React.Component {
     return (
       <View>
         <View style={{ marginHorizontal: 20 }}>
-          <ReportItem type={this.props.selectedIncident} />
+          <ReportItem
+            type={this.props.selectedIncident}
+            title={incidentTypeMap[this.props.selectedIncident].title}
+          />
           <Text style={styles.subHeaderText}> 위치 선택 </Text>
         </View>
 

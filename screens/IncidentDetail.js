@@ -225,6 +225,10 @@ class IncidentDetail extends React.Component {
         <SafeAreaView>
           <MapView
             style={styles.map}
+            rotateEnabled={false}
+            scrollEnabled={false}
+            zoomEnabled={false}
+            pitchEnabled={false}
             initialRegion={{
               latitude: 36.374159,
               longitude: 127.365864,

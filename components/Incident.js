@@ -3,8 +3,7 @@ import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 import { MapView } from 'expo';
 import { formatDate } from '../utils';
-import {typeMap} from "../constants/Incidents";
-
+import { typeMap } from '../constants/Incidents';
 
 export default class Incident extends React.Component {
   render() {
@@ -35,6 +34,10 @@ export default class Incident extends React.Component {
         <MapView
           style={styles.mapContainer}
           liteMode
+          rotateEnabled={false}
+          scrollEnabled={false}
+          zoomEnabled={false}
+          pitchEnabled={false}
           initialRegion={{
             latitude: Number(lat),
             longitude: Number(lng),
