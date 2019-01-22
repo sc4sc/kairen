@@ -3,7 +3,7 @@ import {
   NEW_INCIDENT_CHANGE_STAGE,
   NEW_INCIDENT_RESET,
   NEW_INCIDENT_TYPE_SELECT,
-} from '../actions';
+} from '../actions/newIncident';
 
 const defaultState = {
   selectedIncident: null,

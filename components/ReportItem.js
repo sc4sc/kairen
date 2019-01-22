@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
-import * as actions from '../actions';
+import * as actions from '../actions/newIncident';
 
 class ReportItem extends React.Component {
   renderVectorIcon() {
