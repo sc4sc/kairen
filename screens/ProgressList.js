@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
+import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-navigation';
 
@@ -8,7 +9,33 @@ import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
 export class ProgressList extends React.Component {
-  state = { text: '' };
+  state = { progressList: [] };
+  componentWillMount() {
+    axios
+      .get(
+        'https://4348005f-4254-4628-883a-40baa7dfdbea.mock.pstmn.io/incidents/1/progresses'
+      )
+      .then(response =>
+        this.setState({ progressList: response.data.reverse() })
+      );
+  }
+
+  renderProgress(data) {
+    const { id, content, createdAt } = data.item;
+    const dateObject = new Date(Date.parse(createdAt));
+    const year = dateObject.getFullYear(createdAt);
+    const month = dateObject.getMonth(createdAt) + 1;
+    const date = dateObject.getDate(createdAt);
+
+    const dateString =
+      month.toString() + '/' + date.toString() + ', ' + year.toString();
+
+    return (
+      <ProgressCard author="안전팀" date={dateString}>
+        {content}
+      </ProgressCard>
+    );
+  }
 
   render() {
     return (
@@ -27,17 +54,11 @@ export class ProgressList extends React.Component {
           </View>
         </View>
 
-        <View style={{ paddingHorizontal: 15 }}>
-          <ProgressCard author="유성소방서" date="Jan 8, 2019">
-            화재 진압되었습니다. 사고원인 조사중입니다.
-          </ProgressCard>
-          <ProgressCard author="안전팀" date="Jan 1, 2019">
-            현재 소방관들이 화재 진압 중입니다. 근처에 계신 분들은 모두
-            대피하시기 바랍니다.
-          </ProgressCard>
-          <ProgressCard author="안전팀" date="Dec 27, 2018">
-            화재 신고 접수, 소방서에 연락 중입니다.
-          </ProgressCard>
+        <View style={{ flex: 1, paddingHorizontal: 15 }}>
+          <FlatList
+            data={this.state.progressList}
+            renderItem={this.renderProgress}
+          />
         </View>
       </SafeAreaView>
     );

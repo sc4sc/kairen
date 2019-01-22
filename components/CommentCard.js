@@ -42,7 +42,7 @@ class CommentCard extends React.Component {
   }
 
   render() {
-    const { author, date, totalLikes, children } = this.props;
+    const { author, date, totalLike, children } = this.props;
 
     const {
       borderedContentBox,
@@ -72,7 +72,7 @@ class CommentCard extends React.Component {
           >
             {/* TODO : 좋아요 갯수 서버 연동. 지금은 보여주기용 임시방편 */}
             <Text style={likeStyle}>
-              {this.state.like ? totalLikes + 1 : totalLikes}
+              {this.state.like ? totalLike + 1 : totalLike}
             </Text>
             <View style={{ width: 5 }} />
             <TouchableWithoutFeedback

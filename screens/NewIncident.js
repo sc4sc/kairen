@@ -10,7 +10,6 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { connect } from 'react-redux';
-
 import ReportItem from '../components/ReportItem';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 

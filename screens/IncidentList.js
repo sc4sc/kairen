@@ -115,6 +115,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderColor: Colors.borderGrey,
+    alignItems: 'center',
   },
   header: { fontSize: 28, fontWeight: '800', color: Colors.defaultBlack },
   reportButton: {

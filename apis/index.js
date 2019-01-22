@@ -25,3 +25,9 @@ export function requestAuthentication(username, isAdmin, pushToken) {
     .then(r => r.json())
     .then(result => ({ id: result.id, username, isAdmin, pushToken }));
 }
+
+export function listComments(query) {
+  return fetch(`${serverURL}/incidents/1/comments`).then(response =>
+    response.json()
+  );
+}

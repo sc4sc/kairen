@@ -6,11 +6,14 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
 import { MapView } from 'expo';
+import axios from 'axios';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import * as apis from '../apis';
 
 import ConfirmedText from '../components/ConfirmedText';
 import ProgressCard from '../components/ProgressCard';
@@ -23,6 +26,27 @@ import { getBottomSpace } from '../utils';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
 class IncidentDetail extends React.Component {
+  state = { commentList: [], recentProgress: [] };
+  _keyExtractor = (item, index) => item.id;
+
+  componentWillMount() {
+    axios
+      .get(
+        'https://4348005f-4254-4628-883a-40baa7dfdbea.mock.pstmn.io/incidents/1/comments'
+      )
+      .then(response => {
+        this.setState({ commentList: response.data.reverse() });
+      });
+
+    axios
+      .get(
+        'https://4348005f-4254-4628-883a-40baa7dfdbea.mock.pstmn.io/incidents/1/progresses?size=1&sortBy=createdAt&order=desc'
+      )
+      .then(response => {
+        this.setState({ recentProgress: response.data });
+      });
+  }
+
   renderHeader() {
     return (
       <View>
@@ -119,30 +143,71 @@ class IncidentDetail extends React.Component {
     return null;
   }
 
+  /* TODO : Utils 쪽으로 옮기기 / 현재 function이 아니라는 에러가 있음. 왜..? */
+  parseCreatedAt(createdAt) {
+    const dateObject = new Date(Date.parse(createdAt));
+    const year = dateObject.getFullYear(createdAt);
+    const month = dateObject.getMonth(createdAt) + 1;
+    const date = dateObject.getDate(createdAt);
+
+    const dateString =
+      month.toString() + '/' + date.toString() + ', ' + year.toString();
+
+    return dateString;
+  }
+
   renderProgress() {
-    return (
-      <View>
-        <View
-          style={[
-            styles.subheaderContainer,
-            { flexDirection: 'row', justifyContent: 'space-between' },
-          ]}
-        >
-          <Text style={styles.subheaderText}>Progress</Text>
-          <Text
-            style={[styles.subheaderText, { fontSize: 13 }]}
-            onPress={() => {
-              this.props.navigation.navigate('Progress');
-            }}
+    if (this.state.recentProgress[0] != undefined) {
+      const { id, content, createdAt } = this.state.recentProgress[0];
+      const dateObject = new Date(Date.parse(createdAt));
+      const year = dateObject.getFullYear(createdAt);
+      const month = dateObject.getMonth(createdAt) + 1;
+      const date = dateObject.getDate(createdAt);
+
+      const dateString =
+        month.toString() + '/' + date.toString() + ', ' + year.toString();
+
+      return (
+        <View>
+          <View
+            style={[
+              styles.subheaderContainer,
+              { flexDirection: 'row', justifyContent: 'space-between' },
+            ]}
           >
-            더보기
-          </Text>
+            <Text style={styles.subheaderText}>Progress</Text>
+            <Text
+              style={[styles.subheaderText, { fontSize: 13 }]}
+              onPress={() => {
+                this.props.navigation.navigate('Progress');
+              }}
+            >
+              더보기
+            </Text>
+          </View>
+          {this.renderProgressButton()}
+          <ProgressCard author="안전팀" date={dateString}>
+            {content}
+          </ProgressCard>
         </View>
-        {this.renderProgressButton()}
-        <ProgressCard author="안전팀" date="Jan 1, 2019">
-          화재 진압되었습니다. 유성구 소방서와 함께 사고 원인 조사중 입니다.
-        </ProgressCard>
-      </View>
+      );
+    }
+  }
+
+  renderComment(data) {
+    const { id, Like, content, createdAt, totalLike } = data.item;
+    const dateObject = new Date(Date.parse(createdAt));
+    const year = dateObject.getFullYear(createdAt);
+    const month = dateObject.getMonth(createdAt) + 1;
+    const date = dateObject.getDate(createdAt);
+
+    const dateString =
+      month.toString() + '/' + date.toString() + ', ' + year.toString();
+
+    return (
+      <CommentCard like={Like} totalLike={totalLike} date={dateString}>
+        {content}
+      </CommentCard>
     );
   }
 
@@ -192,23 +257,12 @@ class IncidentDetail extends React.Component {
           >
             <Text style={styles.commentButtonText}>새로운 의견 등록하기</Text>
           </TouchableOpacity>
-          <CommentCard
-            author="#2 김철수"
-            date="Jan 1, 2019"
-            confirmed
-            totalLikes={20}
-          >
-            화재 원인은담배꽁초였던 것 같습니다.
-          </CommentCard>
 
-          <CommentCard
-            author="#1 김영희"
-            date="Jan 1, 2019"
-            totalLikes={4}
-            replyExist
-          >
-            최초 발견자입니다.
-          </CommentCard>
+          <FlatList
+            data={this.state.commentList}
+            renderItem={this.renderComment}
+            keyExtractor={this._keyExtractor}
+          />
         </View>
       </ScrollView>
     );
