@@ -13,7 +13,7 @@ import { MapView } from 'expo';
 import axios from 'axios';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import * as actions from '../actions/newIncident';
 import * as apis from '../apis';
 
 import ConfirmedText from '../components/ConfirmedText';

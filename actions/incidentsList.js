@@ -26,6 +26,13 @@ export function incidentsListLoadMore() {
   };
 }
 
+export const INCIDENTS_LIST_REFRESH = 'INCIDENTS_LIST_REFRESH';
+export function incidentsListRefresh() {
+  return {
+    type: INCIDENTS_LIST_REFRESH
+  }
+}
+
 export const INCIDENTS_LIST_APPEND = 'INCIDENTS_LIST_APPEND';
 export function incidentsListAppend(incidents) {
   return { type: INCIDENTS_LIST_APPEND, payload: incidents };

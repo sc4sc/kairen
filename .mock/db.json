@@ -29,6 +29,41 @@
       "lng": "127.36572",
       "createdAt": "2019-01-18T08:57:14.955Z",
       "updatedAt": "2019-01-18T08:57:14.955Z"
+    },
+    {
+      "userId": "123",
+      "type": "독극물",
+      "lat": 36.37253158102786,
+      "lng": 127.3630318039217,
+      "id": 4
+    },
+    {
+      "userId": "123",
+      "type": "가스유출",
+      "lat": 36.37178327806424,
+      "lng": 127.36438187665748,
+      "id": 5
+    },
+    {
+      "userId": "123",
+      "type": "폭발",
+      "lat": 36.37128943195414,
+      "lng": 127.36262117603437,
+      "id": 6
+    },
+    {
+      "userId": "123",
+      "type": "chem",
+      "lat": 36.37415899999998,
+      "lng": 127.365864,
+      "id": 7
+    },
+    {
+      "userId": "123",
+      "type": "chem",
+      "lat": 36.373876111746554,
+      "lng": 127.36564760521608,
+      "id": 8
     }
   ],
   "comments": [
@@ -42,8 +77,8 @@
     "name": "typicode"
   },
   "authenticate": {
-    "username": "Hyei",
+    "username": "123",
     "isAdmin": true,
-    "expotoken": "ExponentPushToken[SSn2toJq7ynhnCN3-z3hJ0]"
+    "expotoken": ""
   }
 }

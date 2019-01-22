@@ -12,6 +12,23 @@ export function listIncidents(query) {
   );
 }
 
+export function postIncident({ type, lat, lng, userId }) {
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  const body = JSON.stringify({ userId, type, lat, lng });
+
+  return fetch(`${serverURL}/incidents`, {
+    method: 'POST',
+    headers,
+    body,
+  }).then(r => {
+    if (!r.ok) {
+      throw r;
+    }
+    return r.json();
+  });
+}
+
 export function requestAuthentication(username, isAdmin, pushToken) {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
