@@ -17,7 +17,7 @@ class ReportItem extends React.Component {
     return (
       <Text
         style={{ flex: 1, fontSize: 16, fontWeight: 'bold' }}
-        onPress={this.props.onPress}
+        onPress={this.props.onPressNext}
       >
         다음
       </Text>
@@ -29,7 +29,7 @@ class ReportItem extends React.Component {
   };
 
   render() {
-    const { type, selected, onPress: selectable } = this.props;
+    const { title, selected, onPressNext: selectable } = this.props;
 
     const showSelected = selectable && selected;
     const empty = <View style={{ flex: 1 }} />;
@@ -49,7 +49,7 @@ class ReportItem extends React.Component {
               { color: selected ? 'black' : 'white' },
             ]}
           >
-            {type}
+            {title}
           </Text>
           {showSelected ? this.renderNextButton() : empty}
         </View>

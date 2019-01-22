@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,6 +7,7 @@ import {
   View,
   FlatList,
 } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -57,9 +57,9 @@ class IncidentList extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <AndroidTopMargin />
-        <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
           <View style={styles.headerContainer}>
             <Text style={styles.header}>Recent</Text>
             <View style={{ flex: 1 }} />
@@ -72,18 +72,18 @@ class IncidentList extends React.Component {
           <FlatList
             data={this.props.incidents}
             renderItem={this.renderItem}
-            refreshing={this.props.loading}
+            refreshing={this.props.loading && this.props.incidents.length === 0}
             onRefresh={this.handleRefresh}
             onEndReached={this.handleEndReached}
           />
-        </View>
+        </SafeAreaView>
         <TouchableOpacity
           style={styles.reportButton}
           onPress={() => this.props.navigation.navigate('NewIncident')}
         >
           <Text style={styles.reportButtonText}>Send Report</Text>
         </TouchableOpacity>
-      </SafeAreaView>
+      </View>
     );
   }
 }
