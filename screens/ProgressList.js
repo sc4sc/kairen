@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-navigation';
 
 import * as apis from '../apis';
+import { formatDate } from '../utils';
 import ProgressCard from '../components/ProgressCard';
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
@@ -14,23 +15,14 @@ export class ProgressList extends React.Component {
   componentWillMount() {
     apis
       .getProgressList(this.props.navigation.getParam('incidentId'))
-      .then(response =>
-        this.setState({ progressList: response.data })
-      );
+      .then(response => this.setState({ progressList: response.data }));
   }
 
   renderProgress(data) {
     const { id, content, createdAt } = data.item;
-    const dateObject = new Date(Date.parse(createdAt));
-    const year = dateObject.getFullYear(createdAt);
-    const month = dateObject.getMonth(createdAt) + 1;
-    const date = dateObject.getDate(createdAt);
-
-    const dateString =
-      month.toString() + '/' + date.toString() + ', ' + year.toString();
 
     return (
-      <ProgressCard author="안전팀" date={dateString}>
+      <ProgressCard author="안전팀" date={formatDate(createdAt)}>
         {content}
       </ProgressCard>
     );

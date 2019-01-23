@@ -21,14 +21,15 @@ import { apisAreAvailable } from 'expo';
 class CommentCard extends React.Component {
   constructor(props) {
     super(props);
-    state = { like: false, isEditReply: false, replyExist: false };
+    state = { like: false, totalLike: 0, reply: '', isEditReply: false };
 
     this.changeEditState = this.changeEditState.bind(this);
     this.onConfirmPress = this.onConfirmPress.bind(this);
   }
 
   componentWillMount() {
-    this.setState({ like: this.props.like, replyExist: this.props.replyExist });
+    const { like, totalLike, reply } = this.props;
+    this.setState({ like: like, totalLike: totalLike, reply: reply });
   }
 
   changeEditState() {
@@ -43,27 +44,40 @@ class CommentCard extends React.Component {
 
     this.setState({
       isEditReply: !this.state.isEditReply,
-      replyExist: true,
+      reply: text,
     });
   }
 
+  onLikePress() {
+    const { commentId, userId } = this.props;
+
+    if (this.state.like) {
+      apis.postUnlike(commentId, { userId: userId });
+      this.setState({ totalLike: this.state.totalLike - 1 });
+    } else {
+      apis.postLike(commentId, { userId: userId });
+      this.setState({ totalLike: this.state.totalLike + 1 });
+    }
+    this.setState({ like: !this.state.like });
+  }
+
   renderReplyBox() {
-    const { onPressReply, replyExist } = this.props;
+    const { commentId, onPressReply, replyExist } = this.props;
 
     if (this.state.isEditReply) {
       return (
         <CommentReplyCard
+          commentId={commentId}
           onCanclePress={this.changeEditState}
           onConfirmPress={this.onConfirmPress}
         />
       );
     }
 
-    if (this.state.replyExist) {
+    if (this.state.reply) {
       return (
-        <ProgressCard isComment author="안전팀" date="Jan 1, 2019">
-          화재
-          aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        <ProgressCard isComment author="안전팀" date={this.props.replyDate}>
+          {this.state.reply}
         </ProgressCard>
       );
     }
@@ -86,7 +100,7 @@ class CommentCard extends React.Component {
   }
 
   render() {
-    const { index, author, date, totalLike, children } = this.props;
+    const { index, author, date, children } = this.props;
 
     const {
       borderedContentBox,
@@ -116,16 +130,9 @@ class CommentCard extends React.Component {
           <View
             style={{ flexDirection: 'row', alignItems: 'center', padding: 5 }}
           >
-            {/* TODO : 좋아요 갯수 서버 연동. 지금은 보여주기용 임시방편 */}
-            <Text style={likeStyle}>
-              {this.state.like ? totalLike + 1 : totalLike}
-            </Text>
+            <Text style={likeStyle}>{this.state.totalLike}</Text>
             <View style={{ width: 5 }} />
-            <TouchableWithoutFeedback
-              onPress={() => {
-                this.setState({ like: !this.state.like });
-              }}
-            >
+            <TouchableWithoutFeedback onPress={this.onLikePress.bind(this)}>
               <AntDesign
                 name={this.state.like ? 'like1' : 'like2'}
                 size={20}
@@ -142,6 +149,7 @@ class CommentCard extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    userId: state.auth.user.username,
     onPressReply: state.auth.isSecureTeam,
   };
 };

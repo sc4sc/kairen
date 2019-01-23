@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
@@ -56,9 +57,12 @@ class NewComment extends React.Component {
             </TouchableWithoutFeedback>
           </View>
 
-          <View style={{ flex: 1, paddingHorizontal: 20 }}>
+          <KeyboardAvoidingView
+            style={styles.contentContainer}
+            behavior="padding"
+          >
             <TextInput
-              style={{ padding: 10, maxHeight: 300 }}
+              style={{ padding: 10, maxHeight: 200 }}
               placeholder="여기에 입력하세요..."
               onChangeText={text => this.setState({ text })}
               value={this.state.text}
@@ -74,9 +78,7 @@ class NewComment extends React.Component {
                 <Text style={styles.buttonText}>등록하기</Text>
               </TouchableOpacity>
             </View>
-            {/*
-            <Text style={styles.statusText}> {this.state.statusMsg} </Text> */}
-          </View>
+          </KeyboardAvoidingView>
         </SafeAreaView>
       </TouchableWithoutFeedback>
     );
@@ -96,11 +98,12 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   header: { fontSize: 20, fontWeight: '800', color: Colors.defaultBlack },
+  contentContainer: { flex: 1, paddingHorizontal: 20 },
   buttonStyle: {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 13,
-    marginTop: 20,
+    marginVertical: 20,
     backgroundColor: Colors.buttonGrey,
     borderRadius: 10,
     shadowOffset: { width: 0, height: 2 },
@@ -112,11 +115,5 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 15,
     color: 'white',
-  },
-  statusText: {
-    marginTop: 20,
-    fontSize: 16,
-    textAlign: 'center',
-    color: 'red',
   },
 });

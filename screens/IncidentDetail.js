@@ -13,6 +13,7 @@ import { MapView } from 'expo';
 const { Marker } = MapView;
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+
 import * as actions from '../actions/newIncident';
 import * as apis from '../apis';
 import ProgressCard from '../components/ProgressCard';
@@ -20,7 +21,7 @@ import CommentCard from '../components/CommentCard';
 
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
-import { formatDate, getBottomSpace } from '../utils';
+import { formatDate, getBottomSpace, dateToString } from '../utils';
 
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import { getLocalData } from '../constants/Incidents';
@@ -45,7 +46,7 @@ class IncidentDetail extends React.Component {
     const incidentId = this.getIncidentDetail().id;
 
     apis
-      .getIncidentComments(incidentId)
+      .getIncidentComments(incidentId, { userId: this.props.userId })
       .then(response => this.setState({ commentList: response.data }));
     apis
       .getRecentProgress(incidentId)
@@ -165,31 +166,11 @@ class IncidentDetail extends React.Component {
     return null;
   }
 
-  /* TODO : Utils 쪽으로 옮기기 / 현재 function이 아니라는 에러가 있음. 왜..? */
-  parseCreatedAt(createdAt) {
-    const dateObject = new Date(Date.parse(createdAt));
-    const year = dateObject.getFullYear(createdAt);
-    const month = dateObject.getMonth(createdAt) + 1;
-    const date = dateObject.getDate(createdAt);
-
-    const dateString =
-      month.toString() + '/' + date.toString() + ', ' + year.toString();
-
-    return dateString;
-  }
-
   renderProgress() {
     if (this.state.recentProgress.length > 0) {
-      const { id, content, createdAt } = this.state.recentProgress[0];
-      const dateObject = new Date(Date.parse(createdAt));
-      const year = dateObject.getFullYear(createdAt);
-      const month = dateObject.getMonth(createdAt) + 1;
-      const date = dateObject.getDate(createdAt);
-
-      const dateString =
-        month.toString() + '/' + date.toString() + ', ' + year.toString();
-
       const incidentId = this.getIncidentDetail().id;
+      const { createdAt, content } = this.state.recentProgress[0];
+
       return (
         <View>
           <View
@@ -209,7 +190,7 @@ class IncidentDetail extends React.Component {
             </Text>
           </View>
           {this.renderProgressButton()}
-          <ProgressCard author="안전팀" date={dateString}>
+          <ProgressCard author="안전팀" date={formatDate(createdAt)}>
             {content}
           </ProgressCard>
         </View>
@@ -220,15 +201,19 @@ class IncidentDetail extends React.Component {
   }
 
   renderComment(data) {
-    const { id, userId, like, content, createdAt, totalLike } = data.item;
-
-    const dateObject = new Date(Date.parse(createdAt));
-    const year = dateObject.getFullYear(createdAt);
-    const month = dateObject.getMonth(createdAt) + 1;
-    const date = dateObject.getDate(createdAt);
-
-    const dateString =
-      month.toString() + '/' + date.toString() + ', ' + year.toString();
+    const {
+      id,
+      userId,
+      like,
+      content,
+      createdAt,
+      updatedAt,
+      totalLike,
+      commentIndex,
+      reply,
+    } = data.item;
+    const commentDate = formatDate(createdAt);
+    const replyDate = formatDate(updatedAt);
 
     return (
       <CommentCard
@@ -236,8 +221,10 @@ class IncidentDetail extends React.Component {
         author={userId}
         like={like}
         totalLike={totalLike}
-        date={dateString}
-        index={item.commentIndex}
+        date={commentDate}
+        replyDate={replyDate}
+        index={commentIndex}
+        reply={reply}
       >
         {content}
       </CommentCard>
@@ -316,6 +303,7 @@ class IncidentDetail extends React.Component {
 const mapStateToProps = state => {
   return {
     isSecureTeam: state.auth.isSecureTeam,
+    userId: state.auth.user.username,
   };
 };
 

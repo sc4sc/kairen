@@ -6,6 +6,8 @@ import { Provider } from 'react-redux';
 import store from './store';
 import AppNavigator from './navigation/AppNavigator';
 
+console.disableYellowBox = true;
+
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,

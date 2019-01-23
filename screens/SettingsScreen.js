@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {SafeAreaView } from 'react-navigation'
+import { SafeAreaView } from 'react-navigation';
 import SwitchToggle from 'react-native-switch-toggle';
 import { Ionicons } from '@expo/vector-icons';
+import { connect } from 'react-redux';
 
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
@@ -33,7 +34,7 @@ export class SettingsScreen extends React.Component {
         <View style={styles.cardContainer}>
           <Text style={styles.cardTitle}> 계정 </Text>
           <View style={styles.cardContent}>
-            <Text style={{ fontSize: 15 }}> 홍길동 </Text>
+            <Text style={{ fontSize: 15 }}> {this.props.userId} </Text>
             <Text style={{ fontSize: 15, color: Colors.textRed }}>
               {' '}
               로그아웃{' '}
@@ -91,8 +92,14 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: Colors.defaultBlack,
   },
-
   cardContainer: { margin: 20 },
   cardTitle: { fontSize: 13, color: Colors.lightGrey },
   cardContent: { flexDirection: 'row', justifyContent: 'space-between' },
 });
+
+const mapStateToProps = state => {
+  return {
+    userId: state.auth.user.username,
+  };
+};
+export default connect(mapStateToProps)(SettingsScreen);

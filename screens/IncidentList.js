@@ -52,7 +52,11 @@ class IncidentList extends React.Component {
     return (
       <Incident
         data={item}
-        onPress={() => this.props.navigation.navigate('IncidentDetail', { incidentDetail: item })}
+        onPress={() =>
+          this.props.navigation.navigate('IncidentDetail', {
+            incidentDetail: item,
+          })
+        }
       />
     );
   };

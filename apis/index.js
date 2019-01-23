@@ -48,16 +48,16 @@ export function requestAuthentication(username, isAdmin, pushToken) {
     .then(result => ({ id: result.id, username, isAdmin, pushToken }));
 }
 
-export function getIncidentComments(incidentId) {
-  return axios.get(`${serverURL}/incidents/${incidentId}/comments`);
-}
-
-export function postComment(incidentId, body) {
+export function getIncidentComments(incidentId, body) {
   return axios.post(`${serverURL}/incidents/${incidentId}/comments`, body);
 }
 
+export function postComment(incidentId, body) {
+  return axios.post(`${serverURL}/incidents/${incidentId}/comment`, body);
+}
+
 export function postReply(commentId, body) {
-  return axios.post(`${serverURL}/comments/${incidentId}/reply`, body);
+  return axios.post(`${serverURL}/comments/${commentId}/reply`, body);
 }
 
 export function getRecentProgress(incidentId) {
@@ -70,4 +70,12 @@ export function getProgressList(incidentId) {
 
 export function postProgress(incidentId, body) {
   return axios.post(`${serverURL}/incidents/${incidentId}/progresses`, body);
+}
+
+export function postLike(commentId, body) {
+  return axios.post(`${serverURL}/comments/${commentId}/like`, body);
+}
+
+export function postUnlike(commentId, body) {
+  return axios.post(`${serverURL}/comments/${commentId}/unlike`, body);
 }
