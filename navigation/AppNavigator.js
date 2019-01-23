@@ -33,7 +33,7 @@ export default createAppContainer(
         NewIncident,
         NewComment,
         ProgressList,
-        NewProgress: NewProgress,
+        NewProgress,
         Setting: SettingsScreen,
       },
       {

@@ -11,6 +11,7 @@ import ConfirmedText from './ConfirmedText';
 import Colors from '../constants/Colors';
 
 export class CommentReplyCard extends React.Component {
+  state = { text: '' };
   render() {
     return (
       <View style={[styles.borderedContentBox, { marginTop: -57 }]}>
@@ -19,6 +20,7 @@ export class CommentReplyCard extends React.Component {
           <TextInput
             placeholder={'여기에 입력하세요...'}
             style={{ fontSize: 13, paddingHorizontal: 5 }}
+            multiline
           />
         </View>
         <View style={styles.buttonContainer}>

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
+import * as apis from '../apis';
 
 import ConfirmedText from './ConfirmedText';
 import CommentReplyCard from './CommentReplyCard';
@@ -15,6 +16,7 @@ import ProgressCard from './ProgressCard';
 
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
+import { apisAreAvailable } from 'expo';
 
 class CommentCard extends React.Component {
   constructor(props) {
@@ -22,7 +24,7 @@ class CommentCard extends React.Component {
     state = { like: false, isEditReply: false, replyExist: false };
 
     this.changeEditState = this.changeEditState.bind(this);
-    this.changeReplyExistState = this.changeReplyExistState.bind(this);
+    this.onConfirmPress = this.onConfirmPress.bind(this);
   }
 
   componentWillMount() {
@@ -33,10 +35,15 @@ class CommentCard extends React.Component {
     this.setState({ isEditReply: !this.state.isEditReply });
   }
 
-  changeReplyExistState() {
+  onConfirmPress(text) {
+    apis.postReply(this.props.commentId, {
+      userId: this.props.userId,
+      content: text,
+    });
+
     this.setState({
       isEditReply: !this.state.isEditReply,
-      replyExist: !this.state.replyExist,
+      replyExist: true,
     });
   }
 
@@ -47,12 +54,21 @@ class CommentCard extends React.Component {
       return (
         <CommentReplyCard
           onCanclePress={this.changeEditState}
-          onConfirmPress={this.changeReplyExistState}
+          onConfirmPress={this.onConfirmPress}
         />
       );
     }
 
-    if (onPressReply && !replyExist) {
+    if (this.state.replyExist) {
+      return (
+        <ProgressCard isComment author="안전팀" date="Jan 1, 2019">
+          화재
+          aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        </ProgressCard>
+      );
+    }
+
+    if (onPressReply) {
       return (
         <TouchableOpacity
           style={styles.replyBoxStyle}
@@ -63,15 +79,6 @@ class CommentCard extends React.Component {
             <Text style={styles.replyTextStyle}> 답변 추가하기 </Text>
           </View>
         </TouchableOpacity>
-      );
-    }
-
-    if (replyExist) {
-      return (
-        <ProgressCard isComment author="안전팀" date="Jan 1, 2019">
-          화재
-          aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-        </ProgressCard>
       );
     }
 

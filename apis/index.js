@@ -1,7 +1,7 @@
 import URLSearchParams from '@ungap/url-search-params';
 import axios from 'axios';
 
-const serverURL = 'https://e6fc7d23.ngrok.io';
+const serverURL = 'https://2dbaa704.ngrok.io';
 
 function getQueryString(q) {
   return new URLSearchParams(q).toString();
@@ -33,7 +33,11 @@ export function postIncident({ type, lat, lng, userId }) {
 export function requestAuthentication(username, isAdmin, pushToken) {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
-  const body = JSON.stringify({ userId: username, isAdmin, expotoken: pushToken });
+  const body = JSON.stringify({
+    userId: username,
+    isAdmin,
+    expotoken: pushToken,
+  });
 
   return fetch(`${serverURL}/authenticate`, {
     method: 'POST',
@@ -50,6 +54,10 @@ export function getIncidentComments(incidentId) {
 
 export function postComment(incidentId, body) {
   return axios.post(`${serverURL}/incidents/${incidentId}/comments`, body);
+}
+
+export function postReply(commentId, body) {
+  return axios.post(`${serverURL}/comments/${incidentId}/reply`, body);
 }
 
 export function getRecentProgress(incidentId) {

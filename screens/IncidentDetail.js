@@ -218,7 +218,7 @@ class IncidentDetail extends React.Component {
   }
 
   renderComment(data) {
-    const { userId, Like, content, createdAt, totalLike } = data.item;
+    const { id, userId, like, content, createdAt, totalLike } = data.item;
     const dateObject = new Date(Date.parse(createdAt));
     const year = dateObject.getFullYear(createdAt);
     const month = dateObject.getMonth(createdAt) + 1;
@@ -229,8 +229,9 @@ class IncidentDetail extends React.Component {
 
     return (
       <CommentCard
+        commentId={id}
         author={userId}
-        like={Like}
+        like={like}
         totalLike={totalLike}
         date={dateString}
         index={data.index + 1}
