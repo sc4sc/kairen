@@ -9,32 +9,64 @@ import {
 import { connect } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 
-import ConfirmedText from '../components/ConfirmedText';
-import ProgressCard from '../components/ProgressCard';
+import ConfirmedText from './ConfirmedText';
+import CommentReplyCard from './CommentReplyCard';
+import ProgressCard from './ProgressCard';
 
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
 
 class CommentCard extends React.Component {
-  state = { like: false };
+  constructor(props) {
+    super(props);
+    state = { like: false, isEditReply: false, replyExist: false };
+
+    this.changeEditState = this.changeEditState.bind(this);
+    this.changeReplyExistState = this.changeReplyExistState.bind(this);
+  }
 
   componentWillMount() {
-    this.setState({ like: this.props.like });
+    this.setState({ like: this.props.like, replyExist: this.props.replyExist });
+  }
+
+  changeEditState() {
+    this.setState({ isEditReply: !this.state.isEditReply });
+  }
+
+  changeReplyExistState() {
+    this.setState({
+      isEditReply: !this.state.isEditReply,
+      replyExist: !this.state.replyExist,
+    });
   }
 
   renderReplyBox() {
     const { onPressReply, replyExist } = this.props;
 
+    if (this.state.isEditReply) {
+      return (
+        <CommentReplyCard
+          onCanclePress={this.changeEditState}
+          onConfirmPress={this.changeReplyExistState}
+        />
+      );
+    }
+
     if (onPressReply && !replyExist) {
       return (
-        <TouchableOpacity style={styles.replyBoxStyle}>
+        <TouchableOpacity
+          style={styles.replyBoxStyle}
+          onPress={this.changeEditState}
+        >
           <View style={{ flex: 1 }} />
           <View style={styles.replyTextContainer}>
             <Text style={styles.replyTextStyle}> 답변 추가하기 </Text>
           </View>
         </TouchableOpacity>
       );
-    } else if (replyExist) {
+    }
+
+    if (replyExist) {
       return (
         <ProgressCard isComment author="안전팀" date="Jan 1, 2019">
           화재
@@ -42,6 +74,7 @@ class CommentCard extends React.Component {
         </ProgressCard>
       );
     }
+
     return null;
   }
 

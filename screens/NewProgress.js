@@ -25,7 +25,7 @@ export default class NewProgress extends React.Component {
   onButtonPress() {
     Alert.alert('진행 상황을 등록하시겠습니까?', 'Something warning text', [
       { text: '취소' },
-      { text: '확인', onPress: this.postComment.bind(this) },
+      { text: '확인', onPress: this.postProgress.bind(this) },
     ]);
   }
 
@@ -35,7 +35,7 @@ export default class NewProgress extends React.Component {
       content: this.state.text,
     });
 
-    this.props.navigation.goBack();
+    this.props.navigation.navigate('Progress');
   }
 
   render() {
@@ -47,7 +47,7 @@ export default class NewProgress extends React.Component {
             <Text style={styles.header}> 진행 상황 등록하기 </Text>
             <TouchableWithoutFeedback
               onPress={() => {
-                this.props.navigation.goBack();
+                this.props.navigation.navigate('Progress');
               }}
             >
               <View style={{ width: 30, alignItems: 'center' }}>

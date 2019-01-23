@@ -92,6 +92,11 @@
       "userId": "최민성",
       "content": "ㄴㄹ러액ㄹ",
       "id": 3
+    },
+    {
+      "userId": "안전팀",
+      "content": "등록!등록!",
+      "id": 4
     }
   ],
   "progresses": [
@@ -106,11 +111,21 @@
       "content": "second progress",
       "userId": "Red",
       "createdAt": "2019-01-18T08:57:14.955Z"
+    },
+    {
+      "userId": "안전팀",
+      "content": "등록!등록!",
+      "id": 2
+    },
+    {
+      "userId": "안전팀",
+      "content": "된건가",
+      "id": 3
     }
   ],
   "authenticate": {
-    "username": "123",
+    "username": "하하하하",
     "isAdmin": true,
-    "expotoken": ""
+    "expotoken": "ExponentPushToken[F9D9PvN5s0beQDz_GBT0dA]"
   }
 }
