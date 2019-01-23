@@ -126,7 +126,7 @@ class IncidentDetail extends React.Component {
             { backgroundColor: Colors.lichen, marginBottom: 10 },
           ]}
           onPress={() => {
-            this.props.navigation.navigate('Progress');
+            this.props.navigation.navigate('NewProgress');
           }}
         >
           <Text style={styles.commentButtonText}>진행 상황 등록하기</Text>

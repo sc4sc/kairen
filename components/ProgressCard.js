@@ -5,15 +5,8 @@ import ConfirmedText from './ConfirmedText';
 import Colors from '../constants/Colors';
 
 export class ProgressCard extends React.Component {
-  state = { viewHeight: 0, isComment: false };
-
-  componentWillMount() {
-    const { isComment } = this.props;
-    this.setState({ isComment: isComment });
-  }
-
   renderEmptyBox() {
-    if (this.state.isComment) {
+    if (this.props.isComment) {
       return <View style={{ height: 50 }} />;
     }
 
@@ -27,7 +20,7 @@ export class ProgressCard extends React.Component {
       <View
         style={[
           styles.borderedContentBox,
-          { marginTop: this.state.isComment ? -55 : 0 },
+          { marginTop: this.props.isComment ? -55 : 0 },
         ]}
       >
         {this.renderEmptyBox()}

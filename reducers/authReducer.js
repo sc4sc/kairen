@@ -9,7 +9,7 @@ import {
 const defaultState = {
   loginInProgress: false,
   user: {},
-  isSecureTeam: true,
+  isSecureTeam: false,
 };
 
 export default (state = defaultState, action) =>
