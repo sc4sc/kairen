@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  SafeAreaView,
 } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 
 import axios from 'axios';
 import * as apis from '../apis';

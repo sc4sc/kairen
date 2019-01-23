@@ -3,10 +3,11 @@ import {
   Alert,
   View,
   Text,
-  SafeAreaView,
+  // SafeAreaView,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux';
 import { CheckBox } from 'react-native-elements';
 

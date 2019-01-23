@@ -179,7 +179,7 @@ class IncidentDetail extends React.Component {
   }
 
   renderProgress() {
-    if (this.state.recentProgress[0] != undefined) {
+    if (this.state.recentProgress.length > 0) {
       const { id, content, createdAt } = this.state.recentProgress[0];
       const dateObject = new Date(Date.parse(createdAt));
       const year = dateObject.getFullYear(createdAt);
@@ -215,10 +215,12 @@ class IncidentDetail extends React.Component {
         </View>
       );
     }
+
+    return this.renderProgressButton();
   }
 
-  renderComment(data) {
-    const { userId, Like, content, createdAt, totalLike } = data.item;
+  renderComment({ item, index }) {
+    const { userId, Like, content, createdAt, totalLike } = item;
     const dateObject = new Date(Date.parse(createdAt));
     const year = dateObject.getFullYear(createdAt);
     const month = dateObject.getMonth(createdAt) + 1;
@@ -233,7 +235,7 @@ class IncidentDetail extends React.Component {
         like={Like}
         totalLike={totalLike}
         date={dateString}
-        index={data.index + 1}
+        index={item.id}
       >
         {content}
       </CommentCard>
