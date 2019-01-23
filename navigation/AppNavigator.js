@@ -9,6 +9,7 @@ import {
   IncidentDetail,
   IncidentList,
   NewComment,
+  NewProgress,
   NewIncident,
   ProgressList,
   SettingsScreen,
@@ -32,6 +33,7 @@ export default createAppContainer(
         NewIncident,
         Comment: NewComment,
         Progress: ProgressList,
+        NewProgress: NewProgress,
         Setting: SettingsScreen,
       },
       {

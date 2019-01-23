@@ -19,19 +19,19 @@ import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import { Ionicons } from '@expo/vector-icons';
 
-export class NewComment extends React.Component {
+export default class NewProgress extends React.Component {
   state = { text: '' };
 
   onButtonPress() {
-    Alert.alert('댓글을 등록하시겠습니까?', 'Something warning text', [
+    Alert.alert('진행 상황을 등록하시겠습니까?', 'Something warning text', [
       { text: '취소' },
       { text: '확인', onPress: this.postComment.bind(this) },
     ]);
   }
 
-  postComment() {
-    apis.postComment(1, {
-      userId: '최민성',
+  postProgress() {
+    apis.postProgress(1, {
+      userId: '안전팀',
       content: this.state.text,
     });
 
@@ -44,7 +44,7 @@ export class NewComment extends React.Component {
         <SafeAreaView style={styles.container}>
           <AndroidTopMargin />
           <View style={styles.headerContainer}>
-            <Text style={styles.header}> 새로운 의견 등록하기 </Text>
+            <Text style={styles.header}> 진행 상황 등록하기 </Text>
             <TouchableWithoutFeedback
               onPress={() => {
                 this.props.navigation.goBack();

@@ -1,8 +1,7 @@
 import URLSearchParams from '@ungap/url-search-params';
 import axios from 'axios';
 
-// const serverURL = 'http://66721670.ngrok.io';
-const serverURL = 'http://6770ced5.ngrok.io';
+const serverURL = 'http://4773aa1d.ngrok.io';
 
 function getQueryString(q) {
   return new URLSearchParams(q).toString();
@@ -59,4 +58,8 @@ export function getRecentProgress(incidentId) {
 
 export function getProgressList(incidentId) {
   return axios.get(`${serverURL}/incidents/${incidentId}/progresses`);
+}
+
+export function postProgress(incidentId, body) {
+  return axios.post(`${serverURL}/incidents/${incidentId}/comments`, body);
 }
