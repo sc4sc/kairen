@@ -13,9 +13,9 @@ export class ProgressList extends React.Component {
   state = { progressList: [] };
   componentWillMount() {
     apis
-      .getProgressList()
+      .getProgressList(this.props.navigation.getParam('incidentId'))
       .then(response =>
-        this.setState({ progressList: response.data.reverse() })
+        this.setState({ progressList: response.data })
       );
   }
 

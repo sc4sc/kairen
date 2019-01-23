@@ -31,8 +31,8 @@ export default createAppContainer(
           { headerMode: 'none' }
         ),
         NewIncident,
-        Comment: NewComment,
-        Progress: ProgressList,
+        NewComment,
+        ProgressList,
         NewProgress: NewProgress,
         Setting: SettingsScreen,
       },

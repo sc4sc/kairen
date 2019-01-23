@@ -19,7 +19,7 @@ import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import { Ionicons } from '@expo/vector-icons';
 
-export class NewComment extends React.Component {
+class NewComment extends React.Component {
   state = { text: '' };
 
   onButtonPress() {
@@ -30,8 +30,8 @@ export class NewComment extends React.Component {
   }
 
   postComment() {
-    apis.postComment(1, {
-      userId: '최민성',
+    apis.postComment(this.props.navigation.getParam('incidentId'), {
+      userId: this.props.userId,
       content: this.state.text,
     });
 
@@ -82,6 +82,10 @@ export class NewComment extends React.Component {
     );
   }
 }
+
+export default connect(state => ({
+  userId: state.auth.user.username,
+}))(NewComment);
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },

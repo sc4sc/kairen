@@ -31,13 +31,17 @@ class IncidentDetail extends React.Component {
   _keyExtractor = (item, index) => item.id;
 
   componentWillMount() {
+    const incidentId = this.getIncidentDetail().id;
+
     apis
-      .getIncidentComments(1)
+      .getIncidentComments(incidentId)
       .then(response => this.setState({ commentList: response.data }));
     apis
-      .getRecentProgress(1)
+      .getRecentProgress(incidentId)
       .then(response => this.setState({ recentProgress: response.data }));
   }
+
+  getIncidentDetail = () => this.props.navigation.getParam('incidentDetail');
 
   renderHeader() {
     return (
@@ -118,6 +122,8 @@ class IncidentDetail extends React.Component {
   }
 
   renderProgressButton() {
+    const incidentId = this.getIncidentDetail().id;
+
     if (this.props.isSecureTeam) {
       return (
         <TouchableOpacity
@@ -126,7 +132,7 @@ class IncidentDetail extends React.Component {
             { backgroundColor: Colors.lichen, marginBottom: 10 },
           ]}
           onPress={() => {
-            this.props.navigation.navigate('NewProgress');
+            this.props.navigation.navigate('NewProgress', { incidentId });
           }}
         >
           <Text style={styles.commentButtonText}>진행 상황 등록하기</Text>
@@ -161,6 +167,7 @@ class IncidentDetail extends React.Component {
       const dateString =
         month.toString() + '/' + date.toString() + ', ' + year.toString();
 
+      const incidentId = this.getIncidentDetail().id;
       return (
         <View>
           <View
@@ -173,7 +180,7 @@ class IncidentDetail extends React.Component {
             <Text
               style={[styles.subheaderText, { fontSize: 13 }]}
               onPress={() => {
-                this.props.navigation.navigate('Progress');
+                this.props.navigation.navigate('ProgressList', { incidentId });
               }}
             >
               더보기
@@ -212,6 +219,7 @@ class IncidentDetail extends React.Component {
   }
 
   render() {
+    const incidentId = this.getIncidentDetail().id;
     return (
       <ScrollView
         style={{ flex: 1 }}
@@ -256,14 +264,13 @@ class IncidentDetail extends React.Component {
           <TouchableOpacity
             style={styles.commentButton}
             onPress={() => {
-              this.props.navigation.navigate('Comment');
+              this.props.navigation.navigate('NewComment', { incidentId });
             }}
           >
             <Text style={styles.commentButtonText}>새로운 의견 등록하기</Text>
           </TouchableOpacity>
 
           <FlatList
-            inverted
             data={this.state.commentList}
             renderItem={this.renderComment}
             keyExtractor={this._keyExtractor}

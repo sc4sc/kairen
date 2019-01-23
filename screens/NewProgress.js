@@ -19,7 +19,7 @@ import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import { Ionicons } from '@expo/vector-icons';
 
-export default class NewProgress extends React.Component {
+class NewProgress extends React.Component {
   state = { text: '' };
 
   onButtonPress() {
@@ -31,10 +31,11 @@ export default class NewProgress extends React.Component {
 
   postProgress() {
     apis.postProgress(1, {
-      userId: '안전팀',
+      userId: this.props.userId,
       content: this.state.text,
     });
 
+    this.props.navigation.goBack();
     this.props.navigation.navigate('Progress');
   }
 
@@ -47,7 +48,7 @@ export default class NewProgress extends React.Component {
             <Text style={styles.header}> 진행 상황 등록하기 </Text>
             <TouchableWithoutFeedback
               onPress={() => {
-                this.props.navigation.navigate('Progress');
+                this.props.navigation.goBack();
               }}
             >
               <View style={{ width: 30, alignItems: 'center' }}>
@@ -82,6 +83,10 @@ export default class NewProgress extends React.Component {
     );
   }
 }
+
+export default connect(state => ({
+  userId: state.auth.user.username,
+}))(NewProgress);
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },

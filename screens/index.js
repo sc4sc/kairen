@@ -1,4 +1,4 @@
-export * from './NewComment';
+export NewComment from './NewComment';
 export IncidentDetail from './IncidentDetail';
 export IncidentList from './IncidentList';
 export * from './ProgressList';
