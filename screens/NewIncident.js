@@ -191,8 +191,7 @@ class NewIncident extends React.Component {
 
     return (
       <SafeAreaView
-        forceInset={{ top: 'always' }}
-        style={{ flex: 1, backgroundColor: 'white' }}
+        style={{ flex: 1 }}
       >
         <AndroidTopMargin />
         <View style={container}>
