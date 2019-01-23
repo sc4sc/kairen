@@ -30,14 +30,18 @@ class NewProgress extends React.Component {
   }
 
   postProgress() {
-    apis.postProgress(1, {
-      userId: this.props.userId,
-      content: this.state.text,
-    });
+    apis
+      .postProgress(1, {
+        userId: this.props.userId,
+        content: this.state.text,
+      })
+      .then(this.goBackAndShowList);
+  }
 
+  goBackAndShowList = () => {
     this.props.navigation.goBack();
     this.props.navigation.navigate('Progress');
-  }
+  };
 
   render() {
     return (

@@ -30,12 +30,12 @@ class NewComment extends React.Component {
   }
 
   postComment() {
-    apis.postComment(this.props.navigation.getParam('incidentId'), {
-      userId: this.props.userId,
-      content: this.state.text,
-    });
-
-    this.props.navigation.goBack();
+    apis
+      .postComment(this.props.navigation.getParam('incidentId'), {
+        userId: this.props.userId,
+        content: this.state.text,
+      })
+      .then(() => this.props.navigation.goBack());
   }
 
   render() {

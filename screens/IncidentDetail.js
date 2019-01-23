@@ -1,22 +1,20 @@
 import React from 'react';
 import {
+  FlatList,
+  Linking,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
-  SafeAreaView,
-  FlatList,
-  Linking,
+  View,
 } from 'react-native';
 import { MapView } from 'expo';
-import axios from 'axios';
-import { Feather, AntDesign } from '@expo/vector-icons';
+const { Marker } = MapView;
+import { AntDesign, Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import * as actions from '../actions/newIncident';
 import * as apis from '../apis';
-
-import ConfirmedText from '../components/ConfirmedText';
 import ProgressCard from '../components/ProgressCard';
 import CommentCard from '../components/CommentCard';
 
@@ -32,6 +30,18 @@ class IncidentDetail extends React.Component {
   _keyExtractor = (item, index) => item.id;
 
   componentWillMount() {
+    this._willFocusSubscription = this.props.navigation.addListener(
+      'willFocus',
+      this.willFocus
+    );
+    this.handleRefresh();
+  }
+
+  componentWillUnmount() {
+    this._willFocusSubscription.remove();
+  }
+
+  handleRefresh = () => {
     const incidentId = this.getIncidentDetail().id;
 
     apis
@@ -40,7 +50,11 @@ class IncidentDetail extends React.Component {
     apis
       .getRecentProgress(incidentId)
       .then(response => this.setState({ recentProgress: response.data }));
-  }
+  };
+
+  willFocus = () => {
+    this.handleRefresh();
+  };
 
   getIncidentDetail = () => this.props.navigation.getParam('incidentDetail');
 
@@ -227,7 +241,11 @@ class IncidentDetail extends React.Component {
   }
 
   render() {
-    const incidentId = this.getIncidentDetail().id;
+    const { id: incidentId, lat, lng } = this.getIncidentDetail();
+
+    const latitude = Number(lat);
+    const longitude = Number(lng);
+
     return (
       <ScrollView
         style={{ flex: 1 }}
@@ -242,12 +260,14 @@ class IncidentDetail extends React.Component {
             zoomEnabled={false}
             pitchEnabled={false}
             initialRegion={{
-              latitude: 36.374159,
-              longitude: 127.365864,
+              latitude,
+              longitude,
               latitudeDelta: 0.00522,
               longitudeDelta: 0.00221,
             }}
-          />
+          >
+            <Marker coordinate={{ latitude, longitude }} />
+          </MapView>
           <TouchableOpacity
             style={{ position: 'absolute', top: 50, right: 16 }}
             onPress={() => this.props.navigation.goBack()}
