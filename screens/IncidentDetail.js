@@ -235,7 +235,7 @@ class IncidentDetail extends React.Component {
         like={Like}
         totalLike={totalLike}
         date={dateString}
-        index={item.id}
+        index={item.commentIndex}
       >
         {content}
       </CommentCard>
