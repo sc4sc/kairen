@@ -30,10 +30,10 @@ const { Marker } = MapView;
 class NewIncident extends React.Component {
   state = {
     region: {
-      latitude: 0,
-      longitude: 0,
-      latitudeDelta: 0,
-      longitudeDelta: 0,
+      latitude: 36.374159,
+      longitude: 127.365864,
+      latitudeDelta: 0.00522,
+      longitudeDelta: 0.00221,
     },
   };
 
@@ -126,12 +126,7 @@ class NewIncident extends React.Component {
         <MapView
           // style={styles.map}
           style={{ flex: 1 }}
-          initialRegion={{
-            latitude: 36.374159,
-            longitude: 127.365864,
-            latitudeDelta: 0.00522,
-            longitudeDelta: 0.00221,
-          }}
+          initialRegion={this.state.region}
           onRegionChange={region => this.setState({ region })}
         >
           <Marker coordinate={this.state.region} />
