@@ -22,9 +22,10 @@ import CommentCard from '../components/CommentCard';
 
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
-import { getBottomSpace } from '../utils';
+import { formatDate, getBottomSpace } from '../utils';
 
 import AndroidTopMargin from '../components/AndroidTopMargin';
+import { getLocalData } from '../constants/Incidents';
 
 class IncidentDetail extends React.Component {
   state = { commentList: [], totalCommentNum: 0, recentProgress: [] };
@@ -44,9 +45,13 @@ class IncidentDetail extends React.Component {
   getIncidentDetail = () => this.props.navigation.getParam('incidentDetail');
 
   renderHeader() {
+    const incidentDetail = this.getIncidentDetail();
+    const localDetail = getLocalData(incidentDetail.type);
     return (
       <View>
-        <Text style={{ color: Colors.dateLightGrey }}>Jan 14, 2019</Text>
+        <Text style={{ color: Colors.dateLightGrey }}>
+          {formatDate(incidentDetail.createdAt)}
+        </Text>
         <View
           style={{
             flexDirection: 'row',
@@ -61,7 +66,7 @@ class IncidentDetail extends React.Component {
               color: Colors.defaultBlack,
             }}
           >
-            Conflagration
+            {localDetail.title}
           </Text>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View
@@ -73,7 +78,9 @@ class IncidentDetail extends React.Component {
               }}
             />
             <View style={{ width: 5 }} />
-            <Text style={{ color: Colors.dangerRed }}>Emergency</Text>
+            <Text style={{ color: Colors.dangerRed }}>
+              {localDetail.caution ? 'Caution' : 'Emergency'}
+            </Text>
           </View>
         </View>
         <Text style={{ color: Colors.defaultBlack }}>Yuseong 291, Daejeon</Text>
@@ -82,7 +89,8 @@ class IncidentDetail extends React.Component {
   }
 
   renderProtocol() {
-    const url = 'http://m.safekorea.go.kr/idsiSFK/neo/main_m/sot/fire.html';
+    const localDetail = getLocalData(this.getIncidentDetail().type);
+    const url = localDetail.safetyProtocol;
 
     return (
       <View
