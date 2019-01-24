@@ -1,5 +1,6 @@
 import { Platform, StatusBar } from 'react-native';
 import { getStatusBarHeight as getIOSStatusBarHeight } from 'react-native-iphone-x-helper';
+import { Permissions } from 'expo';
 import moment from 'moment';
 
 export const getStatusBarHeight = () => {
@@ -24,4 +25,20 @@ export { getBottomSpace } from 'react-native-iphone-x-helper';
 
 export function formatDate(dateString) {
   return moment(dateString).format('MMM d, YYYY');
+}
+
+export async function requestPermission(type) {
+
+  // if already granted
+  if ((await Permissions.getAsync(type)).status === 'granted') {
+    return true;
+  }
+
+  // otherwise request permission
+  if ((await Permissions.askAsync(type)) === 'granted') {
+    return true;
+  }
+
+  // failed
+  return false;
 }

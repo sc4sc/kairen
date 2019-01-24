@@ -8,22 +8,17 @@ import {
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
 } from '../actions/auth';
+import { requestPermission } from '../utils';
 
 function* getPushToken() {
-  let pushToken = '',
-    finalStatus = '';
-  const { status: existingStatus } = yield call(
-    Permissions.getAsync,
-    Permissions.NOTIFICATIONS
-  );
+  let pushToken = '';
 
-  if (existingStatus !== 'granted') {
-    finalStatus = yield call(Permissions.askAsync, Permissions.NOTIFICATIONS);
-  } else {
-    finalStatus = existingStatus;
-  }
-  if (finalStatus === 'granted') {
-    pushToken = yield call(Notifications.getExpoPushTokenAsync);
+  try {
+    if (yield call(requestPermission, Permissions.NOTIFICATIONS)) {
+      pushToken = yield call(Notifications.getExpoPushTokenAsync);
+    }
+  } catch (error) {
+    console.log('getPushToken Error:', error)
   }
 
   return pushToken;
