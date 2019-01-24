@@ -1,7 +1,8 @@
 import URLSearchParams from '@ungap/url-search-params';
 import axios from 'axios';
 
-const serverURL = 'http://0aafb50b.ngrok.io';
+// 개발 서버 설정해놓고 커밋에 올리지 말라고 해놓음
+import { URL as serverURL } from '../constants/Server';
 
 function getQueryString(q) {
   return new URLSearchParams(q).toString();
