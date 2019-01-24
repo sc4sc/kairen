@@ -46,7 +46,7 @@ class IncidentDetail extends React.Component {
     const incidentId = this.getIncidentDetail().id;
 
     apis
-      .getIncidentComments(incidentId, { userId: this.props.userId })
+      .getIncidentComments(incidentId, this.props.userId)
       .then(response => this.setState({ commentList: response.data }));
     apis
       .getRecentProgress(incidentId)

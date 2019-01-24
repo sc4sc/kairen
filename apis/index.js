@@ -1,7 +1,7 @@
 import URLSearchParams from '@ungap/url-search-params';
 import axios from 'axios';
 
-const serverURL = 'https://2dbaa704.ngrok.io';
+const serverURL = 'http://0aafb50b.ngrok.io';
 
 function getQueryString(q) {
   return new URLSearchParams(q).toString();
@@ -48,12 +48,18 @@ export function requestAuthentication(username, isAdmin, pushToken) {
     .then(result => ({ id: result.id, username, isAdmin, pushToken }));
 }
 
-export function getIncidentComments(incidentId, body) {
-  return axios.post(`${serverURL}/incidents/${incidentId}/comments`, body);
+export function getIncidentComments(incidentId, userId, query) {
+  let queryString = '';
+  if (query) {
+    queryString = `&${getQueryString(query)}`;
+  }
+  return axios.get(
+    `${serverURL}/incidents/${incidentId}/comments?userId=${userId}${queryString}`
+  );
 }
 
 export function postComment(incidentId, body) {
-  return axios.post(`${serverURL}/incidents/${incidentId}/comment`, body);
+  return axios.post(`${serverURL}/incidents/${incidentId}/comments`, body);
 }
 
 export function postReply(commentId, body) {
