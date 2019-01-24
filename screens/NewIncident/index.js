@@ -58,16 +58,16 @@ class NewIncident extends React.Component {
     this.handleChangeScreen();
   }
 
-  handlePressReport = () => {
+  handlePressReport = (region) => {
     Alert.alert(
       '제보하시겠습니까?',
       '자세한 현장 상황 확인을 위해 카이스트 안전팀이 곧 연락합니다',
-      [{ text: '취소' }, { text: '확인', onPress: this.report }]
+      [{ text: '취소' }, { text: '확인', onPress: () => this.report(region) }]
     );
   };
 
-  report = () => {
-    const { latitude, longitude } = this.state.region;
+  report = (region) => {
+    const { latitude, longitude } = region;
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,

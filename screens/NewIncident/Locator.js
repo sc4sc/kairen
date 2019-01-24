@@ -34,6 +34,10 @@ export default class Locator extends React.Component {
     this.setState({ markerRegion });
   };
 
+  onPressReport = () => {
+    this.props.onConfirm(this.state.markerRegion);
+  }
+
   render() {
     const {
       latitude,
@@ -74,7 +78,7 @@ export default class Locator extends React.Component {
             padding: 12,
           }}
         >
-          <TouchableOpacity style={styles.confirmButton} onPress={onConfirm}>
+          <TouchableOpacity style={styles.confirmButton} onPress={this.onPressReport}>
             <Text style={styles.buttonText}>제보 등록</Text>
           </TouchableOpacity>
         </View>
