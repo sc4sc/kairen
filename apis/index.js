@@ -55,7 +55,8 @@ export function getIncidentComments(incidentId, userId, query) {
     queryString = `&${getQueryString(query)}`;
   }
   return axios.get(
-    `${serverURL}/incidents/${incidentId}/comments?userId=${userId}${queryString}`
+    // `${serverURL}/incidents/${incidentId}/comments?userId=${userId}${queryString}`
+    `${serverURL}/incidents/${incidentId}/comments`
   );
 }
 

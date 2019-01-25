@@ -3,19 +3,47 @@ import {
   Alert,
   View,
   Text,
-  // SafeAreaView,
+  Animated,
+  KeyboardAvoidingView,
+  Keyboard,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation'
+import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { CheckBox } from 'react-native-elements';
 
 import AndroidTopMargin from '../components/AndroidTopMargin';
+import Spinner from '../components/Spinner';
 import { authLoginRequest, authToggleSecureTeam } from '../actions/auth';
 
 class Login extends React.Component {
-  state = { text: '' };
+  constructor(props) {
+    super(props);
+    this.state = { text: '' };
+  }
+
+  onButtonPress() {
+    const { navigation } = this.props;
+    const alertTitle = 'Login Failed';
+    const alertMsg = 'Sorry, login has failed.';
+
+    if (this.state.text.trim() === '') {
+      Alert.alert('Name is empty', 'Please fill in the form.');
+      return;
+    }
+
+    this.props.authLoginRequest(
+      this.state.text,
+      this.props.isSecureTeam,
+      () => {
+        navigation.navigate('App');
+      },
+      () => {
+        Alert.alert(alertTitle, alertMsg);
+      }
+    );
+  }
 
   render() {
     const {
@@ -23,16 +51,14 @@ class Login extends React.Component {
       headerText,
       inputBox,
       checkBoxContainer,
-      loginButton,
-      mainText,
       nameText,
+      mainText,
     } = styles;
-
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <AndroidTopMargin />
         <View style={container}>
-          <Text style={headerText}> SC4SC </Text>
+          <Text style={headerText}>SC4SC</Text>
 
           <Text style={nameText}> 이름 </Text>
           <TextInput
@@ -54,28 +80,16 @@ class Login extends React.Component {
               title={'나는 안전팀입니다.'}
             />
           </View>
-
           <TouchableOpacity
-            style={loginButton}
-            onPress={() => {
-              if (this.state.text.trim() === '') {
-                Alert.alert('Name is empty', 'Please fill in the form.');
-                return;
-              }
-
-              this.props.authLoginRequest(
-                this.state.text,
-                this.props.isSecureTeam,
-                () => {
-                  this.props.navigation.navigate('App');
-                },
-                () => {
-                  Alert.alert('Login failed', 'Sorry, login has failed.');
-                }
-              );
-            }}
+            style={styles.loginButton}
+            onPress={this.onButtonPress.bind(this)}
+            disabled={this.props.isLoading}
           >
-            <Text style={mainText}>로그인</Text>
+            {this.props.isLoading ? (
+              <Spinner size="small" />
+            ) : (
+              <Text style={styles.mainText}>로그인</Text>
+            )}
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -86,6 +100,7 @@ class Login extends React.Component {
 const mapStateToProps = state => {
   return {
     isSecureTeam: state.auth.isSecureTeam,
+    isLoading: state.auth.loginInProgress,
   };
 };
 

@@ -8,13 +8,13 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  SafeAreaView,
   KeyboardAvoidingView,
 } from 'react-native';
 
 import axios from 'axios';
 import * as apis from '../apis';
 import { connect } from 'react-redux';
+import { SafeAreaView } from 'react-navigation';
 
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
@@ -62,7 +62,10 @@ class NewProgress extends React.Component {
             </TouchableWithoutFeedback>
           </View>
 
-          <KeyboardAvoidingView style={styles.contentContainer}>
+          <KeyboardAvoidingView
+            style={styles.contentContainer}
+            behavior="padding"
+          >
             <TextInput
               style={{ padding: 10, maxHeight: 200 }}
               placeholder="여기에 입력하세요..."

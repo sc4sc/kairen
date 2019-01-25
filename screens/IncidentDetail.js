@@ -8,11 +8,14 @@ import {
   Text,
   TouchableOpacity,
   View,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { MapView } from 'expo';
 const { Marker } = MapView;
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import * as actions from '../actions/newIncident';
 import * as apis from '../apis';
@@ -238,11 +241,15 @@ class IncidentDetail extends React.Component {
     const longitude = Number(lng);
 
     return (
-      <ScrollView
-        style={{ flex: 1 }}
+      <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollingContainer}
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
+        extraScrollHeight={Platform.OS === 'android' ? 100 : 0}
+        keyboardShouldPersistTaps="handled"
       >
         <AndroidTopMargin />
+
         <SafeAreaView>
           <MapView
             style={styles.map}
@@ -295,7 +302,7 @@ class IncidentDetail extends React.Component {
             keyExtractor={this._keyExtractor}
           />
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     );
   }
 }

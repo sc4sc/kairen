@@ -24,6 +24,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-elements": "^0.19.1",
     "react-native-iphone-x-helper": "^1.2.0",
+    "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-switch-toggle": "^1.0.7",
     "react-navigation": "^3.0.9",
     "react-redux": "^6.0.0",
