@@ -9,9 +9,7 @@ function getQueryString(q) {
 }
 
 export function listIncidents(query) {
-  return fetch(`${serverURL}/incidents?${getQueryString(query)}`).then(r =>
-    r.json()
-  );
+  return fetch(`${serverURL}/incidents?${getQueryString(query)}`).then(r => r.json());
 }
 
 export function postIncident({ type, lat, lng, userId }) {
@@ -51,13 +49,11 @@ export function requestAuthentication(username, isAdmin, pushToken) {
 
 export function getIncidentComments(incidentId, userId, query) {
   let queryString = '';
+
   if (query) {
     queryString = `&${getQueryString(query)}`;
   }
-  return axios.get(
-    // `${serverURL}/incidents/${incidentId}/comments?userId=${userId}${queryString}`
-    `${serverURL}/incidents/${incidentId}/comments`
-  );
+  return axios.get(`${serverURL}/incidents/${incidentId}/comments?userId=${userId}${queryString}`);
 }
 
 export function postComment(incidentId, body) {

@@ -116,7 +116,7 @@ export const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   headerContainer: {
-    paddingBottom: 12,
+    paddingBottom: 10,
     paddingHorizontal: 20,
     flexDirection: 'row',
     borderBottomWidth: 1,

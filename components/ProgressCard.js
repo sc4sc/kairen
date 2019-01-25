@@ -4,7 +4,7 @@ import ConfirmedText from './ConfirmedText';
 
 import Colors from '../constants/Colors';
 
-export class ProgressCard extends React.Component {
+export default class ProgressCard extends React.Component {
   renderEmptyBox() {
     if (this.props.isComment) {
       return <View style={{ height: 50 }} />;
@@ -17,12 +17,7 @@ export class ProgressCard extends React.Component {
     const { author, date, children } = this.props;
 
     return (
-      <View
-        style={[
-          styles.borderedContentBox,
-          { marginTop: this.props.isComment ? -55 : 0 },
-        ]}
-      >
+      <View style={[styles.borderedContentBox, { marginTop: this.props.isComment ? -55 : 0 }]}>
         {this.renderEmptyBox()}
         <View style={{ flexDirection: 'row' }}>
           <ConfirmedText fontWeight="bold">{author}</ConfirmedText>
@@ -52,5 +47,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#eaf8e5',
   },
 });
-
-export default ProgressCard;
