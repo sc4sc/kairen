@@ -40,8 +40,9 @@ class NewProgress extends React.Component {
   }
 
   goBackAndShowList = () => {
+    const incidentId = this.props.navigation.getParam('incidentId');
     this.props.navigation.goBack();
-    this.props.navigation.navigate('ProgressList');
+    this.props.navigation.navigate('ProgressList', { incidentId });
   };
 
   render() {

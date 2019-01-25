@@ -150,57 +150,69 @@ class IncidentDetail extends React.Component {
   renderProgressButton() {
     const incidentId = this.getIncidentDetail().id;
 
-    if (this.props.isSecureTeam) {
-      return (
-        <TouchableOpacity
-          style={[
-            styles.commentButton,
-            { backgroundColor: Colors.lichen, marginBottom: 10 },
-          ]}
-          onPress={() => {
-            this.props.navigation.navigate('NewProgress', { incidentId });
-          }}
-        >
-          <Text style={styles.commentButtonText}>진행 상황 등록하기</Text>
-        </TouchableOpacity>
-      );
-    }
-
-    return null;
+    return (
+      <TouchableOpacity
+        style={[
+          styles.commentButton,
+          { backgroundColor: Colors.lichen, marginBottom: 10 },
+        ]}
+        onPress={() => {
+          this.props.navigation.navigate('NewProgress', { incidentId });
+        }}
+      >
+        <Text style={styles.commentButtonText}>진행 상황 등록하기</Text>
+      </TouchableOpacity>
+    );
   }
 
   renderProgress() {
-    if (this.state.recentProgress.length > 0) {
-      const incidentId = this.getIncidentDetail().id;
-      const { createdAt, content } = this.state.recentProgress[0];
+    const progressExist = this.state.recentProgress.length > 0;
 
-      return (
-        <View>
-          <View
-            style={[
-              styles.subheaderContainer,
-              { flexDirection: 'row', justifyContent: 'space-between' },
-            ]}
-          >
-            <Text style={styles.subheaderText}>Progress</Text>
+    const incidentId = this.getIncidentDetail().id;
+
+    let recentView = null;
+    if (progressExist) {
+      const { createdAt, content } = this.state.recentProgress[0];
+      recentView = (
+        <ProgressCard author="안전팀" date={formatDate(createdAt)}>
+          {content}
+        </ProgressCard>
+      );
+    } else {
+             recentView = <View style={{ alignItems: 'center' }}>
+                 <Text style={{ fontSize: 13, color: '#b7b7b7' }}>
+                   진행 상황이 없습니다.
+                 </Text>
+               </View>;
+           }
+
+    return (
+      //style={{ alignItems: 'stretch' }}
+      <View>
+        <View
+          style={[
+            styles.subheaderContainer,
+            { flexDirection: 'row', justifyContent: 'space-between' },
+          ]}
+        >
+          <Text style={styles.subheaderText}>Progress</Text>
+          {progressExist ? (
             <Text
               style={[styles.subheaderText, { fontSize: 13 }]}
               onPress={() => {
-                this.props.navigation.navigate('ProgressList', { incidentId });
+                this.props.navigation.navigate('ProgressList', {
+                  incidentId,
+                });
               }}
             >
               더보기
             </Text>
-          </View>
-          {this.renderProgressButton()}
-          <ProgressCard author="안전팀" date={formatDate(createdAt)}>
-            {content}
-          </ProgressCard>
+          ) : null}
         </View>
-      );
-    }
-
-    return this.renderProgressButton();
+        {this.props.isSecureTeam ? this.renderProgressButton() : null}
+        {recentView}
+      </View>
+    );
   }
 
   renderComment(data) {
@@ -326,7 +338,7 @@ const styles = StyleSheet.create({
   },
   map: { height: Layout.window.width },
   subheaderContainer: { marginBottom: 6 },
-  subheaderText: { fontSize: 16, color: Colors.defaultGrey },
+  subheaderText: { fontSize: 16, color: Colors.defaultGrey, marginBottom: 5 },
   commentButton: {
     justifyContent: 'center',
     alignItems: 'center',
