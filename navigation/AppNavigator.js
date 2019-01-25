@@ -1,9 +1,4 @@
-import React from 'react';
-import {
-  createAppContainer,
-  createSwitchNavigator,
-  createStackNavigator,
-} from 'react-navigation';
+import { createAppContainer, createSwitchNavigator, createStackNavigator } from 'react-navigation';
 
 import {
   IncidentDetail,
@@ -12,7 +7,7 @@ import {
   NewProgress,
   NewIncident,
   ProgressList,
-  SettingsScreen,
+  Setting,
   Login,
 } from '../screens';
 
@@ -34,7 +29,7 @@ export default createAppContainer(
         NewComment,
         ProgressList,
         NewProgress,
-        Setting: SettingsScreen,
+        Setting,
       },
       {
         mode: 'modal',

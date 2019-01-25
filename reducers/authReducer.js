@@ -17,19 +17,20 @@ export default (state = defaultState, action) =>
     switch (action.type) {
       case AUTH_LOGIN_REQUEST: {
         draft.loginInProgress = true;
-        return;
+        break;
       }
       case AUTH_LOGIN_SUCCESS: {
         draft.user = action.payload;
         draft.loginInProgress = false;
-        return;
+        break;
       }
       case AUTH_LOGIN_FAILED: {
         draft.loginInProgress = false;
-        return;
+        break;
       }
       case AUTH_TOGGLE_SECURE_TEAM: {
         draft.isSecureTeam = !draft.isSecureTeam;
+        break;
       }
       default:
         return;

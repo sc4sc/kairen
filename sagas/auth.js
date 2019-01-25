@@ -18,7 +18,7 @@ function* getPushToken() {
       pushToken = yield call(Notifications.getExpoPushTokenAsync);
     }
   } catch (error) {
-    console.log('getPushToken Error:', error)
+    console.log('getPushToken Error:', error);
   }
 
   return pushToken;

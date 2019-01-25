@@ -243,8 +243,8 @@ class IncidentDetail extends React.Component {
     return (
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollingContainer}
-        enableOnAndroid={true}
-        enableAutomaticScroll={true}
+        enableOnAndroid
+        enableAutomaticScroll
         extraScrollHeight={Platform.OS === 'android' ? 100 : 0}
         keyboardShouldPersistTaps="handled"
       >

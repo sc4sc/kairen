@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  Alert,
-  View,
-  Text,
-  Animated,
-  KeyboardAvoidingView,
-  Keyboard,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import { Alert, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { CheckBox } from 'react-native-elements';
@@ -29,7 +20,7 @@ class Login extends React.Component {
     const alertMsg = 'Sorry, login has failed.';
 
     if (this.state.text.trim() === '') {
-      Alert.alert('Name is empty', 'Please fill in the form.');
+      Alert.alert('Empty Name', '공백으로 이루어진 이름으로는 접속하실 수 없습니다.');
       return;
     }
 
@@ -46,14 +37,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const {
-      container,
-      headerText,
-      inputBox,
-      checkBoxContainer,
-      nameText,
-      mainText,
-    } = styles;
+    const { container, headerText, inputBox, checkBoxContainer, nameText, mainText } = styles;
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <AndroidTopMargin />
@@ -63,7 +47,7 @@ class Login extends React.Component {
           <Text style={nameText}> 이름 </Text>
           <TextInput
             style={inputBox}
-            placeholder={'입력...'}
+            placeholder={'ex) 홍길동'}
             onChangeText={text => this.setState({ text })}
             value={this.state.text}
           />
@@ -97,12 +81,10 @@ class Login extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    isSecureTeam: state.auth.isSecureTeam,
-    isLoading: state.auth.loginInProgress,
-  };
-};
+const mapStateToProps = state => ({
+  isSecureTeam: state.auth.isSecureTeam,
+  isLoading: state.auth.loginInProgress,
+});
 
 export default connect(
   mapStateToProps,

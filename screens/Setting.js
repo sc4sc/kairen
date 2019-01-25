@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import SwitchToggle from 'react-native-switch-toggle';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,12 +8,16 @@ import { connect } from 'react-redux';
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
-export class SettingsScreen extends React.Component {
-  static navigationOptions = {
-    title: 'app.json',
-  };
+class Setting extends React.Component {
+  constructor() {
+    super();
 
-  state = { alertAlarm: false };
+    this.state = { alertAlarm: false };
+  }
+
+  goBack() {
+    this.props.navigation.goBack();
+  }
 
   render() {
     return (
@@ -21,24 +25,18 @@ export class SettingsScreen extends React.Component {
         <AndroidTopMargin />
         <View style={styles.headerContainer}>
           <Text style={styles.header}> 설정 </Text>
-          <Ionicons
-            name="md-close"
-            size={26}
-            style={{ flex: 1 }}
-            onPress={() => {
-              this.props.navigation.goBack();
-            }}
-          />
+          <View style={styles.buttonContainer}>
+            <TouchableWithoutFeedback onPress={this.goBack.bind(this)}>
+              <Ionicons name="md-close" size={26} />
+            </TouchableWithoutFeedback>
+          </View>
         </View>
 
         <View style={styles.cardContainer}>
           <Text style={styles.cardTitle}> 계정 </Text>
           <View style={styles.cardContent}>
             <Text style={{ fontSize: 15 }}> {this.props.userId} </Text>
-            <Text style={{ fontSize: 15, color: Colors.textRed }}>
-              {' '}
-              로그아웃{' '}
-            </Text>
+            <Text style={{ fontSize: 15, color: Colors.textRed, fontWeight: '500' }}>로그아웃</Text>
           </View>
         </View>
 
@@ -47,19 +45,12 @@ export class SettingsScreen extends React.Component {
           <View style={styles.cardContent}>
             <Text style={{ fontSize: 15 }}> '주의' 제보 알림 받기 </Text>
             <SwitchToggle
-              containerStyle={{
-                width: 53,
-                hegiht: 30,
-                borderRadius: 28.5,
-                padding: 2,
-              }}
+              containerStyle={styles.switchStyle}
               circleStyle={{ width: 24, height: 24, borderRadius: 27.5 }}
               switchOn={this.state.alertAlarm}
               backgroundColorOn={Colors.switchGreen}
               circleColorOn="white"
-              onPress={() =>
-                this.setState({ alertAlarm: !this.state.alertAlarm })
-              }
+              onPress={() => this.setState({ alertAlarm: !this.state.alertAlarm })}
             />
           </View>
         </View>
@@ -82,24 +73,33 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingLeft: 20,
-    marginVertical: 20,
+    padding: 20,
   },
   header: {
     flex: 6,
     textAlign: 'center',
     fontSize: 20,
     fontWeight: '800',
-    color: Colors.defaultBlack,
+  },
+  buttonContainer: {
+    position: 'absolute',
+    right: 20,
+    top: 20,
+    width: 30,
+    alignItems: 'center',
+  },
+  switchStyle: {
+    width: 53,
+    height: 30,
+    borderRadius: 28.5,
+    padding: 2,
   },
   cardContainer: { margin: 20 },
   cardTitle: { fontSize: 13, color: Colors.lightGrey },
   cardContent: { flexDirection: 'row', justifyContent: 'space-between' },
 });
 
-const mapStateToProps = state => {
-  return {
-    userId: state.auth.user.username,
-  };
-};
-export default connect(mapStateToProps)(SettingsScreen);
+const mapStateToProps = state => ({
+  userId: state.auth.user.username,
+});
+export default connect(mapStateToProps)(Setting);

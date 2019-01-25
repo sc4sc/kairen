@@ -1,18 +1,16 @@
 import React from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
-import Colors from '../constants/Colors';
 import { MapView } from 'expo';
+
+import Colors from '../constants/Colors';
 import { formatDate } from '../utils';
 import { typeMap } from '../constants/Incidents';
 
 export default class Incident extends React.Component {
   render() {
     const { onPress, data } = this.props;
-
     const { type, lat, lng, createdAt } = data;
-
     const doc = typeMap[type];
-
     const indicatorColor = {
       backgroundColor: !doc.caution ? Colors.dangerRed : Colors.cautionYellow,
     };
@@ -27,10 +25,8 @@ export default class Incident extends React.Component {
             <View style={{ flex: 1 }} />
             <Text style={styles.dateText}>{formatDate(createdAt)}</Text>
           </View>
-          {/*<View style={styles.mapContainer}>*/}
-          {/*<Text>Map ?Here</Text>*/}
-          {/*</View>*/}
         </TouchableOpacity>
+
         <MapView
           style={styles.mapContainer}
           liteMode
@@ -54,11 +50,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'stretch',
+    height: 110,
     borderBottomWidth: 1,
     borderColor: Colors.borderGrey,
   },
   indicator: { width: 5 },
-  content: { flex: 1, flexDirection: 'row', padding: 12 },
+  content: { flex: 1, flexDirection: 'row', padding: 10 },
   title: { fontWeight: '800', fontSize: 18 },
   addressText: { fontSize: 13 },
   dateText: { fontSize: 13, color: Colors.dateLightGrey },
