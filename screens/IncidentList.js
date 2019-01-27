@@ -49,8 +49,19 @@ class IncidentList extends React.Component {
   }
 
   isCloseToBottom({ layoutMeasurement, contentOffset, contentSize }) {
-    const paddingBottom = 50;
-    return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingBottom;
+    const paddingBottom = 30;
+    // console.log('Measure');
+    // console.log(layoutMeasurement.height);
+    // console.log('Window');
+    // console.log(Layout.window.height);
+    // console.log('Content');
+    // console.log(contentSize.height);
+    // console.log('ContentOffset');
+    // console.log(contentOffset.y);
+    return (
+      contentSize.height > layoutMeasurement.height &&
+      layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingBottom
+    );
   }
 
   hideReportButton() {
@@ -95,21 +106,23 @@ class IncidentList extends React.Component {
             />
           </View>
 
-          <FlatList
-            data={this.props.incidents}
-            renderItem={this.renderItem}
-            refreshing={this.props.loading && this.props.incidents.length === 0}
-            onRefresh={this.handleRefresh}
-            onEndReached={this.handleEndReached}
-            onScroll={({ nativeEvent }) => {
-              if (this.isCloseToBottom(nativeEvent)) {
-                this.hideReportButton();
-              } else {
-                this.showReportButton();
-              }
-            }}
-            scrollEventThrottle={400}
-          />
+          <View style={{ flex: 1 }}>
+            <FlatList
+              data={this.props.incidents}
+              renderItem={this.renderItem}
+              refreshing={this.props.loading && this.props.incidents.length === 0}
+              onRefresh={this.handleRefresh}
+              onEndReached={this.handleEndReached}
+              onScroll={({ nativeEvent }) => {
+                if (this.isCloseToBottom(nativeEvent)) {
+                  this.hideReportButton();
+                } else {
+                  this.showReportButton();
+                }
+              }}
+              scrollEventThrottle={200}
+            />
+          </View>
 
           <Animated.View style={[styles.buttonContainer, { bottom: this.buttonPosition }]}>
             <TouchableOpacity
