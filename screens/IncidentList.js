@@ -21,7 +21,7 @@ class IncidentList extends React.Component {
   constructor() {
     super();
 
-    this.buttonPosition = new Animated.Value(0);
+    this.buttonPosition = new Animated.Value(38);
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleEndReached = this.handleEndReached.bind(this);
     this.renderItem = this.renderItem.bind(this);
@@ -63,7 +63,7 @@ class IncidentList extends React.Component {
   showReportButton() {
     Animated.timing(this.buttonPosition, {
       duration: 500,
-      toValue: 0,
+      toValue: 38,
     }).start();
   }
 
@@ -111,14 +111,14 @@ class IncidentList extends React.Component {
             scrollEventThrottle={400}
           />
 
-          <View style={styles.buttonContainer}>
+          <Animated.View style={[styles.buttonContainer, { bottom: this.buttonPosition }]}>
             <TouchableOpacity
-              style={[styles.reportButton, { bottom: this.buttonPosition }]}
+              style={styles.reportButton}
               onPress={() => this.props.navigation.navigate('NewIncident')}
             >
               <Text style={styles.reportButtonText}>제보하기</Text>
             </TouchableOpacity>
-          </View>
+          </Animated.View>
         </SafeAreaView>
       </View>
     );
