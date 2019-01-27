@@ -1,4 +1,4 @@
-import produce from 'immer';
+import { produce } from 'immer';
 import {
   AUTH_LOGIN_FAILED,
   AUTH_LOGIN_REQUEST,
@@ -13,23 +13,26 @@ const defaultState = {
 };
 
 export default (state = defaultState, action) =>
-  produce(state, draft => {
+  produce(state, draftState => {
+    const draft = draftState;
+
     switch (action.type) {
       case AUTH_LOGIN_REQUEST: {
         draft.loginInProgress = true;
-        return;
+        break;
       }
       case AUTH_LOGIN_SUCCESS: {
         draft.user = action.payload;
         draft.loginInProgress = false;
-        return;
+        break;
       }
       case AUTH_LOGIN_FAILED: {
         draft.loginInProgress = false;
-        return;
+        break;
       }
       case AUTH_TOGGLE_SECURE_TEAM: {
         draft.isSecureTeam = !draft.isSecureTeam;
+        break;
       }
       default:
         return;

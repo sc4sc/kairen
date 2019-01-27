@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
-import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-navigation';
 
@@ -11,7 +10,11 @@ import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
 export class ProgressList extends React.Component {
-  state = { progressList: [] };
+  constructor() {
+    super();
+    this.state = { progressList: [] };
+  }
+
   componentWillMount() {
     apis
       .getProgressList(this.props.navigation.getParam('incidentId'))
@@ -19,7 +22,7 @@ export class ProgressList extends React.Component {
   }
 
   renderProgress(data) {
-    const { id, content, createdAt } = data.item;
+    const { content, createdAt } = data.item;
 
     return (
       <ProgressCard author="안전팀" date={formatDate(createdAt)}>
@@ -46,10 +49,7 @@ export class ProgressList extends React.Component {
         </View>
 
         <View style={{ flex: 1, paddingHorizontal: 15 }}>
-          <FlatList
-            data={this.state.progressList}
-            renderItem={this.renderProgress}
-          />
+          <FlatList data={this.state.progressList} renderItem={this.renderProgress} />
         </View>
       </SafeAreaView>
     );

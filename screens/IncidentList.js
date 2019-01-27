@@ -1,24 +1,16 @@
 import React from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  FlatList,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
-import * as apis from '../apis';
+import { Notifications } from 'expo';
 
 import { getBottomSpace } from '../utils';
-
 import Colors from '../constants/Colors';
-
+import Layout from '../constants/Layout';
 import Incident from '../components/Incident';
 import AndroidTopMargin from '../components/AndroidTopMargin';
-import { Notifications } from 'expo';
+
 import {
   incidentsListLoadMore,
   incidentsListRefresh,
@@ -26,48 +18,47 @@ import {
 } from '../actions/incidentsList';
 
 class IncidentList extends React.Component {
-  static navigationOptions = { header: null };
+  constructor() {
+    super();
+
+    this.handleRefresh = this.handleRefresh.bind(this);
+    this.handleEndReached = this.handleEndReached.bind(this);
+    this.renderItem = this.renderItem.bind(this);
+  }
 
   componentDidMount() {
-    this._notificationSubscription = Notifications.addListener(notification =>
+    this.notificationSubscription = Notifications.addListener(notification =>
       console.log('Notification arrived:', notification)
     );
-    this._willFocusSubscription = this.props.navigation.addListener(
-      'willFocus',
-      this.willFocus
-    );
+    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.handleRefresh);
     this.handleRefresh();
   }
 
   componentWillUnmount() {
-    this._notificationSubscription.remove();
-    this._willFocusSubscription.remove();
+    this.notificationSubscription.remove();
+    this.willFocusSubscription.remove();
   }
 
-  willFocus = () => {
-    this.handleRefresh();
-  };
+  handleRefresh() {
+    this.props.incidentsListRefresh();
+  }
 
-  renderItem = ({ item, index }) => {
+  handleEndReached() {
+    this.props.incidentsListLoadMore();
+  }
+
+  renderItem(incident) {
     return (
       <Incident
-        data={item}
+        data={incident.item}
         onPress={() =>
           this.props.navigation.navigate('IncidentDetail', {
-            incidentDetail: item,
+            incidentDetail: incident.item,
           })
         }
       />
     );
-  };
-
-  handleRefresh = () => {
-    this.props.incidentsListRefresh();
-  };
-
-  handleEndReached = () => {
-    this.props.incidentsListLoadMore();
-  };
+  }
 
   render() {
     return (
@@ -83,6 +74,7 @@ class IncidentList extends React.Component {
               onPress={() => this.props.navigation.navigate('Setting')}
             />
           </View>
+
           <FlatList
             data={this.props.incidents}
             renderItem={this.renderItem}
@@ -90,13 +82,16 @@ class IncidentList extends React.Component {
             onRefresh={this.handleRefresh}
             onEndReached={this.handleEndReached}
           />
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.reportButton}
+              onPress={() => this.props.navigation.navigate('NewIncident')}
+            >
+              <Text style={styles.reportButtonText}>제보하기</Text>
+            </TouchableOpacity>
+          </View>
         </SafeAreaView>
-        <TouchableOpacity
-          style={styles.reportButton}
-          onPress={() => this.props.navigation.navigate('NewIncident')}
-        >
-          <Text style={styles.reportButtonText}>Send Report</Text>
-        </TouchableOpacity>
       </View>
     );
   }
@@ -124,22 +119,32 @@ export const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   headerContainer: {
-    paddingLeft: 20,
     paddingVertical: 10,
-    paddingRight: 16,
+    paddingHorizontal: 20,
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderColor: Colors.borderGrey,
     alignItems: 'center',
   },
   header: { fontSize: 28, fontWeight: '800', color: Colors.defaultBlack },
+  buttonContainer: {
+    position: 'absolute',
+    width: Layout.window.width,
+    bottom: 38,
+  },
   reportButton: {
-    backgroundColor: Colors.buttonGrey,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    backgroundColor: '#ff9412',
+    borderRadius: 5,
+    height: 63,
     alignItems: 'center',
     padding: 16,
+    marginHorizontal: 15,
     paddingBottom: 16 + getBottomSpace(), // handle the bottom empty space for iPhone X
+    shadowOffset: { width: 0, height: 1 },
+    shadowColor: 'black',
+    shadowOpacity: 0.22,
+    shadowRadius: 2,
+    elevation: 5,
   },
-  reportButtonText: { color: 'white', fontWeight: '500', fontSize: 24 },
+  reportButtonText: { color: 'white', fontWeight: 'bold', fontSize: 20 },
 });

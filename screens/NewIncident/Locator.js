@@ -2,51 +2,50 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { MapView, Location } from 'expo';
-const { Marker } = MapView;
 import lodash from 'lodash';
 
 import ReportItem from '../../components/ReportItem';
-
 import { typeMap as incidentTypeMap } from '../../constants/Incidents';
 import Layout from '../../constants/Layout';
 import Colors from '../../constants/Colors';
 
-export default class Locator extends React.Component {
-  state = {
-    markerRegion: {
-      latitude: 36.374159,
-      longitude: 127.365864,
-      latitudeDelta: 0.00522,
-      longitudeDelta: 0.00221,
-    },
-  };
+const { Marker } = MapView;
 
-  locatePosition = async () => {
+export default class Locator extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      markerRegion: {
+        latitude: 36.374159,
+        longitude: 127.365864,
+        latitudeDelta: 0.00522,
+        longitudeDelta: 0.00221,
+      },
+    };
+    this.onPressReport = this.onPressReport.bind(this);
+    this.changeMarkerRegion = this.changeMarkerRegion.bind(this);
+  }
+
+  onPressReport() {
+    this.props.onConfirm(this.state.markerRegion);
+  }
+
+  changeMarkerRegion(markerRegion) {
+    this.setState({ markerRegion });
+  }
+
+  async locatePosition() {
     await Location.requestPermissionsAsync();
     const location = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.Balanced,
     });
     const { longitude, latitude } = location.coords;
     this.map.animateToCoordinate({ longitude, latitude }, 0);
-  };
-
-  changeMarkerRegion = markerRegion => {
-    this.setState({ markerRegion });
-  };
-
-  onPressReport = () => {
-    this.props.onConfirm(this.state.markerRegion);
   }
 
   render() {
-    const {
-      latitude,
-      longitude,
-      latitudeDelta,
-      longitudeDelta,
-    } = this.state.markerRegion;
-
-    const { onConfirm } = this.props;
+    const { latitude, longitude, latitudeDelta, longitudeDelta } = this.state.markerRegion;
 
     return (
       <View style={{ flex: 1 }}>
@@ -69,6 +68,7 @@ export default class Locator extends React.Component {
         >
           <Marker coordinate={this.state.markerRegion} />
         </MapView>
+
         {/* 큰 View를 만들면 지도를 가려 인터랙션이 안 됨 */}
         <View
           style={{
@@ -82,15 +82,8 @@ export default class Locator extends React.Component {
             <Text style={styles.buttonText}>제보 등록</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={styles.gpsButton}
-          onPress={this.locatePosition}
-        >
-          <MaterialIcons
-            style={{ color: 'white' }}
-            name="gps-fixed"
-            size={26}
-          />
+        <TouchableOpacity style={styles.gpsButton} onPress={this.locatePosition}>
+          <MaterialIcons style={{ color: 'white' }} name="gps-fixed" size={26} />
         </TouchableOpacity>
         <View
           style={{

@@ -3,16 +3,14 @@ import {
   FlatList,
   Linking,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import { MapView } from 'expo';
-const { Marker } = MapView;
+
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -24,28 +22,35 @@ import CommentCard from '../components/CommentCard';
 
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
-import { formatDate, getBottomSpace, dateToString } from '../utils';
+import { formatDate, getBottomSpace } from '../utils';
 
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import { getLocalData } from '../constants/Incidents';
 
+const { Marker } = MapView;
 class IncidentDetail extends React.Component {
-  state = { commentList: [], totalCommentNum: 0, recentProgress: [] };
-  _keyExtractor = (item, index) => item.id;
+  constructor() {
+    super();
+
+    this.state = { commentList: [], totalCommentNum: 0, recentProgress: [] };
+    this.getIncidentDetail = this.getIncidentDetail.bind(this);
+    this.handleRefresh = this.handleRefresh.bind(this);
+  }
 
   componentWillMount() {
-    this._willFocusSubscription = this.props.navigation.addListener(
-      'willFocus',
-      this.willFocus
-    );
+    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.handleRefresh);
     this.handleRefresh();
   }
 
   componentWillUnmount() {
-    this._willFocusSubscription.remove();
+    this.willFocusSubscription.remove();
   }
 
-  handleRefresh = () => {
+  getIncidentDetail() {
+    return this.props.navigation.getParam('incidentDetail');
+  }
+
+  handleRefresh() {
     const incidentId = this.getIncidentDetail().id;
 
     apis
@@ -54,22 +59,15 @@ class IncidentDetail extends React.Component {
     apis
       .getRecentProgress(incidentId)
       .then(response => this.setState({ recentProgress: response.data }));
-  };
-
-  willFocus = () => {
-    this.handleRefresh();
-  };
-
-  getIncidentDetail = () => this.props.navigation.getParam('incidentDetail');
+  }
 
   renderHeader() {
     const incidentDetail = this.getIncidentDetail();
     const localDetail = getLocalData(incidentDetail.type);
+
     return (
       <View>
-        <Text style={{ color: Colors.dateLightGrey }}>
-          {formatDate(incidentDetail.createdAt)}
-        </Text>
+        <Text style={{ color: Colors.dateLightGrey }}>{formatDate(incidentDetail.createdAt)}</Text>
         <View
           style={{
             flexDirection: 'row',
@@ -152,10 +150,7 @@ class IncidentDetail extends React.Component {
 
     return (
       <TouchableOpacity
-        style={[
-          styles.commentButton,
-          { backgroundColor: Colors.lichen, marginBottom: 10 },
-        ]}
+        style={[styles.commentButton, { backgroundColor: Colors.lichen, marginBottom: 10 }]}
         onPress={() => {
           this.props.navigation.navigate('NewProgress', { incidentId });
         }}
@@ -179,12 +174,12 @@ class IncidentDetail extends React.Component {
         </ProgressCard>
       );
     } else {
-             recentView = <View style={{ alignItems: 'center' }}>
-                 <Text style={{ fontSize: 13, color: '#b7b7b7' }}>
-                   진행 상황이 없습니다.
-                 </Text>
-               </View>;
-           }
+      recentView = (
+        <View style={{ alignItems: 'center' }}>
+          <Text style={{ fontSize: 13, color: '#b7b7b7' }}>진행 상황이 없습니다.</Text>
+        </View>
+      );
+    }
 
     return (
       //style={{ alignItems: 'stretch' }}
@@ -255,8 +250,8 @@ class IncidentDetail extends React.Component {
     return (
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollingContainer}
-        enableOnAndroid={true}
-        enableAutomaticScroll={true}
+        enableOnAndroid
+        enableAutomaticScroll
         extraScrollHeight={Platform.OS === 'android' ? 100 : 0}
         keyboardShouldPersistTaps="handled"
       >
@@ -282,11 +277,7 @@ class IncidentDetail extends React.Component {
             style={{ position: 'absolute', top: 50, right: 16 }}
             onPress={() => this.props.navigation.goBack()}
           >
-            <AntDesign
-              name={'closecircle'}
-              style={{ opacity: 0.3 }}
-              size={32}
-            />
+            <AntDesign name={'closecircle'} style={{ opacity: 0.3 }} size={32} />
           </TouchableOpacity>
         </SafeAreaView>
         <View style={{ paddingVertical: 18, paddingHorizontal: 15 }}>
@@ -296,9 +287,7 @@ class IncidentDetail extends React.Component {
           <View style={{ height: 24 }} />
           {this.renderProgress()}
           <View style={{ height: 24 }} />
-          <Text style={[styles.subheaderContainer, styles.subheaderText]}>
-            Comment
-          </Text>
+          <Text style={[styles.subheaderContainer, styles.subheaderText]}>Comment</Text>
           <TouchableOpacity
             style={styles.commentButton}
             onPress={() => {
@@ -308,23 +297,17 @@ class IncidentDetail extends React.Component {
             <Text style={styles.commentButtonText}>새로운 의견 등록하기</Text>
           </TouchableOpacity>
 
-          <FlatList
-            data={this.state.commentList}
-            renderItem={this.renderComment}
-            keyExtractor={this._keyExtractor}
-          />
+          <FlatList data={this.state.commentList} renderItem={this.renderComment} />
         </View>
       </KeyboardAwareScrollView>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    isSecureTeam: state.auth.isSecureTeam,
-    userId: state.auth.user.username,
-  };
-};
+const mapStateToProps = state => ({
+  isSecureTeam: state.auth.isSecureTeam,
+  userId: state.auth.user.username,
+});
 
 export default connect(
   mapStateToProps,

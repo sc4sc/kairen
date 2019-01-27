@@ -11,17 +11,18 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-
-import axios from 'axios';
-import * as apis from '../apis';
 import { connect } from 'react-redux';
-
-import Colors from '../constants/Colors';
-import AndroidTopMargin from '../components/AndroidTopMargin';
 import { Ionicons } from '@expo/vector-icons';
 
+import * as apis from '../apis';
+import Colors from '../constants/Colors';
+import AndroidTopMargin from '../components/AndroidTopMargin';
+
 class NewComment extends React.Component {
-  state = { text: '' };
+  constructor() {
+    super();
+    this.state = { text: '' };
+  }
 
   onButtonPress() {
     Alert.alert('댓글을 등록하시겠습니까?', 'Something warning text', [
@@ -57,24 +58,16 @@ class NewComment extends React.Component {
             </TouchableWithoutFeedback>
           </View>
 
-          <KeyboardAvoidingView
-            style={styles.contentContainer}
-            behavior="padding"
-          >
+          <KeyboardAvoidingView style={styles.contentContainer} behavior="padding">
             <TextInput
               style={{ padding: 10, maxHeight: 200 }}
               placeholder="여기에 입력하세요..."
               onChangeText={text => this.setState({ text })}
               value={this.state.text}
-              multiline={true}
+              multiline
             />
-            <View
-              style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 25 }}
-            >
-              <TouchableOpacity
-                style={styles.buttonStyle}
-                onPress={this.onButtonPress.bind(this)}
-              >
+            <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 25 }}>
+              <TouchableOpacity style={styles.buttonStyle} onPress={this.onButtonPress.bind(this)}>
                 <Text style={styles.buttonText}>등록하기</Text>
               </TouchableOpacity>
             </View>

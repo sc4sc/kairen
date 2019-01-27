@@ -5,6 +5,7 @@ import {
   LayoutAnimation,
   StyleSheet,
   Text,
+  Platform,
   UIManager,
   View,
 } from 'react-native';
@@ -21,11 +22,19 @@ import { types as incidentTypes } from '../../constants/Incidents';
 import { incidentsListRefresh } from '../../actions/incidentsList';
 import Locator from './Locator';
 
-
 class NewIncident extends React.Component {
-  componentWillMount() {
-    UIManager.setLayoutAnimationEnabledExperimental &&
+  constructor() {
+    super();
+
+    if (Platform.OS === 'android') {
       UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+
+    this.handleChangeScreen = this.handleChangeScreen.bind(this);
+    this.handlePressReport = this.handlePressReport.bind(this);
+    this.goBackScreen = this.goBackScreen.bind(this);
+    this.report = this.report.bind(this);
+    this.renderItem = this.renderItem.bind(this);
   }
 
   componentWillUnmount() {
@@ -33,40 +42,28 @@ class NewIncident extends React.Component {
   }
 
   /* TODO : 애니메이션 보강 처리 */
-
-  renderItem = ({ item: incident }) => {
-    return (
-      <ReportItem
-        type={incident.type}
-        title={incident.title}
-        onPressNext={this.handleChangeScreen}
-      />
-    );
-  };
-
-  handleChangeScreen = () => {
+  handleChangeScreen() {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
     this.props.changeStage();
-  };
+  }
 
   goBackScreen() {
     if (this.props.isFirstStage) {
       this.props.navigation.goBack();
       return;
     }
-
     this.handleChangeScreen();
   }
 
-  handlePressReport = (region) => {
+  handlePressReport(region) {
     Alert.alert(
       '제보하시겠습니까?',
       '자세한 현장 상황 확인을 위해 카이스트 안전팀이 곧 연락합니다',
       [{ text: '취소' }, { text: '확인', onPress: () => this.report(region) }]
     );
-  };
+  }
 
-  report = (region) => {
+  report(region) {
     const { latitude, longitude } = region;
     this.props.newIncidentPostRequested(
       {
@@ -78,7 +75,17 @@ class NewIncident extends React.Component {
         this.props.navigation.goBack();
       }
     );
-  };
+  }
+
+  renderItem(incident) {
+    return (
+      <ReportItem
+        type={incident.item.type}
+        title={incident.item.title}
+        onPressNext={this.handleChangeScreen}
+      />
+    );
+  }
 
   renderTypeSelector() {
     return (
@@ -90,22 +97,12 @@ class NewIncident extends React.Component {
   }
 
   renderStageIndicator(on) {
-    return (
-      <View
-        style={[styles.stageBar, { backgroundColor: on ? 'white' : '#868686' }]}
-      />
-    );
+    return <View style={[styles.stageBar, { backgroundColor: on ? 'white' : '#868686' }]} />;
   }
 
   render() {
     const { isFirstStage } = this.props;
-    const {
-      container,
-      headerContainer,
-      headerText,
-      barContainer,
-      stageBar,
-    } = styles;
+    const { container, headerContainer, headerText, barContainer } = styles;
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
