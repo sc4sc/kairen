@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, FlatList, Animated } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,6 +21,7 @@ class IncidentList extends React.Component {
   constructor() {
     super();
 
+    this.buttonPosition = new Animated.Value(0);
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleEndReached = this.handleEndReached.bind(this);
     this.renderItem = this.renderItem.bind(this);
@@ -47,13 +48,32 @@ class IncidentList extends React.Component {
     this.props.incidentsListLoadMore();
   }
 
-  renderItem(incident) {
+  isCloseToBottom({ layoutMeasurement, contentOffset, contentSize }) {
+    const paddingBottom = 50;
+    return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingBottom;
+  }
+
+  hideReportButton() {
+    Animated.timing(this.buttonPosition, {
+      duration: 500,
+      toValue: -150,
+    }).start();
+  }
+
+  showReportButton() {
+    Animated.timing(this.buttonPosition, {
+      duration: 500,
+      toValue: 0,
+    }).start();
+  }
+
+  renderItem({ item: incident }) {
     return (
       <Incident
-        data={incident.item}
+        data={incident}
         onPress={() =>
           this.props.navigation.navigate('IncidentDetail', {
-            incidentDetail: incident.item,
+            incidentDetail: incident,
           })
         }
       />
@@ -81,11 +101,19 @@ class IncidentList extends React.Component {
             refreshing={this.props.loading && this.props.incidents.length === 0}
             onRefresh={this.handleRefresh}
             onEndReached={this.handleEndReached}
+            onScroll={({ nativeEvent }) => {
+              if (this.isCloseToBottom(nativeEvent)) {
+                this.hideReportButton();
+              } else {
+                this.showReportButton();
+              }
+            }}
+            scrollEventThrottle={400}
           />
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              style={styles.reportButton}
+              style={[styles.reportButton, { bottom: this.buttonPosition }]}
               onPress={() => this.props.navigation.navigate('NewIncident')}
             >
               <Text style={styles.reportButtonText}>제보하기</Text>
@@ -96,21 +124,6 @@ class IncidentList extends React.Component {
     );
   }
 }
-
-export default connect(
-  state => {
-    const { byId, idList, loading } = state.incidentsList;
-    return {
-      incidents: idList.map(id => byId[id]),
-      loading,
-    };
-  },
-  {
-    incidentsListLoadMore,
-    incidentsListReset,
-    incidentsListRefresh,
-  }
-)(IncidentList);
 
 export const styles = StyleSheet.create({
   container: {
@@ -148,3 +161,18 @@ export const styles = StyleSheet.create({
   },
   reportButtonText: { color: 'white', fontWeight: 'bold', fontSize: 20 },
 });
+
+export default connect(
+  state => {
+    const { byId, idList, loading } = state.incidentsList;
+    return {
+      incidents: idList.map(id => byId[id]),
+      loading,
+    };
+  },
+  {
+    incidentsListLoadMore,
+    incidentsListReset,
+    incidentsListRefresh,
+  }
+)(IncidentList);

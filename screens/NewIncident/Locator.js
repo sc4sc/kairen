@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { MapView, Location } from 'expo';
-import lodash from 'lodash';
 
 import ReportItem from '../../components/ReportItem';
 import { typeMap as incidentTypeMap } from '../../constants/Incidents';
