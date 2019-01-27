@@ -1,12 +1,36 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { Feather } from '@expo/vector-icons';
 import * as actions from '../actions/newIncident';
 
 class ReportItem extends React.Component {
-  onButtonPressed() {
-    this.props.selectIncident(this.props.type);
+  constructor() {
+    super();
+
+    this.position = {};
+    this.animation = {
+      opacity: new Animated.Value(1),
+    };
+  }
+
+  componentDidMount() {
+    // Print component dimensions to console
+    this.myComponent.measure((fx, fy, width, height, px, py) => {
+      console.log(`Component width is: ${width}`);
+      console.log(`Component height is: ${height}`);
+      console.log(`X offset to frame: ${fx}`);
+      console.log(`Y offset to frame: ${fy}`);
+      console.log(`X offset to page: ${px}`);
+      console.log(`Y offset to page: ${py}`);
+    });
+  }
+
+  fadeOut() {
+    Animated.timing(this.animation.opacity, {
+      toValue: 0,
+      duration: 500,
+    }).start();
   }
 
   renderNextButton() {
@@ -26,17 +50,36 @@ class ReportItem extends React.Component {
   }
 
   render() {
-    const { title, selected, onPressNext: selectable } = this.props;
+    const { type, title, selected, onPressNext: selectable } = this.props;
     const showSelected = selectable && selected;
     const empty = <View style={{ flex: 1 }} />;
 
+    if (!this.props.visibleOthers && !selected) {
+      this.fadeOut();
+    }
+
     return (
-      <TouchableOpacity onPress={this.onButtonPressed.bind(this)} disabled={!selectable}>
-        <View style={[styles.itemContainer, { backgroundColor: selected ? '#d5d5d5' : '#5f5f5f' }]}>
+      <TouchableOpacity
+        onPress={() => {
+          this.props.selectIncident(type);
+          // this.props.recordPosition();
+          this.props.toggleVisibility();
+        }}
+        disabled={!selectable}
+      >
+        <Animated.View
+          ref={view => {
+            this.myComponent = view;
+          }}
+          style={[
+            styles.itemContainer,
+            { backgroundColor: selected ? '#d5d5d5' : '#5f5f5f', opacity: this.animation.opacity },
+          ]}
+        >
           {showSelected ? this.renderVectorIcon() : empty}
           <Text style={[styles.itemContent, { color: selected ? 'black' : 'white' }]}>{title}</Text>
           {showSelected ? this.renderNextButton() : empty}
-        </View>
+        </Animated.View>
       </TouchableOpacity>
     );
   }
@@ -60,6 +103,7 @@ const styles = {
 
 const mapStateToProps = (state, ownProps) => ({
   selected: state.newIncident.selectedIncident === ownProps.type,
+  visibleOthers: state.newIncident.visibleOthers,
 });
 
 export default connect(

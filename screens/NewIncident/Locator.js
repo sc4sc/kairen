@@ -1,16 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Animated } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { MapView, Location } from 'expo';
+import { connect } from 'react-redux';
 
 import ReportItem from '../../components/ReportItem';
 import { typeMap as incidentTypeMap } from '../../constants/Incidents';
+import * as actions from '../../actions/newIncident';
 import Layout from '../../constants/Layout';
 import Colors from '../../constants/Colors';
 
 const { Marker } = MapView;
 
-export default class Locator extends React.Component {
+class Locator extends React.Component {
   constructor() {
     super();
 
@@ -24,6 +26,14 @@ export default class Locator extends React.Component {
     };
     this.onPressReport = this.onPressReport.bind(this);
     this.changeMarkerRegion = this.changeMarkerRegion.bind(this);
+    this.animation = {
+      mapPosY: new Animated.Value(2000),
+    };
+  }
+
+  componentDidMount() {
+    this.slide();
+    this.props.toggleVisibility();
   }
 
   onPressReport() {
@@ -43,6 +53,13 @@ export default class Locator extends React.Component {
     this.map.animateToCoordinate({ longitude, latitude }, 0);
   }
 
+  slide() {
+    Animated.timing(this.animation.mapPosY, {
+      toValue: 0,
+      duration: 1000,
+    }).start();
+  }
+
   render() {
     const { latitude, longitude, latitudeDelta, longitudeDelta } = this.state.markerRegion;
 
@@ -55,35 +72,39 @@ export default class Locator extends React.Component {
           />
           <Text style={styles.subHeaderText}> 위치 선택 </Text>
         </View>
-        <View style={styles.searchBox}>
-          <Text style={styles.searchText}> 한국과학기술원 N1 </Text>
-          <Ionicons name="md-search" size={26} />
-        </View>
-        <MapView
-          ref={el => (this.map = el)}
-          style={{ flex: 1 }}
-          initialRegion={this.state.markerRegion}
-          onRegionChange={this.changeMarkerRegion}
+        <Animated.View
+          style={[styles.mapContainer, { transform: [{ translateY: this.animation.mapPosY }] }]}
         >
-          <Marker coordinate={this.state.markerRegion} />
-        </MapView>
+          <View style={styles.searchBox}>
+            <Text style={styles.searchText}> 한국과학기술원 N1 </Text>
+            <Ionicons name="md-search" size={26} />
+          </View>
+          <MapView
+            ref={el => (this.map = el)}
+            style={{ flex: 1 }}
+            initialRegion={this.state.markerRegion}
+            onRegionChange={this.changeMarkerRegion}
+          >
+            <Marker coordinate={this.state.markerRegion} />
+          </MapView>
 
-        {/* 큰 View를 만들면 지도를 가려 인터랙션이 안 됨 */}
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            width: Layout.window.width,
-            padding: 12,
-          }}
-        >
-          <TouchableOpacity style={styles.confirmButton} onPress={this.onPressReport}>
-            <Text style={styles.buttonText}>제보 등록</Text>
+          {/* 큰 View를 만들면 지도를 가려 인터랙션이 안 됨 */}
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              width: Layout.window.width,
+              padding: 12,
+            }}
+          >
+            <TouchableOpacity style={styles.confirmButton} onPress={this.onPressReport}>
+              <Text style={styles.buttonText}>제보 등록</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.gpsButton} onPress={this.locatePosition}>
+            <MaterialIcons style={{ color: 'white' }} name="gps-fixed" size={26} />
           </TouchableOpacity>
-        </View>
-        <TouchableOpacity style={styles.gpsButton} onPress={this.locatePosition}>
-          <MaterialIcons style={{ color: 'white' }} name="gps-fixed" size={26} />
-        </TouchableOpacity>
+        </Animated.View>
         <View
           style={{
             position: 'absolute',
@@ -125,6 +146,9 @@ const styles = StyleSheet.create({
   searchText: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  mapContainer: {
+    flex: 1,
   },
   gpsButton: {
     alignItems: 'center',
@@ -169,3 +193,12 @@ const styles = StyleSheet.create({
     height: Layout.window.height,
   },
 });
+
+const mapStateToProps = state => ({
+  visibleOthers: state.newIncident.visibleOthers,
+});
+
+export default connect(
+  mapStateToProps,
+  actions
+)(Locator);

@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  Alert,
-  FlatList,
-  LayoutAnimation,
-  StyleSheet,
-  Text,
-  Platform,
-  UIManager,
-  View,
-} from 'react-native';
+import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
@@ -26,11 +17,6 @@ class NewIncident extends React.Component {
   constructor() {
     super();
 
-    if (Platform.OS === 'android') {
-      UIManager.setLayoutAnimationEnabledExperimental(true);
-    }
-
-    this.handleChangeScreen = this.handleChangeScreen.bind(this);
     this.handlePressReport = this.handlePressReport.bind(this);
     this.goBackScreen = this.goBackScreen.bind(this);
     this.report = this.report.bind(this);
@@ -41,18 +27,12 @@ class NewIncident extends React.Component {
     this.props.resetSelection();
   }
 
-  /* TODO : 애니메이션 보강 처리 */
-  handleChangeScreen() {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
-    this.props.changeStage();
-  }
-
   goBackScreen() {
     if (this.props.isFirstStage) {
       this.props.navigation.goBack();
       return;
     }
-    this.handleChangeScreen();
+    this.props.changeStage();
   }
 
   handlePressReport(region) {
@@ -77,12 +57,12 @@ class NewIncident extends React.Component {
     );
   }
 
-  renderItem(incident) {
+  renderItem({ item: incident }) {
     return (
       <ReportItem
-        type={incident.item.type}
-        title={incident.item.title}
-        onPressNext={this.handleChangeScreen}
+        type={incident.type}
+        title={incident.title}
+        onPressNext={this.props.changeStage}
       />
     );
   }
