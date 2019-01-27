@@ -1,5 +1,14 @@
 import React from 'react';
-import { Alert, FlatList, LayoutAnimation, StyleSheet, Text, UIManager, View } from 'react-native';
+import {
+  Alert,
+  FlatList,
+  LayoutAnimation,
+  StyleSheet,
+  Text,
+  Platform,
+  UIManager,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,17 +26,15 @@ class NewIncident extends React.Component {
   constructor() {
     super();
 
+    if (Platform.OS === 'android') {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+
     this.handleChangeScreen = this.handleChangeScreen.bind(this);
     this.handlePressReport = this.handlePressReport.bind(this);
     this.goBackScreen = this.goBackScreen.bind(this);
     this.report = this.report.bind(this);
     this.renderItem = this.renderItem.bind(this);
-  }
-
-  componentWillMount() {
-    const androidAnimationOn =
-      UIManager.setLayoutAnimationEnabledExperimental &&
-      UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
   componentWillUnmount() {

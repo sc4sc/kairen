@@ -13,8 +13,8 @@ import {
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
-import * as apis from '../apis';
 
+import * as apis from '../apis';
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 

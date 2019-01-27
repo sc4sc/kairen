@@ -1,4 +1,4 @@
-import produce from 'immer';
+import { produce } from 'immer';
 import {
   INCIDENTS_LIST_APPEND,
   INCIDENTS_LIST_ENDED,
@@ -16,8 +16,9 @@ const defaultState = {
   loading: false,
 };
 
-export default (state = defaultState, action) => {
-  return produce(state, draft => {
+export default (state = defaultState, action) =>
+  produce(state, draftState => {
+    const draft = draftState;
     switch (action.type) {
       case INCIDENTS_LIST_LOAD_REQUESTED: {
         draft.loading = true;
@@ -46,9 +47,7 @@ export default (state = defaultState, action) => {
           draft.byId[incident.id] = incident;
         });
 
-        draft.idList = draft.idList.concat(
-          incidents.map(incident => incident.id)
-        );
+        draft.idList = draft.idList.concat(incidents.map(incident => incident.id));
 
         draft.readUntil = incidents[incidents.length - 1].createdAt;
         return;
@@ -59,4 +58,3 @@ export default (state = defaultState, action) => {
       }
     }
   });
-};

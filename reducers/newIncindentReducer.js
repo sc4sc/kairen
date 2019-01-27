@@ -1,4 +1,4 @@
-import produce from 'immer';
+import { produce } from 'immer';
 import {
   NEW_INCIDENT_CHANGE_STAGE,
   NEW_INCIDENT_RESET,
@@ -16,13 +16,15 @@ const defaultState = {
   },
 };
 
-export default (state = defaultState, action) => {
-  return produce(state, draft => {
-    switch (action.type) {
+export default (state = defaultState, action) =>
+  produce(state, draftState => {
+    const draft = draftState;
 
+    switch (action.type) {
       case NEW_INCIDENT_RESET: {
         draft.isFirstStage = true;
         draft.selectedIncident = null;
+        return;
       }
 
       case NEW_INCIDENT_TYPE_SELECT: {
@@ -32,10 +34,10 @@ export default (state = defaultState, action) => {
 
       case NEW_INCIDENT_CHANGE_STAGE: {
         draft.isFirstStage = !draft.isFirstStage;
+        return;
       }
 
       default:
         return;
     }
   });
-};

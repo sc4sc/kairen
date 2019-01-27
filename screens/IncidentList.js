@@ -7,6 +7,7 @@ import { Notifications } from 'expo';
 
 import { getBottomSpace } from '../utils';
 import Colors from '../constants/Colors';
+import Layout from '../constants/Layout';
 import Incident from '../components/Incident';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
@@ -81,14 +82,16 @@ class IncidentList extends React.Component {
             onRefresh={this.handleRefresh}
             onEndReached={this.handleEndReached}
           />
-        </SafeAreaView>
 
-        <TouchableOpacity
-          style={styles.reportButton}
-          onPress={() => this.props.navigation.navigate('NewIncident')}
-        >
-          <Text style={styles.reportButtonText}>제보하기</Text>
-        </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.reportButton}
+              onPress={() => this.props.navigation.navigate('NewIncident')}
+            >
+              <Text style={styles.reportButtonText}>제보하기</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
       </View>
     );
   }
@@ -116,7 +119,7 @@ export const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   headerContainer: {
-    paddingBottom: 10,
+    paddingVertical: 10,
     paddingHorizontal: 20,
     flexDirection: 'row',
     borderBottomWidth: 1,
@@ -124,11 +127,15 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: { fontSize: 28, fontWeight: '800', color: Colors.defaultBlack },
+  buttonContainer: {
+    position: 'absolute',
+    width: Layout.window.width,
+    bottom: 38,
+  },
   reportButton: {
-    backgroundColor: Colors.buttonGrey,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    height: 86,
+    backgroundColor: '#ff9412',
+    borderRadius: 5,
+    height: 63,
     alignItems: 'center',
     padding: 16,
     marginHorizontal: 15,
@@ -139,5 +146,5 @@ export const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
   },
-  reportButtonText: { color: 'white', fontWeight: 'bold', fontSize: 15 },
+  reportButtonText: { color: 'white', fontWeight: 'bold', fontSize: 20 },
 });
