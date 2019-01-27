@@ -6,11 +6,6 @@ export const types = [
       'http://m.safekorea.go.kr/idsiSFK/neo/main_m/sot/chemical.html',
   },
   {
-    type: 'fire',
-    title: '불이야',
-    safetyProtocol: 'http://m.safekorea.go.kr/idsiSFK/neo/main_m/sot/fire.html',
-  },
-  {
     type: 'conflagration',
     title: '화재',
     safetyProtocol: 'http://m.safekorea.go.kr/idsiSFK/neo/main_m/sot/fire.html',
