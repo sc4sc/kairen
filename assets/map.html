@@ -1,25 +1,59 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-  <title>간단한 지도 표시하기</title>
-  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=dmtb2e7nym"></script>
-</head>
-<body>
-<div id="a"></div>
-<div id="map" style="width:100%;height:400px;"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
+    <title>간단한 지도 표시하기</title>
+    <script
+      type="text/javascript"
+      src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=dmtb2e7nym"
+    ></script>
+  </head>
+  <body>
+    <div id="a" style="margin-top: 60px;"></div>
+    <div id="map" style="width:100%;height:400px;"></div>
+    <button onclick="postMessage('test')">asdfasfasdfasdfasdfasdfasdfasdfasdf</button>
 
-<script>
-  document.getElementById('a').innerHTML = 'url: ' + location.href
+    <script>
+      document.getElementById('a').innerHTML = 'url: ' + location.href;
 
-  var mapOptions = {
-    center: new naver.maps.LatLng(37.3595704, 127.105399),
-    zoom: 10
-  };
-  var map = new naver.maps.Map('map', mapOptions);
+      var mapOptions = {
+        center: new naver.maps.LatLng(37.3595704, 127.105399),
+        zoom: 10,
+      };
+      var map = new naver.maps.Map('map', mapOptions);
 
-</script>
-</body>
+      var mapElem = document.getElementById('map');
+      document.addEventListener('message', function(event) {
+        var data = event.data;
+        postMessage(data);
+        var action = JSON.parse(data);
+        switch (action.type) {
+          case 'resize':
+            resizeMap(action.payload.width, action.payload.height);
+            return;
+          case 'resizeToWindow':
+            resizeToWindow();
+            return;
+          default:
+            return;
+        }
+      });
+
+      function resizeToWindow() {
+        postMessage('resizeToWindow')
+        postMessage(window.innerWidth + ',' + window.innerHeight)
+        resizeMap(window.innerWidth, window.innerHeight);
+      }
+
+      function resizeMap(width, height) {
+        mapElem.style.width = width;
+        mapElem.style.height = height;
+      }
+    </script>
+  </body>
 </html>

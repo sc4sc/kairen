@@ -1,6 +1,7 @@
 import React from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 import { Provider } from 'react-redux';
+import { Asset } from 'expo'
 
 import store from './store';
 import AppNavigator from './navigation/AppNavigator';
@@ -8,6 +9,10 @@ import AppNavigator from './navigation/AppNavigator';
 console.disableYellowBox = true;
 
 export default class App extends React.Component {
+  componentDidMount() {
+    Asset.loadAsync(require('./assets/map.html'));
+  }
+
   render() {
     return (
       <Provider store={store}>
