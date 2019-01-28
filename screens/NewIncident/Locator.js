@@ -27,12 +27,14 @@ class Locator extends React.Component {
     this.onPressReport = this.onPressReport.bind(this);
     this.changeMarkerRegion = this.changeMarkerRegion.bind(this);
     this.animation = {
-      mapPosY: new Animated.Value(2000),
+      mapPosY: new Animated.Value(Layout.window.height),
+      itemPosY: new Animated.Value(0),
+      opacity: new Animated.Value(0),
     };
   }
 
-  componentDidMount() {
-    this.slide();
+  componentWillMount() {
+    this.screenTransition();
     this.props.toggleVisibility();
   }
 
@@ -53,11 +55,23 @@ class Locator extends React.Component {
     this.map.animateToCoordinate({ longitude, latitude }, 0);
   }
 
-  slide() {
-    Animated.timing(this.animation.mapPosY, {
-      toValue: 0,
-      duration: 1000,
-    }).start();
+  screenTransition() {
+    this.animation.itemPosY = new Animated.Value(this.props.oldPosition.py);
+
+    Animated.parallel([
+      Animated.timing(this.animation.itemPosY, {
+        toValue: 0,
+        duration: 800,
+      }),
+      Animated.timing(this.animation.mapPosY, {
+        toValue: 0,
+        duration: 800,
+      }),
+      Animated.timing(this.animation.opacity, {
+        toValue: 1,
+        duration: 1000,
+      }),
+    ]).start();
   }
 
   render() {
@@ -65,13 +79,21 @@ class Locator extends React.Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ marginHorizontal: 20 }}>
-          <ReportItem
-            type={this.props.selectedIncident}
-            title={incidentTypeMap[this.props.selectedIncident].title}
-          />
-          <Text style={styles.subHeaderText}> 위치 선택 </Text>
-        </View>
+        <Animated.View
+          style={{ marginHorizontal: 20, transform: [{ translateY: this.animation.itemPosY }] }}
+        >
+          <View ref="view">
+            <ReportItem
+              type={this.props.selectedIncident}
+              title={incidentTypeMap[this.props.selectedIncident].title}
+            />
+          </View>
+        </Animated.View>
+        <Animated.Text style={[styles.subHeaderText, { opacity: this.animation.opacity }]}>
+          {' '}
+          위치 선택{' '}
+        </Animated.Text>
+
         <Animated.View
           style={[styles.mapContainer, { transform: [{ translateY: this.animation.mapPosY }] }]}
         >
@@ -128,6 +150,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white',
     marginBottom: 10,
+    marginHorizontal: 20,
   },
   searchBox: {
     flexDirection: 'row',
@@ -196,6 +219,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   visibleOthers: state.newIncident.visibleOthers,
+  oldPosition: state.newIncident.oldPosition,
 });
 
 export default connect(

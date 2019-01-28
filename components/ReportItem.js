@@ -8,37 +8,27 @@ class ReportItem extends React.Component {
   constructor() {
     super();
 
+    this.view = null;
     this.position = {};
     this.animation = {
       opacity: new Animated.Value(1),
     };
   }
 
-  componentDidMount() {
-    // Print component dimensions to console
-    this.myComponent.measure((fx, fy, width, height, px, py) => {
-      console.log(`Component width is: ${width}`);
-      console.log(`Component height is: ${height}`);
-      console.log(`X offset to frame: ${fx}`);
-      console.log(`Y offset to frame: ${fy}`);
-      console.log(`X offset to page: ${px}`);
-      console.log(`Y offset to page: ${py}`);
-    });
+  getComponentInfo() {
+    if (this.refs.view) {
+      this.refs.view.measure((fx, fy, width, height, px, py) => {
+        this.position = { px, py };
+        this.props.recordPosition(this.position);
+      });
+    }
   }
 
   fadeOut() {
     Animated.timing(this.animation.opacity, {
       toValue: 0,
-      duration: 500,
-    }).start();
-  }
-
-  renderNextButton() {
-    return (
-      <Text style={{ flex: 1, fontSize: 16, fontWeight: 'bold' }} onPress={this.props.onPressNext}>
-        다음
-      </Text>
-    );
+      duration: 200,
+    }).start(this.props.changeStage);
   }
 
   renderVectorIcon() {
@@ -60,17 +50,15 @@ class ReportItem extends React.Component {
 
     return (
       <TouchableOpacity
+        ref="view"
         onPress={() => {
           this.props.selectIncident(type);
-          // this.props.recordPosition();
+          this.getComponentInfo();
           this.props.toggleVisibility();
         }}
         disabled={!selectable}
       >
         <Animated.View
-          ref={view => {
-            this.myComponent = view;
-          }}
           style={[
             styles.itemContainer,
             { backgroundColor: selected ? '#d5d5d5' : '#5f5f5f', opacity: this.animation.opacity },
@@ -78,7 +66,7 @@ class ReportItem extends React.Component {
         >
           {showSelected ? this.renderVectorIcon() : empty}
           <Text style={[styles.itemContent, { color: selected ? 'black' : 'white' }]}>{title}</Text>
-          {showSelected ? this.renderNextButton() : empty}
+          {empty}
         </Animated.View>
       </TouchableOpacity>
     );

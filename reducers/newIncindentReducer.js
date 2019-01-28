@@ -11,7 +11,7 @@ const defaultState = {
   selectedIncident: null,
   isFirstStage: true,
   visibleOthers: true,
-  priorItemPos: {},
+  oldPosition: {},
   query: '한국과학기술원 N1 404',
   map: {
     lat: 36.374159,
@@ -46,7 +46,7 @@ export default (state = defaultState, action) =>
       }
 
       case NEW_INCIDENT_RECORD_POSITION: {
-        draft.priorItemPos = action.payload;
+        draft.oldPosition = action.payload;
         return;
       }
 

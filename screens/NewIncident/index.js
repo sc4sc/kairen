@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, Text, View, Animated } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,6 +21,7 @@ class NewIncident extends React.Component {
     this.goBackScreen = this.goBackScreen.bind(this);
     this.report = this.report.bind(this);
     this.renderItem = this.renderItem.bind(this);
+    this.opacity = new Animated.Value(1);
   }
 
   componentWillUnmount() {
@@ -41,6 +42,13 @@ class NewIncident extends React.Component {
       '자세한 현장 상황 확인을 위해 카이스트 안전팀이 곧 연락합니다',
       [{ text: '취소' }, { text: '확인', onPress: () => this.report(region) }]
     );
+  }
+
+  fadeOutText() {
+    Animated.timing(this.opacity, {
+      toValue: 0,
+      duration: 500,
+    }).start();
   }
 
   report(region) {
@@ -70,7 +78,9 @@ class NewIncident extends React.Component {
   renderTypeSelector() {
     return (
       <View style={{ paddingHorizontal: 20, flex: 1 }}>
-        <Text style={styles.subHeaderText}>긴급제보</Text>
+        <Animated.Text style={[styles.subHeaderText, { opacity: this.opacity }]}>
+          긴급제보
+        </Animated.Text>
         <FlatList data={incidentTypes} renderItem={this.renderItem} />
       </View>
     );
@@ -83,6 +93,10 @@ class NewIncident extends React.Component {
   render() {
     const { isFirstStage } = this.props;
     const { container, headerContainer, headerText, barContainer } = styles;
+
+    if (this.props.visibleOthers) {
+      this.fadeOutText();
+    }
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -121,10 +135,11 @@ class NewIncident extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { selectedIncident, isFirstStage } = state.newIncident;
+  const { selectedIncident, isFirstStage, visibleOthers } = state.newIncident;
   return {
     selectedIncident,
     isFirstStage,
+    visibleOthers,
   };
 };
 
