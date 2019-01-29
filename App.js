@@ -1,25 +1,43 @@
 import React from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Provider } from 'react-redux';
-import { Asset, Permissions } from 'expo';
+import { AppLoading, Font, Icon } from 'expo';
+import { FontAwesome } from '@expo/vector-icons';
 
 import store from './store';
 import AppNavigator from './navigation/AppNavigator';
-import { requestPermission } from './utils';
 
 console.disableYellowBox = true;
 
+function cacheFonts(fonts) {
+  return fonts.map(font => Font.loadAsync(font));
+}
+
 export default class App extends React.Component {
-  componentDidMount() {
-    Asset.loadAsync(require('./assets/map.html'));
-    requestPermission(Permissions.LOCATION);
+  state = {
+    isReady: false,
+  };
+
+  async _loadAssetsAsync() {
+    const awesomeFont = cacheFonts([FontAwesome.font]);
+    const iconFont = Font.loadAsync({ ...Icon.Ionicons.font });
+    await Promise.all([...awesomeFont, ...iconFont]);
   }
 
   render() {
+    if (!this.state.isReady) {
+      return (
+        <AppLoading
+          startAsync={this._loadAssetsAsync}
+          onFinish={() => this.setState({ isReady: true })}
+          onError={console.warn}
+        />
+      );
+    }
+
     return (
       <Provider store={store}>
         <View style={styles.container}>
-          {<StatusBar barStyle="dark-content" />}
           <AppNavigator />
         </View>
       </Provider>
