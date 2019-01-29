@@ -34,14 +34,19 @@ export default class NaverMap extends React.Component {
     if (prevProps.markers !== this.props.markers) {
       this.updateMarkers();
     }
+    if (prevProps.draggable !== this.props.draggable) {
+      this.updateOptions();
+    }
   }
 
   onWebViewInit = () => {
-    this.postAction('panTo', {
-      coords: { lat: 36.37334626411133, lng: 127.36397930294454 },
-    });
+    // this.postAction('panTo', {
+    //   coords: { lat: 36.37334626411133, lng: 127.36397930294454 },
+    // });
+    this.setCenter({ lat: 36.37334626411133, lng: 127.36397930294454 });
     this.postAction('renderKAISTpolyline', {});
     this.updateMarkers();
+    this.updateOptions();
   };
 
   onPress = coords => {
@@ -52,6 +57,27 @@ export default class NaverMap extends React.Component {
 
   updateMarkers = () => {
     this.postAction('updateMarkers', this.props.markers);
+  };
+
+  updateOptions = () => {
+    let draggable = this.props.draggable;
+    if (draggable === undefined) {
+      draggable = true;
+    }
+    const options = {
+      draggable,
+    };
+    this.setOptions(options);
+  };
+
+  /* supporting methods */
+
+  setOptions = options => {
+    this.postAction('setOptions', options);
+  };
+
+  setCenter = coords => {
+    this.postAction('setCenter', coords);
   };
 
   panTo = (coords, transitionOptions) => {

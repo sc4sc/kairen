@@ -26,6 +26,7 @@ import { formatDate, getBottomSpace } from '../utils';
 
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import { getLocalData } from '../constants/Incidents';
+import NaverMap from '../components/NaverMap';
 
 const { Marker } = MapView;
 class IncidentDetail extends React.Component {
@@ -38,7 +39,10 @@ class IncidentDetail extends React.Component {
   }
 
   componentWillMount() {
-    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.handleRefresh);
+    this.willFocusSubscription = this.props.navigation.addListener(
+      'willFocus',
+      this.handleRefresh
+    );
     this.handleRefresh();
   }
 
@@ -67,7 +71,9 @@ class IncidentDetail extends React.Component {
 
     return (
       <View>
-        <Text style={{ color: Colors.dateLightGrey }}>{formatDate(incidentDetail.createdAt)}</Text>
+        <Text style={{ color: Colors.dateLightGrey }}>
+          {formatDate(incidentDetail.createdAt)}
+        </Text>
         <View
           style={{
             flexDirection: 'row',
@@ -150,7 +156,10 @@ class IncidentDetail extends React.Component {
 
     return (
       <TouchableOpacity
-        style={[styles.commentButton, { backgroundColor: Colors.lichen, marginBottom: 10 }]}
+        style={[
+          styles.commentButton,
+          { backgroundColor: Colors.lichen, marginBottom: 10 },
+        ]}
         onPress={() => {
           this.props.navigation.navigate('NewProgress', { incidentId });
         }}
@@ -176,7 +185,9 @@ class IncidentDetail extends React.Component {
     } else {
       recentView = (
         <View style={{ alignItems: 'center' }}>
-          <Text style={{ fontSize: 13, color: '#b7b7b7' }}>진행 상황이 없습니다.</Text>
+          <Text style={{ fontSize: 13, color: '#b7b7b7' }}>
+            진행 상황이 없습니다.
+          </Text>
         </View>
       );
     }
@@ -260,26 +271,22 @@ class IncidentDetail extends React.Component {
         <AndroidTopMargin />
 
         <SafeAreaView>
-          <MapView
+          <NaverMap
+            draggable={false}
             style={styles.map}
-            rotateEnabled={false}
-            scrollEnabled={false}
-            zoomEnabled={false}
-            pitchEnabled={false}
-            initialRegion={{
-              latitude,
-              longitude,
-              latitudeDelta: 0.00522,
-              longitudeDelta: 0.00221,
-            }}
-          >
-            <Marker coordinate={{ latitude, longitude }} />
-          </MapView>
+            markers={[
+              { key: 'incidentPos', coords: { lat: latitude, lng: longitude } },
+            ]}
+          />
           <TouchableOpacity
             style={{ position: 'absolute', top: 50, right: 16 }}
             onPress={() => this.props.navigation.goBack()}
           >
-            <AntDesign name={'closecircle'} style={{ opacity: 0.3 }} size={32} />
+            <AntDesign
+              name={'closecircle'}
+              style={{ opacity: 0.3 }}
+              size={32}
+            />
           </TouchableOpacity>
         </SafeAreaView>
         <View style={{ paddingVertical: 18, paddingHorizontal: 15 }}>
@@ -289,7 +296,9 @@ class IncidentDetail extends React.Component {
           <View style={{ height: 24 }} />
           {this.renderProgress()}
           <View style={{ height: 24 }} />
-          <Text style={[styles.subheaderContainer, styles.subheaderText]}>Comment</Text>
+          <Text style={[styles.subheaderContainer, styles.subheaderText]}>
+            Comment
+          </Text>
           <TouchableOpacity
             style={styles.commentButton}
             onPress={() => {
@@ -299,7 +308,11 @@ class IncidentDetail extends React.Component {
             <Text style={styles.commentButtonText}>새로운 의견 등록하기</Text>
           </TouchableOpacity>
 
-          <FlatList data={this.state.commentList} keyExtractor={_keyExtractor} renderItem={this.renderComment} />
+          <FlatList
+            data={this.state.commentList}
+            keyExtractor={_keyExtractor}
+            renderItem={this.renderComment}
+          />
         </View>
       </KeyboardAwareScrollView>
     );
