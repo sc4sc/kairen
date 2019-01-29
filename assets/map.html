@@ -55,37 +55,62 @@
               return;
             }
             case 'updateMarkers': {
-              const markers = payload;
+                const markers = payload;
 
-              const removedMarkerSet = new Set(Object.keys(markers));
+                const removedMarkerSet = new Set(Object.keys(markers));
 
-              // Efficient instance managing
-              markers.forEach(function(marker, index) {
-                var key = index;
-                if (marker.key) {
-                  key = marker.key;
+                // Efficient instance managing
+                markers.forEach(function (marker, index) {
+                    var key = index;
+                    if (marker.key) {
+                        key = marker.key;
+                    }
+
+                    var markerInstance = markerById[key];
+                    // Create
+                    if (!markerInstance) {
+                        markerInstance = new naver.maps.Marker({
+                            position: marker.coords,
+                            map: map,
+                        });
+                        markerById[key] = markerInstance;
+                    } else {
+                        // Update
+                        markerInstance.setPosition(marker.coords);
+                        removedMarkerSet.delete(key);
+                    }
+                });
+                // Delete
+                for (var removedMarkerKey of removedMarkerSet) {
+                    var markerInstance = markerById[removedMarkerKey];
+                    delete markerById[removedMarkerKey];
+                    markerInstance.setMap(null);
                 }
-
-                var markerInstance = markerById[key];
-                // Create
-                if (!markerInstance) {
-                  markerInstance = new naver.maps.Marker({
-                    position: marker.coords,
+            }
+            case 'renderKAISTpolyline': {
+              return new naver.maps.Polyline({
                     map: map,
-                  });
-                  markerById[key] = markerInstance;
-                } else {
-                  // Update
-                  markerInstance.setPosition(marker.coords);
-                  removedMarkerSet.delete(key);
-                }
-              });
-              // Delete
-              for (var removedMarkerKey of removedMarkerSet) {
-                var markerInstance = markerById[removedMarkerKey];
-                delete markerById[removedMarkerKey];
-                markerInstance.setMap(null);
-              }
+                    path: [
+                        new naver.maps.LatLng(36.3632011, 127.3594124), // 쪽문
+                        new naver.maps.LatLng(36.3694068, 127.3700806), // 파팔라도
+                        new naver.maps.LatLng(36.3708291, 127.3681385), // 세종관
+                        new naver.maps.LatLng(36.3734516, 127.3672869), // 동문
+                        new naver.maps.LatLng(36.3745147, 127.3666273),
+                        new naver.maps.LatLng(36.3751809, 127.3658345),
+                        new naver.maps.LatLng(36.3754416, 127.3651875),
+                        new naver.maps.LatLng(36.3756298, 127.364217), // n1
+                        new naver.maps.LatLng(36.3759743, 127.3581072), // 지혜관
+                        new naver.maps.LatLng(36.3757759, 127.3580853),
+                        new naver.maps.LatLng(36.3750822, 127.3585213), // 신뢰관
+                        new naver.maps.LatLng(36.3749558, 127.3583766),
+                        new naver.maps.LatLng(36.3750976, 127.3563251), // 아름관
+                        new naver.maps.LatLng(36.3730601, 127.3562954), // 테니스장
+                        new naver.maps.LatLng(36.3722491, 127.356519), // 교수아파트
+                        new naver.maps.LatLng(36.3714723, 127.355295), // 나눔관
+                        new naver.maps.LatLng(36.369731, 127.355265), // 인터내셔널 빌리지
+                        new naver.maps.LatLng(36.363307, 127.359622), // 쪽문
+                    ]
+                });
             }
             default:
               return;
