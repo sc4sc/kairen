@@ -40,6 +40,7 @@ export default class NaverMap extends React.Component {
     this.postAction('panTo', {
       coords: { lat: 36.37334626411133, lng: 127.36397930294454 },
     });
+    this.postAction('renderKAISTpolyline', {});
     this.updateMarkers();
   };
 
