@@ -1,17 +1,18 @@
 import React from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 import { Provider } from 'react-redux';
-import {Asset, Location} from 'expo'
+import { Asset, Permissions } from 'expo';
 
 import store from './store';
 import AppNavigator from './navigation/AppNavigator';
+import { requestPermission } from './utils';
 
 console.disableYellowBox = true;
 
 export default class App extends React.Component {
   componentDidMount() {
     Asset.loadAsync(require('./assets/map.html'));
-    Location.requestPermissionsAsync();
+    requestPermission(Permissions.LOCATION);
   }
 
   render() {
