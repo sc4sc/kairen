@@ -26,9 +26,14 @@ export default class MapTest extends React.Component {
     this.setState({ html: await response.text() });
   };
 
-  resize = () => {
-    this._webview.postMessage(JSON.stringify({ type: 'resizeToWindow'}));
+  onPress = () => {
+    this.postAction({
+      type: 'panTo',
+      payload: { coords: { lat: 36.37334626411133, lng: 127.36397930294454 }},
+    });
   };
+
+  postAction = action => this._webview.postMessage(JSON.stringify(action));
 
   // https://medium.com/@azharuddin31/react-native-pass-data-to-webview-and-get-data-out-of-webview-792ffbe7eb75
   handleMessage = ({ nativeEvent }) => {
@@ -38,7 +43,7 @@ export default class MapTest extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'stretch' }}>
-        <TouchableOpacity style={{ marginTop: 100 }} onPress={this.resize}>
+        <TouchableOpacity style={{ marginTop: 100 }} onPress={this.onPress}>
           <Text>Touch me</Text>
         </TouchableOpacity>
         <WebView
@@ -49,7 +54,7 @@ export default class MapTest extends React.Component {
             html: this.state.html,
             baseUrl: 'http://localhost',
           }}
-          style={{ flex: 1}}
+          style={{ flex: 1 }}
           onError={err => console.log('onError', err)}
           onMessage={this.handleMessage}
         />
