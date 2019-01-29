@@ -24,6 +24,7 @@ export default class Locator extends React.Component {
     };
     this.onPressReport = this.onPressReport.bind(this);
     this.changeMarkerRegion = this.changeMarkerRegion.bind(this);
+    this.locatePosition = this.locatePosition.bind(this);
   }
 
   onPressReport() {
@@ -35,7 +36,6 @@ export default class Locator extends React.Component {
   }
 
   async locatePosition() {
-    await Location.requestPermissionsAsync();
     const location = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.Balanced,
     });

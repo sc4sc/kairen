@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, FlatList, Animated } from 're
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
-import { Notifications } from 'expo';
+import { Notifications, Location } from 'expo';
 
 import { getBottomSpace } from '../utils';
 import Colors from '../constants/Colors';
@@ -28,6 +28,7 @@ class IncidentList extends React.Component {
   }
 
   componentDidMount() {
+    Location.requestPermissionsAsync();
     this.notificationSubscription = Notifications.addListener(notification =>
       console.log('Notification arrived:', notification)
     );
