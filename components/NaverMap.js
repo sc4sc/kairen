@@ -30,12 +30,12 @@ export default class NaverMap extends React.Component {
     });
   };
 
-  onPress = () => {
-    this.postAction({
-      type: 'panTo',
-      payload: { coords: { lat: 36.37334626411133, lng: 127.36397930294454 } },
-    });
-  };
+  // onPress = () => {
+  //   this.postAction({
+  //     type: 'panTo',
+  //     payload: { coords: { lat: 36.37334626411133, lng: 127.36397930294454 } },
+  //   });
+  // };
 
   onWebViewInit = () => {
     this.postAction({
@@ -60,20 +60,20 @@ export default class NaverMap extends React.Component {
 
   render() {
     return (
-      <View style={this.props.style}>
-        <TouchableOpacity style={{ marginTop: 30 }} onPress={this.onPress}>
-          <Text>Go To KAIST</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ marginTop: 10 }}
-          onPress={() =>
-            this.setState(s => ({
-              hide: !s.hide,
-            }))
-          }
-        >
-          <Text>{this.state.hide ? 'Show' : 'Hide'}</Text>
-        </TouchableOpacity>
+      <View style={{ flex: 1, alignItems: 'stretch' }}>
+        {/*<TouchableOpacity style={{ marginTop: 30 }} onPress={this.onPress}>*/}
+          {/*<Text>Go To KAIST</Text>*/}
+        {/*</TouchableOpacity>*/}
+        {/*<TouchableOpacity*/}
+          {/*style={{ marginTop: 10 }}*/}
+          {/*onPress={() =>*/}
+            {/*this.setState(s => ({*/}
+              {/*hide: !s.hide,*/}
+            {/*}))*/}
+          {/*}*/}
+        {/*>*/}
+          {/*<Text>{this.state.hide ? 'Show' : 'Hide'}</Text>*/}
+        {/*</TouchableOpacity>*/}
         {this.state.hide ? null : (
           <WebView
             ref={webview => {
