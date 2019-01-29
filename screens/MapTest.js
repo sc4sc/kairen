@@ -8,6 +8,6 @@ export default class MapTest extends React.Component {
   state = { html: '<p>Loading</p>', hide: false };
 
   render() {
-    return <NaverMap style={{ flex: 1, alignItems: 'center' }} />;
+    return <NaverMap style={{ flex: 1, alignItems: 'stretch' }} />;
   }
 }

@@ -22,20 +22,13 @@ async function loadHtml() {
 }
 
 export default class NaverMap extends React.Component {
-  state = { html: '<p>Loading</p>', hide: false };
+  state = { html: '<p>Loading</p>', };
 
   componentWillMount = async () => {
     loadHtml().then(html => {
       this.setState({ html });
     });
   };
-
-  // onPress = () => {
-  //   this.postAction({
-  //     type: 'panTo',
-  //     payload: { coords: { lat: 36.37334626411133, lng: 127.36397930294454 } },
-  //   });
-  // };
 
   onWebViewInit = () => {
     this.postAction({
@@ -60,20 +53,7 @@ export default class NaverMap extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'stretch' }}>
-        {/*<TouchableOpacity style={{ marginTop: 30 }} onPress={this.onPress}>*/}
-          {/*<Text>Go To KAIST</Text>*/}
-        {/*</TouchableOpacity>*/}
-        {/*<TouchableOpacity*/}
-          {/*style={{ marginTop: 10 }}*/}
-          {/*onPress={() =>*/}
-            {/*this.setState(s => ({*/}
-              {/*hide: !s.hide,*/}
-            {/*}))*/}
-          {/*}*/}
-        {/*>*/}
-          {/*<Text>{this.state.hide ? 'Show' : 'Hide'}</Text>*/}
-        {/*</TouchableOpacity>*/}
+      <View style={[this.props.style]}>
         {this.state.hide ? null : (
           <WebView
             ref={webview => {
