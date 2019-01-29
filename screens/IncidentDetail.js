@@ -247,6 +247,8 @@ class IncidentDetail extends React.Component {
     const latitude = Number(lat);
     const longitude = Number(lng);
 
+    const _keyExtractor = (item, index) => item.id.toString();
+
     return (
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollingContainer}
@@ -297,7 +299,7 @@ class IncidentDetail extends React.Component {
             <Text style={styles.commentButtonText}>새로운 의견 등록하기</Text>
           </TouchableOpacity>
 
-          <FlatList data={this.state.commentList} renderItem={this.renderComment} />
+          <FlatList data={this.state.commentList} keyExtractor={_keyExtractor} renderItem={this.renderComment} />
         </View>
       </KeyboardAwareScrollView>
     );
