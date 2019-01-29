@@ -24,7 +24,7 @@ export const getStatusBarHeight = () => {
 export { getBottomSpace } from 'react-native-iphone-x-helper';
 
 export function formatDate(dateString) {
-  return moment(dateString).format('ll');
+  return moment(dateString).format('lll');
 }
 
 export async function requestPermission(type) {
