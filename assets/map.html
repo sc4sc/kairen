@@ -32,53 +32,59 @@
     <script>
       // document.getElementById('a').innerHTML = 'url: ' + location.href;
 
-      var LatLng = naver.maps.LatLng;
-
-      var mapOptions = {
-        center: new LatLng(37.3595704, 127.105399),
-        zoom: 10,
-      };
-
-      var mapContainer = document.getElementById('map');
-      var map = null;
-
-      initMap(mapContainer, mapOptions);
-
-      document.addEventListener('message', function(event) {
-        var data = event.data;
-        postMessage(data);
-        var action = JSON.parse(data);
-        actionHandler(action);
-      });
-
-      function actionHandler(action) {
-        var type = action.type;
-        var payload = action.payload;
-        switch (action.type) {
-          case 'initialize': {
-            initMap(mapContainer, mapOptions);
-            return;
+      (function() {
+        function actionHandler(action) {
+          var type = action.type;
+          var payload = action.payload;
+          switch (action.type) {
+            case 'pong': {
+              clearInterval(ping);
+              return;
+            }
+            case 'initialize': {
+              initMap(mapContainer, mapOptions);
+              return;
+            }
+            case 'setCenter': {
+              // CoordLiteral
+              map.setCenter(payload);
+              return;
+            }
+            case 'panTo': {
+              map.panTo(payload.coords, {});
+              return;
+            }
+            default:
+              return;
           }
-          case 'setCenter': {
-            // CoordLiteral
-            map.setCenter(payload);
-            return;
-          }
-          case 'panTo': {
-            map.panTo(payload.coords, {});
-            return;
-          }
-          default:
-            return;
         }
-      }
 
-      function initMap(el, options) {
-        if (map) {
-          map.destroy();
+        function initMap(el, options) {
+          if (map) {
+            map.destroy();
+          }
+          map = new naver.maps.Map(el, options);
         }
-        map = new naver.maps.Map(el, options);
-      }
+
+        document.addEventListener('message', function(event) {
+          var data = event.data;
+          postMessage("receiving " + data);
+          var action = JSON.parse(data);
+          actionHandler(action);
+        });
+
+        var ping = setInterval(() => postMessage('ping'), 66);
+
+        var mapOptions = {
+          center: { lat: 36.37334626411133, lng: 127.36397930294454 },
+          zoom: 11,
+        };
+
+        var mapContainer = document.getElementById('map');
+        var map = null;
+
+        initMap(mapContainer, mapOptions);
+      })();
     </script>
   </body>
 </html>
