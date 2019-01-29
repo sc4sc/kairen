@@ -137,6 +137,18 @@
             markerById = {};
           }
           map = new naver.maps.Map(el, options);
+          var legalButton = document
+            .evaluate(
+              "//a[contains(@href,'legal.html')]",
+              document,
+              null,
+              XPathResult.UNORDERED_NODE_ITERATOR_TYPE,
+              null
+            )
+            .iterateNext();
+          if (legalButton) {
+            legalButton.removeAttribute('href');
+          }
         }
 
         document.addEventListener('message', function(event) {
