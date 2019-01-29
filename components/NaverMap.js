@@ -22,7 +22,7 @@ async function loadHtml() {
 }
 
 export default class NaverMap extends React.Component {
-  state = { html: '<p>Loading</p>', };
+  state = { html: '<p>Loading</p>' };
 
   componentWillMount = async () => {
     loadHtml().then(html => {
@@ -30,22 +30,50 @@ export default class NaverMap extends React.Component {
     });
   };
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.markers !== this.props.markers) {
+      this.updateMarkers();
+    }
+  }
+
   onWebViewInit = () => {
-    this.postAction({
-      type: 'panTo',
-      payload: { coords: { lat: 36.37334626411133, lng: 127.36397930294454 } },
+    this.postAction('panTo', {
+      coords: { lat: 36.37334626411133, lng: 127.36397930294454 },
     });
+    this.updateMarkers();
   };
 
-  postAction = action => this._webview.postMessage(JSON.stringify(action));
+  onPress = coords => {
+    if (this.props.onPress) {
+      this.props.onPress(coords);
+    }
+  };
+
+  updateMarkers = () => {
+    this.postAction('updateMarkers', this.props.markers);
+  };
+
+  postAction = (type, payload) => {
+    const action = { type, payload };
+    this._webview.postMessage(JSON.stringify(action));
+  };
 
   // https://medium.com/@azharuddin31/react-native-pass-data-to-webview-and-get-data-out-of-webview-792ffbe7eb75
   handleMessage = ({ nativeEvent }) => {
-    console.log('handleMessage', nativeEvent.data);
-    switch (nativeEvent.data) {
+    // console.log('handleMessage', nativeEvent.data);
+    const action = JSON.parse(nativeEvent.data);
+    switch (action.type) {
+      case 'log': {
+        console.log('Log', action);
+        return;
+      }
       case 'ping': {
-        this.postAction({ type: 'pong' });
+        this.postAction('pong');
         this.onWebViewInit();
+        return;
+      }
+      case 'click': {
+        this.onPress(action.payload);
         return;
       }
     }
