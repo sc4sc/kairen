@@ -86,6 +86,7 @@
                     delete markerById[removedMarkerKey];
                     markerInstance.setMap(null);
                 }
+                return;
             }
             case 'renderKAISTpolyline': {
               return new naver.maps.Polyline({
