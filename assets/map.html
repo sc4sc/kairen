@@ -51,7 +51,7 @@
               return;
             }
             case 'panTo': {
-              map.panTo(payload.coords, {});
+              map.panTo(payload.coords, payload.transitionOptions);
               return;
             }
             case 'updateMarkers': {

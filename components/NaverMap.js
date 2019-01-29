@@ -53,6 +53,10 @@ export default class NaverMap extends React.Component {
     this.postAction('updateMarkers', this.props.markers);
   };
 
+  panTo = (coords, transitionOptions) => {
+    this.postAction('panTo', { coords, transitionOptions });
+  };
+
   postAction = (type, payload) => {
     const action = { type, payload };
     this._webview.postMessage(JSON.stringify(action));

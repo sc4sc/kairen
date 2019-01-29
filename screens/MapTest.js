@@ -16,9 +16,16 @@ export default class MapTest extends React.Component {
   render() {
     return (
       <NaverMap
+        ref={el => {
+          this._map = el;
+        }}
         style={{ flex: 1, alignItems: 'stretch' }}
         markers={[{ key: 'incidentLocation', coords: this.state.markerCoords }]}
         onPress={coords => {
+          this._map.panTo(
+            { lat: 36.37334626411133, lng: 127.36397930294454 },
+            {}
+          );
           this.setState({ markerCoords: coords });
         }}
       />
