@@ -169,7 +169,7 @@ class IncidentDetail extends React.Component {
     if (progressExist) {
       const { createdAt, content } = this.state.recentProgress[0];
       recentView = (
-        <ProgressCard author="안전팀" date={formatDate(createdAt)}>
+        <ProgressCard author="안전팀" date={formatDate(createdAt)} propStyle={styles.progressBox}>
           {content}
         </ProgressCard>
       );
@@ -299,7 +299,11 @@ class IncidentDetail extends React.Component {
             <Text style={styles.commentButtonText}>새로운 의견 등록하기</Text>
           </TouchableOpacity>
 
-          <FlatList data={this.state.commentList} keyExtractor={_keyExtractor} renderItem={this.renderComment} />
+          <FlatList
+            data={this.state.commentList}
+            keyExtractor={_keyExtractor}
+            renderItem={this.renderComment}
+          />
         </View>
       </KeyboardAwareScrollView>
     );
@@ -335,5 +339,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     color: 'white',
+  },
+  progressBox: {
+    borderRadius: 5,
+    minHeight: 100,
   },
 });

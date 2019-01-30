@@ -25,7 +25,7 @@ export class ProgressList extends React.Component {
     const { content, createdAt } = data.item;
 
     return (
-      <ProgressCard author="안전팀" date={formatDate(createdAt)}>
+      <ProgressCard author="안전팀" date={formatDate(createdAt)} propStyle={styles.progressBox}>
         {content}
       </ProgressCard>
     );
@@ -76,5 +76,10 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 15,
     color: 'white',
+  },
+  progressBox: {
+    borderRadius: 5,
+    minHeight: 100,
+    marginBottom: 10,
   },
 });

@@ -13,11 +13,21 @@ export default class ProgressCard extends React.Component {
     return <View />;
   }
 
+  /*
+    propStyle로 상위 컴포넌트에서 Box의 세부적인 스타일 지정할 수 있도록 변경.
+    ProgressCard를 쓰는 곳은 전부 수정 필요. ex) ProgressList , IncidentDetail..
+ */
   render() {
-    const { author, date, children } = this.props;
+    const { author, date, children, height, propStyle } = this.props;
 
     return (
-      <View style={[styles.borderedContentBox, { marginTop: this.props.isComment ? -55 : 0 }]}>
+      <View
+        style={[
+          styles.borderedContentBox,
+          { marginTop: this.props.isComment ? -55 : 0, height },
+          propStyle,
+        ]}
+      >
         {this.renderEmptyBox()}
         <View style={{ flexDirection: 'row' }}>
           <ConfirmedText fontWeight="bold">{author}</ConfirmedText>
@@ -38,12 +48,9 @@ const styles = StyleSheet.create({
   subheaderText: { fontSize: 16, color: Colors.defaultGrey },
   dateText: { fontSize: 11, color: Colors.dateLightGrey, alignSelf: 'center' },
   borderedContentBox: {
-    borderRadius: 10,
+    flex: 1,
     paddingHorizontal: 10,
     paddingTop: 13,
-    paddingBottom: 10,
-    minHeight: 100,
-    marginBottom: 10,
     backgroundColor: '#eaf8e5',
   },
 });
