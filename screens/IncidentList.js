@@ -42,6 +42,16 @@ class IncidentList extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+
+    const refreshing =
+      prevProps.incidents.length === 0 &&
+      prevProps.incidents !== this.props.incidents;
+
+    if (refreshing) {
+      this._carousel.snapToItem(0);
+      this.setState({ selectedIncident: 0 });
+    }
+
     // It handles cases where
     // 1. List refreshes after map initialization (initialCoords cannot handle it)
     // 2. Selection changes as user swipe carousel
@@ -92,6 +102,16 @@ class IncidentList extends React.Component {
     );
   }
 
+
+  handleSnapToItem = slideIndex => {
+    this.props.incidentsListSelect(slideIndex);
+    const incident = this.props.incidents[slideIndex];
+    this._map.panTo(getCoordsFromIncident(incident), {});
+    this.setState({
+      selectedIncident: slideIndex,
+    });
+  };
+
   render() {
     const selectedIncident = this.props.incidents[this.props.indexSelected];
 
@@ -119,6 +139,9 @@ class IncidentList extends React.Component {
             inactiveDotScale={1}
           />
           <Carousel
+            ref={el => {
+              this._carousel = el;
+            }}
             data={this.props.incidents}
             renderItem={this.renderItem.bind(this)}
             onBeforeSnapToItem={this.handleSnapToItem}
