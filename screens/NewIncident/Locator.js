@@ -1,14 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { MapView, Location } from 'expo';
+import { Location } from 'expo';
 
 import ReportItem from '../../components/ReportItem';
 import { typeMap as incidentTypeMap } from '../../constants/Incidents';
 import Layout from '../../constants/Layout';
 import Colors from '../../constants/Colors';
+import NaverMap from '../../components/NaverMap';
 
-const { Marker } = MapView;
+const geojsonutil = require('geojson-utils');
 
 export default class Locator extends React.Component {
   constructor() {
@@ -16,35 +17,42 @@ export default class Locator extends React.Component {
 
     this.state = {
       markerRegion: {
-        latitude: 36.374159,
-        longitude: 127.365864,
-        latitudeDelta: 0.00522,
-        longitudeDelta: 0.00221,
+        lat: 36.374159,
+        lng: 127.365864,
       },
+      location: '',
     };
     this.onPressReport = this.onPressReport.bind(this);
-    this.changeMarkerRegion = this.changeMarkerRegion.bind(this);
     this.locatePosition = this.locatePosition.bind(this);
+    this.checkIsInbuilding = this.checkIsInbuilding.bind(this);
   }
 
   onPressReport() {
     this.props.onConfirm(this.state.markerRegion);
   }
 
-  changeMarkerRegion(markerRegion) {
-    this.setState({ markerRegion });
+  async locatePosition() {
+    const location = await Location.getCurrentPositionAsync();
+    const { longitude, latitude } = location.coords;
+
+    this.setState({ markerRegion: { lat: latitude, lng: longitude } });
+    this.checkIsInbuilding({ lat: latitude, lng: longitude });
+    this.map.panTo({ lng: longitude, lat: latitude }, {});
   }
 
-  async locatePosition() {
-    const location = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Balanced,
-    });
-    const { longitude, latitude } = location.coords;
-    this.map.animateToCoordinate({ longitude, latitude }, 0);
+  checkIsInbuilding(coords) {
+      const n1 = require('../../assets/geojson/N1.json');
+      const isIn = geojsonutil.pointInPolygon(
+          {'type':'Point','coordinates':[coords.lng, coords.lat]}, n1);
+      if (isIn) {
+          this.setState({ location: n1.properties.name });
+      } else {
+          this.setState({ location: '' });
+      }
   }
 
   render() {
-    const { latitude, longitude, latitudeDelta, longitudeDelta } = this.state.markerRegion;
+    const { lat, lng } = this.state.markerRegion;
 
     return (
       <View style={{ flex: 1 }}>
@@ -56,17 +64,19 @@ export default class Locator extends React.Component {
           <Text style={styles.subHeaderText}> 위치 선택 </Text>
         </View>
         <View style={styles.searchBox}>
-          <Text style={styles.searchText}> 한국과학기술원 N1 </Text>
+          <Text style={styles.searchText}>{this.state.location}</Text>
           <Ionicons name="md-search" size={26} />
         </View>
-        <MapView
+        <NaverMap
           ref={el => (this.map = el)}
           style={{ flex: 1 }}
-          initialRegion={this.state.markerRegion}
-          onRegionChange={this.changeMarkerRegion}
+          markers={[{ key: 'incidentLocation', coords: this.state.markerRegion }]}
+          onPress={coords => {
+              this.checkIsInbuilding(coords);
+              this.setState({ markerRegion: coords });
+          }}
         >
-          <Marker coordinate={this.state.markerRegion} />
-        </MapView>
+        </NaverMap>
 
         {/* 큰 View를 만들면 지도를 가려 인터랙션이 안 됨 */}
         <View
@@ -92,10 +102,8 @@ export default class Locator extends React.Component {
             backgroundColor: 'rgba(0, 0, 0, 0.12)',
           }}
         >
-          <Text>lat {latitude}</Text>
-          <Text>lng {longitude}</Text>
-          <Text>lat-d {latitudeDelta}</Text>
-          <Text>lng-d {longitudeDelta}</Text>
+          <Text>lat {lat}</Text>
+          <Text>lng {lng}</Text>
         </View>
       </View>
     );

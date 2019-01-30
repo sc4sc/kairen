@@ -64,12 +64,12 @@ class NewIncident extends React.Component {
   }
 
   report(region) {
-    const { latitude, longitude } = region;
+    const { lat, lng } = region;
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,
-        lat: latitude,
-        lng: longitude,
+        lat: lat,
+        lng: lng,
       },
       () => {
         this.props.navigation.goBack();
