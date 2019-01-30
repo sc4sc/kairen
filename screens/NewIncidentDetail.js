@@ -16,13 +16,21 @@ import { createSelector } from 'reselect';
 import NaverMap from '../components/NaverMap';
 import ReportItem from '../components/ReportItem';
 import AndroidTopMargin from '../components/AndroidTopMargin';
-import * as actions from '../actions/newIncident';
 import Layout from '../constants/Layout';
+
+const geojsonutil = require('geojson-utils');
 
 class NewIncidentDetail extends React.Component {
   constructor() {
     super();
 
+    this.state = {
+      markerRegion: {
+        lat: 36.374159,
+        lng: 127.365864,
+      },
+      location: '',
+    };
     this.handlePressReport = this.handlePressReport.bind(this);
     this.report = this.report.bind(this);
     this.renderItem = this.renderItem.bind(this);
@@ -48,6 +56,28 @@ class NewIncidentDetail extends React.Component {
         this.props.navigation.goBack();
       }
     );
+  }
+
+  async locatePosition() {
+    const location = await Location.getCurrentPositionAsync();
+    const { longitude, latitude } = location.coords;
+
+    this.setState({ markerRegion: { lat: latitude, lng: longitude } });
+    this.checkIsInbuilding({ lat: latitude, lng: longitude });
+    this.map.panTo({ lng: longitude, lat: latitude }, {});
+  }
+
+  checkIsInbuilding(coords) {
+    const n1 = require('../assets/geojson/N1.json');
+    const isIn = geojsonutil.pointInPolygon(
+      { type: 'Point', coordinates: [coords.lng, coords.lat] },
+      n1
+    );
+    if (isIn) {
+      this.setState({ location: n1.properties.name });
+    } else {
+      this.setState({ location: '' });
+    }
   }
 
   renderItem(incident) {
@@ -82,12 +112,20 @@ class NewIncidentDetail extends React.Component {
         <View style={styles.searchBoxContainer}>
           <Text style={styles.questionText}>장소는 어디인가요?</Text>
           <View style={styles.searchBox}>
-            <Text style={styles.searchText}>한국과학기술원 N1 404</Text>
+            <Text style={styles.searchText}>{this.state.location}</Text>
             <Ionicons name="md-search" size={26} />
           </View>
         </View>
 
-        <NaverMap style={{ flex: 1 }} markers={this.props.markers} />
+        <NaverMap
+          ref={el => (this.map = el)}
+          style={{ flex: 1 }}
+          markers={[{ key: 'incidentLocation', coords: this.state.markerRegion }]}
+          onPress={coords => {
+            this.checkIsInbuilding(coords);
+            this.setState({ markerRegion: coords });
+          }}
+        />
         <TouchableOpacity style={styles.buttonStyle}>
           <Text style={styles.buttonText}>제보 등록</Text>
         </TouchableOpacity>

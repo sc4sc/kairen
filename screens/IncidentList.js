@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Notifications } from 'expo';
-import Carousel from 'react-native-snap-carousel';
 import { createSelector } from 'reselect';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import IncidentCard from '../components/IncidentCard';
 import { getBottomSpace } from '../utils';
@@ -27,6 +27,10 @@ class IncidentList extends React.Component {
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleEndReached = this.handleEndReached.bind(this);
     this.renderItem = this.renderItem.bind(this);
+
+    this.state = {
+      selectedIncident: 0,
+    };
   }
 
   componentWillMount() {
@@ -66,6 +70,15 @@ class IncidentList extends React.Component {
     this.props.incidentsListSelect(slideIndex);
   };
 
+  handleSnapToItem = slideIndex => {
+    this.props.incidentsListSelect(slideIndex);
+    const incident = this.props.incidents[slideIndex];
+    this._map.panTo(getCoordsFromIncident(incident), {});
+    this.setState({
+      selectedIncident: slideIndex,
+    });
+  };
+
   renderItem({ item: incident }) {
     return (
       <IncidentCard
@@ -78,6 +91,7 @@ class IncidentList extends React.Component {
       />
     );
   }
+
   render() {
     const selectedIncident = this.props.incidents[this.props.indexSelected];
 
@@ -96,12 +110,24 @@ class IncidentList extends React.Component {
           markers={this.props.markers}
         />
         <View style={styles.carouselContainer}>
+          <Pagination
+            dotsLength={this.props.incidents.length}
+            activeDotIndex={this.state.selectedIncident}
+            containerStyle={{ marginBottom: -15 }}
+            dotStyle={{ width: 20 }}
+            inactiveDotStyle={{ width: 7 }}
+            inactiveDotScale={1}
+          />
           <Carousel
             data={this.props.incidents}
             renderItem={this.renderItem.bind(this)}
-            onSnapToItem={this.handleSnapToItem}
+            onBeforeSnapToItem={this.handleSnapToItem}
             sliderWidth={Layout.window.width}
-            itemWidth={Layout.window.width - 60}
+            itemWidth={Layout.window.width - 50}
+            containerCustomStyle={{ height: 200 }}
+            slideStyle={{ paddingLeft: 5, paddingRight: 5 }}
+            inactiveSlideOpacity={1}
+            inactiveSlideScale={1}
           />
         </View>
         <View style={styles.buttonContainer}>
