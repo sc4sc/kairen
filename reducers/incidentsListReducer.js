@@ -50,7 +50,7 @@ export default (state = defaultState, action) =>
           return;
         }
 
-        if (!draft.indexSelected) {
+        if (!(typeof draft.indexSelected === 'number' && draft.indexSelected >= 0)) {
           draft.indexSelected = 0;
         }
 
