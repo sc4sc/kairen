@@ -1,15 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Notifications } from 'expo';
+import { createSelector } from 'reselect';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import IncidentCard from '../components/IncidentCard';
 import { getBottomSpace } from '../utils';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import AndroidTopMargin from '../components/AndroidTopMargin';
 
 import {
   incidentsListLoadMore,
@@ -18,7 +17,6 @@ import {
   incidentsListSelect,
 } from '../actions/incidentsList';
 import NaverMap from '../components/NaverMap';
-import { createSelector } from 'reselect';
 
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
@@ -39,19 +37,12 @@ class IncidentList extends React.Component {
     this.notificationSubscription = Notifications.addListener(notification =>
       console.log('Notification arrived:', notification)
     );
-    this.willFocusSubscription = this.props.navigation.addListener(
-      'willFocus',
-      this.handleRefresh
-    );
+    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.handleRefresh);
     this.handleRefresh();
   }
 
-  componentWillUnmount() {
-    this.notificationSubscription.remove();
-    this.willFocusSubscription.remove();
-  }
-
   componentDidUpdate(prevProps, prevState, snapshot) {
+
     const refreshing =
       prevProps.incidents.length === 0 &&
       prevProps.incidents !== this.props.incidents;
@@ -60,6 +51,7 @@ class IncidentList extends React.Component {
       this._carousel.snapToItem(0);
       this.setState({ selectedIncident: 0 });
     }
+
     // It handles cases where
     // 1. List refreshes after map initialization (initialCoords cannot handle it)
     // 2. Selection changes as user swipe carousel
@@ -71,6 +63,11 @@ class IncidentList extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.notificationSubscription.remove();
+    this.willFocusSubscription.remove();
+  }
+
   handleRefresh() {
     this.props.incidentsListRefresh();
   }
@@ -78,6 +75,19 @@ class IncidentList extends React.Component {
   handleEndReached() {
     this.props.incidentsListLoadMore();
   }
+
+  handleSnapToItem = slideIndex => {
+    this.props.incidentsListSelect(slideIndex);
+  };
+
+  handleSnapToItem = slideIndex => {
+    this.props.incidentsListSelect(slideIndex);
+    const incident = this.props.incidents[slideIndex];
+    this._map.panTo(getCoordsFromIncident(incident), {});
+    this.setState({
+      selectedIncident: slideIndex,
+    });
+  };
 
   renderItem({ item: incident }) {
     return (
@@ -91,6 +101,7 @@ class IncidentList extends React.Component {
       />
     );
   }
+
 
   handleSnapToItem = slideIndex => {
     this.props.incidentsListSelect(slideIndex);
@@ -184,8 +195,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#ff9412',
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    alignItems: 'center',
-    padding: 16,
+    padding: 20,
     marginHorizontal: 15,
     paddingBottom: 16 + getBottomSpace(), // handle the bottom empty space for iPhone X
     shadowOffset: { width: 0, height: 1 },
