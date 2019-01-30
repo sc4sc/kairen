@@ -15,8 +15,10 @@ import {
   incidentsListLoadMore,
   incidentsListRefresh,
   incidentsListReset,
+  incidentsListSelect,
 } from '../actions/incidentsList';
 import NaverMap from '../components/NaverMap';
+import { createSelector } from 'reselect';
 
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
@@ -37,6 +39,18 @@ class IncidentList extends React.Component {
     this.handleRefresh();
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    // It handles cases where
+    // 1. List refreshes after map initialization (initialCoords cannot handle it)
+    // 2. Selection changes as user swipe carousel
+    if (prevProps.indexSelected !== this.props.indexSelected) {
+      const incident = this.props.incidents[this.props.indexSelected];
+      if (incident) {
+        this._map.panTo(getCoordsFromIncident(incident), {});
+      }
+    }
+  }
+
   componentWillUnmount() {
     this.notificationSubscription.remove();
     this.willFocusSubscription.remove();
@@ -50,6 +64,10 @@ class IncidentList extends React.Component {
     this.props.incidentsListLoadMore();
   }
 
+  handleSnapToItem = slideIndex => {
+    this.props.incidentsListSelect(slideIndex);
+  };
+
   renderItem({ item: incident }) {
     return (
       <IncidentCard
@@ -62,15 +80,28 @@ class IncidentList extends React.Component {
       />
     );
   }
-
   render() {
+    const selectedIncident = this.props.incidents[this.props.indexSelected];
+
     return (
       <View style={styles.container}>
-        <NaverMap style={{ flex: 1 }} />
+        <NaverMap
+          ref={el => {
+            this._map = el;
+          }}
+          initialCoords={
+            selectedIncident
+              ? getCoordsFromIncident(selectedIncident)
+              : { lat: 36.37334626411133, lng: 127.36397930294454 }
+          }
+          style={{ flex: 1 }}
+          markers={this.props.markers}
+        />
         <View style={styles.carouselContainer}>
           <Carousel
             data={this.props.incidents}
             renderItem={this.renderItem.bind(this)}
+            onSnapToItem={this.handleSnapToItem}
             sliderWidth={Layout.window.width}
             itemWidth={Layout.window.width - 60}
           />
@@ -129,17 +160,58 @@ export const styles = StyleSheet.create({
   reportButtonText: { color: 'white', fontWeight: 'bold', fontSize: 20 },
 });
 
+const getCoordsFromIncident = incident => ({
+  lat: incident.lat,
+  lng: incident.lng,
+});
+
+const incidentsSelector = createSelector(
+  state => state.incidentsList.byId,
+  state => state.incidentsList.idList,
+  (byId, idList) => idList.map(id => byId[id])
+);
+
+// const incidentMarkersSelector = createSelector(
+//   incidentsSelector,
+//   incidents =>
+//     incidents.map(incident => ({
+//       coords: { lat: incident.lat, lng: incident.lng },
+//       key: `incident-${incident.id}`,
+//     }))
+// );
+
+const incidentMarkersSelector = createSelector(
+  incidentsSelector,
+  state => state.incidentsList.indexSelected,
+  (incidents, indexSelected) => {
+    if (!(typeof indexSelected === 'number' && indexSelected >= 0)) {
+      return [];
+    }
+    return [
+      {
+        key: 'selected',
+        coords: getCoordsFromIncident(incidents[indexSelected]),
+      },
+    ];
+  }
+);
+
 export default connect(
   state => {
-    const { byId, idList, loading } = state.incidentsList;
+    const { loading, indexSelected } = state.incidentsList;
+    const incidents = incidentsSelector(state);
+
     return {
-      incidents: idList.map(id => byId[id]),
+      incidents,
+      markers: incidentMarkersSelector(state),
       loading,
+      indexSelected,
     };
   },
   {
     incidentsListLoadMore,
     incidentsListReset,
     incidentsListRefresh,
+    incidentsListSelect,
   }
 )(IncidentList);
