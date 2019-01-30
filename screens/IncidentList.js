@@ -47,6 +47,19 @@ class IncidentList extends React.Component {
     this.willFocusSubscription.remove();
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+
+    // It handles cases where
+    // 1. List refreshes after map initialization (initialCoords cannot handle it)
+    // 2. Selection changes as user swipe carousel
+    if (prevProps.indexSelected !== this.props.indexSelected) {
+      const incident = this.props.incidents[this.props.indexSelected];
+      if (incident) {
+        this._map.panTo(getCoordsFromIncident(incident), {});
+      }
+    }
+  }
+
   handleRefresh() {
     this.props.incidentsListRefresh();
   }
@@ -70,17 +83,22 @@ class IncidentList extends React.Component {
 
   handleSnapToItem = slideIndex => {
     this.props.incidentsListSelect(slideIndex);
-    const incident = this.props.incidents[slideIndex];
-    this._map.panTo(getCoordsFromIncident(incident), {});
   };
 
   render() {
+    const selectedIncident = this.props.incidents[this.props.indexSelected];
+
     return (
       <View style={styles.container}>
         <NaverMap
           ref={el => {
             this._map = el;
           }}
+          initialCoords={
+            selectedIncident
+              ? getCoordsFromIncident(selectedIncident)
+              : { lat: 36.37334626411133, lng: 127.36397930294454 }
+          }
           style={{ flex: 1 }}
           markers={this.props.markers}
         />
@@ -193,6 +211,7 @@ export default connect(
       incidents,
       markers: incidentMarkersSelector(state),
       loading,
+      indexSelected,
     };
   },
   {
