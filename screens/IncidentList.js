@@ -52,8 +52,13 @@ class IncidentList extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.incidents !== this.props.incidents) {
+    const refreshing =
+      prevProps.incidents.length === 0 &&
+      prevProps.incidents !== this.props.incidents;
+
+    if (refreshing) {
       this._carousel.snapToItem(0);
+      this.setState({ selectedIncident: 0 });
     }
     // It handles cases where
     // 1. List refreshes after map initialization (initialCoords cannot handle it)
@@ -130,7 +135,11 @@ class IncidentList extends React.Component {
             renderItem={this.renderItem.bind(this)}
             onBeforeSnapToItem={this.handleSnapToItem}
             sliderWidth={Layout.window.width}
-            itemWidth={Layout.window.width - 60}
+            itemWidth={Layout.window.width - 50}
+            containerCustomStyle={{ height: 200 }}
+            slideStyle={{ paddingLeft: 5, paddingRight: 5 }}
+            inactiveSlideOpacity={1}
+            inactiveSlideScale={1}
           />
         </View>
         <View style={styles.buttonContainer}>
