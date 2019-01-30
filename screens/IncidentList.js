@@ -16,6 +16,7 @@ import {
   incidentsListRefresh,
   incidentsListReset,
 } from '../actions/incidentsList';
+import NaverMap from '../components/NaverMap';
 
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
@@ -32,7 +33,10 @@ class IncidentList extends React.Component {
     this.notificationSubscription = Notifications.addListener(notification =>
       console.log('Notification arrived:', notification)
     );
-    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.handleRefresh);
+    this.willFocusSubscription = this.props.navigation.addListener(
+      'willFocus',
+      this.handleRefresh
+    );
     this.handleRefresh();
   }
 
@@ -54,7 +58,9 @@ class IncidentList extends React.Component {
       <IncidentCard
         data={incident}
         onPress={() =>
-          this.props.navigation.navigate('IncidentDetail', { incidentDetail: incident })
+          this.props.navigation.navigate('IncidentDetail', {
+            incidentDetail: incident,
+          })
         }
       />
     );
@@ -63,20 +69,19 @@ class IncidentList extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <AndroidTopMargin />
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always'}}>
           {/* ---- Map을 담은 WebView로 바꾸기 ---- */}
-          <View style={{ flex: 1, backgroundColor: '#500' }}>
-            <View style={styles.carouselContainer}>
-              <Carousel
+          <NaverMap style={{ flex: 1 }}>
+
+          </NaverMap>
+          <View style={styles.carouselContainer}>
+            <Carousel
                 data={this.props.incidents}
                 renderItem={this.renderItem.bind(this)}
                 sliderWidth={Layout.window.width}
                 itemWidth={Layout.window.width - 60}
-              />
-            </View>
+            />
           </View>
-
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.reportButton}
@@ -90,6 +95,8 @@ class IncidentList extends React.Component {
     );
   }
 }
+
+const bottomUnsafeArea = getBottomSpace();
 
 export const styles = StyleSheet.create({
   container: {
@@ -106,7 +113,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: { fontSize: 28, fontWeight: '800', color: Colors.defaultBlack },
-  carouselContainer: { position: 'absolute', bottom: 133 },
+  carouselContainer: { position: 'absolute', bottom: bottomUnsafeArea + 80 },
   buttonContainer: {
     position: 'absolute',
     bottom: 0,
@@ -116,7 +123,6 @@ export const styles = StyleSheet.create({
     backgroundColor: '#ff9412',
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    height: 100,
     alignItems: 'center',
     padding: 16,
     marginHorizontal: 15,
