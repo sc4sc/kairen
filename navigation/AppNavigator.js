@@ -6,6 +6,7 @@ import {
   NewComment,
   NewProgress,
   NewIncident,
+  NewIncidentDetail,
   ProgressList,
   Setting,
   Login,
@@ -26,6 +27,7 @@ export default createAppContainer(
           { headerMode: 'none' }
         ),
         NewIncident,
+        NewIncidentDetail,
         NewComment,
         ProgressList,
         NewProgress,

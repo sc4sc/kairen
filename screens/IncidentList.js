@@ -1,15 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Notifications } from 'expo';
 import Carousel from 'react-native-snap-carousel';
+import { createSelector } from 'reselect';
 
 import IncidentCard from '../components/IncidentCard';
 import { getBottomSpace } from '../utils';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import AndroidTopMargin from '../components/AndroidTopMargin';
 
 import {
   incidentsListLoadMore,
@@ -18,7 +17,6 @@ import {
   incidentsListSelect,
 } from '../actions/incidentsList';
 import NaverMap from '../components/NaverMap';
-import { createSelector } from 'reselect';
 
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {

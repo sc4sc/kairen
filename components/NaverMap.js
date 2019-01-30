@@ -101,7 +101,7 @@ export default class NaverMap extends React.Component {
     const action = JSON.parse(nativeEvent.data);
     switch (action.type) {
       case 'log': {
-        console.log('Log', action);
+        // console.log('Log', action);
         return;
       }
       case 'ping': {
