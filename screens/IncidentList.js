@@ -116,9 +116,8 @@ class IncidentList extends React.Component {
             dotsLength={this.props.incidents.length}
             activeDotIndex={this.state.selectedIncident}
             containerStyle={{marginBottom: -15}}
-            dotStyle={{width: 20}}
-            inactiveDotStyle={{width: 7}}
-            inactiveDotScale={1}
+            dotStyle={{width: 8, height: 8, borderRadius: 8}}
+            inactiveDotScale={0.5}
           />
           <Carousel
             data={this.props.incidents}
