@@ -32,11 +32,7 @@ export default createAppContainer(
         Setting,
       },
       {
-        mode: 'modal',
         headerMode: 'none',
-        cardStyle: {
-          backgroundColor: 'rgba(0, 0, 0, 0)',
-        },
       }
     ),
   })

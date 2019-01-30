@@ -32,9 +32,11 @@ class ReportItem extends React.Component {
 
     return (
       <TouchableOpacity onPress={this.onButtonPressed.bind(this)} disabled={!selectable}>
-        <View style={[styles.itemContainer, { backgroundColor: selected ? '#d5d5d5' : '#5f5f5f' }]}>
+        <View style={[styles.itemContainer, { backgroundColor: selected ? '#d5d5d5' : '#ffe2be' }]}>
           {showSelected ? this.renderVectorIcon() : empty}
-          <Text style={[styles.itemContent, { color: selected ? 'black' : 'white' }]}>{title}</Text>
+          <Text style={[styles.itemContent, { color: selected ? 'white' : '#4f4f4f' }]}>
+            {title}
+          </Text>
           {showSelected ? this.renderNextButton() : empty}
         </View>
       </TouchableOpacity>

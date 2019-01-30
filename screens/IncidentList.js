@@ -33,10 +33,7 @@ class IncidentList extends React.Component {
     this.notificationSubscription = Notifications.addListener(notification =>
       console.log('Notification arrived:', notification)
     );
-    this.willFocusSubscription = this.props.navigation.addListener(
-      'willFocus',
-      this.handleRefresh
-    );
+    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.handleRefresh);
     this.handleRefresh();
   }
 
@@ -69,20 +66,19 @@ class IncidentList extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-
         <NaverMap style={{ flex: 1 }} />
         <View style={styles.carouselContainer}>
           <Carousel
-              data={this.props.incidents}
-              renderItem={this.renderItem.bind(this)}
-              sliderWidth={Layout.window.width}
-              itemWidth={Layout.window.width - 60}
+            data={this.props.incidents}
+            renderItem={this.renderItem.bind(this)}
+            sliderWidth={Layout.window.width}
+            itemWidth={Layout.window.width - 60}
           />
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-              style={styles.reportButton}
-              onPress={() => this.props.navigation.navigate('NewIncident')}
+            style={styles.reportButton}
+            onPress={() => this.props.navigation.navigate('NewIncident')}
           >
             <Text style={styles.reportButtonText}>제보하기</Text>
           </TouchableOpacity>
@@ -121,8 +117,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#ff9412',
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    alignItems: 'center',
-    padding: 16,
+    padding: 20,
     marginHorizontal: 15,
     paddingBottom: 16 + getBottomSpace(), // handle the bottom empty space for iPhone X
     shadowOffset: { width: 0, height: 1 },

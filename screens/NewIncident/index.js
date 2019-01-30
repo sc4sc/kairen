@@ -8,6 +8,7 @@ import {
   Platform,
   UIManager,
   View,
+  StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -96,45 +97,34 @@ class NewIncident extends React.Component {
     );
   }
 
-  renderStageIndicator(on) {
-    return <View style={[styles.stageBar, { backgroundColor: on ? 'white' : '#868686' }]} />;
-  }
-
   render() {
     const { isFirstStage } = this.props;
-    const { container, headerContainer, headerText, barContainer } = styles;
+    const { container, headerContainer, headerText } = styles;
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={container}>
         <AndroidTopMargin />
-        <View style={container}>
-          <View style={headerContainer}>
-            <Ionicons
-              name="ios-close"
-              size={26}
-              style={{ color: 'white' }}
-              onPress={() => this.goBackScreen()}
-            />
-            <View style={{ width: 5 }} />
-            <Text style={headerText} onPress={() => this.goBackScreen()}>
-              취소
-            </Text>
-          </View>
-
-          <View style={barContainer}>
-            {this.renderStageIndicator(isFirstStage)}
-            <View style={{ width: 5 }} />
-            {this.renderStageIndicator(!isFirstStage)}
-          </View>
-          {isFirstStage ? (
-            this.renderTypeSelector()
-          ) : (
-            <Locator
-              selectedIncident={this.props.selectedIncident}
-              onConfirm={this.handlePressReport}
-            />
-          )}
+        <StatusBar backgroundColor="#aaa" />
+        <View style={headerContainer}>
+          <Text style={headerText} onPress={() => this.goBackScreen()}>
+            제보 종류 선택
+          </Text>
+          <Ionicons
+            name="ios-close"
+            size={40}
+            style={{ color: 'white', marginRight: 20 }}
+            onPress={() => this.goBackScreen()}
+          />
         </View>
+
+        {isFirstStage ? (
+          this.renderTypeSelector()
+        ) : (
+          <Locator
+            selectedIncident={this.props.selectedIncident}
+            onConfirm={this.handlePressReport}
+          />
+        )}
       </SafeAreaView>
     );
   }
@@ -156,16 +146,16 @@ export default connect(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    backgroundColor: Colors.buttonGrey,
+    backgroundColor: '#fffaf4',
   },
   headerContainer: {
     flexDirection: 'row',
-    marginVertical: 20,
-    justifyContent: 'center',
+    backgroundColor: '#ff9412',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 15,
   },
-  headerText: { fontSize: 20, fontWeight: 'bold', color: 'white' },
+  headerText: { fontSize: 20, fontWeight: 'bold', color: 'white', marginLeft: 20 },
   subHeaderText: {
     fontSize: 16,
     color: 'white',
