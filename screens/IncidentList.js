@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Notifications } from 'expo';
-import Carousel from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import IncidentCard from '../components/IncidentCard';
 import { getBottomSpace } from '../utils';
@@ -29,6 +29,10 @@ class IncidentList extends React.Component {
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleEndReached = this.handleEndReached.bind(this);
     this.renderItem = this.renderItem.bind(this);
+
+    this.state = {
+      selectedIncident: 0,
+    }
   }
 
   componentWillMount() {
@@ -83,6 +87,11 @@ class IncidentList extends React.Component {
 
   handleSnapToItem = slideIndex => {
     this.props.incidentsListSelect(slideIndex);
+    const incident = this.props.incidents[slideIndex];
+    this._map.panTo(getCoordsFromIncident(incident), {});
+    this.setState({
+      selectedIncident: slideIndex,
+    })
   };
 
   render() {
@@ -103,10 +112,18 @@ class IncidentList extends React.Component {
           markers={this.props.markers}
         />
         <View style={styles.carouselContainer}>
+          <Pagination 
+            dotsLength={this.props.incidents.length}
+            activeDotIndex={this.state.selectedIncident}
+            containerStyle={{marginBottom: -15}}
+            dotStyle={{width: 20}}
+            inactiveDotStyle={{width: 7}}
+            inactiveDotScale={1}
+          />
           <Carousel
             data={this.props.incidents}
             renderItem={this.renderItem.bind(this)}
-            onSnapToItem={this.handleSnapToItem}
+            onBeforeSnapToItem={this.handleSnapToItem}
             sliderWidth={Layout.window.width}
             itemWidth={Layout.window.width - 60}
           />
