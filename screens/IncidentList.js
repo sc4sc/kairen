@@ -125,7 +125,11 @@ class IncidentList extends React.Component {
             renderItem={this.renderItem.bind(this)}
             onBeforeSnapToItem={this.handleSnapToItem}
             sliderWidth={Layout.window.width}
-            itemWidth={Layout.window.width - 60}
+            itemWidth={Layout.window.width - 50}
+            containerCustomStyle={{height: 200}}
+            slideStyle={{paddingLeft: 5, paddingRight: 5}}
+            inactiveSlideOpacity={1}
+            inactiveSlideScale={1}
           />
         </View>
         <View style={styles.buttonContainer}>
