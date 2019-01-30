@@ -15,8 +15,10 @@ import {
   incidentsListLoadMore,
   incidentsListRefresh,
   incidentsListReset,
+  incidentsListSelect,
 } from '../actions/incidentsList';
 import NaverMap from '../components/NaverMap';
+import { createSelector } from 'reselect';
 
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
@@ -66,23 +68,35 @@ class IncidentList extends React.Component {
     );
   }
 
+  handleSnapToItem = slideIndex => {
+    this.props.incidentsListSelect(slideIndex);
+    const incident = this.props.incidents[slideIndex];
+    this._map.panTo(getCoordsFromIncident(incident), {});
+  };
+
   render() {
     return (
       <View style={styles.container}>
-
-        <NaverMap style={{ flex: 1 }} />
+        <NaverMap
+          ref={el => {
+            this._map = el;
+          }}
+          style={{ flex: 1 }}
+          markers={this.props.markers}
+        />
         <View style={styles.carouselContainer}>
           <Carousel
-              data={this.props.incidents}
-              renderItem={this.renderItem.bind(this)}
-              sliderWidth={Layout.window.width}
-              itemWidth={Layout.window.width - 60}
+            data={this.props.incidents}
+            renderItem={this.renderItem.bind(this)}
+            onSnapToItem={this.handleSnapToItem}
+            sliderWidth={Layout.window.width}
+            itemWidth={Layout.window.width - 60}
           />
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-              style={styles.reportButton}
-              onPress={() => this.props.navigation.navigate('NewIncident')}
+            style={styles.reportButton}
+            onPress={() => this.props.navigation.navigate('NewIncident')}
           >
             <Text style={styles.reportButtonText}>제보하기</Text>
           </TouchableOpacity>
@@ -134,11 +148,50 @@ export const styles = StyleSheet.create({
   reportButtonText: { color: 'white', fontWeight: 'bold', fontSize: 20 },
 });
 
+const getCoordsFromIncident = incident => ({
+  lat: incident.lat,
+  lng: incident.lng,
+});
+
+const incidentsSelector = createSelector(
+  state => state.incidentsList.byId,
+  state => state.incidentsList.idList,
+  (byId, idList) => idList.map(id => byId[id])
+);
+
+// const incidentMarkersSelector = createSelector(
+//   incidentsSelector,
+//   incidents =>
+//     incidents.map(incident => ({
+//       coords: { lat: incident.lat, lng: incident.lng },
+//       key: `incident-${incident.id}`,
+//     }))
+// );
+
+const incidentMarkersSelector = createSelector(
+  incidentsSelector,
+  state => state.incidentsList.indexSelected,
+  (incidents, indexSelected) => {
+    if (!(typeof indexSelected === 'number' && indexSelected >= 0)) {
+      return [];
+    }
+    return [
+      {
+        key: 'selected',
+        coords: getCoordsFromIncident(incidents[indexSelected]),
+      },
+    ];
+  }
+);
+
 export default connect(
   state => {
-    const { byId, idList, loading } = state.incidentsList;
+    const { loading, indexSelected } = state.incidentsList;
+    const incidents = incidentsSelector(state);
+
     return {
-      incidents: idList.map(id => byId[id]),
+      incidents,
+      markers: incidentMarkersSelector(state),
       loading,
     };
   },
@@ -146,5 +199,6 @@ export default connect(
     incidentsListLoadMore,
     incidentsListReset,
     incidentsListRefresh,
+    incidentsListSelect,
   }
 )(IncidentList);

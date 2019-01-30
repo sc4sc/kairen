@@ -29,8 +29,18 @@ export function incidentsListLoadMore() {
 export const INCIDENTS_LIST_REFRESH = 'INCIDENTS_LIST_REFRESH';
 export function incidentsListRefresh() {
   return {
-    type: INCIDENTS_LIST_REFRESH
-  }
+    type: INCIDENTS_LIST_REFRESH,
+  };
+}
+
+export const INCIDENTS_LIST_SELECT = 'INCIDENTS_LIST_SELECT';
+export function incidentsListSelect(index) {
+  return {
+    type: INCIDENTS_LIST_SELECT,
+    payload: {
+      index,
+    },
+  };
 }
 
 export const INCIDENTS_LIST_APPEND = 'INCIDENTS_LIST_APPEND';

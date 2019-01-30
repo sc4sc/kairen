@@ -6,11 +6,13 @@ import {
   INCIDENTS_LIST_LOAD_REQUESTED,
   INCIDENTS_LIST_LOAD_SUCCESS,
   INCIDENTS_LIST_RESET,
+  INCIDENTS_LIST_SELECT,
 } from '../actions/incidentsList';
 
 const defaultState = {
   byId: {},
   idList: [],
+  indexSelected: null,
   readUntil: '',
   listEnded: false,
   loading: false,
@@ -35,6 +37,11 @@ export default (state = defaultState, action) =>
         return;
       }
 
+      case INCIDENTS_LIST_SELECT: {
+        draft.indexSelected = action.payload.index;
+        return;
+      }
+
       case INCIDENTS_LIST_APPEND: {
         const incidents = action.payload;
 
@@ -43,11 +50,17 @@ export default (state = defaultState, action) =>
           return;
         }
 
+        if (!draft.indexSelected) {
+          draft.indexSelected = 0;
+        }
+
         incidents.forEach(incident => {
           draft.byId[incident.id] = incident;
         });
 
-        draft.idList = draft.idList.concat(incidents.map(incident => incident.id));
+        draft.idList = draft.idList.concat(
+          incidents.map(incident => incident.id)
+        );
 
         draft.readUntil = incidents[incidents.length - 1].createdAt;
         return;
