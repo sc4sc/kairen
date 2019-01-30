@@ -69,28 +69,26 @@ class IncidentList extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always'}}>
-          {/* ---- Map을 담은 WebView로 바꾸기 ---- */}
-          <NaverMap style={{ flex: 1 }}>
 
-          </NaverMap>
-          <View style={styles.carouselContainer}>
-            <Carousel
-                data={this.props.incidents}
-                renderItem={this.renderItem.bind(this)}
-                sliderWidth={Layout.window.width}
-                itemWidth={Layout.window.width - 60}
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
+        <NaverMap style={{ flex: 1 }} />
+        <View style={styles.carouselContainer}>
+          <Carousel
+              data={this.props.incidents}
+              renderItem={this.renderItem.bind(this)}
+              sliderWidth={Layout.window.width}
+              itemWidth={Layout.window.width - 60}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
               style={styles.reportButton}
               onPress={() => this.props.navigation.navigate('NewIncident')}
-            >
-              <Text style={styles.reportButtonText}>제보하기</Text>
-            </TouchableOpacity>
-          </View>
-        </SafeAreaView>
+          >
+            <Text style={styles.reportButtonText}>제보하기</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/*<SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always'}}></SafeAreaView>*/}
       </View>
     );
   }
