@@ -20,16 +20,14 @@ import Layout from '../constants/Layout';
 import { newIncidentPostRequested } from '../actions/newIncident';
 import { checkIsInbuilding } from '../utils';
 import Colors from '../constants/Colors';
+import memoize from 'fast-memoize';
 
 class NewIncidentDetail extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      markerRegion: {
-        lat: 36.374159,
-        lng: 127.365864,
-      },
+      markerCoords: null,
       location: '',
     };
     this.handlePressReport = this.handlePressReport.bind(this);
@@ -41,7 +39,10 @@ class NewIncidentDetail extends React.Component {
     Alert.alert(
       '제보하시겠습니까?',
       '자세한 현장 상황 확인을 위해 카이스트 안전팀이 곧 연락합니다',
-      [{ text: '취소' }, { text: '확인', onPress: () => this.report(this.state.markerRegion) }]
+      [
+        { text: '취소' },
+        { text: '확인', onPress: () => this.report(this.state.markerCoords) },
+      ]
     );
   }
 
@@ -73,16 +74,30 @@ class NewIncidentDetail extends React.Component {
     this.map.panTo({ lng: longitude, lat: latitude }, {});
   }
 
+  getMarkers = memoize(markerCoords => {
+    if (!markerCoords) {
+      return [];
+    }
+    return [
+      {
+        key: 'incidentLocation',
+        coords: markerCoords,
+      },
+    ];
+  });
+
   render() {
     const { container, headerContainer, headerText } = styles;
-    const { lat, lng } = this.state.markerRegion;
+    // const { lat, lng } = this.state.markerCoords;
 
     return (
       <SafeAreaView style={container}>
         <StatusBar barStyle="light-content" backgroundColor="#ff9412" />
         <AndroidTopMargin style={{ backgroundColor: '#ff9412' }} />
         <View style={headerContainer}>
-          <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>
+          <TouchableWithoutFeedback
+            onPress={() => this.props.navigation.goBack()}
+          >
             <Text style={headerText}>{this.props.selectedIncident}</Text>
           </TouchableWithoutFeedback>
           <Ionicons
@@ -96,7 +111,7 @@ class NewIncidentDetail extends React.Component {
         <NaverMap
           ref={el => (this.map = el)}
           style={{ flex: 1 }}
-          markers={[{ key: 'incidentLocation', coords: this.state.markerRegion }]}
+          markers={this.getMarkers(this.state.markerCoords)}
           onPress={coords => {
             const location = checkIsInbuilding(coords);
             if (location) {
@@ -108,30 +123,40 @@ class NewIncidentDetail extends React.Component {
           }}
         />
         <View style={styles.searchBoxContainer}>
-            <Text style={styles.questionText}>장소는 어디인가요?</Text>
-            <View style={styles.searchBox}>
-                <Text style={styles.searchText}>{this.state.location}</Text>
-                <Ionicons name="md-search" size={26} />
-            </View>
+          <Text style={styles.questionText}>장소는 어디인가요?</Text>
+          <View style={styles.searchBox}>
+            <Text style={styles.searchText}>{this.state.location}</Text>
+            <Ionicons name="md-search" size={26} />
+          </View>
         </View>
-        <TouchableOpacity style={styles.buttonStyle} onPress={this.handlePressReport}>
+        <TouchableOpacity
+          style={styles.buttonStyle}
+          onPress={this.handlePressReport}
+        >
           <Text style={styles.buttonText}>제보 등록</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.gpsButton} onPress={this.locatePosition}>
-          <MaterialIcons style={{ color: 'white' }} name="gps-fixed" size={26} />
-        </TouchableOpacity>
-        <View
-            style={{
-                position: 'absolute',
-                top: 200,
-                right: 10,
-                backgroundColor: 'rgba(0, 0, 0, 0.12)',
-            }}
+        <TouchableOpacity
+          style={styles.gpsButton}
+          onPress={this.locatePosition}
         >
-            <Text>lat {lat}</Text>
-            <Text>lng {lng}</Text>
-        </View>
+          <MaterialIcons
+            style={{ color: 'white' }}
+            name="gps-fixed"
+            size={26}
+          />
+        </TouchableOpacity>
+        {/*<View*/}
+          {/*style={{*/}
+            {/*position: 'absolute',*/}
+            {/*top: 200,*/}
+            {/*right: 10,*/}
+            {/*backgroundColor: 'rgba(0, 0, 0, 0.12)',*/}
+          {/*}}*/}
+        {/*>*/}
+          {/*<Text>lat {lat}</Text>*/}
+          {/*<Text>lng {lng}</Text>*/}
+        {/*</View>*/}
       </SafeAreaView>
     );
   }
@@ -149,7 +174,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 15,
   },
-  headerText: { fontSize: 20, fontWeight: 'bold', color: 'white', marginLeft: 20 },
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    marginLeft: 20,
+  },
   searchBoxContainer: {
     width: Layout.window.width - 40,
     top: 115,
@@ -184,23 +214,23 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   gpsButton: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'absolute',
-      bottom: 80,
-      right: 12,
-      width: 55,
-      height: 55,
-      borderRadius: 50,
-      backgroundColor: Colors.buttonGrey,
-      marginBottom: 21,
-      marginRight: 13,
-      alignSelf: 'flex-end',
-      shadowOffset: { width: 0, height: 2 },
-      shadowColor: 'black',
-      shadowOpacity: 0.22,
-      shadowRadius: 2,
-      elevation: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 80,
+    right: 12,
+    width: 55,
+    height: 55,
+    borderRadius: 50,
+    backgroundColor: Colors.buttonGrey,
+    marginBottom: 21,
+    marginRight: 13,
+    alignSelf: 'flex-end',
+    shadowOffset: { width: 0, height: 2 },
+    shadowColor: 'black',
+    shadowOpacity: 0.22,
+    shadowRadius: 2,
+    elevation: 5,
   },
   buttonText: {
     color: 'white',
@@ -237,17 +267,20 @@ const incidentMarkersSelector = createSelector(
   }
 );
 
-export default connect(state => {
-  const { loading, indexSelected } = state.incidentsList;
-  const incidents = incidentsSelector(state);
+export default connect(
+  state => {
+    const { loading, indexSelected } = state.incidentsList;
+    const incidents = incidentsSelector(state);
 
-  return {
-    incidents,
-    markers: incidentMarkersSelector(state),
-    loading,
-    indexSelected,
-    selectedIncident: state.newIncident.selectedIncident,
-  };
-}, {
-    newIncidentPostRequested
-})(NewIncidentDetail);
+    return {
+      incidents,
+      markers: incidentMarkersSelector(state),
+      loading,
+      indexSelected,
+      selectedIncident: state.newIncident.selectedIncident,
+    };
+  },
+  {
+    newIncidentPostRequested,
+  }
+)(NewIncidentDetail);

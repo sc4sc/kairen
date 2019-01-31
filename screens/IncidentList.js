@@ -27,29 +27,27 @@ class IncidentList extends React.Component {
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleEndReached = this.handleEndReached.bind(this);
     this.renderItem = this.renderItem.bind(this);
-
-    this.state = {
-      selectedIncident: 0,
-    };
   }
 
   componentWillMount() {
     this.notificationSubscription = Notifications.addListener(notification =>
       console.log('Notification arrived:', notification)
     );
-    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.handleRefresh);
+    this.willFocusSubscription = this.props.navigation.addListener(
+      'willFocus',
+      this.handleRefresh
+    );
     this.handleRefresh();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-
     const refreshing =
       prevProps.incidents.length === 0 &&
       prevProps.incidents !== this.props.incidents;
 
+    // Reset carousel state
     if (refreshing) {
       this._carousel.snapToItem(0);
-      this.setState({ selectedIncident: 0 });
     }
 
     // It handles cases where
@@ -80,15 +78,6 @@ class IncidentList extends React.Component {
     this.props.incidentsListSelect(slideIndex);
   };
 
-  handleSnapToItem = slideIndex => {
-    this.props.incidentsListSelect(slideIndex);
-    const incident = this.props.incidents[slideIndex];
-    this._map.panTo(getCoordsFromIncident(incident), {});
-    this.setState({
-      selectedIncident: slideIndex,
-    });
-  };
-
   renderItem({ item: incident }) {
     return (
       <IncidentCard
@@ -101,16 +90,6 @@ class IncidentList extends React.Component {
       />
     );
   }
-
-
-  handleSnapToItem = slideIndex => {
-    this.props.incidentsListSelect(slideIndex);
-    const incident = this.props.incidents[slideIndex];
-    this._map.panTo(getCoordsFromIncident(incident), {});
-    this.setState({
-      selectedIncident: slideIndex,
-    });
-  };
 
   render() {
     const selectedIncident = this.props.incidents[this.props.indexSelected];
@@ -132,7 +111,7 @@ class IncidentList extends React.Component {
         <View style={styles.carouselContainer}>
           <Pagination
             dotsLength={this.props.incidents.length}
-            activeDotIndex={this.state.selectedIncident}
+            activeDotIndex={this.props.indexSelected}
             containerStyle={{ marginBottom: -15 }}
             dotStyle={{ width: 20 }}
             inactiveDotStyle={{ width: 7 }}

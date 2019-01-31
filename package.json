@@ -21,6 +21,7 @@
     "expo-app-auth": "^2.0.0",
     "expo-background-fetch": "^1.0.0",
     "expo-google-sign-in": "^2.0.0",
+    "fast-memoize": "^2.5.1",
     "geojson-utils": "^1.1.0",
     "immer": "^1.10.5",
     "lodash": "^4.17.11",
