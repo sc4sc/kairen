@@ -18,10 +18,9 @@ import NaverMap from '../components/NaverMap';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import Layout from '../constants/Layout';
 import { newIncidentPostRequested } from '../actions/newIncident';
+import { checkIsInbuilding } from '../utils';
 import Colors from '../constants/Colors';
 import memoize from 'fast-memoize';
-
-const geojsonutil = require('geojson-utils');
 
 class NewIncidentDetail extends React.Component {
   constructor() {
@@ -33,6 +32,7 @@ class NewIncidentDetail extends React.Component {
     };
     this.handlePressReport = this.handlePressReport.bind(this);
     this.report = this.report.bind(this);
+    this.locatePosition = this.locatePosition.bind(this);
   }
 
   handlePressReport() {
@@ -61,25 +61,17 @@ class NewIncidentDetail extends React.Component {
   }
 
   async locatePosition() {
-    const location = await Location.getCurrentPositionAsync();
-    const { longitude, latitude } = location.coords;
+    const currPoint = await Location.getCurrentPositionAsync();
+    const { longitude, latitude } = currPoint.coords;
+    this.setState({ markerRegion: { lat: latitude, lng: longitude } });
 
-    this.setState({ markerCoords: { lat: latitude, lng: longitude } });
-    this.checkIsInbuilding({ lat: latitude, lng: longitude });
-    this.map.panTo({ lng: longitude, lat: latitude }, {});
-  }
-
-  checkIsInbuilding(coords) {
-    const n1 = require('../assets/geojson/N1.json');
-    const isIn = geojsonutil.pointInPolygon(
-      { type: 'Point', coordinates: [coords.lng, coords.lat] },
-      n1
-    );
-    if (isIn) {
-      this.setState({ location: n1.properties.name });
+    const location = checkIsInbuilding({ lat: latitude, lng: longitude });
+    if (location) {
+        this.setState({ location: location.properties.name });
     } else {
-      this.setState({ location: '' });
+        this.setState({ location: '' });
     }
+    this.map.panTo({ lng: longitude, lat: latitude }, {});
   }
 
   getMarkers = memoize(markerCoords => {
@@ -121,8 +113,13 @@ class NewIncidentDetail extends React.Component {
           style={{ flex: 1 }}
           markers={this.getMarkers(this.state.markerCoords)}
           onPress={coords => {
-            this.checkIsInbuilding(coords);
-            this.setState({ markerCoords: coords });
+            const location = checkIsInbuilding(coords);
+            if (location) {
+                this.setState({ location: location.properties.name });
+            } else {
+                this.setState({ location: '' });
+            }
+            this.setState({ markerRegion: coords });
           }}
         />
         <View style={styles.searchBoxContainer}>
