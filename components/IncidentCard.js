@@ -9,8 +9,9 @@ import { typeMap } from '../constants/Incidents';
 
 export default class IncidentCard extends React.Component {
   render() {
-    const { onPress, data, confirmed = true } = this.props;
-    const { type, createdAt } = data;
+    const { onPress, data } = this.props;
+    const { type, createdAt, state, Progresses } = data;
+    const confirmed = Progresses.length > 0;
     const doc = typeMap[type];
 
     return (
@@ -29,7 +30,7 @@ export default class IncidentCard extends React.Component {
 
             {confirmed ? (
               <ProgressCard author="안전팀" minHeight={0} height={80}>
-                화재 진압되었습니다.
+                  {JSON.parse(JSON.stringify(Progresses))[0].content}
               </ProgressCard>
             ) : (
               <View style={{ flex: 1 }} />
@@ -37,7 +38,7 @@ export default class IncidentCard extends React.Component {
           </View>
         </TouchableOpacity>
         <View style={styles.progressContainer}>
-          <Text style={styles.progressText}>확인 중</Text>
+          <Text style={styles.progressText}>{state}</Text>
         </View>
       </View>
     );

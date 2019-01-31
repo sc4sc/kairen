@@ -8,15 +8,17 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Location } from 'expo';
 import { createSelector } from 'reselect';
 
 import NaverMap from '../components/NaverMap';
-import ReportItem from '../components/ReportItem';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import Layout from '../constants/Layout';
+import { newIncidentPostRequested } from '../actions/newIncident';
+import Colors from "../constants/Colors";
 
 const geojsonutil = require('geojson-utils');
 
@@ -33,27 +35,26 @@ class NewIncidentDetail extends React.Component {
     };
     this.handlePressReport = this.handlePressReport.bind(this);
     this.report = this.report.bind(this);
-    this.renderItem = this.renderItem.bind(this);
   }
 
-  handlePressReport(region) {
+  handlePressReport() {
     Alert.alert(
       '제보하시겠습니까?',
       '자세한 현장 상황 확인을 위해 카이스트 안전팀이 곧 연락합니다',
-      [{ text: '취소' }, { text: '확인', onPress: () => this.report(region) }]
+      [{ text: '취소' }, { text: '확인', onPress: () => this.report(this.state.markerRegion) }]
     );
   }
 
   report(region) {
-    const { latitude, longitude } = region;
+    const { lat, lng } = region;
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,
-        lat: latitude,
-        lng: longitude,
+        lat: lat,
+        lng: lng,
       },
       () => {
-        this.props.navigation.goBack();
+        this.props.navigation.dispatch(StackActions.popToTop());
       }
     );
   }
@@ -80,18 +81,9 @@ class NewIncidentDetail extends React.Component {
     }
   }
 
-  renderItem(incident) {
-    return (
-      <ReportItem
-        type={incident.item.type}
-        title={incident.item.title}
-        onPressNext={this.handleChangeScreen}
-      />
-    );
-  }
-
   render() {
     const { container, headerContainer, headerText } = styles;
+    const { lat, lng } = this.state.markerRegion;
 
     return (
       <SafeAreaView style={container}>
@@ -109,14 +101,6 @@ class NewIncidentDetail extends React.Component {
           />
         </View>
 
-        <View style={styles.searchBoxContainer}>
-          <Text style={styles.questionText}>장소는 어디인가요?</Text>
-          <View style={styles.searchBox}>
-            <Text style={styles.searchText}>{this.state.location}</Text>
-            <Ionicons name="md-search" size={26} />
-          </View>
-        </View>
-
         <NaverMap
           ref={el => (this.map = el)}
           style={{ flex: 1 }}
@@ -126,9 +110,31 @@ class NewIncidentDetail extends React.Component {
             this.setState({ markerRegion: coords });
           }}
         />
-        <TouchableOpacity style={styles.buttonStyle}>
+        <View style={styles.searchBoxContainer}>
+            <Text style={styles.questionText}>장소는 어디인가요?</Text>
+            <View style={styles.searchBox}>
+                <Text style={styles.searchText}>{this.state.location}</Text>
+                <Ionicons name="md-search" size={26} />
+            </View>
+        </View>
+        <TouchableOpacity style={styles.buttonStyle} onPress={this.handlePressReport}>
           <Text style={styles.buttonText}>제보 등록</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity style={styles.gpsButton} onPress={this.locatePosition}>
+          <MaterialIcons style={{ color: 'white' }} name="gps-fixed" size={26} />
+        </TouchableOpacity>
+        <View
+            style={{
+                position: 'absolute',
+                top: 200,
+                right: 10,
+                backgroundColor: 'rgba(0, 0, 0, 0.12)',
+            }}
+        >
+            <Text>lat {lat}</Text>
+            <Text>lng {lng}</Text>
+        </View>
       </SafeAreaView>
     );
   }
@@ -180,6 +186,25 @@ const styles = StyleSheet.create({
     padding: 17,
     elevation: 3,
   },
+  gpsButton: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'absolute',
+      bottom: 80,
+      right: 12,
+      width: 55,
+      height: 55,
+      borderRadius: 50,
+      backgroundColor: Colors.buttonGrey,
+      marginBottom: 21,
+      marginRight: 13,
+      alignSelf: 'flex-end',
+      shadowOffset: { width: 0, height: 2 },
+      shadowColor: 'black',
+      shadowOpacity: 0.22,
+      shadowRadius: 2,
+      elevation: 5,
+  },
   buttonText: {
     color: 'white',
     fontSize: 19,
@@ -226,4 +251,6 @@ export default connect(state => {
     indexSelected,
     selectedIncident: state.newIncident.selectedIncident,
   };
+}, {
+    newIncidentPostRequested
 })(NewIncidentDetail);
