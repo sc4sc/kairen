@@ -28,7 +28,7 @@ class NewIncidentDetail extends React.Component {
 
     this.state = {
       markerCoords: null,
-      location: '',
+      locationName: '',
     };
     this.handlePressReport = this.handlePressReport.bind(this);
     this.report = this.report.bind(this);
@@ -68,12 +68,14 @@ class NewIncidentDetail extends React.Component {
   updateLocationName = coords => {
     const locationGeoObj = checkIsInbuilding(coords);
     this.setState({
-      location: locationGeoObj ? locationGeoObj.properties.name : '',
+      locationName: locationGeoObj ? locationGeoObj.properties.name : '',
     });
   };
 
   async locatePosition() {
-    const currentPosition = (await Location.getCurrentPositionAsync()).coords;
+    const currentPosition = (await Location.getCurrentPositionAsync({
+      maximumAge: 5000,
+    })).coords;
     const { longitude, latitude } = currentPosition;
     const coords = { lng: longitude, lat: latitude };
     this.updateLocationName(coords);
@@ -124,7 +126,7 @@ class NewIncidentDetail extends React.Component {
         <View style={styles.searchBoxContainer}>
           <Text style={styles.questionText}>장소는 어디인가요?</Text>
           <View style={styles.searchBox}>
-            <Text style={styles.searchText}>{this.state.location}</Text>
+            <Text style={styles.searchText}>{this.state.locationName}</Text>
             <Ionicons name="md-search" size={26} />
           </View>
         </View>
