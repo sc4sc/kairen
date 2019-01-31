@@ -42,10 +42,8 @@ class IncidentList extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-
     const refreshing =
-      prevProps.incidents.length === 0 &&
-      prevProps.incidents !== this.props.incidents;
+      prevProps.incidents.length === 0 && prevProps.incidents !== this.props.incidents;
 
     if (refreshing) {
       this._carousel.snapToItem(0);
@@ -102,7 +100,6 @@ class IncidentList extends React.Component {
     );
   }
 
-
   handleSnapToItem = slideIndex => {
     this.props.incidentsListSelect(slideIndex);
     const incident = this.props.incidents[slideIndex];
@@ -147,7 +144,7 @@ class IncidentList extends React.Component {
             onBeforeSnapToItem={this.handleSnapToItem}
             sliderWidth={Layout.window.width}
             itemWidth={Layout.window.width - 50}
-            containerCustomStyle={{ height: 200 }}
+            containerCustomStyle={{ height: 200, overflow: 'visible' }}
             slideStyle={{ paddingLeft: 5, paddingRight: 5 }}
             inactiveSlideOpacity={1}
             inactiveSlideScale={1}
