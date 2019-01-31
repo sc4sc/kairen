@@ -47,10 +47,7 @@ class NewIncidentDetail extends React.Component {
   }
 
   handlePressMap = coords => {
-    const locationGeoObj = checkIsInbuilding(coords);
-    this.setState({
-      location: locationGeoObj ? locationGeoObj.properties.name : '',
-    });
+    this.updateLocationName(coords);
     this.setState({ markerCoords: coords });
   };
 
@@ -68,18 +65,20 @@ class NewIncidentDetail extends React.Component {
     );
   }
 
-  async locatePosition() {
-    const currPoint = await Location.getCurrentPositionAsync();
-    const { longitude, latitude } = currPoint.coords;
-    this.setState({ markerRegion: { lat: latitude, lng: longitude } });
+  updateLocationName = coords => {
+    const locationGeoObj = checkIsInbuilding(coords);
+    this.setState({
+      location: locationGeoObj ? locationGeoObj.properties.name : '',
+    });
+  };
 
-    const location = checkIsInbuilding({ lat: latitude, lng: longitude });
-    if (location) {
-      this.setState({ location: location.properties.name });
-    } else {
-      this.setState({ location: '' });
-    }
-    this.map.panTo({ lng: longitude, lat: latitude }, {});
+  async locatePosition() {
+    const currentPosition = (await Location.getCurrentPositionAsync()).coords;
+    const { longitude, latitude } = currentPosition;
+    const coords = { lng: longitude, lat: latitude };
+    this.updateLocationName(coords);
+    this.setState({ markerCoords: coords });
+    this.map.panTo(coords, {});
   }
 
   getMarkers = memoize(markerCoords => {
