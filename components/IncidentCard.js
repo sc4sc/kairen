@@ -4,14 +4,15 @@ import { Ionicons } from '@expo/vector-icons';
 
 import ProgressCard from './ProgressCard';
 import Colors from '../constants/Colors';
-import { formatDate } from '../utils';
+import { formatDate, checkIsInbuilding } from '../utils';
 import { typeMap } from '../constants/Incidents';
 
 export default class IncidentCard extends React.Component {
   render() {
     const { onPress, data } = this.props;
-    const { type, createdAt, state, Progresses } = data;
+    const { type, createdAt, state, Progresses, lat, lng} = data;
     const confirmed = Progresses.length > 0;
+    const location = checkIsInbuilding({ lat: lat, lng: lng });
     const doc = typeMap[type];
 
     return (
@@ -22,7 +23,7 @@ export default class IncidentCard extends React.Component {
               <View>
                 <Text style={styles.dateText}>{formatDate(createdAt)}</Text>
                 <Text style={styles.title}>{doc.title}</Text>
-                <Text style={styles.addressText}>N1 김병호 김삼열 IT 융합센터</Text>
+                <Text style={styles.addressText}>{location ? location.properties.name : 'KAIST'}</Text>
               </View>
 
               <Ionicons style={{ alignSelf: 'center' }} name="md-close" size={26} />
