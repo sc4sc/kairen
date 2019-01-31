@@ -5,4 +5,5 @@ export * from './ProgressList';
 export Setting from './Setting';
 export NewProgress from './NewProgress';
 export NewIncident from './NewIncident';
+export NewIncidentDetail from './NewIncidentDetail';
 export Login from './Login';

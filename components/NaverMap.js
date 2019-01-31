@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, TouchableOpacity, View, WebView } from 'react-native';
+import { FileSystem } from 'expo';
 
 const htmlAsset = Expo.Asset.fromModule(require('../assets/map.html'));
 
@@ -16,6 +17,12 @@ async function loadHtml() {
   }
   console.log('Map URI: ' + uri);
 
+  if (uri.startsWith('file')) {
+    console.log('Loading from the filesystem');
+    return FileSystem.readAsStringAsync(uri, {});
+  }
+
+  console.log('Downloading from the remote server');
   const response = await fetch(uri);
   console.log('Downloaded map.html');
   return response.text();
@@ -101,7 +108,7 @@ export default class NaverMap extends React.Component {
     const action = JSON.parse(nativeEvent.data);
     switch (action.type) {
       case 'log': {
-        console.log('Log', action);
+        // console.log('Log', action);
         return;
       }
       case 'ping': {

@@ -1,15 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
-import { Notifications } from 'expo';
+import { Notifications, Location } from 'expo';
+import { createSelector } from 'reselect';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import IncidentCard from '../components/IncidentCard';
 import { getBottomSpace } from '../utils';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import AndroidTopMargin from '../components/AndroidTopMargin';
 
 import {
   incidentsListLoadMore,
@@ -18,10 +17,13 @@ import {
   incidentsListSelect,
 } from '../actions/incidentsList';
 import NaverMap from '../components/NaverMap';
-import { createSelector } from 'reselect';
+import { KAISTN1Coords } from '../constants/Geo';
+import memoize from 'fast-memoize';
 
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
+  state = { currentLocation: null };
+
   constructor() {
     super();
 
@@ -29,10 +31,6 @@ class IncidentList extends React.Component {
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleEndReached = this.handleEndReached.bind(this);
     this.renderItem = this.renderItem.bind(this);
-
-    this.state = {
-      selectedIncident: 0,
-    }
   }
 
   componentWillMount() {
@@ -44,14 +42,18 @@ class IncidentList extends React.Component {
       this.handleRefresh
     );
     this.handleRefresh();
-  }
-
-  componentWillUnmount() {
-    this.notificationSubscription.remove();
-    this.willFocusSubscription.remove();
+    Location.watchPositionAsync({}, this.handleLocationUpdate);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+    const refreshing =
+      prevProps.incidents.length === 0 &&
+      prevProps.incidents !== this.props.incidents;
+
+    // Reset carousel state
+    if (refreshing) {
+      this._carousel.snapToItem(0);
+    }
 
     // It handles cases where
     // 1. List refreshes after map initialization (initialCoords cannot handle it)
@@ -64,6 +66,16 @@ class IncidentList extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.notificationSubscription.remove();
+    this.willFocusSubscription.remove();
+  }
+
+  handleLocationUpdate = location => {
+    console.log('Update', location);
+    this.setState({ currentLocation: location });
+  };
+
   handleRefresh() {
     this.props.incidentsListRefresh();
   }
@@ -71,6 +83,38 @@ class IncidentList extends React.Component {
   handleEndReached() {
     this.props.incidentsListLoadMore();
   }
+
+  handleSnapToItem = slideIndex => {
+    this.props.incidentsListSelect(slideIndex);
+  };
+
+  // To prevent NaverMap from updating by reusing the old array
+  getMarkers = memoize((selectedIncident, currentLocation) => {
+    let markers = [];
+
+    if (selectedIncident) {
+      markers = markers.concat({
+        key: 'selected',
+        coords: getCoordsFromIncident(selectedIncident),
+      });
+    }
+
+    if (currentLocation) {
+      const { latitude, longitude } = currentLocation.coords;
+      const myLocation = {
+        key: 'myLocation',
+        coords: { lat: latitude, lng: longitude },
+        icon: {
+          path: 3,
+          style: 'circle',
+          fillColor: 'black',
+        },
+      };
+      markers = markers.concat(myLocation);
+    }
+
+    return markers;
+  });
 
   renderItem({ item: incident }) {
     return (
@@ -85,17 +129,8 @@ class IncidentList extends React.Component {
     );
   }
 
-  handleSnapToItem = slideIndex => {
-    this.props.incidentsListSelect(slideIndex);
-    const incident = this.props.incidents[slideIndex];
-    this._map.panTo(getCoordsFromIncident(incident), {});
-    this.setState({
-      selectedIncident: slideIndex,
-    })
-  };
-
   render() {
-    const selectedIncident = this.props.incidents[this.props.indexSelected];
+    const selectedIncident = this.props.selectedIncident;
 
     return (
       <View style={styles.container}>
@@ -106,27 +141,35 @@ class IncidentList extends React.Component {
           initialCoords={
             selectedIncident
               ? getCoordsFromIncident(selectedIncident)
-              : { lat: 36.37334626411133, lng: 127.36397930294454 }
+              : KAISTN1Coords
           }
           style={{ flex: 1 }}
-          markers={this.props.markers}
+          markers={this.getMarkers(
+            selectedIncident,
+            this.state.currentLocation
+          )}
         />
         <View style={styles.carouselContainer}>
-          <Pagination 
+          <Pagination
             dotsLength={this.props.incidents.length}
-            activeDotIndex={this.state.selectedIncident}
-            containerStyle={{marginBottom: -15}}
-            dotStyle={{width: 8, height: 8, borderRadius: 8}}
-            inactiveDotScale={0.5}
+            activeDotIndex={this.props.indexSelected}
+            containerStyle={{ marginBottom: -15 }}
+            dotStyle={{ width: 20 }}
+            inactiveDotStyle={{ width: 7 }}
+            inactiveDotScale={1}
+>>>>>>> master
           />
           <Carousel
+            ref={el => {
+              this._carousel = el;
+            }}
             data={this.props.incidents}
             renderItem={this.renderItem.bind(this)}
             onBeforeSnapToItem={this.handleSnapToItem}
             sliderWidth={Layout.window.width}
             itemWidth={Layout.window.width - 50}
-            containerCustomStyle={{height: 200}}
-            slideStyle={{paddingLeft: 5, paddingRight: 5}}
+            containerCustomStyle={{ height: 200 }}
+            slideStyle={{ paddingLeft: 5, paddingRight: 5 }}
             inactiveSlideOpacity={1}
             inactiveSlideScale={1}
           />
@@ -173,8 +216,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#ff9412',
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    alignItems: 'center',
-    padding: 16,
+    padding: 20,
     marginHorizontal: 15,
     paddingBottom: 16 + getBottomSpace(), // handle the bottom empty space for iPhone X
     shadowOffset: { width: 0, height: 1 },
@@ -206,19 +248,11 @@ const incidentsSelector = createSelector(
 //     }))
 // );
 
-const incidentMarkersSelector = createSelector(
+const selectedIncidentSelector = createSelector(
   incidentsSelector,
   state => state.incidentsList.indexSelected,
   (incidents, indexSelected) => {
-    if (!(typeof indexSelected === 'number' && indexSelected >= 0)) {
-      return [];
-    }
-    return [
-      {
-        key: 'selected',
-        coords: getCoordsFromIncident(incidents[indexSelected]),
-      },
-    ];
+    return incidents[indexSelected];
   }
 );
 
@@ -229,7 +263,7 @@ export default connect(
 
     return {
       incidents,
-      markers: incidentMarkersSelector(state),
+      selectedIncident: selectedIncidentSelector(state),
       loading,
       indexSelected,
     };

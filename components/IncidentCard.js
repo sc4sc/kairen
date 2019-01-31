@@ -4,13 +4,15 @@ import { Ionicons } from '@expo/vector-icons';
 
 import ProgressCard from './ProgressCard';
 import Colors from '../constants/Colors';
-import { formatDate } from '../utils';
+import { formatDate, checkIsInbuilding } from '../utils';
 import { typeMap } from '../constants/Incidents';
 
 export default class IncidentCard extends React.Component {
   render() {
-    const { onPress, data, confirmed = true } = this.props;
-    const { type, createdAt } = data;
+    const { onPress, data } = this.props;
+    const { type, createdAt, state, Progresses, lat, lng} = data;
+    const confirmed = Progresses.length > 0;
+    const location = checkIsInbuilding({ lat: lat, lng: lng });
     const doc = typeMap[type];
 
     return (
@@ -21,7 +23,7 @@ export default class IncidentCard extends React.Component {
               <View>
                 <Text style={styles.dateText}>{formatDate(createdAt)}</Text>
                 <Text style={styles.title}>{doc.title}</Text>
-                <Text style={styles.addressText}>N1 김병호 김삼열 IT 융합센터</Text>
+                <Text style={styles.addressText}>{location ? location.properties.name : 'KAIST'}</Text>
               </View>
 
               <Ionicons style={{ alignSelf: 'center' }} name="md-close" size={26} />
@@ -29,7 +31,7 @@ export default class IncidentCard extends React.Component {
 
             {confirmed ? (
               <ProgressCard author="안전팀" minHeight={0} height={80}>
-                화재 진압되었습니다.
+                  {JSON.parse(JSON.stringify(Progresses))[0].content}
               </ProgressCard>
             ) : (
               <View style={{ flex: 1 }} />
@@ -37,7 +39,7 @@ export default class IncidentCard extends React.Component {
           </View>
         </TouchableOpacity>
         <View style={styles.progressContainer}>
-          <Text style={styles.progressText}>확인 중</Text>
+          <Text style={styles.progressText}>{state}</Text>
         </View>
       </View>
     );
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 190,
     borderRadius: 10,
-    elevation: 2,
+    elevation: 10,
     shadowOffset: { width: 0, height: 2 },
     shadowColor: 'black',
     shadowOpacity: 0.22,

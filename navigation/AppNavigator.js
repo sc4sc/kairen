@@ -6,6 +6,7 @@ import {
   NewComment,
   NewProgress,
   NewIncident,
+  NewIncidentDetail,
   ProgressList,
   Setting,
   Login,
@@ -26,17 +27,14 @@ export default createAppContainer(
           { headerMode: 'none' }
         ),
         NewIncident,
+        NewIncidentDetail,
         NewComment,
         ProgressList,
         NewProgress,
         Setting,
       },
       {
-        mode: 'modal',
         headerMode: 'none',
-        cardStyle: {
-          backgroundColor: 'rgba(0, 0, 0, 0)',
-        },
       }
     ),
   })

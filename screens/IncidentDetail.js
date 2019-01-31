@@ -178,7 +178,11 @@ class IncidentDetail extends React.Component {
     if (progressExist) {
       const { createdAt, content } = this.state.recentProgress[0];
       recentView = (
-        <ProgressCard author="안전팀" date={formatDate(createdAt)} propStyle={styles.progressBox}>
+        <ProgressCard
+          author="안전팀"
+          date={formatDate(createdAt)}
+          propStyle={styles.progressBox}
+        >
           {content}
         </ProgressCard>
       );
@@ -272,6 +276,7 @@ class IncidentDetail extends React.Component {
 
         <SafeAreaView>
           <NaverMap
+            initialCoords={{ lat, lng }}
             draggable={false}
             style={styles.map}
             markers={[
