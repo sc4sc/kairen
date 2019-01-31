@@ -74,7 +74,6 @@ class IncidentList extends React.Component {
   }
 
   handleSnapToItem = slideIndex => {
-    console.log('snap!');
     this.props.incidentsListSelect(slideIndex);
   };
 

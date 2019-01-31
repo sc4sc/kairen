@@ -12,7 +12,7 @@ import {
 const defaultState = {
   byId: {},
   idList: [],
-  indexSelected: null,
+  indexSelected: 0,
   readUntil: '',
   listEnded: false,
   loading: false,
