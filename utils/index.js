@@ -3,7 +3,7 @@ import { getStatusBarHeight as getIOSStatusBarHeight } from 'react-native-iphone
 import { Permissions } from 'expo';
 import moment from 'moment';
 
-const geojsonutil = require('geojson-utils');
+import geojsonutil from 'geojson-utils';
 
 export const getStatusBarHeight = () => {
   if (Platform.OS === 'android') {
@@ -30,7 +30,6 @@ export function formatDate(dateString) {
 }
 
 export async function requestPermission(type) {
-
   // if already granted
   if ((await Permissions.getAsync(type)).status === 'granted') {
     return true;
@@ -46,18 +45,18 @@ export async function requestPermission(type) {
 }
 
 export function checkIsInbuilding(coords) {
-    const buildings = require('../assets/geojson/Region.json');
-    const point = { type: 'Point', coordinates: [coords.lng, coords.lat] };
-    let location;
+  const buildings = require('../assets/geojson/Region.json');
+  const point = { type: 'Point', coordinates: [coords.lng, coords.lat] };
+  let location;
 
-    for (const building of buildings) {
-        if (geojsonutil.pointInPolygon(point, building)) {
-            if (location) {
-                location = location.priority > building.priority ? building : location;
-            } else {
-                location = building;
-            }
-        }
+  for (const building of buildings) {
+    if (geojsonutil.pointInPolygon(point, building)) {
+      if (location) {
+        location = location.priority > building.priority ? building : location;
+      } else {
+        location = building;
+      }
     }
-    return location;
+  }
+  return location;
 }

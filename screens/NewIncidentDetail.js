@@ -46,6 +46,14 @@ class NewIncidentDetail extends React.Component {
     );
   }
 
+  handlePressMap = coords => {
+    const locationGeoObj = checkIsInbuilding(coords);
+    this.setState({
+      location: locationGeoObj ? locationGeoObj.properties.name : '',
+    });
+    this.setState({ markerCoords: coords });
+  };
+
   report(region) {
     const { lat, lng } = region;
     this.props.newIncidentPostRequested(
@@ -67,9 +75,9 @@ class NewIncidentDetail extends React.Component {
 
     const location = checkIsInbuilding({ lat: latitude, lng: longitude });
     if (location) {
-        this.setState({ location: location.properties.name });
+      this.setState({ location: location.properties.name });
     } else {
-        this.setState({ location: '' });
+      this.setState({ location: '' });
     }
     this.map.panTo({ lng: longitude, lat: latitude }, {});
   }
@@ -112,15 +120,7 @@ class NewIncidentDetail extends React.Component {
           ref={el => (this.map = el)}
           style={{ flex: 1 }}
           markers={this.getMarkers(this.state.markerCoords)}
-          onPress={coords => {
-            const location = checkIsInbuilding(coords);
-            if (location) {
-                this.setState({ location: location.properties.name });
-            } else {
-                this.setState({ location: '' });
-            }
-            this.setState({ markerRegion: coords });
-          }}
+          onPress={this.handlePressMap}
         />
         <View style={styles.searchBoxContainer}>
           <Text style={styles.questionText}>장소는 어디인가요?</Text>
@@ -147,15 +147,15 @@ class NewIncidentDetail extends React.Component {
           />
         </TouchableOpacity>
         {/*<View*/}
-          {/*style={{*/}
-            {/*position: 'absolute',*/}
-            {/*top: 200,*/}
-            {/*right: 10,*/}
-            {/*backgroundColor: 'rgba(0, 0, 0, 0.12)',*/}
-          {/*}}*/}
+        {/*style={{*/}
+        {/*position: 'absolute',*/}
+        {/*top: 200,*/}
+        {/*right: 10,*/}
+        {/*backgroundColor: 'rgba(0, 0, 0, 0.12)',*/}
+        {/*}}*/}
         {/*>*/}
-          {/*<Text>lat {lat}</Text>*/}
-          {/*<Text>lng {lng}</Text>*/}
+        {/*<Text>lat {lat}</Text>*/}
+        {/*<Text>lng {lng}</Text>*/}
         {/*</View>*/}
       </SafeAreaView>
     );
