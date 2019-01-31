@@ -50,9 +50,9 @@ export default (state = defaultState, action) =>
           return;
         }
 
-        if (!(typeof draft.indexSelected === 'number' && draft.indexSelected >= 0)) {
-          draft.indexSelected = 0;
-        }
+        // if (!(typeof draft.indexSelected === 'number' && draft.indexSelected >= 0)) {
+        //   draft.indexSelected = 0;
+        // }
 
         incidents.forEach(incident => {
           draft.byId[incident.id] = incident;
@@ -67,7 +67,7 @@ export default (state = defaultState, action) =>
       }
 
       case INCIDENTS_LIST_RESET: {
-        return defaultState;
+        return { ...defaultState, indexSelected: draft.indexSelected };
       }
     }
   });
