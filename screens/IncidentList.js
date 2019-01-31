@@ -17,6 +17,7 @@ import {
   incidentsListSelect,
 } from '../actions/incidentsList';
 import NaverMap from '../components/NaverMap';
+import { KAISTN1Coords } from '../constants/Geo';
 
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
@@ -103,7 +104,7 @@ class IncidentList extends React.Component {
           initialCoords={
             selectedIncident
               ? getCoordsFromIncident(selectedIncident)
-              : { lat: 36.37334626411133, lng: 127.36397930294454 }
+              : KAISTN1Coords
           }
           style={{ flex: 1 }}
           markers={this.props.markers}
