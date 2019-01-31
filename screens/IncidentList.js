@@ -18,9 +18,12 @@ import {
 } from '../actions/incidentsList';
 import NaverMap from '../components/NaverMap';
 import { KAISTN1Coords } from '../constants/Geo';
+import memoize from "fast-memoize";
 
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
+  state = { currentLocation: null };
+
   constructor() {
     super();
 
@@ -78,6 +81,12 @@ class IncidentList extends React.Component {
   handleSnapToItem = slideIndex => {
     this.props.incidentsListSelect(slideIndex);
   };
+
+  getMarkers = memoize((incidentMarker, currentLocation) => {
+    return [
+        
+    ]
+  });
 
   renderItem({ item: incident }) {
     return (
@@ -207,18 +216,29 @@ const incidentsSelector = createSelector(
 //     }))
 // );
 
+const myLocation = {
+  key: 'myLocation',
+  coords: KAISTN1Coords,
+  icon: {
+    path: 3,
+    style: 'circle',
+    fillColor: 'black'
+  },
+};
+
 const incidentMarkersSelector = createSelector(
   incidentsSelector,
   state => state.incidentsList.indexSelected,
   (incidents, indexSelected) => {
     if (!(typeof indexSelected === 'number' && indexSelected >= 0)) {
-      return [];
+      return [myLocation];
     }
     return [
       {
         key: 'selected',
         coords: getCoordsFromIncident(incidents[indexSelected]),
       },
+      myLocation,
     ];
   }
 );

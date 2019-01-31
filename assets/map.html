@@ -71,16 +71,19 @@
                 }
 
                 var markerInstance = markerById[key];
+
+                var markerOptions = {
+                  position: marker.coords,
+                  map: map,
+                  icon: marker.icon,
+                };
                 // Create
                 if (!markerInstance) {
-                  markerInstance = new naver.maps.Marker({
-                    position: marker.coords,
-                    map: map,
-                  });
+                  markerInstance = new naver.maps.Marker(markerOptions);
                   markerById[key] = markerInstance;
                 } else {
                   // Update
-                  markerInstance.setPosition(marker.coords);
+                  markerInstance.setOptions(markerOptions);
                   removedMarkerSet.delete(key);
                 }
               });
