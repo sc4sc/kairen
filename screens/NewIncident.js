@@ -81,7 +81,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 15,
   },
-  headerText: { fontSize: 20, fontWeight: 'bold', color: 'white', marginLeft: 20 },
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    marginLeft: 20,
+  },
   subHeaderText: {
     fontSize: 16,
     color: 'white',

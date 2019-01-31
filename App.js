@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Provider } from 'react-redux';
-import { AppLoading, Font, Icon } from 'expo';
+import { AppLoading, Font, Icon, Permissions } from 'expo';
 import { FontAwesome } from '@expo/vector-icons';
 
 import store from './store';
 import AppNavigator from './navigation/AppNavigator';
+import { requestPermission } from './utils';
 
 console.disableYellowBox = true;
 
@@ -14,9 +15,16 @@ function cacheFonts(fonts) {
 }
 
 export default class App extends React.Component {
-  state = {
-    isReady: false,
-  };
+  constructor() {
+    super();
+    this.state = {
+        isReady: false,
+    };
+  }
+
+  componentDidMount() {
+      requestPermission(Permissions.LOCATION);
+  }
 
   async _loadAssetsAsync() {
     const awesomeFont = cacheFonts([FontAwesome.font]);

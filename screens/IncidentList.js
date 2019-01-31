@@ -17,6 +17,7 @@ import {
   incidentsListSelect,
 } from '../actions/incidentsList';
 import NaverMap from '../components/NaverMap';
+import { KAISTN1Coords } from '../constants/Geo';
 
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
@@ -27,17 +28,16 @@ class IncidentList extends React.Component {
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleEndReached = this.handleEndReached.bind(this);
     this.renderItem = this.renderItem.bind(this);
-
-    this.state = {
-      selectedIncident: 0,
-    };
   }
 
   componentWillMount() {
     this.notificationSubscription = Notifications.addListener(notification =>
       console.log('Notification arrived:', notification)
     );
-    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.handleRefresh);
+    this.willFocusSubscription = this.props.navigation.addListener(
+      'willFocus',
+      this.handleRefresh
+    );
     this.handleRefresh();
   }
 
@@ -45,9 +45,9 @@ class IncidentList extends React.Component {
     const refreshing =
       prevProps.incidents.length === 0 && prevProps.incidents !== this.props.incidents;
 
+    // Reset carousel state
     if (refreshing) {
       this._carousel.snapToItem(0);
-      this.setState({ selectedIncident: 0 });
     }
 
     // It handles cases where
@@ -76,15 +76,6 @@ class IncidentList extends React.Component {
 
   handleSnapToItem = slideIndex => {
     this.props.incidentsListSelect(slideIndex);
-  };
-
-  handleSnapToItem = slideIndex => {
-    this.props.incidentsListSelect(slideIndex);
-    const incident = this.props.incidents[slideIndex];
-    this._map.panTo(getCoordsFromIncident(incident), {});
-    this.setState({
-      selectedIncident: slideIndex,
-    });
   };
 
   renderItem({ item: incident }) {
@@ -121,7 +112,7 @@ class IncidentList extends React.Component {
           initialCoords={
             selectedIncident
               ? getCoordsFromIncident(selectedIncident)
-              : { lat: 36.37334626411133, lng: 127.36397930294454 }
+              : KAISTN1Coords
           }
           style={{ flex: 1 }}
           markers={this.props.markers}
@@ -129,7 +120,7 @@ class IncidentList extends React.Component {
         <View style={styles.carouselContainer}>
           <Pagination
             dotsLength={this.props.incidents.length}
-            activeDotIndex={this.state.selectedIncident}
+            activeDotIndex={this.props.indexSelected}
             containerStyle={{ marginBottom: -15 }}
             dotStyle={{ width: 20 }}
             inactiveDotStyle={{ width: 7 }}

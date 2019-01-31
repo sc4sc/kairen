@@ -8,97 +8,103 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Location } from 'expo';
 import { createSelector } from 'reselect';
 
 import NaverMap from '../components/NaverMap';
-import ReportItem from '../components/ReportItem';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import Layout from '../constants/Layout';
-
-const geojsonutil = require('geojson-utils');
+import { newIncidentPostRequested } from '../actions/newIncident';
+import { checkIsInbuilding } from '../utils';
+import Colors from '../constants/Colors';
+import memoize from 'fast-memoize';
 
 class NewIncidentDetail extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      markerRegion: {
-        lat: 36.374159,
-        lng: 127.365864,
-      },
+      markerCoords: null,
       location: '',
     };
     this.handlePressReport = this.handlePressReport.bind(this);
     this.report = this.report.bind(this);
-    this.renderItem = this.renderItem.bind(this);
+    this.locatePosition = this.locatePosition.bind(this);
   }
 
-  handlePressReport(region) {
+  handlePressReport() {
     Alert.alert(
       '제보하시겠습니까?',
       '자세한 현장 상황 확인을 위해 카이스트 안전팀이 곧 연락합니다',
-      [{ text: '취소' }, { text: '확인', onPress: () => this.report(region) }]
+      [
+        { text: '취소' },
+        { text: '확인', onPress: () => this.report(this.state.markerCoords) },
+      ]
     );
   }
 
+  handlePressMap = coords => {
+    this.updateLocationName(coords);
+    this.setState({ markerCoords: coords });
+  };
+
   report(region) {
-    const { latitude, longitude } = region;
+    const { lat, lng } = region;
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,
-        lat: latitude,
-        lng: longitude,
+        lat: lat,
+        lng: lng,
       },
       () => {
-        this.props.navigation.goBack();
+        this.props.navigation.dispatch(StackActions.popToTop());
       }
     );
   }
 
+  updateLocationName = coords => {
+    const locationGeoObj = checkIsInbuilding(coords);
+    this.setState({
+      location: locationGeoObj ? locationGeoObj.properties.name : '',
+    });
+  };
+
   async locatePosition() {
-    const location = await Location.getCurrentPositionAsync();
-    const { longitude, latitude } = location.coords;
-
-    this.setState({ markerRegion: { lat: latitude, lng: longitude } });
-    this.checkIsInbuilding({ lat: latitude, lng: longitude });
-    this.map.panTo({ lng: longitude, lat: latitude }, {});
+    const currentPosition = (await Location.getCurrentPositionAsync()).coords;
+    const { longitude, latitude } = currentPosition;
+    const coords = { lng: longitude, lat: latitude };
+    this.updateLocationName(coords);
+    this.setState({ markerCoords: coords });
+    this.map.panTo(coords, {});
   }
 
-  checkIsInbuilding(coords) {
-    const n1 = require('../assets/geojson/N1.json');
-    const isIn = geojsonutil.pointInPolygon(
-      { type: 'Point', coordinates: [coords.lng, coords.lat] },
-      n1
-    );
-    if (isIn) {
-      this.setState({ location: n1.properties.name });
-    } else {
-      this.setState({ location: '' });
+  getMarkers = memoize(markerCoords => {
+    if (!markerCoords) {
+      return [];
     }
-  }
-
-  renderItem(incident) {
-    return (
-      <ReportItem
-        type={incident.item.type}
-        title={incident.item.title}
-        onPressNext={this.handleChangeScreen}
-      />
-    );
-  }
+    return [
+      {
+        key: 'incidentLocation',
+        coords: markerCoords,
+      },
+    ];
+  });
 
   render() {
     const { container, headerContainer, headerText } = styles;
+    // const { lat, lng } = this.state.markerCoords;
 
     return (
       <SafeAreaView style={container}>
         <StatusBar barStyle="light-content" backgroundColor="#ff9412" />
         <AndroidTopMargin style={{ backgroundColor: '#ff9412' }} />
         <View style={headerContainer}>
-          <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>
+          <TouchableWithoutFeedback
+            onPress={() => this.props.navigation.goBack()}
+          >
             <Text style={headerText}>{this.props.selectedIncident}</Text>
           </TouchableWithoutFeedback>
           <Ionicons
@@ -109,6 +115,12 @@ class NewIncidentDetail extends React.Component {
           />
         </View>
 
+        <NaverMap
+          ref={el => (this.map = el)}
+          style={{ flex: 1 }}
+          markers={this.getMarkers(this.state.markerCoords)}
+          onPress={this.handlePressMap}
+        />
         <View style={styles.searchBoxContainer}>
           <Text style={styles.questionText}>장소는 어디인가요?</Text>
           <View style={styles.searchBox}>
@@ -116,19 +128,34 @@ class NewIncidentDetail extends React.Component {
             <Ionicons name="md-search" size={26} />
           </View>
         </View>
-
-        <NaverMap
-          ref={el => (this.map = el)}
-          style={{ flex: 1 }}
-          markers={[{ key: 'incidentLocation', coords: this.state.markerRegion }]}
-          onPress={coords => {
-            this.checkIsInbuilding(coords);
-            this.setState({ markerRegion: coords });
-          }}
-        />
-        <TouchableOpacity style={styles.buttonStyle}>
+        <TouchableOpacity
+          style={styles.buttonStyle}
+          onPress={this.handlePressReport}
+        >
           <Text style={styles.buttonText}>제보 등록</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.gpsButton}
+          onPress={this.locatePosition}
+        >
+          <MaterialIcons
+            style={{ color: 'white' }}
+            name="gps-fixed"
+            size={26}
+          />
+        </TouchableOpacity>
+        {/*<View*/}
+        {/*style={{*/}
+        {/*position: 'absolute',*/}
+        {/*top: 200,*/}
+        {/*right: 10,*/}
+        {/*backgroundColor: 'rgba(0, 0, 0, 0.12)',*/}
+        {/*}}*/}
+        {/*>*/}
+        {/*<Text>lat {lat}</Text>*/}
+        {/*<Text>lng {lng}</Text>*/}
+        {/*</View>*/}
       </SafeAreaView>
     );
   }
@@ -146,7 +173,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 15,
   },
-  headerText: { fontSize: 20, fontWeight: 'bold', color: 'white', marginLeft: 20 },
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    marginLeft: 20,
+  },
   searchBoxContainer: {
     width: Layout.window.width - 40,
     top: 115,
@@ -180,6 +212,25 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     padding: 17,
     elevation: 3,
+  },
+  gpsButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 80,
+    right: 12,
+    width: 55,
+    height: 55,
+    borderRadius: 50,
+    backgroundColor: Colors.buttonGrey,
+    marginBottom: 21,
+    marginRight: 13,
+    alignSelf: 'flex-end',
+    shadowOffset: { width: 0, height: 2 },
+    shadowColor: 'black',
+    shadowOpacity: 0.22,
+    shadowRadius: 2,
+    elevation: 5,
   },
   buttonText: {
     color: 'white',
@@ -216,15 +267,20 @@ const incidentMarkersSelector = createSelector(
   }
 );
 
-export default connect(state => {
-  const { loading, indexSelected } = state.incidentsList;
-  const incidents = incidentsSelector(state);
+export default connect(
+  state => {
+    const { loading, indexSelected } = state.incidentsList;
+    const incidents = incidentsSelector(state);
 
-  return {
-    incidents,
-    markers: incidentMarkersSelector(state),
-    loading,
-    indexSelected,
-    selectedIncident: state.newIncident.selectedIncident,
-  };
-})(NewIncidentDetail);
+    return {
+      incidents,
+      markers: incidentMarkersSelector(state),
+      loading,
+      indexSelected,
+      selectedIncident: state.newIncident.selectedIncident,
+    };
+  },
+  {
+    newIncidentPostRequested,
+  }
+)(NewIncidentDetail);
