@@ -72,7 +72,6 @@ class IncidentList extends React.Component {
   }
 
   handleLocationUpdate = location => {
-    console.log('Update', location);
     this.setState({ currentLocation: location });
   };
 
@@ -104,11 +103,7 @@ class IncidentList extends React.Component {
       const myLocation = {
         key: 'myLocation',
         coords: { lat: latitude, lng: longitude },
-        icon: {
-          path: 3,
-          style: 'circle',
-          fillColor: 'black',
-        },
+        icon: Expo.Asset.fromModule(require('../assets/images/current_location_pin.png')).uri,
       };
       markers = markers.concat(myLocation);
     }
@@ -157,7 +152,6 @@ class IncidentList extends React.Component {
             dotStyle={{ width: 20 }}
             inactiveDotStyle={{ width: 7 }}
             inactiveDotScale={1}
->>>>>>> master
           />
           <Carousel
             ref={el => {
