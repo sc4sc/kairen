@@ -342,7 +342,15 @@ class IncidentDetail extends React.Component {
               { key: 'incidentPos', coords: { lat: latitude, lng: longitude } },
             ]}
           />
-          <View style={{ paddingVertical: 18, paddingHorizontal: 15 }}>
+          <View
+            style={{
+              backgroundColor: '#ffffff',
+              marginTop: -5,
+              borderRadius: 10,
+              paddingVertical: 18,
+              paddingHorizontal: 15,
+            }}
+          >
             {this.renderHeader()}
             <View style={{ height: 28 }} />
             {this.renderProtocol()}
