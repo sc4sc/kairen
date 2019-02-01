@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Notifications } from 'expo';
 import { createSelector } from 'reselect';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import memoize from 'fast-memoize';
 
 import IncidentCard from '../components/IncidentCard';
 import { getBottomSpace } from '../utils';
@@ -18,7 +19,6 @@ import {
 } from '../actions/incidentsList';
 import NaverMap from '../components/NaverMap';
 import { KAISTN1Coords } from '../constants/Geo';
-import memoize from "fast-memoize";
 
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
@@ -27,7 +27,6 @@ class IncidentList extends React.Component {
   constructor() {
     super();
 
-    this.data = ['Hello1', 'Hello2'];
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleEndReached = this.handleEndReached.bind(this);
     this.renderItem = this.renderItem.bind(this);
@@ -37,19 +36,15 @@ class IncidentList extends React.Component {
     this.notificationSubscription = Notifications.addListener(notification =>
       console.log('Notification arrived:', notification)
     );
-    this.willFocusSubscription = this.props.navigation.addListener(
-      'willFocus',
-      this.handleRefresh
-    );
+    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.handleRefresh);
     this.handleRefresh();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const refreshing =
-      prevProps.incidents.length === 0 && prevProps.incidents !== this.props.incidents;
+    const refreshing = prevProps.incidents !== this.props.incidents;
 
     // Reset carousel state
-    if (refreshing) {
+    if (this._carousel && refreshing) {
       this._carousel.snapToItem(0);
     }
 
@@ -69,6 +64,8 @@ class IncidentList extends React.Component {
     this.willFocusSubscription.remove();
   }
 
+  getMarkers = memoize((incidentMarker, currentLocation) => []);
+
   handleRefresh() {
     this.props.incidentsListRefresh();
   }
@@ -81,11 +78,14 @@ class IncidentList extends React.Component {
     this.props.incidentsListSelect(slideIndex);
   };
 
-  getMarkers = memoize((incidentMarker, currentLocation) => {
-    return [
-        
-    ]
-  });
+  handleSnapToItem = slideIndex => {
+    this.props.incidentsListSelect(slideIndex);
+    const incident = this.props.incidents[slideIndex];
+    this._map.panTo(getCoordsFromIncident(incident), {});
+    this.setState({
+      selectedIncident: slideIndex,
+    });
+  };
 
   renderItem({ item: incident }) {
     return (
@@ -100,14 +100,41 @@ class IncidentList extends React.Component {
     );
   }
 
-  handleSnapToItem = slideIndex => {
-    this.props.incidentsListSelect(slideIndex);
-    const incident = this.props.incidents[slideIndex];
-    this._map.panTo(getCoordsFromIncident(incident), {});
-    this.setState({
-      selectedIncident: slideIndex,
-    });
-  };
+  renderCarousel() {
+    if (this.props.incidents.length === 0) {
+      return (
+        <View style={styles.emptyIncidentBox} pointerEvents={'none'}>
+          <Text style={{ fontSize: 13, color: '#4a4a4a' }}>사고 목록이 비어있습니다.</Text>
+        </View>
+      );
+    }
+    return (
+      <View style={styles.carouselContainer}>
+        <Pagination
+          dotsLength={this.props.incidents.length}
+          activeDotIndex={this.props.indexSelected}
+          containerStyle={{ marginBottom: -15 }}
+          dotStyle={{ width: 20 }}
+          inactiveDotStyle={{ width: 7 }}
+          inactiveDotScale={1}
+        />
+        <Carousel
+          ref={el => {
+            this._carousel = el;
+          }}
+          data={this.props.incidents}
+          renderItem={this.renderItem.bind(this)}
+          onBeforeSnapToItem={this.handleSnapToItem}
+          sliderWidth={Layout.window.width}
+          itemWidth={Layout.window.width - 50}
+          containerCustomStyle={{ height: 200, overflow: 'visible' }}
+          slideStyle={{ paddingLeft: 5, paddingRight: 5 }}
+          inactiveSlideOpacity={1}
+          inactiveSlideScale={1}
+        />
+      </View>
+    );
+  }
 
   render() {
     const selectedIncident = this.props.incidents[this.props.indexSelected];
@@ -118,38 +145,13 @@ class IncidentList extends React.Component {
           ref={el => {
             this._map = el;
           }}
-          initialCoords={
-            selectedIncident
-              ? getCoordsFromIncident(selectedIncident)
-              : KAISTN1Coords
-          }
+          initialCoords={selectedIncident ? getCoordsFromIncident(selectedIncident) : KAISTN1Coords}
           style={{ flex: 1 }}
           markers={this.props.markers}
         />
-        <View style={styles.carouselContainer}>
-          <Pagination
-            dotsLength={this.props.incidents.length}
-            activeDotIndex={this.props.indexSelected}
-            containerStyle={{ marginBottom: -15 }}
-            dotStyle={{ width: 20 }}
-            inactiveDotStyle={{ width: 7 }}
-            inactiveDotScale={1}
-          />
-          <Carousel
-            ref={el => {
-              this._carousel = el;
-            }}
-            data={this.props.incidents}
-            renderItem={this.renderItem.bind(this)}
-            onBeforeSnapToItem={this.handleSnapToItem}
-            sliderWidth={Layout.window.width}
-            itemWidth={Layout.window.width - 50}
-            containerCustomStyle={{ height: 200, overflow: 'visible' }}
-            slideStyle={{ paddingLeft: 5, paddingRight: 5 }}
-            inactiveSlideOpacity={1}
-            inactiveSlideScale={1}
-          />
-        </View>
+
+        {this.renderCarousel()}
+
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.reportButton}
@@ -183,6 +185,17 @@ export const styles = StyleSheet.create({
   },
   header: { fontSize: 28, fontWeight: '800', color: Colors.defaultBlack },
   carouselContainer: { position: 'absolute', bottom: bottomUnsafeArea + 80 },
+  emptyIncidentBox: {
+    position: 'absolute',
+    bottom: bottomUnsafeArea + 100,
+    height: 118,
+    width: Layout.window.width - 112,
+    marginHorizontal: 56,
+    borderRadius: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.09)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   buttonContainer: {
     position: 'absolute',
     bottom: 0,
@@ -230,7 +243,7 @@ const myLocation = {
   icon: {
     path: 3,
     style: 'circle',
-    fillColor: 'black'
+    fillColor: 'black',
   },
 };
 
