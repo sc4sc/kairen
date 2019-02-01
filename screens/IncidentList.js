@@ -44,6 +44,11 @@ class IncidentList extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
 
+    const refreshing = prevProps.incidents.length === 0 && prevProps.incidents !== this.props.incidents;
+    if (refreshing) {
+      this.props.incidentsListSelect(0);
+    }
+
     // It handles cases where
     // 1. List refreshes after map initialization (initialCoords cannot handle it)
     // 2. Selection changes as user swipe carousel
