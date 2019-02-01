@@ -10,10 +10,25 @@ import { typeMap } from '../constants/Incidents';
 export default class IncidentCard extends React.Component {
   render() {
     const { onPress, data } = this.props;
-    const { type, createdAt, state, Progresses, lat, lng} = data;
+    const { type, createdAt, state, Progresses, lat, lng } = data;
     const confirmed = Progresses.length > 0;
-    const location = checkIsInbuilding({ lat: lat, lng: lng });
+    const location = checkIsInbuilding({ lat, lng });
     const doc = typeMap[type];
+
+    let progressStateColor = '';
+    switch (state) {
+      case '확인중':
+        progressStateColor = '#d62c2c';
+        break;
+      case '진행중':
+        progressStateColor = '#f5c234';
+        break;
+      case '완료':
+        progressStateColor = '#7ed321';
+        break;
+      default:
+        progressStateColor = 'black';
+    }
 
     return (
       <View style={styles.container}>
@@ -23,22 +38,26 @@ export default class IncidentCard extends React.Component {
               <View>
                 <Text style={styles.dateText}>{formatDate(createdAt)}</Text>
                 <Text style={styles.title}>{doc.title}</Text>
-                <Text style={styles.addressText}>{location ? location.properties.name : 'KAIST'}</Text>
+                <Text style={styles.addressText}>
+                  {location ? location.properties.name : 'KAIST'}
+                </Text>
               </View>
 
               <Ionicons style={{ alignSelf: 'center' }} name="md-close" size={26} />
             </View>
 
             {confirmed ? (
-              <ProgressCard author="안전팀" minHeight={0} height={80}>
-                  {JSON.parse(JSON.stringify(Progresses))[0].content}
+              <ProgressCard author="안전팀" minHeight={0}>
+                {JSON.parse(JSON.stringify(Progresses))[0].content}
               </ProgressCard>
             ) : (
-              <View style={{ flex: 1 }} />
+              <View style={styles.placeholderContainer}>
+                <Text style={styles.placeholderStyle}>진행상황이 없습니다.</Text>
+              </View>
             )}
           </View>
         </TouchableOpacity>
-        <View style={styles.progressContainer}>
+        <View style={[styles.progressState, { backgroundColor: progressStateColor }]}>
           <Text style={styles.progressText}>{state}</Text>
         </View>
       </View>
@@ -68,8 +87,7 @@ const styles = StyleSheet.create({
   addressText: { fontSize: 13 },
   dateText: { fontSize: 11, color: Colors.dateLightGrey, marginTop: 11, marginBottom: 5 },
   mapContainer: { width: 80, height: 120 },
-  progressContainer: {
-    backgroundColor: 'red',
+  progressState: {
     justifyContent: 'center',
     alignItems: 'center',
     height: 25,
@@ -77,4 +95,11 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
   },
   progressText: { fontSize: 13, fontWeight: 'bold', color: 'white' },
+  placeholderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 10,
+  },
+  placeholderStyle: { color: '#d0d0d0', fontSize: 13, textAlign: 'center' },
 });

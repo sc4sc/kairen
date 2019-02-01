@@ -18,13 +18,13 @@ export default class ProgressCard extends React.Component {
     ProgressCard를 쓰는 곳은 전부 수정 필요. ex) ProgressList , IncidentDetail..
  */
   render() {
-    const { author, date, children, height, propStyle } = this.props;
+    const { author, date, children, propStyle } = this.props;
 
     return (
       <View
         style={[
           styles.borderedContentBox,
-          { marginTop: this.props.isComment ? -55 : 0, height },
+          { marginTop: this.props.isComment ? -55 : 0 },
           propStyle,
         ]}
       >

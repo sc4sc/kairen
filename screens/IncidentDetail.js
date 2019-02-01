@@ -9,7 +9,6 @@ import {
   View,
   Platform,
 } from 'react-native';
-import { MapView } from 'expo';
 
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
@@ -19,7 +18,7 @@ import * as actions from '../actions/newIncident';
 import * as apis from '../apis';
 import ProgressCard from '../components/ProgressCard';
 import CommentCard from '../components/CommentCard';
-
+import StateCheckButton from '../components/StateCheckButton';
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
 import { formatDate, getBottomSpace } from '../utils';
@@ -28,26 +27,31 @@ import AndroidTopMargin from '../components/AndroidTopMargin';
 import { getLocalData } from '../constants/Incidents';
 import NaverMap from '../components/NaverMap';
 
-const { Marker } = MapView;
 class IncidentDetail extends React.Component {
   constructor() {
     super();
 
-    this.state = { commentList: [], totalCommentNum: 0, recentProgress: [] };
+    this.state = { commentList: [], totalCommentNum: 0, recentProgress: [], progressState: '' };
     this.getIncidentDetail = this.getIncidentDetail.bind(this);
     this.handleRefresh = this.handleRefresh.bind(this);
   }
 
   componentWillMount() {
-    this.willFocusSubscription = this.props.navigation.addListener(
-      'willFocus',
-      this.handleRefresh
-    );
+    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.handleRefresh);
     this.handleRefresh();
   }
 
   componentWillUnmount() {
     this.willFocusSubscription.remove();
+  }
+
+  async onStateButtonPress(state) {
+    const incidentId = await this.getIncidentDetail().id;
+    await this.setState({ progressState: state });
+    await apis.postIncidentState(incidentId, {
+      userId: this.props.userId,
+      state: this.state.progressState,
+    });
   }
 
   getIncidentDetail() {
@@ -56,13 +60,16 @@ class IncidentDetail extends React.Component {
 
   handleRefresh() {
     const incidentId = this.getIncidentDetail().id;
-
     apis
       .getIncidentComments(incidentId, this.props.userId)
       .then(response => this.setState({ commentList: response.data }));
     apis
       .getRecentProgress(incidentId)
       .then(response => this.setState({ recentProgress: response.data }));
+
+    apis.getIncidentState(incidentId).then(response => {
+      this.setState({ progressState: response.data.state });
+    });
   }
 
   renderHeader() {
@@ -71,9 +78,7 @@ class IncidentDetail extends React.Component {
 
     return (
       <View>
-        <Text style={{ color: Colors.dateLightGrey }}>
-          {formatDate(incidentDetail.createdAt)}
-        </Text>
+        <Text style={{ color: Colors.dateLightGrey }}>{formatDate(incidentDetail.createdAt)}</Text>
         <View
           style={{
             flexDirection: 'row',
@@ -125,7 +130,7 @@ class IncidentDetail extends React.Component {
           paddingLeft: 27,
           paddingRight: 6,
           marginHorizontal: 10,
-          backgroundColor: '#44aa25',
+          backgroundColor: this.props.isSecureTeam ? '#44aa25' : '#fda81d',
         }}
       >
         <View>
@@ -138,7 +143,7 @@ class IncidentDetail extends React.Component {
           style={{
             width: 46,
             height: 46,
-            backgroundColor: '#339216',
+            backgroundColor: this.props.isSecureTeam ? '#339216' : '#ec9301',
             borderRadius: 46,
             justifyContent: 'center',
             alignItems: 'center',
@@ -151,15 +156,57 @@ class IncidentDetail extends React.Component {
     );
   }
 
+  renderAdminStateBar() {
+    const { progressState } = this.state;
+    return (
+      <View>
+        <Text style={styles.subheaderText}>안전팀 확인 상태</Text>
+        <View style={styles.statusContainer}>
+          <StateCheckButton
+            color="#d62c2c"
+            selected={progressState === '확인중'}
+            onPress={() => this.onStateButtonPress('확인중')}
+            disabled={!this.props.isSecureTeam}
+          >
+            확인 중
+          </StateCheckButton>
+          <StateCheckButton
+            color="#f5c234"
+            selected={progressState === '진행중'}
+            onPress={() => this.onStateButtonPress('진행중')}
+            disabled={!this.props.isSecureTeam}
+          >
+            진행 중
+          </StateCheckButton>
+          <StateCheckButton
+            color="#7ed321"
+            selected={progressState === '완료'}
+            onPress={() => this.onStateButtonPress('완료')}
+            disabled={!this.props.isSecureTeam}
+          >
+            완료
+          </StateCheckButton>
+        </View>
+      </View>
+    );
+  }
+
+  renderClientStateBar() {
+    const { progressState } = this.state;
+    return (
+      <View>
+        <Text style={styles.subheaderText}>안전팀 확인 상태</Text>
+        {/* 화살표 모양을 어떻게 만들어야 할까 ... */}
+      </View>
+    );
+  }
+
   renderProgressButton() {
     const incidentId = this.getIncidentDetail().id;
 
     return (
       <TouchableOpacity
-        style={[
-          styles.commentButton,
-          { backgroundColor: Colors.lichen, marginBottom: 10 },
-        ]}
+        style={[styles.commentButton, { backgroundColor: Colors.lichen, marginBottom: 10 }]}
         onPress={() => {
           this.props.navigation.navigate('NewProgress', { incidentId });
         }}
@@ -178,20 +225,14 @@ class IncidentDetail extends React.Component {
     if (progressExist) {
       const { createdAt, content } = this.state.recentProgress[0];
       recentView = (
-        <ProgressCard
-          author="안전팀"
-          date={formatDate(createdAt)}
-          propStyle={styles.progressBox}
-        >
+        <ProgressCard author="안전팀" date={formatDate(createdAt)} propStyle={styles.progressBox}>
           {content}
         </ProgressCard>
       );
     } else {
       recentView = (
         <View style={{ alignItems: 'center' }}>
-          <Text style={{ fontSize: 13, color: '#b7b7b7' }}>
-            진행 상황이 없습니다.
-          </Text>
+          <Text style={{ fontSize: 13, color: '#b7b7b7' }}>진행 상황이 없습니다.</Text>
         </View>
       );
     }
@@ -262,7 +303,8 @@ class IncidentDetail extends React.Component {
     const latitude = Number(lat);
     const longitude = Number(lng);
 
-    const _keyExtractor = (item, index) => item.id.toString();
+    // 좋아요 에러 재발 시 (item , index) 로 되돌리기. 혹시 모르니 적어둠.
+    const keyExtractor = item => item.id.toString();
 
     return (
       <KeyboardAwareScrollView
@@ -279,19 +321,13 @@ class IncidentDetail extends React.Component {
             initialCoords={{ lat, lng }}
             draggable={false}
             style={styles.map}
-            markers={[
-              { key: 'incidentPos', coords: { lat: latitude, lng: longitude } },
-            ]}
+            markers={[{ key: 'incidentPos', coords: { lat: latitude, lng: longitude } }]}
           />
           <TouchableOpacity
             style={{ position: 'absolute', top: 50, right: 16 }}
             onPress={() => this.props.navigation.goBack()}
           >
-            <AntDesign
-              name={'closecircle'}
-              style={{ opacity: 0.3 }}
-              size={32}
-            />
+            <AntDesign name={'closecircle'} style={{ opacity: 0.3 }} size={32} />
           </TouchableOpacity>
         </SafeAreaView>
         <View style={{ paddingVertical: 18, paddingHorizontal: 15 }}>
@@ -299,11 +335,13 @@ class IncidentDetail extends React.Component {
           <View style={{ height: 28 }} />
           {this.renderProtocol()}
           <View style={{ height: 24 }} />
+          {/* renderClientStateBar 구현 후 대체할 것. */}
+          {/* {this.props.isSecureTeam ? this.renderAdminStateBar() : this.renderClientStateBar()} */}
+          {this.renderAdminStateBar()}
+          <View style={{ height: 24 }} />
           {this.renderProgress()}
           <View style={{ height: 24 }} />
-          <Text style={[styles.subheaderContainer, styles.subheaderText]}>
-            Comment
-          </Text>
+          <Text style={[styles.subheaderContainer, styles.subheaderText]}>Comment</Text>
           <TouchableOpacity
             style={styles.commentButton}
             onPress={() => {
@@ -315,9 +353,11 @@ class IncidentDetail extends React.Component {
 
           <FlatList
             data={this.state.commentList}
-            keyExtractor={_keyExtractor}
+            keyExtractor={keyExtractor}
             renderItem={this.renderComment}
           />
+
+          <Text style={styles.noCommentText}>의견이 없습니다</Text>
         </View>
       </KeyboardAwareScrollView>
     );
@@ -342,6 +382,13 @@ const styles = StyleSheet.create({
   map: { height: Layout.window.width },
   subheaderContainer: { marginBottom: 6 },
   subheaderText: { fontSize: 16, color: Colors.defaultGrey, marginBottom: 5 },
+  statusContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    borderRadius: 24.5,
+    borderWidth: 1,
+    borderColor: '#e6e6e6',
+  },
   commentButton: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -357,5 +404,12 @@ const styles = StyleSheet.create({
   progressBox: {
     borderRadius: 5,
     minHeight: 100,
+  },
+  noCommentText: {
+    fontSize: 13,
+    textAlign: 'center',
+    color: '#b7b7b7',
+    letterSpacing: -0.5,
+    marginVertical: 35,
   },
 });

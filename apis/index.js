@@ -83,3 +83,11 @@ export function postLike(commentId, body) {
 export function postUnlike(commentId, body) {
   return axios.post(`${serverURL}/comments/${commentId}/unlike`, body);
 }
+
+export function getIncidentState(incidentId) {
+  return axios.get(`${serverURL}/incidents/${incidentId}`);
+}
+
+export function postIncidentState(incidentId, body) {
+  return axios.post(`${serverURL}/incidents/${incidentId}`, body);
+}

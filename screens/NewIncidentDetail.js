@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginHorizontal: 20,
     padding: 15,
+    zIndex: 999,
   },
   questionText: {
     fontSize: 10,
