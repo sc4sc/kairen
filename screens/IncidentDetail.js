@@ -32,13 +32,21 @@ class IncidentDetail extends React.Component {
   constructor() {
     super();
 
-    this.state = { commentList: [], totalCommentNum: 0, recentProgress: [], progressState: '' };
+    this.state = {
+      commentList: [],
+      totalCommentNum: 0,
+      recentProgress: [],
+      progressState: '',
+    };
     this.getIncidentDetail = this.getIncidentDetail.bind(this);
     this.handleRefresh = this.handleRefresh.bind(this);
   }
 
   componentWillMount() {
-    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.handleRefresh);
+    this.willFocusSubscription = this.props.navigation.addListener(
+      'willFocus',
+      this.handleRefresh
+    );
     this.handleRefresh();
   }
 
@@ -79,7 +87,9 @@ class IncidentDetail extends React.Component {
 
     return (
       <View>
-        <Text style={{ color: Colors.dateLightGrey }}>{formatDate(incidentDetail.createdAt)}</Text>
+        <Text style={{ color: Colors.dateLightGrey }}>
+          {formatDate(incidentDetail.createdAt)}
+        </Text>
         <View
           style={{
             flexDirection: 'row',
@@ -217,7 +227,10 @@ class IncidentDetail extends React.Component {
 
     return (
       <TouchableOpacity
-        style={[styles.commentButton, { backgroundColor: Colors.lichen, marginBottom: 10 }]}
+        style={[
+          styles.commentButton,
+          { backgroundColor: Colors.lichen, marginBottom: 10 },
+        ]}
         onPress={() => {
           this.props.navigation.navigate('NewProgress', { incidentId });
         }}
@@ -236,14 +249,20 @@ class IncidentDetail extends React.Component {
     if (progressExist) {
       const { createdAt, content } = this.state.recentProgress[0];
       recentView = (
-        <ProgressCard author="안전팀" date={formatDate(createdAt)} propStyle={styles.progressBox}>
+        <ProgressCard
+          author="안전팀"
+          date={formatDate(createdAt)}
+          propStyle={styles.progressBox}
+        >
           {content}
         </ProgressCard>
       );
     } else {
       recentView = (
         <View style={{ alignItems: 'center' }}>
-          <Text style={{ fontSize: 13, color: '#b7b7b7' }}>진행 상황이 없습니다.</Text>
+          <Text style={{ fontSize: 13, color: '#b7b7b7' }}>
+            진행 상황이 없습니다.
+          </Text>
         </View>
       );
     }
@@ -318,59 +337,69 @@ class IncidentDetail extends React.Component {
     const keyExtractor = item => item.id.toString();
 
     return (
-      <KeyboardAwareScrollView
-        contentContainerStyle={styles.scrollingContainer}
-        enableOnAndroid
-        enableAutomaticScroll
-        extraScrollHeight={Platform.OS === 'android' ? 100 : 0}
-        keyboardShouldPersistTaps="handled"
-      >
-        <AndroidTopMargin />
-
-        <SafeAreaView>
+      <View style={{ flex: 1 }}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={styles.scrollingContainer}
+          enableOnAndroid
+          enableAutomaticScroll
+          extraScrollHeight={Platform.OS === 'android' ? 100 : 0}
+          keyboardShouldPersistTaps="handled"
+        >
           <NaverMap
             initialCoords={{ lat, lng }}
             draggable={false}
             style={styles.map}
-            markers={[{ key: 'incidentPos', coords: { lat: latitude, lng: longitude } }]}
+            markers={[
+              { key: 'incidentPos', coords: { lat: latitude, lng: longitude } },
+            ]}
           />
-          <TouchableOpacity
-            style={{ position: 'absolute', top: 50, right: 16 }}
-            onPress={() => this.props.navigation.goBack()}
-          >
-            <AntDesign name={'closecircle'} style={{ opacity: 0.3 }} size={32} />
-          </TouchableOpacity>
-        </SafeAreaView>
-        <View style={{ paddingVertical: 18, paddingHorizontal: 15 }}>
-          {this.renderHeader()}
-          <View style={{ height: 28 }} />
-          {this.renderProtocol()}
-          <View style={{ height: 24 }} />
-          {/* renderClientStateBar 구현 후 대체할 것. */}
-          {this.props.isSecureTeam ? this.renderAdminStateBar() : this.renderClientStateBar()}
-          {/* {this.renderAdminStateBar()} */}
-          <View style={{ height: 24 }} />
-          {this.renderProgress()}
-          <View style={{ height: 24 }} />
-          <Text style={[styles.subheaderContainer, styles.subheaderText]}>Comment</Text>
-          <TouchableOpacity
-            style={styles.commentButton}
-            onPress={() => {
-              this.props.navigation.navigate('NewComment', { incidentId });
+
+          <View
+            style={{
+              backgroundColor: '#ffffff',
+              marginTop: -5,
+              borderRadius: 10,
+              paddingVertical: 18,
+              paddingHorizontal: 15,
             }}
           >
-            <Text style={styles.commentButtonText}>새로운 의견 등록하기</Text>
-          </TouchableOpacity>
+            {this.renderHeader()}
+            <View style={{ height: 28 }} />
+            {this.renderProtocol()}
+            <View style={{ height: 24 }} />
+            {this.props.isSecureTeam ? this.renderAdminStateBar() : this.renderClientStateBar()}
+            <View style={{ height: 24 }} />
+            {this.renderProgress()}
+            <View style={{ height: 24 }} />
+            <Text style={[styles.subheaderContainer, styles.subheaderText]}>
+              Comment
+            </Text>
+            <TouchableOpacity
+              style={styles.commentButton}
+              onPress={() => {
+                this.props.navigation.navigate('NewComment', { incidentId });
+              }}
+            >
+              <Text style={styles.commentButtonText}>새로운 의견 등록하기</Text>
+            </TouchableOpacity>
 
-          <FlatList
-            data={this.state.commentList}
-            keyExtractor={keyExtractor}
-            renderItem={this.renderComment}
-          />
+            <FlatList
+              data={this.state.commentList}
+              keyExtractor={keyExtractor}
+              renderItem={this.renderComment}
+            />
 
-          <Text style={styles.noCommentText}>의견이 없습니다</Text>
-        </View>
-      </KeyboardAwareScrollView>
+            <Text style={styles.noCommentText}>의견이 없습니다</Text>
+          </View>
+        </KeyboardAwareScrollView>
+
+        <TouchableOpacity
+          style={{ position: 'absolute', top: 50, right: 16 }}
+          onPress={() => this.props.navigation.goBack()}
+        >
+          <AntDesign name={'closecircle'} style={{ opacity: 0.3 }} size={32} />
+        </TouchableOpacity>
+      </View>
     );
   }
 }
