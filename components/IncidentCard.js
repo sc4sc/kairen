@@ -20,7 +20,7 @@ export default class IncidentCard extends React.Component {
       case '확인중':
         progressStateColor = '#d62c2c';
         break;
-      case '진행중':
+      case '처리중':
         progressStateColor = '#f5c234';
         break;
       case '완료':
