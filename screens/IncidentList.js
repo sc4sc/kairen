@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Notifications } from 'expo';
+import { Notifications, Location } from 'expo';
 import { createSelector } from 'reselect';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import memoize from 'fast-memoize';
@@ -19,6 +19,7 @@ import {
 } from '../actions/incidentsList';
 import NaverMap from '../components/NaverMap';
 import { KAISTN1Coords } from '../constants/Geo';
+
 
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
@@ -38,24 +39,23 @@ class IncidentList extends React.Component {
     );
     this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.handleRefresh);
     this.handleRefresh();
+    Location.watchPositionAsync({}, this.handleLocationUpdate);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const refreshing = prevProps.incidents !== this.props.incidents;
 
-    // Reset carousel state
-    if (this._carousel && refreshing) {
-      this._carousel.snapToItem(0);
+    const refreshing = prevProps.incidents.length === 0 && prevProps.incidents !== this.props.incidents;
+    if (refreshing) {
+      this.props.incidentsListSelect(0);
     }
 
     // It handles cases where
     // 1. List refreshes after map initialization (initialCoords cannot handle it)
     // 2. Selection changes as user swipe carousel
-    if (prevProps.indexSelected !== this.props.indexSelected) {
-      const incident = this.props.incidents[this.props.indexSelected];
-      if (incident) {
-        this._map.panTo(getCoordsFromIncident(incident), {});
-      }
+    const incident = this.props.incidents[this.props.indexSelected];
+    const prevIncident = prevProps.incidents[prevProps.indexSelected];
+    if (prevIncident !== incident && incident) {
+      this._map.panTo(getCoordsFromIncident(incident), {});
     }
   }
 
@@ -64,9 +64,11 @@ class IncidentList extends React.Component {
     this.willFocusSubscription.remove();
   }
 
-  getMarkers = memoize((incidentMarker, currentLocation) => []);
+  handleLocationUpdate = location => {
+    this.setState({ currentLocation: location });
+  };
 
-  handleRefresh() {
+handleRefresh() {
     this.props.incidentsListRefresh();
   }
 
@@ -78,14 +80,29 @@ class IncidentList extends React.Component {
     this.props.incidentsListSelect(slideIndex);
   };
 
-  handleSnapToItem = slideIndex => {
-    this.props.incidentsListSelect(slideIndex);
-    const incident = this.props.incidents[slideIndex];
-    this._map.panTo(getCoordsFromIncident(incident), {});
-    this.setState({
-      selectedIncident: slideIndex,
-    });
-  };
+  // To prevent NaverMap from updating by reusing the old array
+  getMarkers = memoize((selectedIncident, currentLocation) => {
+    let markers = [];
+
+    if (selectedIncident) {
+      markers = markers.concat({
+        key: 'selected',
+        coords: getCoordsFromIncident(selectedIncident),
+      });
+    }
+
+    if (currentLocation) {
+      const { latitude, longitude } = currentLocation.coords;
+      const myLocation = {
+        key: 'myLocation',
+        coords: { lat: latitude, lng: longitude },
+        icon: Expo.Asset.fromModule(require('../assets/images/current_location_pin.png')).uri,
+      };
+      markers = markers.concat(myLocation);
+    }
+
+    return markers;
+  });
 
   renderItem({ item: incident }) {
     return (
@@ -137,7 +154,7 @@ class IncidentList extends React.Component {
   }
 
   render() {
-    const selectedIncident = this.props.incidents[this.props.indexSelected];
+    const selectedIncident = this.props.selectedIncident;
 
     return (
       <View style={styles.container}>
@@ -147,7 +164,10 @@ class IncidentList extends React.Component {
           }}
           initialCoords={selectedIncident ? getCoordsFromIncident(selectedIncident) : KAISTN1Coords}
           style={{ flex: 1 }}
-          markers={this.props.markers}
+          markers={this.getMarkers(
+            selectedIncident,
+            this.state.currentLocation
+          )}
         />
 
         {this.renderCarousel()}
@@ -237,30 +257,11 @@ const incidentsSelector = createSelector(
 //     }))
 // );
 
-const myLocation = {
-  key: 'myLocation',
-  coords: KAISTN1Coords,
-  icon: {
-    path: 3,
-    style: 'circle',
-    fillColor: 'black',
-  },
-};
-
-const incidentMarkersSelector = createSelector(
+const selectedIncidentSelector = createSelector(
   incidentsSelector,
   state => state.incidentsList.indexSelected,
   (incidents, indexSelected) => {
-    if (!(typeof indexSelected === 'number' && indexSelected >= 0)) {
-      return [myLocation];
-    }
-    return [
-      {
-        key: 'selected',
-        coords: getCoordsFromIncident(incidents[indexSelected]),
-      },
-      myLocation,
-    ];
+    return incidents[indexSelected];
   }
 );
 
@@ -271,7 +272,7 @@ export default connect(
 
     return {
       incidents,
-      markers: incidentMarkersSelector(state),
+      selectedIncident: selectedIncidentSelector(state),
       loading,
       indexSelected,
     };
