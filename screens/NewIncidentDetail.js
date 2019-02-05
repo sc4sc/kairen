@@ -39,10 +39,7 @@ class NewIncidentDetail extends React.Component {
     Alert.alert(
       '제보하시겠습니까?',
       '자세한 현장 상황 확인을 위해 카이스트 안전팀이 곧 연락합니다',
-      [
-        { text: '취소' },
-        { text: '확인', onPress: () => this.report(this.state.markerCoords) },
-      ]
+      [{ text: '취소' }, { text: '확인', onPress: () => this.report(this.state.markerCoords) }]
     );
   }
 
@@ -56,8 +53,8 @@ class NewIncidentDetail extends React.Component {
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,
-        lat: lat,
-        lng: lng,
+        lat,
+        lng,
       },
       () => {
         this.props.navigation.dispatch(StackActions.popToTop());
@@ -104,9 +101,7 @@ class NewIncidentDetail extends React.Component {
         <StatusBar barStyle="light-content" backgroundColor="#ff9412" />
         <AndroidTopMargin style={{ backgroundColor: '#ff9412' }} />
         <View style={headerContainer}>
-          <TouchableWithoutFeedback
-            onPress={() => this.props.navigation.goBack()}
-          >
+          <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>
             <Text style={headerText}>{this.props.selectedIncident}</Text>
           </TouchableWithoutFeedback>
           <Ionicons
@@ -130,22 +125,12 @@ class NewIncidentDetail extends React.Component {
             <Ionicons name="md-search" size={26} />
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          onPress={this.handlePressReport}
-        >
+        <TouchableOpacity style={styles.buttonStyle} onPress={this.handlePressReport}>
           <Text style={styles.buttonText}>제보 등록</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.gpsButton}
-          onPress={this.locatePosition}
-        >
-          <MaterialIcons
-            style={{ color: 'white' }}
-            name="gps-fixed"
-            size={26}
-          />
+        <TouchableOpacity style={styles.gpsButton} onPress={this.locatePosition}>
+          <MaterialIcons style={{ color: 'white' }} name="gps-fixed" size={26} />
         </TouchableOpacity>
         {/*<View*/}
         {/*style={{*/}
@@ -219,7 +204,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    bottom: 80,
+    bottom: 100,
     right: 12,
     width: 55,
     height: 55,
