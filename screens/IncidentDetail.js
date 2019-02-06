@@ -18,6 +18,7 @@ import * as actions from '../actions/newIncident';
 import * as apis from '../apis';
 import ProgressCard from '../components/ProgressCard';
 import CommentCard from '../components/CommentCard';
+import StateMarker from '../components/StateMarker';
 import StateCheckButton from '../components/StateCheckButton';
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
@@ -182,11 +183,11 @@ class IncidentDetail extends React.Component {
           </StateCheckButton>
           <StateCheckButton
             color="#f5c234"
-            selected={progressState === '진행중'}
-            onPress={() => this.onStateButtonPress('진행중')}
+            selected={progressState === '처리중'}
+            onPress={() => this.onStateButtonPress('처리중')}
             disabled={!this.props.isSecureTeam}
           >
-            진행 중
+            처리 중
           </StateCheckButton>
           <StateCheckButton
             color="#7ed321"
@@ -204,9 +205,19 @@ class IncidentDetail extends React.Component {
   renderClientStateBar() {
     const { progressState } = this.state;
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <Text style={styles.subheaderText}>안전팀 확인 상태</Text>
-        {/* 화살표 모양을 어떻게 만들어야 할까 ... */}
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <StateMarker position="left" selected={progressState === '확인중'}>
+            확인 중
+          </StateMarker>
+          <StateMarker position="center" selected={progressState === '처리중'}>
+            처리 중
+          </StateMarker>
+          <StateMarker position="right" selected={progressState === '완료'}>
+            완료
+          </StateMarker>
+        </View>
       </View>
     );
   }
@@ -342,6 +353,7 @@ class IncidentDetail extends React.Component {
               { key: 'incidentPos', coords: { lat: latitude, lng: longitude } },
             ]}
           />
+
           <View
             style={{
               backgroundColor: '#ffffff',
@@ -355,9 +367,7 @@ class IncidentDetail extends React.Component {
             <View style={{ height: 28 }} />
             {this.renderProtocol()}
             <View style={{ height: 24 }} />
-            {/* renderClientStateBar 구현 후 대체할 것. */}
-            {/* {this.props.isSecureTeam ? this.renderAdminStateBar() : this.renderClientStateBar()} */}
-            {this.renderAdminStateBar()}
+            {this.props.isSecureTeam ? this.renderAdminStateBar() : this.renderClientStateBar()}
             <View style={{ height: 24 }} />
             {this.renderProgress()}
             <View style={{ height: 24 }} />

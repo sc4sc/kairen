@@ -20,7 +20,6 @@ import {
 import NaverMap from '../components/NaverMap';
 import { KAISTN1Coords } from '../constants/Geo';
 
-
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
   state = { currentLocation: null };
@@ -43,8 +42,8 @@ class IncidentList extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-
-    const refreshing = prevProps.incidents.length === 0 && prevProps.incidents !== this.props.incidents;
+    const refreshing =
+      prevProps.incidents.length === 0 && prevProps.incidents !== this.props.incidents;
     if (refreshing) {
       this.props.incidentsListSelect(0);
     }
@@ -68,7 +67,7 @@ class IncidentList extends React.Component {
     this.setState({ currentLocation: location });
   };
 
-handleRefresh() {
+  handleRefresh() {
     this.props.incidentsListRefresh();
   }
 
@@ -164,10 +163,7 @@ handleRefresh() {
           }}
           initialCoords={selectedIncident ? getCoordsFromIncident(selectedIncident) : KAISTN1Coords}
           style={{ flex: 1 }}
-          markers={this.getMarkers(
-            selectedIncident,
-            this.state.currentLocation
-          )}
+          markers={this.getMarkers(selectedIncident, this.state.currentLocation)}
         />
 
         {this.renderCarousel()}
@@ -260,9 +256,7 @@ const incidentsSelector = createSelector(
 const selectedIncidentSelector = createSelector(
   incidentsSelector,
   state => state.incidentsList.indexSelected,
-  (incidents, indexSelected) => {
-    return incidents[indexSelected];
-  }
+  (incidents, indexSelected) => incidents[indexSelected]
 );
 
 export default connect(
