@@ -244,15 +244,6 @@ const incidentsSelector = createSelector(
   (byId, idList) => idList.map(id => byId[id])
 );
 
-// const incidentMarkersSelector = createSelector(
-//   incidentsSelector,
-//   incidents =>
-//     incidents.map(incident => ({
-//       coords: { lat: incident.lat, lng: incident.lng },
-//       key: `incident-${incident.id}`,
-//     }))
-// );
-
 const selectedIncidentSelector = createSelector(
   incidentsSelector,
   state => state.incidentsList.indexSelected,
