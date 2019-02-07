@@ -2,8 +2,8 @@ import { Platform, StatusBar } from 'react-native';
 import { getStatusBarHeight as getIOSStatusBarHeight } from 'react-native-iphone-x-helper';
 import { Permissions } from 'expo';
 import moment from 'moment';
-
-import geojsonutil from 'geojson-utils';
+import * as _ from 'lodash';
+import * as geojsonutil from 'geojson-utils';
 
 export const getStatusBarHeight = () => {
   if (Platform.OS === 'android') {
@@ -45,18 +45,22 @@ export async function requestPermission(type) {
 }
 
 export function checkIsInbuilding(coords) {
-  const buildings = require('../assets/geojson/Region.json');
   const point = { type: 'Point', coordinates: [coords.lng, coords.lat] };
-  let location;
 
-  for (const building of buildings) {
-    if (geojsonutil.pointInPolygon(point, building)) {
-      if (location) {
-        location = location.priority > building.priority ? building : location;
-      } else {
-        location = building;
-      }
-    }
-  }
-  return location;
+  const west = require('../assets/geojson/WestKAIST.json');
+  const north = require('../assets/geojson/NorthKAIST.json');
+  const east = require('../assets/geojson/EastKAIST.json');
+  const dorm = require('../assets/geojson/Dormitory.json');
+
+  const areas = _.flatMap(
+    [west, north, east, dorm],
+    section => section.features
+  );
+  const locatedAreasByPriority = _.sortBy(
+    areas.filter(area => geojsonutil.pointInPolygon(point, area.geometry)),
+    area => area.properties.priority
+  );
+
+  const locationFound = locatedAreasByPriority.length > 0;
+  return locationFound ? locatedAreasByPriority[0] : undefined;
 }
