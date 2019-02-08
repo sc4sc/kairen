@@ -2,7 +2,6 @@ import React from 'react';
 import {
   FlatList,
   Linking,
-  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -22,9 +21,7 @@ import StateMarker from '../components/StateMarker';
 import StateCheckButton from '../components/StateCheckButton';
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
-import { formatDate, getBottomSpace } from '../utils';
-
-import AndroidTopMargin from '../components/AndroidTopMargin';
+import { formatDate, getBottomSpace, checkIsInbuilding } from '../utils';
 import { getLocalData } from '../constants/Incidents';
 import NaverMap from '../components/NaverMap';
 
@@ -83,7 +80,9 @@ class IncidentDetail extends React.Component {
 
   renderHeader() {
     const incidentDetail = this.getIncidentDetail();
+    const { lat, lng } = incidentDetail;
     const localDetail = getLocalData(incidentDetail.type);
+    const location = checkIsInbuilding({lat, lng});
 
     return (
       <View>
@@ -121,7 +120,7 @@ class IncidentDetail extends React.Component {
             </Text>
           </View>
         </View>
-        <Text style={{ color: Colors.defaultBlack }}>Yuseong 291, Daejeon</Text>
+        <Text style={{ color: Colors.defaultBlack }}>{location ? location.properties.name : 'KAIST'}</Text>
       </View>
     );
   }
