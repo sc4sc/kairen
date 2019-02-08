@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, Image, View, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { Notifications, Location } from 'expo';
 import { createSelector } from 'reselect';
@@ -19,14 +19,15 @@ import {
 } from '../actions/incidentsList';
 import NaverMap from '../components/NaverMap';
 import { KAISTN1Coords } from '../constants/Geo';
+import { Ionicons } from '@expo/vector-icons';
 
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
-  state = { currentLocation: null };
 
   constructor() {
     super();
 
+    this.state = { currentLocation: null };
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleEndReached = this.handleEndReached.bind(this);
     this.renderItem = this.renderItem.bind(this);
@@ -157,6 +158,7 @@ class IncidentList extends React.Component {
 
     return (
       <View style={styles.container}>
+      <StatusBar backgroundColor={'transparent'} />
         <NaverMap
           ref={el => {
             this._map = el;
@@ -165,6 +167,12 @@ class IncidentList extends React.Component {
           style={{ flex: 1 }}
           markers={this.getMarkers(selectedIncident, this.state.currentLocation)}
         />
+
+        <TouchableOpacity
+            style={styles.menuIcon}
+            onPress={() => this.props.navigation.openDrawer()}>
+          <Image source={require('../assets/images/menu.png')}/>
+        </TouchableOpacity>
 
         {this.renderCarousel()}
 
@@ -200,6 +208,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: { fontSize: 28, fontWeight: '800', color: Colors.defaultBlack },
+  menuIcon: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+  },
   carouselContainer: { position: 'absolute', bottom: bottomUnsafeArea + 80 },
   emptyIncidentBox: {
     position: 'absolute',

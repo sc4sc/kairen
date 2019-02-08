@@ -1,5 +1,10 @@
-import { createAppContainer, createSwitchNavigator, createStackNavigator } from 'react-navigation';
-
+import Layout from '../constants/Layout'
+import { 
+  createAppContainer, 
+  createSwitchNavigator, 
+  createStackNavigator, 
+  createDrawerNavigator 
+} from 'react-navigation';
 import {
   IncidentDetail,
   IncidentList,
@@ -10,32 +15,42 @@ import {
   ProgressList,
   Setting,
   Login,
+  SafetyContact
 } from '../screens';
 
-export default createAppContainer(
-  createSwitchNavigator({
-    // You could add another route here for authentication.
-    // Read more at https://reactnavigation.org/docs/en/auth-flow.html
-    Auth: Login,
-    App: createStackNavigator(
-      {
-        Main: createStackNavigator(
-          {
-            IncidentList,
-            IncidentDetail,
-          },
-          { headerMode: 'none' }
-        ),
-        NewIncident,
-        NewIncidentDetail,
-        NewComment,
-        ProgressList,
-        NewProgress,
-        Setting,
-      },
-      {
-        headerMode: 'none',
-      }
-    ),
-  })
-);
+const MainNavigator = createStackNavigator ({
+  Main: createStackNavigator(
+    {
+      IncidentList,
+      IncidentDetail,
+    },
+    { headerMode: 'none' }
+  ),
+  NewIncident,
+  NewIncidentDetail,
+  NewComment,
+  ProgressList,
+  NewProgress,
+  Setting,
+  },
+  {
+    headerMode: 'none',
+  }
+)
+
+const LoginNavigator = createSwitchNavigator ({
+  Auth: Login,
+  App: MainNavigator
+}, { headerMode: 'none' })
+
+const drawerNavigator = createDrawerNavigator({
+  Side: {
+    screen: LoginNavigator,
+    }
+  }, {
+    contentComponent: SafetyContact,
+    drawerWidth: Layout.window.width - 100,
+  });
+
+export default createAppContainer(drawerNavigator);
+

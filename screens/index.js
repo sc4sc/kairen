@@ -7,3 +7,4 @@ export NewProgress from './NewProgress';
 export NewIncident from './NewIncident';
 export NewIncidentDetail from './NewIncidentDetail';
 export Login from './Login';
+export SafetyContact from './SafetyContact';
