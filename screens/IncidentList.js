@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, StatusBar } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, Image, View, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { Notifications, Location } from 'expo';
 import { createSelector } from 'reselect';
@@ -168,12 +168,11 @@ class IncidentList extends React.Component {
           markers={this.getMarkers(selectedIncident, this.state.currentLocation)}
         />
 
-        <Ionicons
-          style={styles.menuIcon}
-          name='md-menu'
-          size={40}
-          onPress={() => this.props.navigation.openDrawer()}
-        />
+        <TouchableOpacity
+            style={styles.menuIcon}
+            onPress={() => this.props.navigation.openDrawer()}>
+          <Image source={require('../assets/images/menu.png')}/>
+        </TouchableOpacity>
 
         {this.renderCarousel()}
 
@@ -213,7 +212,6 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: 50,
     left: 20,
-    color: 'grey',
   },
   carouselContainer: { position: 'absolute', bottom: bottomUnsafeArea + 80 },
   emptyIncidentBox: {
