@@ -95,34 +95,24 @@
               }
               return;
             }
-            case 'renderKAISTpolyline': {
+            case 'renderKAIST': {
+              const kaist = [];
+              for (var coor of payload.coords) {
+                  kaist.push(new naver.maps.LatLng(coor[1], coor[0]));
+              }
               return new naver.maps.Polyline({
-                map: map,
-                path: [
-                  new naver.maps.LatLng(36.3632011, 127.3594124), // 쪽문
-                  new naver.maps.LatLng(36.3694068, 127.3700806), // 파팔라도
-                  new naver.maps.LatLng(36.3708291, 127.3681385), // 세종관
-                  new naver.maps.LatLng(36.3734516, 127.3672869), // 동문
-                  new naver.maps.LatLng(36.3745147, 127.3666273),
-                  new naver.maps.LatLng(36.3751809, 127.3658345),
-                  new naver.maps.LatLng(36.3754416, 127.3651875),
-                  new naver.maps.LatLng(36.3756298, 127.364217), // n1
-                  new naver.maps.LatLng(36.3759743, 127.3581072), // 지혜관
-                  new naver.maps.LatLng(36.3757759, 127.3580853),
-                  new naver.maps.LatLng(36.3750822, 127.3585213), // 신뢰관
-                  new naver.maps.LatLng(36.3749558, 127.3583766),
-                  new naver.maps.LatLng(36.3750976, 127.3563251), // 아름관
-                  new naver.maps.LatLng(36.3730601, 127.3562954), // 테니스장
-                  new naver.maps.LatLng(36.3722491, 127.356519), // 교수아파트
-                  new naver.maps.LatLng(36.3714723, 127.355295), // 나눔관
-                  new naver.maps.LatLng(36.369731, 127.355265), // 인터내셔널 빌리지
-                  new naver.maps.LatLng(36.363307, 127.359622), // 쪽문
-                ],
+                  map: map,
+                  path: kaist,
               });
+
+            }
+            case 'fitBounds': {
+                map.fitBounds(bounds);
             }
             default:
               return;
           }
+
         }
 
         function postAction(type, payload) {
@@ -180,6 +170,15 @@
           const coord = e.coord;
           postAction('click', { lat: coord.y, lng: coord.x });
         });
+
+        var min = {x: 127.35516786575319, y: 36.36317650086336},
+            max = {x: 127.37027406692503, y: 36.37634223427805};
+        var bounds = {north: max.y, east: max.x, south: min.y, west: min.x};
+
+        naver.maps.Event.addListener(map, "center_changed", function(center) {
+            postAction('centerChanged',center);
+        });
+
       })();
     </script>
   </body>

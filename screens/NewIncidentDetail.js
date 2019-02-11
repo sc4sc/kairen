@@ -56,6 +56,10 @@ class NewIncidentDetail extends React.Component {
     if (geojsonutil.pointInPolygon(point, kaist.features[0].geometry)) {
         this.updateLocationName(coords);
         this.setState({ markerCoords: coords });
+    } else {
+      Alert.alert('위치를 지정할 수 없습니다.', 'KAIST 내부만 선택해주세요.', [
+        { text: '확인' },
+      ]);
     }
   };
 
