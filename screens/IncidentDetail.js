@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-  FlatList,
-  Linking,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Platform,
+    FlatList,
+    Linking,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    Platform, Alert,
 } from 'react-native';
 
 import { AntDesign, Feather } from '@expo/vector-icons';
@@ -24,6 +24,7 @@ import Colors from '../constants/Colors';
 import { formatDate, getBottomSpace, checkIsInbuilding } from '../utils';
 import { getLocalData } from '../constants/Incidents';
 import NaverMap from '../components/NaverMap';
+import {IncidentList} from "./index";
 
 class IncidentDetail extends React.Component {
   constructor() {
@@ -37,6 +38,8 @@ class IncidentDetail extends React.Component {
     };
     this.getIncidentDetail = this.getIncidentDetail.bind(this);
     this.handleRefresh = this.handleRefresh.bind(this);
+    this.onStateButtonPress = this.onStateButtonPress.bind(this);
+    this.onWrongReportButtonPress = this.onWrongReportButtonPress.bind(this);
   }
 
   componentWillMount() {
@@ -58,6 +61,16 @@ class IncidentDetail extends React.Component {
       userId: this.props.userId,
       state: this.state.progressState,
     });
+    if (state==='오인신고') {
+      this.props.navigation.navigate('IncidentList');
+    }
+  }
+
+  onWrongReportButtonPress() {
+    Alert.alert('오인 신고로 변경할까요?', '이 작업은 취소할 수 없습니다.', [
+        { text: '취소', onPress: () => console.log('cancel') },
+        { text: '변경하기', onPress: () => this.onStateButtonPress('오인신고')},
+    ]);
   }
 
   getIncidentDetail() {
@@ -199,11 +212,13 @@ class IncidentDetail extends React.Component {
             완료
           </StateCheckButton>
         </View>
-        <View style={[styles.statusContainer, { backgroundColor: '#6f6f6f',marginVertical: 10, paddingVertical: 14 }]}>
+        <TouchableOpacity
+            style={[styles.statusContainer, { backgroundColor: '#6f6f6f',marginVertical: 10, paddingVertical: 14 }]}
+            onPress={this.onWrongReportButtonPress}>
           <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>
             오인 신고로 변경
           </Text>
-        </View>
+        </TouchableOpacity>
         <Text style={{fontSize: 11, letterSpacing: 0.15, color: '#959595'}}>
           <Text style={{fontWeight: 'bold'}} >* 이 작업은 취소할 수 없습니다. </Text>
           오인 신고로 변경될 경우, 해당 사고는 일반 사용자에게 더 이상 표시되지 않으며 진행 상황 등록 및 댓글 작성이 불가합니다.
