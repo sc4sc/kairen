@@ -63,9 +63,8 @@ class Setting extends React.Component {
               switchOn={this.state.alertAlarm}
               backgroundColorOn={Colors.switchGreen}
               circleColorOn="white"
-              onPress={() =>
-                this.setState({ alertAlarm: !this.state.alertAlarm })
-              }
+              duration={100}
+              onPress={() => this.setState({ alertAlarm: !this.state.alertAlarm })}
             />
           </View>
         </View>
