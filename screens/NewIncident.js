@@ -6,9 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import ReportItem from '../components/ReportItem';
 import AndroidTopMargin from '../components/AndroidTopMargin';
-
 import { getStatusBarHeight } from '../utils/index.js';
-
 import * as actions from '../actions/newIncident';
 import { types as incidentTypes } from '../constants/Incidents';
 import { incidentsListRefresh } from '../actions/incidentsList';
@@ -37,7 +35,6 @@ class NewIncident extends React.Component {
 
   render() {
     const { container, headerContainer, headerText } = styles;
-    const cololor = 'rgb(250,0,0)';
 
     return (
       <View style={container}>

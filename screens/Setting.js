@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  Image,
+} from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import SwitchToggle from 'react-native-switch-toggle';
 import { Ionicons } from '@expo/vector-icons';
@@ -26,17 +32,24 @@ class Setting extends React.Component {
         <View style={styles.headerContainer}>
           <Text style={styles.header}> 설정 </Text>
           <View style={styles.buttonContainer}>
-            <TouchableWithoutFeedback onPress={this.goBack.bind(this)}>
-              <Ionicons name="md-close" size={26} />
+            <TouchableWithoutFeedback
+              style={{ flex: 1 }}
+              onPress={this.goBack.bind(this)}
+            >
+              <Image source={require('../assets/images/back.png')} />
             </TouchableWithoutFeedback>
           </View>
         </View>
 
         <View style={styles.cardContainer}>
           <Text style={styles.cardTitle}> 계정 </Text>
-          <View style={styles.cardContent}>
+          <View style={[styles.cardContent, styles.accountContainer]}>
             <Text style={{ fontSize: 15 }}> {this.props.userId} </Text>
-            <Text style={{ fontSize: 15, color: Colors.textRed, fontWeight: '500' }}>로그아웃</Text>
+            <Text
+              style={{ fontSize: 15, color: Colors.textRed, fontWeight: '500' }}
+            >
+              로그아웃
+            </Text>
           </View>
         </View>
 
@@ -50,15 +63,20 @@ class Setting extends React.Component {
               switchOn={this.state.alertAlarm}
               backgroundColorOn={Colors.switchGreen}
               circleColorOn="white"
-              onPress={() => this.setState({ alertAlarm: !this.state.alertAlarm })}
+              onPress={() =>
+                this.setState({ alertAlarm: !this.state.alertAlarm })
+              }
             />
           </View>
         </View>
 
         <View style={styles.cardContainer} />
-
-        <View style={styles.cardContainer}>
-          <Text style={{ fontSize: 15 }}> 이 앱에 대하여 </Text>
+        <View style={styles.delimiter} />
+        <View style={{ paddingHorizontal: 20 }}>
+          <Text style={{ fontSize: 15, marginVertical: 17 }}> 문의하기 </Text>
+          <Text style={{ fontSize: 15, marginVertical: 17 }}>
+            이 앱에 대하여
+          </Text>
         </View>
       </SafeAreaView>
     );
@@ -83,9 +101,10 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    right: 20,
+    left: 20,
     top: 20,
-    width: 30,
+    width: 40,
+    height: 30,
     alignItems: 'center',
   },
   switchStyle: {
@@ -95,8 +114,27 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   cardContainer: { margin: 20 },
-  cardTitle: { fontSize: 13, color: Colors.lightGrey },
+  cardTitle: { fontSize: 13, color: Colors.lightGrey, marginBottom: 7.5 },
   cardContent: { flexDirection: 'row', justifyContent: 'space-between' },
+  accountContainer: {
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: '#eaeaea',
+    borderRadius: 5,
+    paddingHorizontal: 21,
+    paddingVertical: 18.5,
+    shadowOffset: { width: 0, height: 8 },
+    shadowColor: '#ddd',
+    shadowOpacity: 0.5,
+    shadowRadius: 15,
+    // elevation: 5,
+  },
+  delimiter: {
+    borderTopWidth: 1,
+    borderColor: '#d8d8d8',
+    marginLeft: 20,
+    width: 25,
+  },
 });
 
 const mapStateToProps = state => ({
