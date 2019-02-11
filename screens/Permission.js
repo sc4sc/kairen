@@ -1,18 +1,60 @@
 import React from 'react';
-import { View, Text, StatusBar, Image, TouchableOpacity } from 'react-native';
+import {
+  AppState,
+  View,
+  Text,
+  StatusBar,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import Layout from '../constants/Layout';
 import { requestPermission } from '../utils';
 import { Permissions } from 'expo';
 
 export default class Permission extends React.Component {
-  state = { locationPermission: false, phoneCallPermission: false };
+  state = {
+    locationPermission: false,
+    phoneCallPermission: false,
+    appState: AppState.currentState,
+  };
 
-  async componentWillMount() {
+  async componentDidMount() {
     const locationPermission = await requestPermission(Permissions.LOCATION);
     const phoneCallPermission = await requestPermission(Permissions.CONTACTS);
 
-    await this.setState({ locationPermission, phoneCallPermission });
+    AppState.addEventListener('change', this.handleAppStateChange);
+    this.setState({ locationPermission, phoneCallPermission });
   }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this.handleAppStateChange);
+  }
+
+  handleAppStateChange = async nextAppState => {
+    let locationPermission, phoneCallPermission;
+    console.log('hi?');
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState == 'active'
+    ) {
+      locationPermission = await Permissions.getAsync(Permissions.LOCATION);
+      phoneCallPermission = await Permissions.getAsync(Permissions.CONTACTS);
+      console.log(locationPermission.status);
+      console.log(phoneCallPermission.status);
+      if (locationPermission.status === 'granted') {
+        this.setState({ locationPermission: true });
+      } else {
+        this.setState({ locationPermission: false });
+      }
+
+      if (phoneCallPermission.status === 'granted') {
+        this.setState({ phoneCallPermission: true });
+      } else {
+        this.setState({ phoneCallPermission: false });
+      }
+    }
+    this.setState({ appState: nextAppState });
+  };
 
   renderPermissionWait() {
     return (
@@ -39,7 +81,7 @@ export default class Permission extends React.Component {
 
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="white" barStyle="light-content" />
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
 
         <View>
           <Text style={styles.headerText}>권한 설정</Text>
