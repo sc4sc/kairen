@@ -18,6 +18,7 @@ import {
   ProgressList,
   Setting,
   SafetyContact,
+  Aboutthisapp,
 } from '../screens';
 
 console.log(PermissionLoading);
@@ -37,6 +38,7 @@ const MainNavigator = createStackNavigator(
     ProgressList,
     NewProgress,
     Setting,
+    Aboutthisapp,
   },
   {
     headerMode: 'none',

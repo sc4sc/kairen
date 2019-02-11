@@ -10,3 +10,4 @@ export PermissionLoading from './PermissionLoading';
 export ProgressList from './ProgressList';
 export SafetyContact from './SafetyContact';
 export Setting from './Setting';
+export Aboutthisapp from './Aboutthisapp';

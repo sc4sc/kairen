@@ -25,6 +25,10 @@ class Setting extends React.Component {
     this.props.navigation.goBack();
   }
 
+  goToAboutPage() {
+    this.props.navigation.navigate('Aboutthisapp', { parent: '설정'});
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -73,7 +77,7 @@ class Setting extends React.Component {
         <View style={styles.delimiter} />
         <View style={{ paddingHorizontal: 20 }}>
           <Text style={{ fontSize: 15, marginVertical: 17 }}> 문의하기 </Text>
-          <Text style={{ fontSize: 15, marginVertical: 17 }}>
+          <Text style={{ fontSize: 15, marginVertical: 17 }} onPress={() => this.goToAboutPage()}>
             이 앱에 대하여
           </Text>
         </View>
@@ -90,6 +94,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
   },
   header: {
@@ -100,8 +105,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    left: 20,
-    top: 20,
+    left: 5,
+    top: 23,
     width: 40,
     height: 30,
     alignItems: 'center',
