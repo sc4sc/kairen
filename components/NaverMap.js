@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity, View, WebView } from 'react-native';
 import { FileSystem } from 'expo';
+import * as geojsonutil from 'geojson-utils';
 
 const htmlAsset = Expo.Asset.fromModule(require('../assets/map.html'));
 
@@ -50,7 +51,7 @@ export default class NaverMap extends React.Component {
     // this.postAction('panTo', {
     //   coords: { lat: 36.37334626411133, lng: 127.36397930294454 },
     // });
-    this.postAction('renderKAISTpolyline', {});
+    this.renderKAIST();
     this.updateMarkers();
     this.updateOptions();
     if (this.props.initialCoords) {
@@ -97,6 +98,20 @@ export default class NaverMap extends React.Component {
     this.postAction('panTo', { coords, transitionOptions });
   };
 
+  renderKAIST = () => {
+    const coords = require('../assets/geojson/KAIST.json').features[0].geometry.coordinates[0];
+    this.postAction('renderKAIST', {coords});
+  };
+
+  centerChanged = (center) => {
+    const point = { type: 'Point', coordinates: [center._lng, center._lat] };
+    const kaist = require('../assets/geojson/KAIST.json').features[0].geometry;
+
+    if (!geojsonutil.pointInPolygon(point, kaist)) {
+      this.postAction('fitBounds');
+    }
+  };
+
   postAction = (type, payload) => {
     const action = { type, payload };
     this._webview.postMessage(JSON.stringify(action));
@@ -108,7 +123,7 @@ export default class NaverMap extends React.Component {
     const action = JSON.parse(nativeEvent.data);
     switch (action.type) {
       case 'log': {
-        // console.log('Log', action);
+        // console.log('Log', action.payload);
         return;
       }
       case 'ping': {
@@ -119,6 +134,14 @@ export default class NaverMap extends React.Component {
       case 'click': {
         this.onPress(action.payload);
         return;
+      }
+      case 'renderKAIST': {
+        this.renderKAIST();
+        return;
+      }
+      case 'centerChanged' : {
+        this.centerChanged(action.payload);
+        return
       }
     }
   };
