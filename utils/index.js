@@ -36,7 +36,7 @@ export async function requestPermission(type) {
   }
 
   // otherwise request permission
-  if ((await Permissions.askAsync(type)) === 'granted') {
+  if ((await Permissions.askAsync(type)).status === 'granted') {
     return true;
   }
 
