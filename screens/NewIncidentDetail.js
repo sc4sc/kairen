@@ -20,6 +20,7 @@ import { newIncidentPostRequested } from '../actions/newIncident';
 import { checkIsInbuilding } from '../utils';
 import Colors from '../constants/Colors';
 import memoize from 'fast-memoize';
+import * as geojsonutil from 'geojson-utils';
 
 class NewIncidentDetail extends React.Component {
   constructor() {
@@ -46,8 +47,13 @@ class NewIncidentDetail extends React.Component {
   }
 
   handlePressMap = coords => {
-    this.updateLocationName(coords);
-    this.setState({ markerCoords: coords });
+    const kaist = require('../assets/geojson/KAIST.json');
+    const point = { type: 'Point', coordinates: [coords.lng, coords.lat] };
+
+    if (geojsonutil.pointInPolygon(point, kaist.features[0].geometry)) {
+        this.updateLocationName(coords);
+        this.setState({ markerCoords: coords });
+    }
   };
 
   report(region) {
