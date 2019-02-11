@@ -25,7 +25,7 @@ class NewProgress extends React.Component {
   }
 
   onButtonPress() {
-    Alert.alert('진행 상황을 등록하시겠습니까?', 'Something warning text', [
+    Alert.alert('진행 상황을 등록하시겠습니까?', '가장 최근 진행 상황이 사건 사고 목록에 표시됩니다.', [
       { text: '취소' },
       { text: '확인', onPress: this.postProgress.bind(this) },
     ]);

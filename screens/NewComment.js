@@ -25,7 +25,7 @@ class NewComment extends React.Component {
   }
 
   onButtonPress() {
-    Alert.alert('댓글을 등록하시겠습니까?', 'Something warning text', [
+    Alert.alert('댓글을 등록하시겠습니까?', '한 번 등록한 댓글은 삭제하실 수 없습니다', [
       { text: '취소' },
       { text: '확인', onPress: this.postComment.bind(this) },
     ]);
