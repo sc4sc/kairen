@@ -18,12 +18,8 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-        isReady: false,
+      isReady: false,
     };
-  }
-
-  componentDidMount() {
-      requestPermission(Permissions.LOCATION);
   }
 
   async _loadAssetsAsync() {

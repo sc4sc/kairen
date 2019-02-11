@@ -1,17 +1,50 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions/newIncident';
 
 class ReportItem extends React.Component {
   render() {
-    const { title } = this.props;
+    const { title, type } = this.props;
     const empty = <View style={{ flex: 1 }} />;
+
+    let imageSrc;
+    switch (type) {
+      case '화재':
+        imageSrc = require('../assets/images/incidents/fire.png');
+        break;
+      case '가스':
+        imageSrc = require('../assets/images/incidents/gas.png');
+        break;
+      case '화학물질 누출':
+        imageSrc = require('../assets/images/incidents/flask.png');
+        break;
+      case '생물학적 유해물질 누출':
+        imageSrc = require('../assets/images/incidents/biohazard.png');
+        break;
+      case '방사선':
+        imageSrc = require('../assets/images/incidents/radiation.png');
+        break;
+      case '지진':
+        imageSrc = require('../assets/images/incidents/earthquake.png');
+        break;
+      case '엘레베이터 사고':
+        imageSrc = require('../assets/images/incidents/lift.png');
+        break;
+      case '정전':
+        imageSrc = require('../assets/images/incidents/antistatic.png');
+        break;
+    }
+    const image = (
+      <View style={{ flex: 1, alignItems: 'center' }}>
+        <Image source={imageSrc} />
+      </View>
+    );
 
     return (
       <TouchableOpacity onPress={this.props.onPress}>
         <View style={styles.itemContainer}>
-          {empty}
+          {image}
           <Text style={styles.itemContent}>{title}</Text>
           {empty}
         </View>
@@ -25,8 +58,10 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#ffe2be',
-    height: 51,
+    backgroundColor: 'white',
+    height: 60,
+    borderWidth: 1,
+    borderColor: '#adadad',
     borderRadius: 5,
     marginBottom: 10,
   },
