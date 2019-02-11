@@ -12,7 +12,13 @@ export default function Aboutthisapp(props) {
       <View style={styles.header}>
         <Image source={require('../assets/images/back.png')} onPress={() => props.navigation.goBack()}/>
         <Text style={styles.headerBackward} onPress={() => props.navigation.goBack()}>
-          {props.navigation.state.params.parent}
+          {props.navigation.state.params
+            ? (
+              props.navigation.state.params.parent
+            ) : (
+              null
+            )
+          }
         </Text>
       </View>
       <View style={styles.contentBody}>

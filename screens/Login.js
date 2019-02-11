@@ -59,7 +59,9 @@ class Login extends React.Component {
               <Text style={styles.mainText}>KAIST SSO 로그인</Text>
             )}
           </TouchableOpacity>
-          <Text style={styles.aboutText}>이 앱에 대하여</Text>
+          <Text style={styles.aboutText} onPress={() => this.props.navigation.navigate('Aboutthisapp')}>
+            이 앱에 대하여
+          </Text>
         </View>
       </View>
     );
