@@ -41,7 +41,7 @@ class NewIncident extends React.Component {
 
     return (
       <View style={container}>
-        <StatusBar backgroundColor={'#ff0000'} barStyle={"light-content"} />
+        <StatusBar backgroundColor={'#ff0000'} barStyle={'light-content'} />
         <View style={headerContainer}>
           <Text style={headerText}>제보 종류 선택</Text>
           <Ionicons
@@ -51,7 +51,7 @@ class NewIncident extends React.Component {
             onPress={() => this.props.navigation.goBack()}
           />
         </View>
-        <View style={{ paddingHorizontal: 20, flex: 1 }}>
+        <View style={{ flex: 1, paddingHorizontal: 20, marginTop: 27 }}>
           <Text style={styles.subHeaderText}>긴급제보</Text>
           <FlatList data={incidentTypes} renderItem={this.renderItem} />
         </View>
@@ -60,26 +60,13 @@ class NewIncident extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  const { selectedIncident, isFirstStage } = state.newIncident;
-  return {
-    selectedIncident,
-    isFirstStage,
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  { ...actions, incidentsListRefresh }
-)(NewIncident);
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fffaf4',
+    backgroundColor: 'white',
   },
   headerContainer: {
-    paddingTop: statusBarHeight+10,
+    paddingTop: statusBarHeight + 10,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
     justifyContent: 'space-between',
@@ -94,7 +81,7 @@ const styles = StyleSheet.create({
   },
   subHeaderText: {
     fontSize: 16,
-    color: 'white',
+    fontWeight: 'bold',
     marginBottom: 10,
   },
   barContainer: {
@@ -104,3 +91,16 @@ const styles = StyleSheet.create({
   },
   stageBar: { width: 30, height: 3, borderRadius: 25.5 },
 });
+
+const mapStateToProps = state => {
+  const { selectedIncident, isFirstStage } = state.newIncident;
+  return {
+    selectedIncident,
+    isFirstStage,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { ...actions, incidentsListRefresh }
+)(NewIncident);

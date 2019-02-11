@@ -82,7 +82,7 @@ class IncidentDetail extends React.Component {
     const incidentDetail = this.getIncidentDetail();
     const { lat, lng } = incidentDetail;
     const localDetail = getLocalData(incidentDetail.type);
-    const location = checkIsInbuilding({lat, lng});
+    const location = checkIsInbuilding({ lat, lng });
 
     return (
       <View>
@@ -120,7 +120,9 @@ class IncidentDetail extends React.Component {
             </Text>
           </View>
         </View>
-        <Text style={{ color: Colors.defaultBlack }}>{location ? location.properties.name : 'KAIST'}</Text>
+        <Text style={{ color: Colors.defaultBlack }}>
+          {location ? location.properties.name : 'KAIST'}
+        </Text>
       </View>
     );
   }
@@ -197,6 +199,15 @@ class IncidentDetail extends React.Component {
             완료
           </StateCheckButton>
         </View>
+        <View style={[styles.statusContainer, { backgroundColor: '#6f6f6f',marginVertical: 10, paddingVertical: 14 }]}>
+          <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>
+            오인 신고로 변경
+          </Text>
+        </View>
+        <Text style={{fontSize: 11, letterSpacing: 0.15, color: '#959595'}}>
+          <Text style={{fontWeight: 'bold'}} >* 이 작업은 취소할 수 없습니다. </Text>
+          오인 신고로 변경될 경우, 해당 사고는 일반 사용자에게 더 이상 표시되지 않으며 진행 상황 등록 및 댓글 작성이 불가합니다.
+        </Text>
       </View>
     );
   }
@@ -366,7 +377,9 @@ class IncidentDetail extends React.Component {
             <View style={{ height: 28 }} />
             {this.renderProtocol()}
             <View style={{ height: 24 }} />
-            {this.props.isSecureTeam ? this.renderAdminStateBar() : this.renderClientStateBar()}
+            {this.props.isSecureTeam
+              ? this.renderAdminStateBar()
+              : this.renderClientStateBar()}
             <View style={{ height: 24 }} />
             {this.renderProgress()}
             <View style={{ height: 24 }} />
