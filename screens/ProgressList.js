@@ -9,7 +9,7 @@ import ProgressCard from '../components/ProgressCard';
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
-export class ProgressList extends React.Component {
+export default class ProgressList extends React.Component {
   constructor() {
     super();
     this.state = { progressList: [] };
@@ -25,7 +25,11 @@ export class ProgressList extends React.Component {
     const { content, createdAt } = data.item;
 
     return (
-      <ProgressCard author="안전팀" date={formatDate(createdAt)} propStyle={styles.progressBox}>
+      <ProgressCard
+        author="안전팀"
+        date={formatDate(createdAt)}
+        propStyle={styles.progressBox}
+      >
         {content}
       </ProgressCard>
     );
@@ -49,7 +53,10 @@ export class ProgressList extends React.Component {
         </View>
 
         <View style={{ flex: 1, paddingHorizontal: 15 }}>
-          <FlatList data={this.state.progressList} renderItem={this.renderProgress} />
+          <FlatList
+            data={this.state.progressList}
+            renderItem={this.renderProgress}
+          />
         </View>
       </SafeAreaView>
     );
