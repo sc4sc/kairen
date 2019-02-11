@@ -7,10 +7,14 @@ import { Ionicons } from '@expo/vector-icons';
 import ReportItem from '../components/ReportItem';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
+import { getStatusBarHeight } from '../utils/index.js';
+
 import * as actions from '../actions/newIncident';
 import { types as incidentTypes } from '../constants/Incidents';
 import { incidentsListRefresh } from '../actions/incidentsList';
 // import Locator from './NewIncident/Locator';
+
+const statusBarHeight = getStatusBarHeight();
 
 class NewIncident extends React.Component {
   constructor() {
@@ -33,11 +37,11 @@ class NewIncident extends React.Component {
 
   render() {
     const { container, headerContainer, headerText } = styles;
+    const cololor = 'rgb(250,0,0)';
 
     return (
-      <SafeAreaView style={container}>
-        <StatusBar barStyle="light-content" backgroundColor="#ff9412" />
-        <AndroidTopMargin style={{ backgroundColor: '#ff9412' }} />
+      <View style={container}>
+        <StatusBar backgroundColor={'#ff0000'} barStyle={"light-content"} />
         <View style={headerContainer}>
           <Text style={headerText}>제보 종류 선택</Text>
           <Ionicons
@@ -51,7 +55,7 @@ class NewIncident extends React.Component {
           <Text style={styles.subHeaderText}>긴급제보</Text>
           <FlatList data={incidentTypes} renderItem={this.renderItem} />
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }
@@ -75,6 +79,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fffaf4',
   },
   headerContainer: {
+    paddingTop: statusBarHeight+10,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
     justifyContent: 'space-between',

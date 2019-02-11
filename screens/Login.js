@@ -1,17 +1,22 @@
 import React from 'react';
-import { Alert, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Alert, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { CheckBox } from 'react-native-elements';
 
+import Layout from '../constants/Layout';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import Spinner from '../components/Spinner';
 import { authLoginRequest, authToggleSecureTeam } from '../actions/auth';
 
+import { getStatusBarHeight } from '../utils/index.js';
+
+const statusBarHeight = getStatusBarHeight();
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { text: '' };
+    this.state = { text: '테스트' };
   }
 
   onButtonPress() {
@@ -39,31 +44,10 @@ class Login extends React.Component {
   render() {
     const { container, headerText, inputBox, checkBoxContainer, nameText, mainText } = styles;
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <AndroidTopMargin />
+      <View style={{ flex: 1 }}>
         <View style={container}>
-          <Text style={headerText}>SC4SC</Text>
-
-          <Text style={nameText}> 이름 </Text>
-          <TextInput
-            style={inputBox}
-            placeholder={'ex) 홍길동'}
-            onChangeText={text => this.setState({ text })}
-            value={this.state.text}
-          />
-
-          <View style={checkBoxContainer}>
-            <CheckBox
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderWidth: 0,
-              }}
-              textStyle={mainText}
-              onPress={this.props.authToggleSecureTeam}
-              checked={this.props.isSecureTeam}
-              title={'나는 안전팀입니다.'}
-            />
-          </View>
+          <Image style={{marginLeft: -10}} source={require('../assets/images/fronticon.png')}/>
+          <Text style={headerText}>KAIREN</Text>
           <TouchableOpacity
             style={styles.loginButton}
             onPress={this.onButtonPress.bind(this)}
@@ -72,11 +56,12 @@ class Login extends React.Component {
             {this.props.isLoading ? (
               <Spinner size="small" />
             ) : (
-              <Text style={styles.mainText}>로그인</Text>
+              <Text style={styles.mainText}>KAIST SSO 로그인</Text>
             )}
           </TouchableOpacity>
+          <Text style={styles.aboutText}>이 앱에 대하여</Text>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }
@@ -92,16 +77,24 @@ export default connect(
 )(Login);
 
 const styles = {
-  container: { flex: 1, backgroundColor: '#424242', padding: 15 },
+  container: {
+    flex: 1,
+    padding: 15,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   headerText: {
+    paddingTop: statusBarHeight,
     fontSize: 33,
     fontWeight: 'bold',
-    color: 'white',
-    marginBottom: 60,
-    letterSpacing: 0.5,
+    color: 'black',
+    marginBottom: 29,
+    marginTop: -15,
+    letterSpacing: -1,
   },
   inputBox: {
-    backgroundColor: 'white',
+    backgroundColor: 'black',
     height: 53,
     borderRadius: 5,
     marginBottom: 23,
@@ -115,19 +108,20 @@ const styles = {
     marginBottom: 53,
   },
   loginButton: {
-    backgroundColor: '#5c5c5c',
+    backgroundColor: '#2c8ff5',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 53,
+    height: 60,
+    width: Layout.window.width-40,
     borderRadius: 5,
-    shadowOffset: { width: 0, height: 2 },
-    shadowColor: 'black',
-    shadowOpacity: 0.22,
-    shadowRadius: 2,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 8 },
+    shadowColor: '#2c8ff5',
+    shadowOpacity: 0.5,
+    shadowRadius: 15,
+    // elevation: 5,
   },
   mainText: {
-    fontSize: 15,
+    fontSize: 17,
     fontWeight: 'bold',
     color: 'white',
     alignSelf: 'center',
@@ -138,4 +132,8 @@ const styles = {
     color: 'white',
     marginBottom: 5,
   },
+  aboutText: {
+    marginTop: 25,
+    textDecorationLine: 'underline',
+  }
 };

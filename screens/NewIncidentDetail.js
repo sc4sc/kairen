@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Location } from 'expo';
 
+import { getStatusBarHeight } from '../utils/index.js';
 import NaverMap from '../components/NaverMap';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import Layout from '../constants/Layout';
@@ -21,6 +22,8 @@ import { checkIsInbuilding } from '../utils';
 import Colors from '../constants/Colors';
 import memoize from 'fast-memoize';
 import * as geojsonutil from 'geojson-utils';
+
+const statusBarHeight = getStatusBarHeight();
 
 class NewIncidentDetail extends React.Component {
   constructor() {
@@ -105,9 +108,8 @@ class NewIncidentDetail extends React.Component {
     // const { lat, lng } = this.state.markerCoords;
 
     return (
-      <SafeAreaView style={container}>
+      <View style={container}>
         <StatusBar barStyle="light-content" backgroundColor="#ff9412" />
-        <AndroidTopMargin style={{ backgroundColor: '#ff9412' }} />
         <View style={headerContainer}>
           <TouchableWithoutFeedback
             onPress={() => this.props.navigation.goBack()}
@@ -163,7 +165,7 @@ class NewIncidentDetail extends React.Component {
         {/*<Text>lat {lat}</Text>*/}
         {/*<Text>lng {lng}</Text>*/}
         {/*</View>*/}
-      </SafeAreaView>
+      </View>
     );
   }
 }
@@ -174,6 +176,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fffaf4',
   },
   headerContainer: {
+    paddingTop: statusBarHeight+10,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
     justifyContent: 'space-between',
