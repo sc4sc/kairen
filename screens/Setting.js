@@ -63,9 +63,8 @@ class Setting extends React.Component {
               switchOn={this.state.alertAlarm}
               backgroundColorOn={Colors.switchGreen}
               circleColorOn="white"
-              onPress={() =>
-                this.setState({ alertAlarm: !this.state.alertAlarm })
-              }
+              duration={150}
+              onPress={() => this.setState({ alertAlarm: !this.state.alertAlarm })}
             />
           </View>
         </View>
@@ -109,7 +108,7 @@ const styles = StyleSheet.create({
   },
   switchStyle: {
     width: 53,
-    height: 30,
+    height: 28,
     borderRadius: 28.5,
     padding: 2,
   },

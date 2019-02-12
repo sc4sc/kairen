@@ -21,6 +21,7 @@ import { newIncidentPostRequested } from '../actions/newIncident';
 import { checkIsInbuilding } from '../utils';
 import Colors from '../constants/Colors';
 import memoize from 'fast-memoize';
+import * as geojsonutil from 'geojson-utils';
 
 const statusBarHeight = getStatusBarHeight();
 
@@ -49,8 +50,17 @@ class NewIncidentDetail extends React.Component {
   }
 
   handlePressMap = coords => {
-    this.updateLocationName(coords);
-    this.setState({ markerCoords: coords });
+    const kaist = require('../assets/geojson/KAIST.json');
+    const point = { type: 'Point', coordinates: [coords.lng, coords.lat] };
+
+    if (geojsonutil.pointInPolygon(point, kaist.features[0].geometry)) {
+        this.updateLocationName(coords);
+        this.setState({ markerCoords: coords });
+    } else {
+      Alert.alert('위치를 지정할 수 없습니다.', 'KAIST 내부만 선택해주세요.', [
+        { text: '확인' },
+      ]);
+    }
   };
 
   report(region) {
