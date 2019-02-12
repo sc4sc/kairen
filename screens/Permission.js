@@ -32,15 +32,12 @@ export default class Permission extends React.Component {
 
   handleAppStateChange = async nextAppState => {
     let locationPermission, phoneCallPermission;
-    console.log('hi?');
     if (
       this.state.appState.match(/inactive|background/) &&
       nextAppState == 'active'
     ) {
       locationPermission = await Permissions.getAsync(Permissions.LOCATION);
       phoneCallPermission = await Permissions.getAsync(Permissions.CONTACTS);
-      console.log(locationPermission.status);
-      console.log(phoneCallPermission.status);
       if (locationPermission.status === 'granted') {
         this.setState({ locationPermission: true });
       } else {
@@ -70,7 +67,13 @@ export default class Permission extends React.Component {
         style={[styles.buttonStyle, styles.buttonEnabled]}
         onPress={() => this.props.navigation.navigate('Auth')}
       >
-        <Text style={styles.buttonEnabledText}> 다음으로 > </Text>
+        <Text style={[styles.buttonEnabledText, { alignItems: 'center' }]}>
+          다음으로
+        </Text>
+        <Image
+          style={{ marginLeft: 7.5 }}
+          source={require('../assets/images/next.png')}
+        />
       </TouchableOpacity>
     );
   }
@@ -166,10 +169,12 @@ const styles = {
     marginRight: 10,
   },
   buttonStyle: {
+    flexDirection: 'row',
     borderRadius: 5,
     marginTop: 70,
     marginHorizontal: 17,
     paddingVertical: 20,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   buttonEnabled: {

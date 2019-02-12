@@ -11,28 +11,28 @@ class ReportItem extends React.Component {
     let imageSrc;
     switch (type) {
       case '화재':
-        imageSrc = require('../assets/images/incidents/fire.png');
+        imageSrc = require('../assets/images/incidentSend/fire.png');
         break;
       case '가스':
-        imageSrc = require('../assets/images/incidents/gas.png');
+        imageSrc = require('../assets/images/incidentSend/gas.png');
         break;
       case '화학물질 누출':
-        imageSrc = require('../assets/images/incidents/flask.png');
+        imageSrc = require('../assets/images/incidentSend/flask.png');
         break;
       case '생물학적 유해물질 누출':
-        imageSrc = require('../assets/images/incidents/biohazard.png');
+        imageSrc = require('../assets/images/incidentSend/biohazard.png');
         break;
       case '방사선':
-        imageSrc = require('../assets/images/incidents/radiation.png');
+        imageSrc = require('../assets/images/incidentSend/radiation.png');
         break;
       case '지진':
-        imageSrc = require('../assets/images/incidents/earthquake.png');
+        imageSrc = require('../assets/images/incidentSend/earthquake.png');
         break;
       case '엘레베이터 사고':
-        imageSrc = require('../assets/images/incidents/lift.png');
+        imageSrc = require('../assets/images/incidentSend/lift.png');
         break;
       case '정전':
-        imageSrc = require('../assets/images/incidents/antistatic.png');
+        imageSrc = require('../assets/images/incidentSend/antistatic.png');
         break;
     }
     const image = (
