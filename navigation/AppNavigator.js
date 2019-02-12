@@ -6,6 +6,7 @@ import {
   createDrawerNavigator,
 } from 'react-navigation';
 import {
+  AboutThisApp,
   IncidentDetail,
   IncidentList,
   Login,
@@ -18,7 +19,6 @@ import {
   ProgressList,
   Setting,
   SafetyContact,
-  Aboutthisapp,
 } from '../screens';
 
 console.log(PermissionLoading);
@@ -38,7 +38,7 @@ const MainNavigator = createStackNavigator(
     ProgressList,
     NewProgress,
     Setting,
-    Aboutthisapp,
+    AboutUs: AboutThisApp,
   },
   {
     headerMode: 'none',
@@ -57,11 +57,19 @@ const drawerNavigator = createDrawerNavigator(
   }
 );
 
+const loginStack = createStackNavigator(
+  {
+    Auth: Login,
+    AboutUs: AboutThisApp,
+  },
+  { headerMode: 'none' }
+);
+
 const LoginNavigator = createSwitchNavigator(
   {
     PermissionLoading: PermissionLoading,
     Permission: Permission,
-    Auth: Login,
+    Auth: loginStack,
     App: drawerNavigator,
   },
   { headerMode: 'none' }
