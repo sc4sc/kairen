@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text, Image, Linking, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
-import AndroidTopMargin from '../components/AndroidTopMargin';
 import { getBottomSpace, getStatusBarHeight } from '../utils/index.js';
+import * as contacts from '../constants/Contacts'
 
 const topMargin = getStatusBarHeight();
 const bottomMargin = getBottomSpace();
@@ -17,8 +16,6 @@ export default class SafetyContact extends React.Component {
       notAppliedText,
       contentContainersecond,
     } = styles;
-    const campusPolicNum = '010-4430-3985';
-    const secureTeamNum = '010-4430-3985';
 
     return (
       <View style={container}>
@@ -33,7 +30,7 @@ export default class SafetyContact extends React.Component {
           </View>
 
           <TouchableOpacity
-            onPress={() => Linking.openURL(`tel:${campusPolicNum}`)}
+            onPress={() => Linking.openURL(`tel:${contacts.campusPolice}`)}
           >
             <View style={contentContainer}>
               <Image source={require('../assets/images/group-9.png')} />
@@ -43,7 +40,7 @@ export default class SafetyContact extends React.Component {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => Linking.openURL(`tel:${secureTeamNum}`)}
+            onPress={() => Linking.openURL(`tel:${contacts.secureTeam}`)}
           >
             <View style={contentContainer}>
               <Image source={require('../assets/images/group-9.png')} />

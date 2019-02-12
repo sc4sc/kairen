@@ -12,17 +12,17 @@ import ProgressCard from './ProgressCard';
 import Colors from '../constants/Colors';
 import { formatDate, checkIsInbuilding } from '../utils';
 import { typeMap } from '../constants/Incidents';
+import * as contacts from '../constants/Contacts';
 
 export default class IncidentCard extends React.Component {
   renderWrongIncident(progressStateColor) {
     const { data } = this.props;
     const { createdAt } = data;
-    const secureTeamNum = '010-4430-3985';
 
     return (
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => Linking.openURL(`tel:${secureTeamNum}`)}
+          onPress={() => Linking.openURL(`tel:${contacts.secureTeam}`)}
           style={{ flex: 1 }}
         >
           <View style={{ flex: 1 }}>
