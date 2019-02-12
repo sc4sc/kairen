@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableWithoutFeedback,
+  Platform,
+} from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import Layout from '../constants/Layout';
 import { getStatusBarHeight } from '../utils';
@@ -54,7 +60,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    marginTop: 25 + statusBarHeight,
+    marginTop: Platform.OS === 'android' ? 25 + statusBarHeight : 25,
     marginLeft: 40,
   },
   header: {
