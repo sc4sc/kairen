@@ -73,7 +73,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'left',
+    alignItems: 'flex-start',
     marginTop: 25,
     marginLeft: 40,
   },
