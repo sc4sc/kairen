@@ -1,3 +1,4 @@
+export AboutThisApp from './AboutThisApp';
 export IncidentDetail from './IncidentDetail';
 export IncidentList from './IncidentList';
 export Login from './Login';
@@ -10,4 +11,3 @@ export PermissionLoading from './PermissionLoading';
 export ProgressList from './ProgressList';
 export SafetyContact from './SafetyContact';
 export Setting from './Setting';
-export Aboutthisapp from './Aboutthisapp';
