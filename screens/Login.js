@@ -71,7 +71,7 @@ class Login extends React.Component {
             {this.props.isLoading ? (
               <Spinner size="small" />
             ) : (
-              <Text style={styles.mainText}>KAIST SSO 로그인</Text>
+              <Text style={styles.mainText}>KAIST 통합아이디 로그인</Text>
             )}
           </TouchableOpacity>
           <Text
