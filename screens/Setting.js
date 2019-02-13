@@ -90,7 +90,7 @@ class Setting extends React.Component {
         <View style={styles.delimiter} />
         <View style={{ paddingHorizontal: 20 }}>
           <TouchableWithoutFeedback
-            onPress={() => Linking.openURL('mailto:karien@kaist.ac.kr')}
+            onPress={() => Linking.openURL('mailto:kairen@kaist.ac.kr')}
           >
             <Text style={{ fontSize: 15, marginVertical: 17 }}>문의하기</Text>
           </TouchableWithoutFeedback>
