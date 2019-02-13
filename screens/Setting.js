@@ -5,6 +5,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Image,
+  Linking,
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import SwitchToggle from 'react-native-switch-toggle';
@@ -26,7 +27,7 @@ class Setting extends React.Component {
   }
 
   goToAboutPage() {
-    this.props.navigation.navigate('Aboutthisapp', { parent: '설정'});
+    this.props.navigation.navigate('AboutUs', { parent: '설정' });
   }
 
   render() {
@@ -36,11 +37,10 @@ class Setting extends React.Component {
         <View style={styles.headerContainer}>
           <Text style={styles.header}> 설정 </Text>
           <View style={styles.buttonContainer}>
-            <TouchableWithoutFeedback
-              style={{ flex: 1 }}
-              onPress={this.goBack.bind(this)}
-            >
-              <Image source={require('../assets/images/back.png')} />
+            <TouchableWithoutFeedback onPress={this.goBack.bind(this)}>
+              <View style={{ width: 20, alignItems: 'center' }}>
+                <Image source={require('../assets/images/back.png')} />
+              </View>
             </TouchableWithoutFeedback>
           </View>
         </View>
@@ -71,7 +71,9 @@ class Setting extends React.Component {
               backgroundColorOn={Colors.switchGreen}
               circleColorOn="white"
               duration={150}
-              onPress={() => this.setState({ alertAlarm: !this.state.alertAlarm })}
+              onPress={() =>
+                this.setState({ alertAlarm: !this.state.alertAlarm })
+              }
             />
           </View>
         </View>
@@ -79,8 +81,15 @@ class Setting extends React.Component {
         <View style={styles.cardContainer} />
         <View style={styles.delimiter} />
         <View style={{ paddingHorizontal: 20 }}>
-          <Text style={{ fontSize: 15, marginVertical: 17 }}> 문의하기 </Text>
-          <Text style={{ fontSize: 15, marginVertical: 17 }} onPress={() => this.goToAboutPage()}>
+          <TouchableWithoutFeedback
+            onPress={() => Linking.openURL('mailto:karien@kaist.ac.kr')}
+          >
+            <Text style={{ fontSize: 15, marginVertical: 17 }}>문의하기</Text>
+          </TouchableWithoutFeedback>
+          <Text
+            style={{ fontSize: 15, marginVertical: 17 }}
+            onPress={() => this.goToAboutPage()}
+          >
             이 앱에 대하여
           </Text>
         </View>

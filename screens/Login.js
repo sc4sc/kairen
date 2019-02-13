@@ -1,5 +1,12 @@
 import React from 'react';
-import { Alert, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import {
+  Alert,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { CheckBox } from 'react-native-elements';
@@ -25,7 +32,10 @@ class Login extends React.Component {
     const alertMsg = 'Sorry, login has failed.';
 
     if (this.state.text.trim() === '') {
-      Alert.alert('Empty Name', '공백으로 이루어진 이름으로는 접속하실 수 없습니다.');
+      Alert.alert(
+        'Empty Name',
+        '공백으로 이루어진 이름으로는 접속하실 수 없습니다.'
+      );
       return;
     }
 
@@ -42,11 +52,21 @@ class Login extends React.Component {
   }
 
   render() {
-    const { container, headerText, inputBox, checkBoxContainer, nameText, mainText } = styles;
+    const {
+      container,
+      headerText,
+      inputBox,
+      checkBoxContainer,
+      nameText,
+      mainText,
+    } = styles;
     return (
       <View style={{ flex: 1 }}>
         <View style={container}>
-          <Image style={{marginLeft: -10}} source={require('../assets/images/fronticon.png')}/>
+          <Image
+            style={{ marginLeft: -10 }}
+            source={require('../assets/images/fronticon.png')}
+          />
           <Text style={headerText}>KAIREN</Text>
           <TouchableOpacity
             style={styles.loginButton}
@@ -59,7 +79,12 @@ class Login extends React.Component {
               <Text style={styles.mainText}>KAIST SSO 로그인</Text>
             )}
           </TouchableOpacity>
-          <Text style={styles.aboutText} onPress={() => this.props.navigation.navigate('Aboutthisapp')}>
+          <Text
+            style={styles.aboutText}
+            onPress={() =>
+              this.props.navigation.navigate('AboutUs', { parent: '로그인' })
+            }
+          >
             이 앱에 대하여
           </Text>
         </View>
@@ -114,7 +139,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     height: 60,
-    width: Layout.window.width-40,
+    width: Layout.window.width - 40,
     borderRadius: 5,
     shadowOffset: { width: 0, height: 8 },
     shadowColor: '#2c8ff5',
@@ -137,5 +162,5 @@ const styles = {
   aboutText: {
     marginTop: 25,
     textDecorationLine: 'underline',
-  }
+  },
 };
