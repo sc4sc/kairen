@@ -4,24 +4,15 @@ import axios from 'axios';
 // 개발 서버 설정해놓고 커밋에 올리지 말라고 해놓음
 import { URL as serverURL } from '../constants/Server';
 
+let axiosInstance = axios;
+
 export function setAppToken(token) {
-  axios.defaults.headers.common['Authorization'] = token;
-}
-
-function getQueryString(q) {
-  return new URLSearchParams(q).toString();
-}
-
-export function listIncidents(query) {
-  return axios
-    .get(`${serverURL}/incidents?${getQueryString(query)}`)
-    .then(response => response.data);
-}
-
-export function postIncident({ type, lat, lng }) {
-  return axios
-    .post(`${serverURL}/incidents`, { type, lat, lng })
-    .then(response => response.data);
+  console.log('t', token);
+  axiosInstance = axios.create({
+    headers: {
+      Authorization: token,
+    },
+  });
 }
 
 export function requestAuthentication(ssoToken, isAdmin, pushToken) {
@@ -45,6 +36,22 @@ export function requestAuthentication(ssoToken, isAdmin, pushToken) {
     });
 }
 
+function getQueryString(q) {
+  return new URLSearchParams(q).toString();
+}
+
+export function listIncidents(query) {
+  return axiosInstance
+    .get(`${serverURL}/incidents?${getQueryString(query)}`)
+    .then(response => response.data);
+}
+
+export function postIncident({ type, lat, lng }) {
+  return axiosInstance
+    .post(`${serverURL}/incidents`, { type, lat, lng })
+    .then(response => response.data);
+}
+
 export function getIncidentComments(incidentId, query) {
   let queryString = '';
 
@@ -52,43 +59,49 @@ export function getIncidentComments(incidentId, query) {
     queryString = `&${getQueryString(query)}`;
   }
 
-  return axios.get(
+  return axiosInstance.get(
     `${serverURL}/incidents/${incidentId}/comments${queryString}`
   );
 }
 
 export function postComment(incidentId, body) {
-  return axios.post(`${serverURL}/incidents/${incidentId}/comments`, body);
+  return axiosInstance.post(
+    `${serverURL}/incidents/${incidentId}/comments`,
+    body
+  );
 }
 
 export function postReply(commentId, body) {
-  return axios.post(`${serverURL}/comments/${commentId}/reply`, body);
+  return axiosInstance.post(`${serverURL}/comments/${commentId}/reply`, body);
 }
 
 export function getRecentProgress(incidentId) {
-  return axios.get(`${serverURL}/incidents/${incidentId}/progresses`);
+  return axiosInstance.get(`${serverURL}/incidents/${incidentId}/progresses`);
 }
 
 export function getProgressList(incidentId) {
-  return axios.get(`${serverURL}/incidents/${incidentId}/progresses`);
+  return axiosInstance.get(`${serverURL}/incidents/${incidentId}/progresses`);
 }
 
 export function postProgress(incidentId, body) {
-  return axios.post(`${serverURL}/incidents/${incidentId}/progresses`, body);
+  return axiosInstance.post(
+    `${serverURL}/incidents/${incidentId}/progresses`,
+    body
+  );
 }
 
 export function postLike(commentId) {
-  return axios.post(`${serverURL}/comments/${commentId}/like`);
+  return axiosInstance.post(`${serverURL}/comments/${commentId}/like`);
 }
 
 export function postUnlike(commentId) {
-  return axios.post(`${serverURL}/comments/${commentId}/unlike`);
+  return axiosInstance.post(`${serverURL}/comments/${commentId}/unlike`);
 }
 
 export function getIncidentState(incidentId) {
-  return axios.get(`${serverURL}/incidents/${incidentId}`);
+  return axiosInstance.get(`${serverURL}/incidents/${incidentId}`);
 }
 
 export function postIncidentState(incidentId, body) {
-  return axios.post(`${serverURL}/incidents/${incidentId}`, body);
+  return axiosInstance.post(`${serverURL}/incidents/${incidentId}`, body);
 }
