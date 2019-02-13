@@ -34,7 +34,6 @@ class NewProgress extends React.Component {
   postProgress() {
     apis
       .postProgress(this.props.navigation.getParam('incidentId'), {
-        userId: this.props.userId,
         content: this.state.text,
       })
       .then(this.goBackAndShowList.bind(this));
@@ -85,7 +84,6 @@ class NewProgress extends React.Component {
 }
 
 export default connect(state => ({
-  userId: state.auth.user.username,
 }))(NewProgress);
 
 const styles = StyleSheet.create({

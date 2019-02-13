@@ -60,7 +60,6 @@ class IncidentDetail extends React.Component {
     const incidentId = await this.getIncidentDetail().id;
     await this.setState({ progressState: state });
     await apis.postIncidentState(incidentId, {
-      userId: this.props.userId,
       state: this.state.progressState,
     });
     if (state === '오인신고') {
@@ -82,7 +81,7 @@ class IncidentDetail extends React.Component {
   handleRefresh() {
     const incidentId = this.getIncidentDetail().id;
     apis
-      .getIncidentComments(incidentId, this.props.userId)
+      .getIncidentComments(incidentId)
       .then(response => this.setState({ commentList: response.data }));
     apis
       .getRecentProgress(incidentId)
@@ -353,7 +352,7 @@ class IncidentDetail extends React.Component {
   renderComment(data) {
     const {
       id,
-      userId,
+      User: { Id, ku_kname, displayName },
       like,
       content,
       createdAt,
@@ -368,7 +367,7 @@ class IncidentDetail extends React.Component {
     return (
       <CommentCard
         commentId={id}
-        author={userId}
+        author={ku_kname}
         like={like}
         totalLike={totalLike}
         date={commentDate}
@@ -462,7 +461,6 @@ class IncidentDetail extends React.Component {
 
 const mapStateToProps = state => ({
   isSecureTeam: state.auth.isSecureTeam,
-  userId: state.auth.user.username,
 });
 
 export default connect(

@@ -1,5 +1,12 @@
 import React from 'react';
-import { Alert, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import {
+  Alert,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { CheckBox } from 'react-native-elements';
@@ -16,7 +23,6 @@ const statusBarHeight = getStatusBarHeight();
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { text: '테스트' };
   }
 
   onButtonPress() {
@@ -24,29 +30,38 @@ class Login extends React.Component {
     const alertTitle = 'Login Failed';
     const alertMsg = 'Sorry, login has failed.';
 
-    if (this.state.text.trim() === '') {
-      Alert.alert('Empty Name', '공백으로 이루어진 이름으로는 접속하실 수 없습니다.');
-      return;
-    }
-
-    this.props.authLoginRequest(
-      this.state.text,
-      this.props.isSecureTeam,
-      () => {
-        navigation.navigate('App');
+    navigation.navigate('SSO', {
+      onLogin: token => {
+        this.props.authLoginRequest(
+          token,
+          this.props.isSecureTeam,
+          () => {
+            navigation.navigate('App');
+          },
+          () => {
+            Alert.alert(alertTitle, alertMsg);
+          }
+        );
       },
-      () => {
-        Alert.alert(alertTitle, alertMsg);
-      }
-    );
+    });
   }
 
   render() {
-    const { container, headerText, inputBox, checkBoxContainer, nameText, mainText } = styles;
+    const {
+      container,
+      headerText,
+      inputBox,
+      checkBoxContainer,
+      nameText,
+      mainText,
+    } = styles;
     return (
       <View style={{ flex: 1 }}>
         <View style={container}>
-          <Image style={{marginLeft: -10}} source={require('../assets/images/fronticon.png')}/>
+          <Image
+            style={{ marginLeft: -10 }}
+            source={require('../assets/images/fronticon.png')}
+          />
           <Text style={headerText}>KAIREN</Text>
           <TouchableOpacity
             style={styles.loginButton}
@@ -59,7 +74,12 @@ class Login extends React.Component {
               <Text style={styles.mainText}>KAIST SSO 로그인</Text>
             )}
           </TouchableOpacity>
-          <Text style={styles.aboutText} onPress={() => this.props.navigation.navigate('Aboutthisapp')}>
+          <Text
+            style={styles.aboutText}
+            onPress={() =>
+              this.props.navigation.navigate('AboutUs', { parent: '로그인' })
+            }
+          >
             이 앱에 대하여
           </Text>
         </View>
@@ -114,7 +134,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     height: 60,
-    width: Layout.window.width-40,
+    width: Layout.window.width - 40,
     borderRadius: 5,
     shadowOffset: { width: 0, height: 8 },
     shadowColor: '#2c8ff5',
@@ -137,5 +157,5 @@ const styles = {
   aboutText: {
     marginTop: 25,
     textDecorationLine: 'underline',
-  }
+  },
 };
