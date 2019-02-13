@@ -39,16 +39,20 @@ class Login extends React.Component {
       return;
     }
 
-    this.props.authLoginRequest(
-      this.state.text,
-      this.props.isSecureTeam,
-      () => {
-        navigation.navigate('App');
+    navigation.navigate('SSO', {
+      onLogin: token => {
+        this.props.authLoginRequest(
+          token,
+          this.props.isSecureTeam,
+          () => {
+            navigation.navigate('App');
+          },
+          () => {
+            Alert.alert(alertTitle, alertMsg);
+          }
+        );
       },
-      () => {
-        Alert.alert(alertTitle, alertMsg);
-      }
-    );
+    });
   }
 
   render() {

@@ -20,6 +20,7 @@ import {
   Setting,
   SafetyContact,
 } from '../screens';
+import SSO from '../screens/SSO';
 
 console.log(PermissionLoading);
 
@@ -61,6 +62,7 @@ const loginStack = createStackNavigator(
   {
     Auth: Login,
     AboutUs: AboutThisApp,
+    SSO: SSO,
   },
   { headerMode: 'none' }
 );
