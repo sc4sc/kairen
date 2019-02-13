@@ -234,7 +234,6 @@ const styles = StyleSheet.create({
   searchBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    minHeight: 20,
   },
   searchText: {
     fontSize: 16,
