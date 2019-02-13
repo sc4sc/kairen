@@ -170,12 +170,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  title: { fontWeight: 'bold', fontSize: 18 },
+  title: { fontWeight: 'bold', fontSize: 18, marginBottom: 3 },
   addressText: { fontSize: 13 },
   dateText: {
     fontSize: 11,
     color: Colors.dateLightGrey,
-    marginTop: 11,
     marginBottom: 5,
   },
   wrongContent: {

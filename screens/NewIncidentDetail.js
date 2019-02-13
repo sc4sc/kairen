@@ -146,12 +146,12 @@ class NewIncidentDetail extends React.Component {
               <Text style={headerText}>{this.props.selectedIncident}</Text>
             </View>
           </TouchableWithoutFeedback>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('IncidentList')}>
-            <Image
-                source={require('../assets/images/combined-shape.png')}
-                style={{ width: 20, height:20, marginRight: 22 }}
-                />
-          </TouchableOpacity>
+          <Ionicons
+            name="ios-close"
+            size={40}
+            style={{ color: 'white', marginRight: 20 }}
+            onPress={() => this.props.navigation.goBack()}
+          />
         </View>
 
         <NaverMap
@@ -165,7 +165,6 @@ class NewIncidentDetail extends React.Component {
           <Text style={styles.questionText}>장소는 어디인가요?</Text>
           <View style={styles.searchBox}>
             <Text style={styles.searchText}>{this.state.locationName}</Text>
-            {/*<Ionicons name="md-search" size={26} />*/}
           </View>
         </View>
         <TouchableOpacity
@@ -181,17 +180,6 @@ class NewIncidentDetail extends React.Component {
         >
           <Image source={require('../assets/images/group-2.png')}/>
         </TouchableOpacity>
-        {/*<View*/}
-        {/*style={{*/}
-        {/*position: 'absolute',*/}
-        {/*top: 200,*/}
-        {/*right: 10,*/}
-        {/*backgroundColor: 'rgba(0, 0, 0, 0.12)',*/}
-        {/*}}*/}
-        {/*>*/}
-        {/*<Text>lat {lat}</Text>*/}
-        {/*<Text>lng {lng}</Text>*/}
-        {/*</View>*/}
       </View>
     );
   }
@@ -204,11 +192,11 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     paddingTop: statusBarHeight + 10,
+    paddingBottom: 10,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 22,
   },
   headerText: {
     fontSize: 20,
@@ -231,6 +219,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     padding: 15,
     zIndex: 999,
+    shadowColor: 'black',
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOffset: {width: 0, height: 10},
+
   },
   questionText: {
     fontSize: 10,
@@ -254,6 +247,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     padding: 17,
     elevation: 3,
+    shadowColor: 'black',
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOffset: {width: 0, height: 10},
   },
   gpsButton: {
     alignItems: 'center',
