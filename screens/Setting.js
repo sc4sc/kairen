@@ -55,15 +55,14 @@ class Setting extends React.Component {
           <View style={[styles.cardContent, styles.accountContainer]}>
             <Text style={{ fontSize: 15 }}> 이름 아직 없음 </Text>
             <TouchableOpacity onPress={this.handleLogout}>
-              <Text
-                style={{
-                  fontSize: 15,
-                  color: Colors.textRed,
-                  fontWeight: '500',
-                }}
-              >
-                로그아웃
-              </Text>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Text
+                  style={{ fontSize: 15, color: Colors.textRed, fontWeight: '500', marginRight: 5 }}
+                >
+                  로그아웃
+                </Text>
+                <Image style={{ width: 12, height:10 }} source={require('../assets/images/logout.png')}/>
+              </View>
             </TouchableOpacity>
           </View>
         </View>

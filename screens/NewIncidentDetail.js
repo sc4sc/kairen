@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
   StatusBar,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -140,14 +141,17 @@ class NewIncidentDetail extends React.Component {
           <TouchableWithoutFeedback
             onPress={() => this.props.navigation.goBack()}
           >
-            <Text style={headerText}>{this.props.selectedIncident}</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Image style={styles.backIcon} source={require('../assets/images/group-5.png')}/>
+              <Text style={headerText}>{this.props.selectedIncident}</Text>
+            </View>
           </TouchableWithoutFeedback>
-          <Ionicons
-            name="ios-close"
-            size={40}
-            style={{ color: 'white', marginRight: 20 }}
-            onPress={() => this.props.navigation.navigate('IncidentList')}
-          />
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('IncidentList')}>
+            <Image
+                source={require('../assets/images/combined-shape.png')}
+                style={{ width: 20, height:20, marginRight: 22 }}
+                />
+          </TouchableOpacity>
         </View>
 
         <NaverMap
@@ -175,11 +179,7 @@ class NewIncidentDetail extends React.Component {
           style={styles.gpsButton}
           onPress={this.locatePosition}
         >
-          <MaterialIcons
-            style={{ color: 'white' }}
-            name="gps-fixed"
-            size={26}
-          />
+          <Image source={require('../assets/images/group-2.png')}/>
         </TouchableOpacity>
         {/*<View*/}
         {/*style={{*/}
@@ -208,12 +208,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff9412',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: 22,
   },
   headerText: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
+    marginLeft: 10,
+  },
+  backIcon: {
+    width: 19,
+    height: 22,
     marginLeft: 20,
   },
   searchBoxContainer: {
@@ -255,13 +260,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     bottom: 116,
-    right: 12,
-    width: 55,
-    height: 55,
-    borderRadius: 50,
-    backgroundColor: Colors.buttonGrey,
-    marginBottom: 21,
-    marginRight: 13,
+    right: 22,
+    width: 45,
+    height: 45,
     alignSelf: 'flex-end',
     shadowOffset: { width: 0, height: 2 },
     shadowColor: 'black',
