@@ -4,55 +4,45 @@ import axios from 'axios';
 // 개발 서버 설정해놓고 커밋에 올리지 말라고 해놓음
 import { URL as serverURL } from '../constants/Server';
 
+export function setAppToken(token) {
+  axios.defaults.headers.common['Authorization'] = token;
+}
+
 function getQueryString(q) {
   return new URLSearchParams(q).toString();
 }
 
 export function listIncidents(query) {
-  return fetch(`${serverURL}/incidents?${getQueryString(query)}`).then(r =>
-    r.json()
-  );
+  return axios
+    .get(`${serverURL}/incidents?${getQueryString(query)}`)
+    .then(response => response.data);
 }
 
 export function postIncident({ type, lat, lng, userId }) {
-  const headers = new Headers();
-  headers.append('Content-Type', 'application/json');
-  const body = JSON.stringify({ userId, type, lat, lng });
-
-  return fetch(`${serverURL}/incidents`, {
-    method: 'POST',
-    headers,
-    body,
-  }).then(r => {
-    if (!r.ok) {
-      throw r;
-    }
-    return r.json();
-  });
+  return axios
+    .post(`${serverURL}/incidents`, { userId, type, lat, lng })
+    .then(response => response.data);
 }
 
 export function requestAuthentication(ssoToken, isAdmin, pushToken) {
-  const headers = new Headers();
-  headers.append('Content-Type', 'application/json');
-  headers.append('Authorization', `Bearer ${ssoToken}`);
-
-  const body = JSON.stringify({
-    isAdmin,
-    expotoken: pushToken,
-  });
-
-  return fetch(`${serverURL}/authenticate`, {
-    method: 'POST',
-    headers,
-    body,
-  })
-    .then(r => r.json())
-    .then(result => ({
-      id: result.id,
-      isAdmin,
-      pushToken,
-      appToken: result.appToken,
-    }));
+  return axios
+    .post(
+      `${serverURL}/authenticate`,
+      {
+        isAdmin,
+        expotoken: pushToken,
+      },
+      { headers: { Authorization: `Bearer ${ssoToken}` } }
+    )
+    .then(response => {
+      const result = response.data;
+      return {
+        id: result.id,
+        isAdmin,
+        pushToken,
+        appToken: result.appToken,
+      };
+    });
 }
 
 export function getIncidentComments(incidentId, userId, query) {
@@ -61,6 +51,7 @@ export function getIncidentComments(incidentId, userId, query) {
   if (query) {
     queryString = `&${getQueryString(query)}`;
   }
+
   return axios.get(
     `${serverURL}/incidents/${incidentId}/comments?userId=${userId}${queryString}`
   );

@@ -42,6 +42,8 @@ function* authLogin(action) {
       throw result;
     }
 
+    call(apis.setAppToken, `JWT ${result.appToken}`);
+
     yield put({ type: AUTH_LOGIN_SUCCESS, payload: result });
     yield call(onSuccess);
   } catch (error) {

@@ -4,6 +4,7 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   Image,
   Linking,
 } from 'react-native';
@@ -30,6 +31,10 @@ class Setting extends React.Component {
     this.props.navigation.navigate('AboutUs', { parent: '설정' });
   }
 
+  handleLogout = () => {
+    this.props.navigation.navigate('Login');
+  };
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -49,11 +54,17 @@ class Setting extends React.Component {
           <Text style={styles.cardTitle}> 계정 </Text>
           <View style={[styles.cardContent, styles.accountContainer]}>
             <Text style={{ fontSize: 15 }}> {this.props.userId} </Text>
-            <Text
-              style={{ fontSize: 15, color: Colors.textRed, fontWeight: '500' }}
-            >
-              로그아웃
-            </Text>
+            <TouchableOpacity onPress={this.handleLogout}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: Colors.textRed,
+                  fontWeight: '500',
+                }}
+              >
+                로그아웃
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
 
