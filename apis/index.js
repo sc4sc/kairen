@@ -51,7 +51,7 @@ export function requestAuthentication(ssoToken, isAdmin, pushToken) {
       id: result.id,
       isAdmin,
       pushToken,
-      token: result.token,
+      appToken: result.appToken,
     }));
 }
 
