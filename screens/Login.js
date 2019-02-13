@@ -23,21 +23,12 @@ const statusBarHeight = getStatusBarHeight();
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { text: '테스트' };
   }
 
   onButtonPress() {
     const { navigation } = this.props;
     const alertTitle = 'Login Failed';
     const alertMsg = 'Sorry, login has failed.';
-
-    if (this.state.text.trim() === '') {
-      Alert.alert(
-        'Empty Name',
-        '공백으로 이루어진 이름으로는 접속하실 수 없습니다.'
-      );
-      return;
-    }
 
     navigation.navigate('SSO', {
       onLogin: token => {

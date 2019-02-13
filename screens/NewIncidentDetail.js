@@ -39,6 +39,13 @@ class NewIncidentDetail extends React.Component {
     this.locatePosition = this.locatePosition.bind(this);
   }
 
+  locating = false;
+  locateTransactionId = 0;
+
+  handleMapInit = () => {
+    this.locatePosition();
+  };
+
   handlePressReport() {
     Alert.alert(
       '제보하시겠습니까?',
@@ -55,8 +62,12 @@ class NewIncidentDetail extends React.Component {
     const point = { type: 'Point', coordinates: [coords.lng, coords.lat] };
 
     if (geojsonutil.pointInPolygon(point, kaist.features[0].geometry)) {
-        this.updateLocationName(coords);
-        this.setState({ markerCoords: coords });
+      this.updateLocationName(coords);
+      this.setState({
+        markerCoords: coords,
+      });
+      // After an manual marker update, locating should stop
+      this.locateTransactionId += 1;
     } else {
       Alert.alert('위치를 지정할 수 없습니다.', 'KAIST 내부만 선택해주세요.', [
         { text: '확인' },
@@ -86,9 +97,20 @@ class NewIncidentDetail extends React.Component {
   };
 
   async locatePosition() {
+    if (this.locating) return;
+
+    this.locating = true;
+
+    const transactionId = this.locateTransactionId;
+
     const currentPosition = (await Location.getCurrentPositionAsync({
       maximumAge: 5000,
     })).coords;
+
+    if (transactionId !== this.locateTransactionId) return;
+
+    this.locating = false;
+
     const { longitude, latitude } = currentPosition;
     const coords = { lng: longitude, lat: latitude };
     this.updateLocationName(coords);
@@ -135,6 +157,7 @@ class NewIncidentDetail extends React.Component {
         <NaverMap
           ref={el => (this.map = el)}
           style={{ flex: 1 }}
+          onInit={this.handleMapInit}
           markers={this.getMarkers(this.state.markerCoords)}
           onPress={this.handlePressMap}
         />
@@ -142,7 +165,7 @@ class NewIncidentDetail extends React.Component {
           <Text style={styles.questionText}>장소는 어디인가요?</Text>
           <View style={styles.searchBox}>
             <Text style={styles.searchText}>{this.state.locationName}</Text>
-            <Ionicons name="md-search" size={26} />
+            {/*<Ionicons name="md-search" size={26} />*/}
           </View>
         </View>
         <TouchableOpacity
@@ -180,7 +203,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fffaf4',
   },
   headerContainer: {
-    paddingTop: statusBarHeight+10,
+    paddingTop: statusBarHeight + 10,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
     justifyContent: 'space-between',

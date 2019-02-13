@@ -38,7 +38,6 @@ class CommentCard extends React.Component {
 
   onConfirmPress(text) {
     apis.postReply(this.props.commentId, {
-      userId: this.props.userId,
       content: text,
     });
 
@@ -49,13 +48,13 @@ class CommentCard extends React.Component {
   }
 
   onLikePress() {
-    const { commentId, userId } = this.props;
+    const { commentId } = this.props;
 
     if (this.state.like) {
-      apis.postUnlike(commentId, { userId: userId });
+      apis.postUnlike(commentId);
       this.setState({ totalLike: this.state.totalLike - 1 });
     } else {
-      apis.postLike(commentId, { userId: userId });
+      apis.postLike(commentId);
       this.setState({ totalLike: this.state.totalLike + 1 });
     }
     this.setState({ like: !this.state.like });
@@ -149,7 +148,6 @@ class CommentCard extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    userId: state.auth.user.username,
     onPressReply: state.auth.isSecureTeam,
   };
 };

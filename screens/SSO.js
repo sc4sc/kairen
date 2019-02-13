@@ -3,7 +3,19 @@ import { WebView } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 export default class SSO extends React.Component {
-  onNavigation = () => {
+  onNavigation = e => {
+    // console.log('event', e);
+
+    if (!e.loading) {
+      if (e.url.includes('requestAppLogin')) {
+        console.log('[WebView] Opening SSO...');
+      } else if (e.url.includes('IntegratedLoginForApp')) {
+        console.log('[WebView] Login');
+      } else if (e.url.includes('IntegratedAppAuth')) {
+        console.log('[WebView] Authenticated');
+      }
+    }
+
     this._webview.injectJavaScript(`
         window.postMessage(document.documentElement.innerHTML);
     `);

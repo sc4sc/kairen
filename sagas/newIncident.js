@@ -10,8 +10,7 @@ import * as apis from '../apis';
 
 export function* postNewIncident(action) {
   try {
-    const userId = (yield select()).auth.user.username;
-    const result = yield call(apis.postIncident, { ...action.payload, userId });
+    const result = yield call(apis.postIncident, { ...action.payload });
 
     yield put(newIncidentPostSuccess());
 

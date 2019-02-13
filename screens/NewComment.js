@@ -34,7 +34,6 @@ class NewComment extends React.Component {
   postComment() {
     apis
       .postComment(this.props.navigation.getParam('incidentId'), {
-        userId: this.props.userId,
         content: this.state.text,
       })
       .then(() => this.props.navigation.goBack());
@@ -79,7 +78,6 @@ class NewComment extends React.Component {
 }
 
 export default connect(state => ({
-  userId: state.auth.user.username,
 }))(NewComment);
 
 const styles = StyleSheet.create({
