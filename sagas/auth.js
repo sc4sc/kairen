@@ -25,7 +25,7 @@ function* getPushToken() {
 }
 
 function* authLogin(action) {
-  const { username, isAdmin, onSuccess, onFailed } = action.payload;
+  const { ssoToken, isAdmin, onSuccess, onFailed } = action.payload;
   try {
     const pushToken = yield call(getPushToken);
 
@@ -33,7 +33,7 @@ function* authLogin(action) {
 
     const result = yield call(
       apis.requestAuthentication,
-      username,
+      ssoToken,
       isAdmin,
       pushToken
     );
