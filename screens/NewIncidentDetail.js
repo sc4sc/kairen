@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
   StatusBar,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -38,6 +39,13 @@ class NewIncidentDetail extends React.Component {
     this.locatePosition = this.locatePosition.bind(this);
   }
 
+  locating = false;
+  locateTransactionId = 0;
+
+  handleMapInit = () => {
+    this.locatePosition();
+  };
+
   handlePressReport() {
     Alert.alert(
       '제보하시겠습니까?',
@@ -54,8 +62,12 @@ class NewIncidentDetail extends React.Component {
     const point = { type: 'Point', coordinates: [coords.lng, coords.lat] };
 
     if (geojsonutil.pointInPolygon(point, kaist.features[0].geometry)) {
-        this.updateLocationName(coords);
-        this.setState({ markerCoords: coords });
+      this.updateLocationName(coords);
+      this.setState({
+        markerCoords: coords,
+      });
+      // After an manual marker update, locating should stop
+      this.locateTransactionId += 1;
     } else {
       Alert.alert('위치를 지정할 수 없습니다.', 'KAIST 내부만 선택해주세요.', [
         { text: '확인' },
@@ -85,9 +97,20 @@ class NewIncidentDetail extends React.Component {
   };
 
   async locatePosition() {
+    if (this.locating) return;
+
+    this.locating = true;
+
+    const transactionId = this.locateTransactionId;
+
     const currentPosition = (await Location.getCurrentPositionAsync({
       maximumAge: 5000,
     })).coords;
+
+    if (transactionId !== this.locateTransactionId) return;
+
+    this.locating = false;
+
     const { longitude, latitude } = currentPosition;
     const coords = { lng: longitude, lat: latitude };
     this.updateLocationName(coords);
@@ -118,19 +141,23 @@ class NewIncidentDetail extends React.Component {
           <TouchableWithoutFeedback
             onPress={() => this.props.navigation.goBack()}
           >
-            <Text style={headerText}>{this.props.selectedIncident}</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Image style={styles.backIcon} source={require('../assets/images/group-5.png')}/>
+              <Text style={headerText}>{this.props.selectedIncident}</Text>
+            </View>
           </TouchableWithoutFeedback>
-          <Ionicons
-            name="ios-close"
-            size={40}
-            style={{ color: 'white', marginRight: 20 }}
-            onPress={() => this.props.navigation.navigate('IncidentList')}
-          />
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('IncidentList')}>
+            <Image
+                source={require('../assets/images/combined-shape.png')}
+                style={{ width: 20, height:20, marginRight: 22 }}
+                />
+          </TouchableOpacity>
         </View>
 
         <NaverMap
           ref={el => (this.map = el)}
           style={{ flex: 1 }}
+          onInit={this.handleMapInit}
           markers={this.getMarkers(this.state.markerCoords)}
           onPress={this.handlePressMap}
         />
@@ -138,7 +165,7 @@ class NewIncidentDetail extends React.Component {
           <Text style={styles.questionText}>장소는 어디인가요?</Text>
           <View style={styles.searchBox}>
             <Text style={styles.searchText}>{this.state.locationName}</Text>
-            <Ionicons name="md-search" size={26} />
+            {/*<Ionicons name="md-search" size={26} />*/}
           </View>
         </View>
         <TouchableOpacity
@@ -152,11 +179,7 @@ class NewIncidentDetail extends React.Component {
           style={styles.gpsButton}
           onPress={this.locatePosition}
         >
-          <MaterialIcons
-            style={{ color: 'white' }}
-            name="gps-fixed"
-            size={26}
-          />
+          <Image source={require('../assets/images/group-2.png')}/>
         </TouchableOpacity>
         {/*<View*/}
         {/*style={{*/}
@@ -180,17 +203,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#fffaf4',
   },
   headerContainer: {
-    paddingTop: statusBarHeight+10,
+    paddingTop: statusBarHeight + 10,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: 22,
   },
   headerText: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
+    marginLeft: 10,
+  },
+  backIcon: {
+    width: 19,
+    height: 22,
     marginLeft: 20,
   },
   searchBoxContainer: {
@@ -232,13 +260,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     bottom: 116,
-    right: 12,
-    width: 55,
-    height: 55,
-    borderRadius: 50,
-    backgroundColor: Colors.buttonGrey,
-    marginBottom: 21,
-    marginRight: 13,
+    right: 22,
+    width: 45,
+    height: 45,
     alignSelf: 'flex-end',
     shadowOffset: { width: 0, height: 2 },
     shadowColor: 'black',

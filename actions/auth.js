@@ -1,9 +1,9 @@
 export const AUTH_LOGIN_REQUEST = 'AUTH_LOGIN_REQUEST';
-export function authLoginRequest(username, isAdmin, onSuccess, onFailed) {
+export function authLoginRequest(ssoToken, isAdmin, onSuccess, onFailed) {
   return {
     type: AUTH_LOGIN_REQUEST,
     payload: {
-      username,
+      ssoToken,
       isAdmin,
       onSuccess,
       onFailed,

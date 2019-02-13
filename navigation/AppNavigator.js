@@ -20,6 +20,7 @@ import {
   Setting,
   SafetyContact,
 } from '../screens';
+import SSO from '../screens/SSO';
 
 console.log(PermissionLoading);
 
@@ -57,22 +58,23 @@ const drawerNavigator = createDrawerNavigator(
   }
 );
 
-const loginStack = createStackNavigator(
+const LoginNavigator = createStackNavigator(
   {
-    Auth: Login,
+    Login,
     AboutUs: AboutThisApp,
+    SSO: SSO,
   },
   { headerMode: 'none' }
 );
 
-const LoginNavigator = createSwitchNavigator(
+const AppNavigator = createSwitchNavigator(
   {
     PermissionLoading: PermissionLoading,
     Permission: Permission,
-    Auth: loginStack,
+    Auth: LoginNavigator,
     App: drawerNavigator,
   },
   { headerMode: 'none' }
 );
 
-export default createAppContainer(LoginNavigator);
+export default createAppContainer(AppNavigator);
