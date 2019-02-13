@@ -64,11 +64,11 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     paddingTop: statusBarHeight + 10,
+    paddingBottom: 10,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 15,
   },
   headerText: {
     fontSize: 20,
