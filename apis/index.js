@@ -18,9 +18,9 @@ export function listIncidents(query) {
     .then(response => response.data);
 }
 
-export function postIncident({ type, lat, lng, userId }) {
+export function postIncident({ type, lat, lng }) {
   return axios
-    .post(`${serverURL}/incidents`, { userId, type, lat, lng })
+    .post(`${serverURL}/incidents`, { type, lat, lng })
     .then(response => response.data);
 }
 
@@ -45,7 +45,7 @@ export function requestAuthentication(ssoToken, isAdmin, pushToken) {
     });
 }
 
-export function getIncidentComments(incidentId, userId, query) {
+export function getIncidentComments(incidentId, query) {
   let queryString = '';
 
   if (query) {
@@ -53,7 +53,7 @@ export function getIncidentComments(incidentId, userId, query) {
   }
 
   return axios.get(
-    `${serverURL}/incidents/${incidentId}/comments?userId=${userId}${queryString}`
+    `${serverURL}/incidents/${incidentId}/comments${queryString}`
   );
 }
 
@@ -77,12 +77,12 @@ export function postProgress(incidentId, body) {
   return axios.post(`${serverURL}/incidents/${incidentId}/progresses`, body);
 }
 
-export function postLike(commentId, body) {
-  return axios.post(`${serverURL}/comments/${commentId}/like`, body);
+export function postLike(commentId) {
+  return axios.post(`${serverURL}/comments/${commentId}/like`);
 }
 
-export function postUnlike(commentId, body) {
-  return axios.post(`${serverURL}/comments/${commentId}/unlike`, body);
+export function postUnlike(commentId) {
+  return axios.post(`${serverURL}/comments/${commentId}/unlike`);
 }
 
 export function getIncidentState(incidentId) {

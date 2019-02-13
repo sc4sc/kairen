@@ -53,7 +53,7 @@ class Setting extends React.Component {
         <View style={styles.cardContainer}>
           <Text style={styles.cardTitle}> 계정 </Text>
           <View style={[styles.cardContent, styles.accountContainer]}>
-            <Text style={{ fontSize: 15 }}> {this.props.userId} </Text>
+            <Text style={{ fontSize: 15 }}> 이름 아직 없음 </Text>
             <TouchableOpacity onPress={this.handleLogout}>
               <Text
                 style={{
@@ -162,6 +162,5 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  userId: state.auth.user.username,
 });
 export default connect(mapStateToProps)(Setting);
