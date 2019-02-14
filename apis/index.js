@@ -28,6 +28,7 @@ export function requestAuthentication(ssoToken, pushToken) {
       return {
         userInfo: result,
         pushToken,
+        appToken: result.appToken,
       };
     });
 }
