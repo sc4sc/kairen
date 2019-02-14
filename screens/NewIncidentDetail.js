@@ -141,8 +141,11 @@ class NewIncidentDetail extends React.Component {
           <TouchableWithoutFeedback
             onPress={() => this.props.navigation.goBack()}
           >
-            <View style={{flexDirection: 'row'}}>
-              <Image style={styles.backIcon} source={require('../assets/images/group-5.png')}/>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image
+                style={styles.backIcon}
+                source={require('../assets/images/group-5.png')}
+              />
               <Text style={headerText}>{this.props.selectedIncident}</Text>
             </View>
           </TouchableWithoutFeedback>
@@ -178,7 +181,7 @@ class NewIncidentDetail extends React.Component {
           style={styles.gpsButton}
           onPress={this.locatePosition}
         >
-          <Image source={require('../assets/images/group-2.png')}/>
+          <Image source={require('../assets/images/group-2.png')} />
         </TouchableOpacity>
       </View>
     );
@@ -222,8 +225,7 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.1,
     shadowRadius: 10,
-    shadowOffset: {width: 0, height: 10},
-
+    shadowOffset: { width: 0, height: 10 },
   },
   questionText: {
     fontSize: 10,
@@ -250,7 +252,7 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.1,
     shadowRadius: 10,
-    shadowOffset: {width: 0, height: 10},
+    shadowOffset: { width: 0, height: 10 },
   },
   gpsButton: {
     alignItems: 'center',

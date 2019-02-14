@@ -410,12 +410,18 @@ class IncidentDetail extends React.Component {
           <View
             style={{
               backgroundColor: '#ffffff',
-              marginTop: -5,
-              borderRadius: 10,
+              marginTop: -15,
+              borderRadius: 18,
               paddingVertical: 18,
               paddingHorizontal: 15,
             }}
           >
+            <TouchableOpacity
+              style={{ flex: 1, alignItems: 'center', marginBottom: 7 }}
+              onPress={() => this.props.navigation.goBack()}
+            >
+              <Image source={require('../assets/images/close_down.png')} />
+            </TouchableOpacity>
             {this.renderHeader()}
             <View style={{ height: 28 }} />
             {this.renderProtocol()}
@@ -447,13 +453,6 @@ class IncidentDetail extends React.Component {
             <Text style={styles.noCommentText}>의견이 없습니다</Text>
           </View>
         </KeyboardAwareScrollView>
-
-        <TouchableOpacity
-          style={{ position: 'absolute', top: 50, right: 16 }}
-          onPress={() => this.props.navigation.goBack()}
-        >
-          <AntDesign name={'closecircle'} style={{ opacity: 0.3 }} size={32} />
-        </TouchableOpacity>
       </View>
     );
   }

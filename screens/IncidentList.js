@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, Image, View, StatusBar } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image,
+  View,
+  StatusBar,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { Notifications, Location } from 'expo';
 import { createSelector } from 'reselect';
@@ -23,7 +30,6 @@ import { Ionicons } from '@expo/vector-icons';
 
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
-
   constructor() {
     super();
 
@@ -37,14 +43,18 @@ class IncidentList extends React.Component {
     this.notificationSubscription = Notifications.addListener(notification =>
       console.log('Notification arrived:', notification)
     );
-    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.handleRefresh);
+    this.willFocusSubscription = this.props.navigation.addListener(
+      'willFocus',
+      this.handleRefresh
+    );
     this.handleRefresh();
     Location.watchPositionAsync({}, this.handleLocationUpdate);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const refreshing =
-      prevProps.incidents.length === 0 && prevProps.incidents !== this.props.incidents;
+      prevProps.incidents.length === 0 &&
+      prevProps.incidents !== this.props.incidents;
     if (refreshing) {
       this.props.incidentsListSelect(0);
     }
@@ -96,7 +106,9 @@ class IncidentList extends React.Component {
       const myLocation = {
         key: 'myLocation',
         coords: { lat: latitude, lng: longitude },
-        icon: Expo.Asset.fromModule(require('../assets/images/current_location_pin.png')).uri,
+        icon: Expo.Asset.fromModule(
+          require('../assets/images/current_location_pin.png')
+        ).uri,
       };
       markers = markers.concat(myLocation);
     }
@@ -121,7 +133,9 @@ class IncidentList extends React.Component {
     if (this.props.incidents.length === 0) {
       return (
         <View style={styles.emptyIncidentBox} pointerEvents={'none'}>
-          <Text style={{ fontSize: 13, color: '#4a4a4a' }}>사고 목록이 비어있습니다.</Text>
+          <Text style={{ fontSize: 13, color: '#4a4a4a' }}>
+            사고 목록이 비어있습니다.
+          </Text>
         </View>
       );
     }
@@ -158,20 +172,28 @@ class IncidentList extends React.Component {
 
     return (
       <View style={styles.container}>
-      <StatusBar backgroundColor={'transparent'} />
+        <StatusBar backgroundColor={'transparent'} />
         <NaverMap
           ref={el => {
             this._map = el;
           }}
-          initialCoords={selectedIncident ? getCoordsFromIncident(selectedIncident) : KAISTN1Coords}
+          initialCoords={
+            selectedIncident
+              ? getCoordsFromIncident(selectedIncident)
+              : KAISTN1Coords
+          }
           style={{ flex: 1 }}
-          markers={this.getMarkers(selectedIncident, this.state.currentLocation)}
+          markers={this.getMarkers(
+            selectedIncident,
+            this.state.currentLocation
+          )}
         />
 
         <TouchableOpacity
-            style={styles.menuIcon}
-            onPress={() => this.props.navigation.openDrawer()}>
-          <Image source={require('../assets/images/menu.png')}/>
+          style={styles.menuIcon}
+          onPress={() => this.props.navigation.openDrawer()}
+        >
+          <Image source={require('../assets/images/menu.png')} />
         </TouchableOpacity>
 
         {this.renderCarousel()}
@@ -212,6 +234,13 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: 50,
     left: 20,
+    padding: 10,
+    backgroundColor: 'white',
+    shadowOffset: { width: 0, height: 1 },
+    shadowColor: 'black',
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   carouselContainer: { position: 'absolute', bottom: bottomUnsafeArea + 80 },
   emptyIncidentBox: {
