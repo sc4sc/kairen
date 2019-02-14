@@ -64,6 +64,7 @@ class NewComment extends React.Component {
               onChangeText={text => this.setState({ text })}
               value={this.state.text}
               multiline
+              autoFocus
             />
             <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 25 }}>
               <TouchableOpacity style={styles.buttonStyle} onPress={this.onButtonPress.bind(this)}>

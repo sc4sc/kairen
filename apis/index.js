@@ -7,7 +7,6 @@ import { URL as serverURL } from '../constants/Server';
 let axiosInstance = axios;
 
 export function setAppToken(token) {
-  console.log('t', token);
   axiosInstance = axios.create({
     headers: {
       Authorization: token,
@@ -15,12 +14,11 @@ export function setAppToken(token) {
   });
 }
 
-export function requestAuthentication(ssoToken, isAdmin, pushToken) {
+export function requestAuthentication(ssoToken, pushToken) {
   return axios
     .post(
       `${serverURL}/authenticate`,
       {
-        isAdmin,
         expotoken: pushToken,
       },
       { headers: { Authorization: `Bearer ${ssoToken}` } }
@@ -28,8 +26,7 @@ export function requestAuthentication(ssoToken, isAdmin, pushToken) {
     .then(response => {
       const result = response.data;
       return {
-        id: result.id,
-        isAdmin,
+        userInfo: result,
         pushToken,
         appToken: result.appToken,
       };
