@@ -25,10 +25,14 @@ class NewProgress extends React.Component {
   }
 
   onButtonPress() {
-    Alert.alert('진행 상황을 등록하시겠습니까?', '가장 최근 진행 상황이 사건 사고 목록에 표시됩니다.', [
-      { text: '취소' },
-      { text: '확인', onPress: this.postProgress.bind(this) },
-    ]);
+    Alert.alert(
+      '진행 상황을 등록하시겠습니까?',
+      '가장 최근 진행 상황이 사건 사고 목록에 표시됩니다.',
+      [
+        { text: '취소' },
+        { text: '확인', onPress: this.postProgress.bind(this) },
+      ]
+    );
   }
 
   postProgress() {
@@ -63,16 +67,25 @@ class NewProgress extends React.Component {
             </TouchableWithoutFeedback>
           </View>
 
-          <KeyboardAvoidingView style={styles.contentContainer} behavior="padding">
+          <KeyboardAvoidingView
+            style={styles.contentContainer}
+            behavior="padding"
+          >
             <TextInput
               style={{ padding: 10, maxHeight: 200 }}
               placeholder="여기에 입력하세요..."
               onChangeText={text => this.setState({ text })}
               value={this.state.text}
               multiline
+              autoFocus
             />
-            <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 25 }}>
-              <TouchableOpacity style={styles.buttonStyle} onPress={this.onButtonPress.bind(this)}>
+            <View
+              style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 25 }}
+            >
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                onPress={this.onButtonPress.bind(this)}
+              >
                 <Text style={styles.buttonText}>등록하기</Text>
               </TouchableOpacity>
             </View>
@@ -83,8 +96,7 @@ class NewProgress extends React.Component {
   }
 }
 
-export default connect(state => ({
-}))(NewProgress);
+export default connect(state => ({}))(NewProgress);
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },

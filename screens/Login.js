@@ -34,7 +34,6 @@ class Login extends React.Component {
       onLogin: token => {
         this.props.authLoginRequest(
           token,
-          this.props.isSecureTeam,
           () => {
             navigation.navigate('App');
           },
@@ -71,7 +70,7 @@ class Login extends React.Component {
             {this.props.isLoading ? (
               <Spinner size="small" />
             ) : (
-              <Text style={styles.mainText}>KAIST SSO 로그인</Text>
+              <Text style={styles.mainText}>KAIST 통합아이디 로그인</Text>
             )}
           </TouchableOpacity>
           <Text
@@ -89,13 +88,13 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  isSecureTeam: state.auth.isSecureTeam,
+  isSecureTeam: state.auth.user.isAdmin,
   isLoading: state.auth.loginInProgress,
 });
 
 export default connect(
   mapStateToProps,
-  { authLoginRequest, authToggleSecureTeam }
+  { authLoginRequest }
 )(Login);
 
 const styles = {

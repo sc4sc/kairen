@@ -148,7 +148,7 @@ class CommentCard extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    onPressReply: state.auth.isSecureTeam,
+    onPressReply: state.auth.user.isSecureTeam,
   };
 };
 

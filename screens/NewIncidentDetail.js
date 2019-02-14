@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
   StatusBar,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -140,13 +141,16 @@ class NewIncidentDetail extends React.Component {
           <TouchableWithoutFeedback
             onPress={() => this.props.navigation.goBack()}
           >
-            <Text style={headerText}>{this.props.selectedIncident}</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Image style={styles.backIcon} source={require('../assets/images/group-5.png')}/>
+              <Text style={headerText}>{this.props.selectedIncident}</Text>
+            </View>
           </TouchableWithoutFeedback>
           <Ionicons
             name="ios-close"
             size={40}
             style={{ color: 'white', marginRight: 20 }}
-            onPress={() => this.props.navigation.navigate('IncidentList')}
+            onPress={() => this.props.navigation.goBack()}
           />
         </View>
 
@@ -161,7 +165,6 @@ class NewIncidentDetail extends React.Component {
           <Text style={styles.questionText}>장소는 어디인가요?</Text>
           <View style={styles.searchBox}>
             <Text style={styles.searchText}>{this.state.locationName}</Text>
-            {/*<Ionicons name="md-search" size={26} />*/}
           </View>
         </View>
         <TouchableOpacity
@@ -175,23 +178,8 @@ class NewIncidentDetail extends React.Component {
           style={styles.gpsButton}
           onPress={this.locatePosition}
         >
-          <MaterialIcons
-            style={{ color: 'white' }}
-            name="gps-fixed"
-            size={26}
-          />
+          <Image source={require('../assets/images/group-2.png')}/>
         </TouchableOpacity>
-        {/*<View*/}
-        {/*style={{*/}
-        {/*position: 'absolute',*/}
-        {/*top: 200,*/}
-        {/*right: 10,*/}
-        {/*backgroundColor: 'rgba(0, 0, 0, 0.12)',*/}
-        {/*}}*/}
-        {/*>*/}
-        {/*<Text>lat {lat}</Text>*/}
-        {/*<Text>lng {lng}</Text>*/}
-        {/*</View>*/}
       </View>
     );
   }
@@ -204,16 +192,21 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     paddingTop: statusBarHeight + 10,
+    paddingBottom: 10,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 15,
   },
   headerText: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
+    marginLeft: 10,
+  },
+  backIcon: {
+    width: 19,
+    height: 22,
     marginLeft: 20,
   },
   searchBoxContainer: {
@@ -226,6 +219,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     padding: 15,
     zIndex: 999,
+    shadowColor: 'black',
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOffset: {width: 0, height: 10},
+
   },
   questionText: {
     fontSize: 10,
@@ -249,19 +247,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     padding: 17,
     elevation: 3,
+    shadowColor: 'black',
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOffset: {width: 0, height: 10},
   },
   gpsButton: {
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
     bottom: 116,
-    right: 12,
-    width: 55,
-    height: 55,
-    borderRadius: 50,
-    backgroundColor: Colors.buttonGrey,
-    marginBottom: 21,
-    marginRight: 13,
+    right: 22,
+    width: 45,
+    height: 45,
     alignSelf: 'flex-end',
     shadowOffset: { width: 0, height: 2 },
     shadowColor: 'black',
