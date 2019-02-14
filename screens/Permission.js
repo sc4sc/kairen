@@ -65,7 +65,7 @@ export default class Permission extends React.Component {
     return (
       <TouchableOpacity
         style={[styles.buttonStyle, styles.buttonEnabled]}
-        onPress={() => this.props.navigation.navigate('Auth')}
+        onPress={() => this.props.navigation.navigate('AuthLoading')}
       >
         <Text style={[styles.buttonEnabledText, { alignItems: 'center' }]}>
           다음으로

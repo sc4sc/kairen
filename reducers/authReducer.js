@@ -21,8 +21,7 @@ export default (state = defaultState, action) =>
         break;
       }
       case AUTH_LOGIN_SUCCESS: {
-        draft.user = action.payload.userInfo;
-        draft.pushToken = action.payload.pushToken;
+        draft.user = action.payload;
         draft.loginInProgress = false;
         console.log(draft);
         break;

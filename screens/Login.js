@@ -21,9 +21,6 @@ import { getStatusBarHeight } from '../utils/index.js';
 const statusBarHeight = getStatusBarHeight();
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   onButtonPress() {
     const { navigation } = this.props;

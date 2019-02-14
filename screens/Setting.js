@@ -10,11 +10,12 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import SwitchToggle from 'react-native-switch-toggle';
-import { Ionicons } from '@expo/vector-icons';
+const { SecureStore } = Expo;
 import { connect } from 'react-redux';
 
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
+import * as apis from '../apis';
 
 class Setting extends React.Component {
   constructor() {
@@ -31,7 +32,12 @@ class Setting extends React.Component {
     this.props.navigation.navigate('AboutUs', { parent: '설정' });
   }
 
-  handleLogout = () => {
+  handleLogout = async () => {
+    await Promise.all([
+      SecureStore.deleteItemAsync('appToken'),
+      apis.requestLogout(),
+    ]);
+
     this.props.navigation.navigate('Login');
   };
 

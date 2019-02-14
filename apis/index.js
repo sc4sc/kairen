@@ -9,7 +9,7 @@ let axiosInstance = axios;
 export function setAppToken(token) {
   axiosInstance = axios.create({
     headers: {
-      Authorization: token,
+      Authorization: `JWT ${token}`,
     },
   });
 }
@@ -24,13 +24,32 @@ export function requestAuthentication(ssoToken, pushToken) {
       { headers: { Authorization: `Bearer ${ssoToken}` } }
     )
     .then(response => {
-      const result = response.data;
-      return {
-        userInfo: result,
-        pushToken,
-        appToken: result.appToken,
-      };
+      return response.data;
     });
+}
+
+export function requestLogout() {
+  return axiosInstance
+    .post(`${serverURL}/logout`)
+    .then(response => response.data);
+}
+
+export function getProfile() {
+  return axiosInstance.get(`${serverURL}/profile`).then(response => {
+    const result = response.data;
+
+    if (result.error) {
+      return result;
+    }
+    if (!result.id) {
+      return {
+        error: true,
+        message: result,
+      };
+    }
+
+    return result;
+  });
 }
 
 function getQueryString(q) {

@@ -1,5 +1,6 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, spawn, takeLatest } from 'redux-saga/effects';
 import { Permissions, Notifications } from 'expo';
+const { SecureStore } = Expo;
 
 import * as apis from '../apis';
 
@@ -7,6 +8,7 @@ import {
   AUTH_LOGIN_FAILED,
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
+  authLoginSuccess,
 } from '../actions/auth';
 import { requestPermission } from '../utils';
 
@@ -24,8 +26,12 @@ function* getPushToken() {
   return pushToken;
 }
 
+function* storeToken(token) {
+  yield call(SecureStore.setItemAsync, 'appToken', token);
+}
+
 function* authLogin(action) {
-  const { ssoToken, isAdmin, onSuccess, onFailed } = action.payload;
+  const { ssoToken, onSuccess, onFailed } = action.payload;
   try {
     const pushToken = yield call(getPushToken);
 
@@ -36,9 +42,13 @@ function* authLogin(action) {
       throw result;
     }
 
-    yield call(apis.setAppToken, `JWT ${result.appToken}`);
+    const appToken = result.appToken;
 
-    yield put({ type: AUTH_LOGIN_SUCCESS, payload: result });
+    yield call(apis.setAppToken, appToken);
+    // Won't care even though storing token fails
+    yield spawn(storeToken, appToken);
+
+    yield put(authLoginSuccess(result));
     yield call(onSuccess);
   } catch (error) {
     console.log('Login Error', error);

@@ -14,7 +14,7 @@ export default class PermissionLoading extends React.Component {
     );
 
     if (locationPermission === 'granted' && phoneCallPermission === 'granted') {
-      this.props.navigation.navigate('Auth');
+      this.props.navigation.navigate('AuthLoading');
     } else {
       this.props.navigation.navigate('Permission');
     }

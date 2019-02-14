@@ -21,6 +21,7 @@ import {
   SafetyContact,
 } from '../screens';
 import SSO from '../screens/SSO';
+import AutoLogin from "../screens/AutoLogin";
 
 console.log(PermissionLoading);
 
@@ -71,7 +72,8 @@ const AppNavigator = createSwitchNavigator(
   {
     PermissionLoading: PermissionLoading,
     Permission: Permission,
-    Auth: LoginNavigator,
+    AuthLoading: AutoLogin,
+    Login: LoginNavigator,
     App: drawerNavigator,
   },
   { headerMode: 'none' }
