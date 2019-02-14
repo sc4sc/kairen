@@ -212,6 +212,12 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: 50,
     left: 20,
+    padding: 10,
+    backgroundColor: 'white',
+    shadowOffset: { width: 0, height: 1 },
+    shadowColor: 'black',
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   carouselContainer: { position: 'absolute', bottom: bottomUnsafeArea + 80 },
   emptyIncidentBox: {
