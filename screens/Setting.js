@@ -57,7 +57,10 @@ class Setting extends React.Component {
             <TouchableOpacity onPress={this.handleLogout}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Text
-                  style={{ fontSize: 15, color: Colors.textRed, fontWeight: '500', marginRight: 5 }}
+                    style={{ fontSize: 15,
+                      color: Colors.textRed,
+                      fontWeight: '500',
+                      marginRight: 5 }}
                 >
                   로그아웃
                 </Text>
