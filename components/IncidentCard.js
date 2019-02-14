@@ -15,46 +15,39 @@ import { typeMap } from '../constants/Incidents';
 import * as contacts from '../constants/Contacts';
 
 export default class IncidentCard extends React.Component {
-  renderWrongIncident(progressStateColor) {
+  renderWrongIncident(progressStateColor, doc, location) {
     const { data } = this.props;
     const { createdAt } = data;
 
+
     return (
       <View style={styles.container}>
-        <TouchableOpacity
-          onPress={() => Linking.openURL(`tel:${contacts.secureTeam}`)}
-          style={{ flex: 1 }}
-        >
-          <View style={{ flex: 1 }}>
-            <View style={styles.wrongContent}>
-              <View>
-                <Text style={styles.wrongDate}>{formatDate(createdAt)}</Text>
-                <Text style={styles.wrongTitle}>잘못된 제보입니다.</Text>
-                <View
-                  style={{
-                    textAlign: 'center',
-                    flexDirection: 'row',
-                    marginTop: 15,
-                  }}
-                >
-                  <Image
-                    style={styles.callIcon}
-                    source={require('../assets/images/group-9.png')}
-                  />
-                  <Text style={styles.callSafeTeam}>
-                    터치하여 안전팀에게 연락하기
-                  </Text>
-                </View>
-              </View>
+        <View style={{ flex: 1 }}>
+          <View style={styles.wrongContent}>
+            <View>
+              <Text style={styles.wrongDate}>{formatDate(createdAt)}</Text>
+              <Text style={styles.wrongTitle}>잘못된 제보입니다.</Text>
+              <Text style={styles.wrongInfo}>{doc.title}, {location.properties.name}</Text>
             </View>
           </View>
+        </View>
+        <TouchableOpacity
+            onPress={() => Linking.openURL(`tel:${contacts.secureTeam}`)}>
+          <View
+            style={[
+              styles.progressState,
+              { backgroundColor: progressStateColor, textAlign: 'center', flexDirection: 'row', marginTop: 15, },
+            ]}
+          >
+            <Image
+                style={styles.callIcon}
+                source={require('../assets/images/group-9.png')}
+            />
+            <Text style={styles.callSafeTeam}>
+              안전팀에 문의하기
+            </Text>
+          </View>
         </TouchableOpacity>
-        <View
-          style={[
-            styles.progressState,
-            { backgroundColor: progressStateColor },
-          ]}
-        />
       </View>
     );
   }
@@ -110,7 +103,7 @@ export default class IncidentCard extends React.Component {
     }
 
     return progressStateColor === 'black' ? (
-      this.renderWrongIncident(progressStateColor)
+      this.renderWrongIncident(progressStateColor, doc, location)
     ) : (
       <View style={styles.container}>
         <TouchableOpacity onPress={onPress} style={{ flex: 1 }}>
@@ -183,7 +176,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  wrongTitle: { fontWeight: 'bold', fontSize: 18, textAlign: 'center' },
   wrongDate: {
     fontSize: 11,
     color: Colors.dateLightGrey,
@@ -191,12 +183,20 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     textAlign: 'center',
   },
+  wrongTitle: { fontWeight: 'bold', fontSize: 18, textAlign: 'center' },
+  wrongInfo: {
+    fontWeight: 'normal',
+    fontSize: 14,
+    color: '#555555',
+    textAlign: 'center',
+    marginTop: 16,
+  },
   callIcon: { width: 18, height: 16, marginRight: 7 },
   callSafeTeam: {
     fontWeight: 'normal',
     fontSize: 13,
     letterSpacing: -0.5,
-    color: '#4a4a4a',
+    color: 'white',
   },
   mapContainer: { width: 80, height: 120 },
   progressState: {
