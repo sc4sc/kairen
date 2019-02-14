@@ -34,7 +34,6 @@ class Login extends React.Component {
       onLogin: token => {
         this.props.authLoginRequest(
           token,
-          this.props.isSecureTeam,
           () => {
             navigation.navigate('App');
           },
@@ -89,13 +88,13 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  isSecureTeam: state.auth.isSecureTeam,
+  isSecureTeam: state.auth.user.isAdmin,
   isLoading: state.auth.loginInProgress,
 });
 
 export default connect(
   mapStateToProps,
-  { authLoginRequest, authToggleSecureTeam }
+  { authLoginRequest }
 )(Login);
 
 const styles = {

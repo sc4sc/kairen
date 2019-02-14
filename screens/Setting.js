@@ -36,6 +36,7 @@ class Setting extends React.Component {
   };
 
   render() {
+    console.log(this.props.user);
     return (
       <SafeAreaView style={styles.container}>
         <AndroidTopMargin />
@@ -53,15 +54,29 @@ class Setting extends React.Component {
         <View style={styles.cardContainer}>
           <Text style={styles.cardTitle}> 계정 </Text>
           <View style={[styles.cardContent, styles.accountContainer]}>
-            <Text style={{ fontSize: 15 }}> 이름 아직 없음 </Text>
+            <Text style={{ fontSize: 15 }}> {this.props.user.ku_kname} </Text>
             <TouchableOpacity onPress={this.handleLogout}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
                 <Text
-                  style={{ fontSize: 15, color: Colors.textRed, fontWeight: '500', marginRight: 5 }}
+                  style={{
+                    fontSize: 15,
+                    color: Colors.textRed,
+                    fontWeight: '500',
+                    marginRight: 5,
+                  }}
                 >
                   로그아웃
                 </Text>
-                <Image style={{ width: 12, height:10 }} source={require('../assets/images/logout.png')}/>
+                <Image
+                  style={{ width: 12, height: 10 }}
+                  source={require('../assets/images/logout.png')}
+                />
               </View>
             </TouchableOpacity>
           </View>
@@ -160,6 +175,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => ({
-});
+const mapStateToProps = state => {
+  return {
+    user: state.auth.user,
+  };
+};
 export default connect(mapStateToProps)(Setting);

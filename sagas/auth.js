@@ -31,13 +31,7 @@ function* authLogin(action) {
 
     console.log('Push Token:', pushToken);
 
-    const result = yield call(
-      apis.requestAuthentication,
-      ssoToken,
-      isAdmin,
-      pushToken
-    );
-
+    const result = yield call(apis.requestAuthentication, ssoToken, pushToken);
     if (result.error) {
       throw result;
     }
