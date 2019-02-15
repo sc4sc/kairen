@@ -10,7 +10,6 @@ import { getStatusBarHeight } from '../utils/index.js';
 import * as actions from '../actions/newIncident';
 import { types as incidentTypes } from '../constants/Incidents';
 import { incidentsListRefresh } from '../actions/incidentsList';
-// import Locator from './NewIncident/Locator';
 
 const statusBarHeight = getStatusBarHeight();
 
