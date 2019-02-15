@@ -9,18 +9,15 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { SafeAreaView, StackActions } from 'react-navigation';
+import { StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Location } from 'expo';
 
-import { getStatusBarHeight } from '../utils/index.js';
+import { getBottomSpace, getStatusBarHeight } from '../utils/index.js';
 import NaverMap from '../components/NaverMap';
-import AndroidTopMargin from '../components/AndroidTopMargin';
 import Layout from '../constants/Layout';
 import { newIncidentPostRequested } from '../actions/newIncident';
 import { checkIsInbuilding } from '../utils';
-import Colors from '../constants/Colors';
 import memoize from 'fast-memoize';
 import * as geojsonutil from 'geojson-utils';
 
@@ -197,7 +194,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fffaf4',
   },
   headerContainer: {
-    paddingTop: statusBarHeight + 10,
+    paddingTop: statusBarHeight + (getBottomSpace() == 0 ? 10 : 25),
     paddingBottom: 22,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
