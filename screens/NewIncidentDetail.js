@@ -77,11 +77,14 @@ class NewIncidentDetail extends React.Component {
 
   report(region) {
     const { lat, lng } = region;
+    const locationGeoObj = checkIsInbuilding(region);
+    const building = locationGeoObj ? locationGeoObj.properties.name : '';
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,
         lat,
         lng,
+        building,
       },
       () => {
         this.props.navigation.dispatch(StackActions.popToTop());
