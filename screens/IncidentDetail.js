@@ -434,6 +434,7 @@ class IncidentDetail extends React.Component {
           <View
             style={{
               backgroundColor: '#ffffff',
+              marginTop: -30,
               paddingVertical: 18,
               paddingHorizontal: 15,
             }}
@@ -508,7 +509,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   map: {
-    height: Layout.window.width,
+    height: Layout.window.width + 30,
   },
   subheaderContainer: { marginBottom: 6 },
   subheaderText: { fontSize: 16, color: Colors.defaultGrey, marginBottom: 5 },
