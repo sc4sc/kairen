@@ -1,16 +1,13 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View, Image, StatusBar, TouchableOpacity } from 'react-native';
-import { SafeAreaView, StackActions } from 'react-navigation';
+import { StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons';
 
 import ReportItem from '../components/ReportItem';
-import AndroidTopMargin from '../components/AndroidTopMargin';
-import { getStatusBarHeight } from '../utils/index.js';
+import { getBottomSpace, getStatusBarHeight } from '../utils/index.js';
 import * as actions from '../actions/newIncident';
 import { types as incidentTypes } from '../constants/Incidents';
 import { incidentsListRefresh } from '../actions/incidentsList';
-// import Locator from './NewIncident/Locator';
 
 const statusBarHeight = getStatusBarHeight();
 
@@ -63,7 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   headerContainer: {
-    paddingTop: statusBarHeight + 10,
+    paddingTop: statusBarHeight + (getBottomSpace() == 0 ? 20 : 25),
     paddingBottom: 22,
     flexDirection: 'row',
     backgroundColor: '#ff9412',

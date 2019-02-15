@@ -23,10 +23,12 @@ import StateMarker from '../components/StateMarker';
 import StateCheckButton from '../components/StateCheckButton';
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
-import { formatDate, getBottomSpace, checkIsInbuilding } from '../utils';
+import { formatDate, getBottomSpace, checkIsInbuilding, getStatusBarHeight } from '../utils';
 import { getLocalData } from '../constants/Incidents';
 import NaverMap from '../components/NaverMap';
 import { IncidentList } from './index';
+
+const statusBarHeight = getStatusBarHeight();
 
 class IncidentDetail extends React.Component {
   constructor() {
@@ -37,6 +39,7 @@ class IncidentDetail extends React.Component {
       totalCommentNum: 0,
       recentProgress: [],
       progressState: '',
+      headerBackToggle: false,
     };
     this.getIncidentDetail = this.getIncidentDetail.bind(this);
     this.handleRefresh = this.handleRefresh.bind(this);
@@ -380,6 +383,18 @@ class IncidentDetail extends React.Component {
     );
   }
 
+  checkHeaderOpacity = (event: Object) => {
+    if (event.nativeEvent.contentOffset.y >= (Layout.window.width - (statusBarHeight + 55))) {
+      this.setState({
+        headerBackToggle: true,
+      })
+    } else {
+      this.setState({
+        headerBackToggle: false,
+      })
+    }
+  }
+
   render() {
     const { id: incidentId, lat, lng } = this.getIncidentDetail();
 
@@ -391,12 +406,21 @@ class IncidentDetail extends React.Component {
 
     return (
       <View style={{ flex: 1 }}>
+        <View style={[styles.headerBack, {backgroundColor: this.state.headerBackToggle ? 'white' : 'rgba(0,0,0,0)', borderColor: this.state.headerBackToggle ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0)'}]}/>
+        <TouchableOpacity style={styles.backWard} onPress={() => {this.props.navigation.goBack()}}>
+          <Image source={require('../assets/images/back.png')} />
+          <Text style={{marginLeft: 5, fontSize: 18, fontWeight: '800'}}>
+            사고 목록
+          </Text>
+        </TouchableOpacity>
         <KeyboardAwareScrollView
+          onScroll={this.checkHeaderOpacity}
           contentContainerStyle={styles.scrollingContainer}
           enableOnAndroid
           enableAutomaticScroll
           extraScrollHeight={Platform.OS === 'android' ? 100 : 0}
           keyboardShouldPersistTaps="handled"
+          bounces={false}
         >
           <NaverMap
             initialCoords={{ lat, lng }}
@@ -410,18 +434,11 @@ class IncidentDetail extends React.Component {
           <View
             style={{
               backgroundColor: '#ffffff',
-              marginTop: -15,
-              borderRadius: 18,
+              marginTop: -30,
               paddingVertical: 18,
               paddingHorizontal: 15,
             }}
           >
-            <TouchableOpacity
-              style={{ flex: 1, alignItems: 'center', marginBottom: 7 }}
-              onPress={() => this.props.navigation.goBack()}
-            >
-              <Image source={require('../assets/images/close_down.png')} />
-            </TouchableOpacity>
             {this.renderHeader()}
             <View style={{ height: 28 }} />
             {this.renderProtocol()}
@@ -472,7 +489,28 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     paddingBottom: getBottomSpace(),
   },
-  map: { height: Layout.window.width },
+  headerBack: {
+    position: 'absolute',
+    zIndex: 1,
+    width: Layout.window.width,
+    height: statusBarHeight + 55,
+    // backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
+  backWard: {
+    position: 'absolute',
+    top: statusBarHeight + (getBottomSpace() != 0 ? 20 : 15),
+    marginLeft: 15,
+    zIndex: 2,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  map: {
+    height: Layout.window.width + 30,
+  },
   subheaderContainer: { marginBottom: 6 },
   subheaderText: { fontSize: 16, color: Colors.defaultGrey, marginBottom: 5 },
   statusContainer: {

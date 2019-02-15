@@ -144,10 +144,16 @@ class IncidentList extends React.Component {
         <Pagination
           dotsLength={this.props.incidents.length}
           activeDotIndex={this.props.indexSelected}
-          containerStyle={{ marginBottom: -15 }}
+          containerStyle={{
+            paddingVertical: 0,
+            paddingHorizontal: 0,
+            marginBottom: 15,
+          }}
           dotStyle={{ width: 20 }}
           inactiveDotStyle={{ width: 7 }}
           inactiveDotScale={1}
+          carouselRef={this._carousel}
+          tappableDots
         />
         <Carousel
           ref={el => {
@@ -238,9 +244,11 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     shadowOffset: { width: 0, height: 1 },
     shadowColor: 'black',
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    shadowOffset: {width: 0, height: 5},
     elevation: 5,
+    borderRadius: 5,
   },
   carouselContainer: { position: 'absolute', bottom: bottomUnsafeArea + 80 },
   emptyIncidentBox: {

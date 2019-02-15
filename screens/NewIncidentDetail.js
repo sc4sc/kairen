@@ -9,20 +9,20 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { SafeAreaView, StackActions } from 'react-navigation';
+import { StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Location } from 'expo';
 
-import { getStatusBarHeight } from '../utils/index.js';
+import memoize from 'fast-memoize';
+import * as geojsonutil from 'geojson-utils';
+import moment from 'moment';
+import * as apis from '../apis';
+import { getBottomSpace, getStatusBarHeight } from '../utils/index.js';
 import NaverMap from '../components/NaverMap';
-import AndroidTopMargin from '../components/AndroidTopMargin';
 import Layout from '../constants/Layout';
 import { newIncidentPostRequested } from '../actions/newIncident';
 import { checkIsInbuilding } from '../utils';
 import Colors from '../constants/Colors';
-import memoize from 'fast-memoize';
-import * as geojsonutil from 'geojson-utils';
 
 const statusBarHeight = getStatusBarHeight();
 
@@ -37,23 +37,46 @@ class NewIncidentDetail extends React.Component {
     this.handlePressReport = this.handlePressReport.bind(this);
     this.report = this.report.bind(this);
     this.locatePosition = this.locatePosition.bind(this);
+    this.locating = false;
+    this.locateTransactionId = 0;
   }
-
-  locating = false;
-  locateTransactionId = 0;
 
   handleMapInit = () => {
     this.locatePosition();
   };
 
-  handlePressReport() {
+  async handlePressReport() {
+    let currentIncidents;
+    await apis
+      .listIncidents({ size: 100 })
+      .then(res => (currentIncidents = res));
+
+    for (let i = 0; i < currentIncidents.length; i++) {
+      const { type, lat, lng, createdAt } = currentIncidents[i];
+      const incidentGeoObj = checkIsInbuilding({ lat, lng });
+      const incidentLocation = incidentGeoObj
+        ? incidentGeoObj.properties.name
+        : '';
+      const timePassed = moment().diff(moment(createdAt), 'seconds');
+
+      const isBuildingSame = incidentLocation === this.state.locationName;
+      const isTimeClose = timePassed / (60 * 60) < 1;
+      const isTypeSame = type === this.props.selectedIncident;
+
+      if (isBuildingSame && isTimeClose && isTypeSame) {
+        Alert.alert(
+          '중복 제보 주의',
+          '이미 비슷한 종류의 제보가 존재합니다. 정말로 제보하시겠습니까?\n\n자세한 현장 상황을 위해 카이스트 안전팀이 곧 연락합니다.',
+          [{ text: '취소' }, { text: '확인', onPress: () => this.report() }]
+        );
+        return;
+      }
+    }
+
     Alert.alert(
       '제보하시겠습니까?',
       '자세한 현장 상황 확인을 위해 카이스트 안전팀이 곧 연락합니다',
-      [
-        { text: '취소' },
-        { text: '확인', onPress: () => this.report(this.state.markerCoords) },
-      ]
+      [{ text: '취소' }, { text: '확인', onPress: () => this.report() }]
     );
   }
 
@@ -75,16 +98,13 @@ class NewIncidentDetail extends React.Component {
     }
   };
 
-  report(region) {
-    const { lat, lng } = region;
-    const locationGeoObj = checkIsInbuilding(region);
-    const building = locationGeoObj ? locationGeoObj.properties.name : '';
+  report() {
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,
-        lat,
-        lng,
-        building,
+        lat: this.state.markerCoords.lat,
+        lng: this.state.markerCoords.lng,
+        building: this.state.locationName,
       },
       () => {
         this.props.navigation.dispatch(StackActions.popToTop());
@@ -152,10 +172,14 @@ class NewIncidentDetail extends React.Component {
               <Text style={headerText}>{this.props.selectedIncident}</Text>
             </View>
           </TouchableWithoutFeedback>
-          <TouchableOpacity onPress={() => this.props.navigation.dispatch(StackActions.popToTop())}>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.dispatch(StackActions.popToTop())
+            }
+          >
             <Image
-                source={require('../assets/images/combined-shape.png')}
-                style={{ width: 20, height:20, marginRight: 22 }}
+              source={require('../assets/images/combined-shape.png')}
+              style={{ width: 20, height: 20, marginRight: 22 }}
             />
           </TouchableOpacity>
         </View>
@@ -197,7 +221,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fffaf4',
   },
   headerContainer: {
-    paddingTop: statusBarHeight + 10,
+    paddingTop: statusBarHeight + (getBottomSpace() == 0 ? 20 : 25),
     paddingBottom: 22,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
