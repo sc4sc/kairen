@@ -19,7 +19,6 @@ export default class IncidentCard extends React.Component {
     const { data } = this.props;
     const { createdAt } = data;
 
-
     return (
       <View style={styles.container}>
         <View style={{ flex: 1 }}>
@@ -27,25 +26,31 @@ export default class IncidentCard extends React.Component {
             <View>
               <Text style={styles.wrongDate}>{formatDate(createdAt)}</Text>
               <Text style={styles.wrongTitle}>잘못된 제보입니다.</Text>
-              <Text style={styles.wrongInfo}>{doc.title}, {location.properties.name}</Text>
+              <Text style={styles.wrongInfo}>
+                {doc.title}, {location.properties.name}
+              </Text>
             </View>
           </View>
         </View>
         <TouchableOpacity
-            onPress={() => Linking.openURL(`tel:${contacts.secureTeam}`)}>
+          onPress={() => Linking.openURL(`tel:${contacts.secureTeam}`)}
+        >
           <View
             style={[
               styles.progressState,
-              { backgroundColor: progressStateColor, textAlign: 'center', flexDirection: 'row', marginTop: 15, },
+              {
+                backgroundColor: progressStateColor,
+                textAlign: 'center',
+                flexDirection: 'row',
+                marginTop: 15,
+              },
             ]}
           >
             <Image
-                style={styles.callIcon}
-                source={require('../assets/images/group-9.png')}
+              style={styles.callIcon}
+              source={require('../assets/images/group-9.png')}
             />
-            <Text style={styles.callSafeTeam}>
-              안전팀에 문의하기
-            </Text>
+            <Text style={styles.callSafeTeam}>안전팀에 문의하기</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -150,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 190,
     borderRadius: 10,
-    elevation: 10,
+    elevation: 5,
     shadowOffset: { width: 0, height: 2 },
     shadowColor: 'black',
     shadowOpacity: 0.22,
