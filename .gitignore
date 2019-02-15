@@ -9,3 +9,4 @@ npm-debug.*
 .DS_Store
 .mock/db.json
 screens/Aboutthisapp.js
+.env.*

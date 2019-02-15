@@ -31,6 +31,7 @@
     "react-native-elements": "^0.19.1",
     "react-native-iphone-x-helper": "^1.2.0",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
+    "react-native-sentry": "^0.41.1",
     "react-native-snap-carousel": "^3.7.5",
     "react-native-switch-toggle": "^1.0.7",
     "react-navigation": "^3.0.9",
@@ -41,6 +42,7 @@
     "reselect": "^4.0.0"
   },
   "devDependencies": {
+    "babel-plugin-dotenv": "^0.1.1",
     "babel-preset-expo": "^5.0.0",
     "eslint": "^5.12.0",
     "eslint-config-rallycoding": "^3.2.0",

@@ -3,6 +3,8 @@ import { WebView } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import * as _ from 'lodash';
 
+import { SSO_APP_KEY } from 'babel-dotenv';
+
 export default class SSO extends React.Component {
   constructor(props) {
     super(props);
@@ -10,7 +12,6 @@ export default class SSO extends React.Component {
   }
 
   onNavigation = e => {
-
     if (!e.loading) {
       if (e.url.includes('requestAppLogin')) {
         console.log('[WebView] Opening SSO...');
@@ -65,7 +66,7 @@ export default class SSO extends React.Component {
           source={{
             uri: 'https://iam.kaist.ac.kr/iamps/requestAppLogin.do',
             method: 'POST',
-            body: 'appKey=A0000763',
+            body: 'appKey=' + SSO_APP_KEY,
           }}
           onNavigationStateChange={this.onNavigation}
           onMessage={this.handleMessage}
