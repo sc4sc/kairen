@@ -42,7 +42,7 @@ class Setting extends React.Component {
   };
 
   onLogoutPress = () => {
-    Alert.alert('로그아웃 하시겠습니까?', '', [
+    Alert.alert('', '로그아웃 하시겠습니까?', [
       { text: '취소'},
       { text: '확인', onPress: () => this.handleLogout() },
     ]);
