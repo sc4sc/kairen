@@ -55,7 +55,11 @@
               return;
             }
             case 'panTo': {
-              map.panTo(payload.coords, payload.transitionOptions);
+              const zoom = map.getZoom();
+              const building = new naver.maps.LatLng(Number(payload.coords.lat), Number(payload.coords.lng));
+              const coords = map.getProjection().getDestinationCoord(building, 180, zoom>=13 ? 50:1500/zoom);
+
+              map.panTo(coords, payload.transitionOptions);
               return;
             }
             case 'updateMarkers': {
@@ -106,9 +110,6 @@
               });
 
             }
-            case 'fitBounds': {
-                map.fitBounds(bounds);
-            }
             default:
               return;
           }
@@ -153,11 +154,16 @@
 
         var ping = setInterval(() => postAction('ping'), 66);
 
+        var min = {x: 127.35516786575319, y: 36.36317650086336},
+            max = {x: 127.37027406692503, y: 36.37634223427805};
+        var bounds = {north: max.y, east: max.x, south: min.y, west: min.x};
+
         var mapOptions = {
           center: { lat: 36.37334626411133, lng: 127.36397930294454 },
           zoom: 11,
           minZoom: 10,
           maxZoom: 14,
+          maxBounds: bounds,
         };
 
         var mapContainer = document.getElementById('map');
@@ -171,13 +177,8 @@
           postAction('click', { lat: coord.y, lng: coord.x });
         });
 
-        var min = {x: 127.35516786575319, y: 36.36317650086336},
-            max = {x: 127.37027406692503, y: 36.37634223427805};
-        var bounds = {north: max.y, east: max.x, south: min.y, west: min.x};
 
-        naver.maps.Event.addListener(map, "center_changed", function(center) {
-            postAction('centerChanged',center);
-        });
+
 
       })();
     </script>
