@@ -149,12 +149,12 @@ class NewIncidentDetail extends React.Component {
               <Text style={headerText}>{this.props.selectedIncident}</Text>
             </View>
           </TouchableWithoutFeedback>
-          <Ionicons
-            name="ios-close"
-            size={40}
-            style={{ color: 'white', marginRight: 20 }}
-            onPress={() => this.props.navigation.goBack()}
-          />
+          <TouchableOpacity onPress={() => this.props.navigation.dispatch(StackActions.popToTop())}>
+            <Image
+                source={require('../assets/images/combined-shape.png')}
+                style={{ width: 20, height:20, marginRight: 22 }}
+            />
+          </TouchableOpacity>
         </View>
 
         <NaverMap
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     paddingTop: statusBarHeight + 10,
-    paddingBottom: 10,
+    paddingBottom: 22,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
     justifyContent: 'space-between',

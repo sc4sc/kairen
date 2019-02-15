@@ -1,6 +1,6 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View, StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { FlatList, StyleSheet, Text, View, Image, StatusBar, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -41,12 +41,12 @@ class NewIncident extends React.Component {
         <StatusBar backgroundColor={'#ff0000'} barStyle={'light-content'} />
         <View style={headerContainer}>
           <Text style={headerText}>제보 종류 선택</Text>
-          <Ionicons
-            name="ios-close"
-            size={40}
-            style={{ color: 'white', marginRight: 20 }}
-            onPress={() => this.props.navigation.goBack()}
-          />
+          <TouchableOpacity onPress={() => this.props.navigation.dispatch(StackActions.popToTop())}>
+            <Image
+                source={require('../assets/images/combined-shape.png')}
+                style={{ width: 20, height:20, marginRight: 22 }}
+            />
+          </TouchableOpacity>
         </View>
         <View style={{ flex: 1, paddingHorizontal: 20, marginTop: 27 }}>
           <Text style={styles.subHeaderText}>긴급제보</Text>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     paddingTop: statusBarHeight + 10,
-    paddingBottom: 10,
+    paddingBottom: 22,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
     justifyContent: 'space-between',
