@@ -175,7 +175,7 @@ class IncidentDetail extends React.Component {
           </View>
           <TouchableOpacity
               style={[styles.informationButton, { backgroundColor: '#27820d' }]}
-              onPress={() => Linking.openURL(`tel:${call}`)}
+              onPress={() => Linking.openURL(`tel:${mobile}`)}
           >
             <Image source={require('../assets/images/call.png')} />
           </TouchableOpacity>
@@ -454,7 +454,7 @@ class IncidentDetail extends React.Component {
             {this.renderHeader()}
             <View style={{ height: 28 }} />
             {this.props.isSecureTeam
-              ? this.renderCallToInformant(User.displayname, User.mobile)
+              ? this.renderCallToInformant(User.ku_kname, User.mobile)
               : this.renderProtocol()}
             <View style={{ height: 24 }} />
             {this.props.isSecureTeam
