@@ -244,9 +244,11 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     shadowOffset: { width: 0, height: 1 },
     shadowColor: 'black',
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    shadowOffset: {width: 0, height: 5},
     elevation: 5,
+    borderRadius: 5,
   },
   carouselContainer: { position: 'absolute', bottom: bottomUnsafeArea + 80 },
   emptyIncidentBox: {
