@@ -62,9 +62,9 @@ export function listIncidents(query) {
     .then(response => response.data);
 }
 
-export function postIncident({ type, lat, lng }) {
+export function postIncident({ type, lat, lng, building }) {
   return axiosInstance
-    .post(`${serverURL}/incidents`, { type, lat, lng })
+    .post(`${serverURL}/incidents`, { type, lat, lng, building })
     .then(response => response.data);
 }
 
