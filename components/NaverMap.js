@@ -55,7 +55,7 @@ export default class NaverMap extends React.Component {
     this.updateMarkers();
     this.updateOptions();
     if (this.props.initialCoords) {
-      this.setCenter(this.props.initialCoords);
+      this.panTo(this.props.initialCoords);
     }
 
     if (this.props.onInit) {
@@ -141,7 +141,7 @@ export default class NaverMap extends React.Component {
       }
       case 'centerChanged' : {
         this.centerChanged(action.payload);
-        return
+        return;
       }
     }
   };

@@ -55,7 +55,11 @@
               return;
             }
             case 'panTo': {
-              map.panTo(payload.coords, payload.transitionOptions);
+              const zoom = map.getZoom();
+              const building = new naver.maps.LatLng(Number(payload.coords.lat), Number(payload.coords.lng));
+              const coords = map.getProjection().getDestinationCoord(building, 180, zoom>=13 ? 50:1500/zoom);
+
+              map.panTo(coords, payload.transitionOptions);
               return;
             }
             case 'updateMarkers': {
