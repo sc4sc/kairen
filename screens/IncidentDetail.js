@@ -27,6 +27,7 @@ import { formatDate, getBottomSpace, checkIsInbuilding, getStatusBarHeight } fro
 import { getLocalData } from '../constants/Incidents';
 import NaverMap from '../components/NaverMap';
 import { IncidentList } from './index';
+import * as contacts from "../constants/Contacts";
 
 const statusBarHeight = getStatusBarHeight();
 
@@ -160,23 +161,36 @@ class IncidentDetail extends React.Component {
     );
   }
 
+  renderCallToInformant(name, mobile) {
+
+    return (
+        <View
+            style={[styles.information, { backgroundColor: '#44aa25' }]}
+        >
+          <View>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
+              사고 제보자에게 전화 걸기
+            </Text>
+            <Text style={{ fontSize: 10, color: 'white' }}>{name}, {mobile}</Text>
+          </View>
+          <TouchableOpacity
+              style={[styles.informationButton, { backgroundColor: '#27820d' }]}
+              onPress={() => Linking.openURL(`tel:${call}`)}
+          >
+            <Image source={require('../assets/images/call.png')} />
+          </TouchableOpacity>
+        </View>
+    );
+  }
+
+
   renderProtocol() {
     const localDetail = getLocalData(this.getIncidentDetail().type);
     const url = localDetail.safetyProtocol;
 
     return (
       <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderRadius: 39,
-          paddingVertical: 6,
-          paddingLeft: 27,
-          paddingRight: 6,
-          marginHorizontal: 10,
-          backgroundColor: this.props.isSecureTeam ? '#44aa25' : '#fda81d',
-        }}
+        style={[styles.information, { backgroundColor: '#ff9412' }]}
       >
         <View>
           <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
@@ -185,17 +199,10 @@ class IncidentDetail extends React.Component {
           <Text style={{ color: 'white' }}>자세한 행동 강령 보기</Text>
         </View>
         <TouchableOpacity
-          style={{
-            width: 46,
-            height: 46,
-            backgroundColor: this.props.isSecureTeam ? '#339216' : '#ec9301',
-            borderRadius: 46,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+          style={[styles.informationButton, {backgroundColor: '#db7d0a'}]}
           onPress={() => Linking.openURL(url)}
         >
-          <Feather name="arrow-right" size={32} style={{ color: 'white' }} />
+          <Image source={require('../assets/images/right-arrow.png')}/>
         </TouchableOpacity>
       </View>
     );
@@ -393,10 +400,15 @@ class IncidentDetail extends React.Component {
         headerBackToggle: false,
       })
     }
-  }
+  };
 
   render() {
-    const { id: incidentId, lat, lng } = this.getIncidentDetail();
+    const {
+      id: incidentId,
+      lat,
+      lng,
+      User
+    } = this.getIncidentDetail();
 
     const latitude = Number(lat);
     const longitude = Number(lng);
@@ -440,7 +452,9 @@ class IncidentDetail extends React.Component {
           >
             {this.renderHeader()}
             <View style={{ height: 28 }} />
-            {this.renderProtocol()}
+            {this.props.isSecureTeam
+              ? this.renderCallToInformant(User.displayname, User.mobile)
+              : this.renderProtocol()}
             <View style={{ height: 24 }} />
             {this.props.isSecureTeam
               ? this.renderAdminStateBar()
@@ -512,6 +526,23 @@ const styles = StyleSheet.create({
   },
   subheaderContainer: { marginBottom: 6 },
   subheaderText: { fontSize: 16, color: Colors.defaultGrey, marginBottom: 5 },
+  information: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderRadius: 39,
+    paddingVertical: 6,
+    paddingLeft: 27,
+    paddingRight: 6,
+    marginHorizontal: 10,
+  },
+  informationButton: {
+    width: 46,
+    height: 46,
+    borderRadius: 46,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   statusContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
