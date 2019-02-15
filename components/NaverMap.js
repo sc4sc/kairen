@@ -103,15 +103,6 @@ export default class NaverMap extends React.Component {
     this.postAction('renderKAIST', {coords});
   };
 
-  centerChanged = (center) => {
-    const point = { type: 'Point', coordinates: [center._lng, center._lat] };
-    const kaist = require('../assets/geojson/KAIST.json').features[0].geometry;
-
-    if (!geojsonutil.pointInPolygon(point, kaist)) {
-      this.postAction('fitBounds');
-    }
-  };
-
   postAction = (type, payload) => {
     const action = { type, payload };
     this._webview.postMessage(JSON.stringify(action));
@@ -137,10 +128,6 @@ export default class NaverMap extends React.Component {
       }
       case 'renderKAIST': {
         this.renderKAIST();
-        return;
-      }
-      case 'centerChanged' : {
-        this.centerChanged(action.payload);
         return;
       }
     }
