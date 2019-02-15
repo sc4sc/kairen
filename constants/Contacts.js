@@ -1,2 +1,2 @@
-export const campusPolice = '010-4430-3985';
-export const secureTeam = '010-4430-3985';
+export const campusPolice = '042-350-0119';
+export const secureTeam = '042-350-4000';
