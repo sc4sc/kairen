@@ -6,7 +6,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   Image,
-  Linking,
+  Linking, Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import SwitchToggle from 'react-native-switch-toggle';
@@ -41,6 +41,13 @@ class Setting extends React.Component {
     this.props.navigation.navigate('Login');
   };
 
+  onLogoutPress = () => {
+    Alert.alert('로그아웃 하시겠습니까?', '', [
+      { text: '취소'},
+      { text: '확인', onPress: () => this.handleLogout() },
+    ]);
+  };
+
   render() {
     console.log(this.props.user);
     return (
@@ -61,7 +68,7 @@ class Setting extends React.Component {
           <Text style={styles.cardTitle}> 계정 </Text>
           <View style={[styles.cardContent, styles.accountContainer]}>
             <Text style={{ fontSize: 15 }}> {this.props.user.ku_kname} </Text>
-            <TouchableOpacity onPress={this.handleLogout}>
+            <TouchableOpacity onPress={this.onLogoutPress}>
               <View
                 style={{
                   flexDirection: 'row',
