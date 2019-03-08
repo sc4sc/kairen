@@ -6,21 +6,18 @@ const StateMarker = ({ children, selected, position }) => {
   const { markerTextStyle, circleStyle } = styles;
 
   let arrowColor = 'black';
-  let Chevron = null;
+  let Chevron = ChevronMiddle;
   const chevronTextStyle = { color: selected ? 'white' : '#eaeaea', fontSize: 13 };
 
   switch (position) {
     case 'left':
       arrowColor = selected ? '#d62c2c' : 'white';
-      Chevron = ChevronLeft;
       break;
     case 'center':
       arrowColor = selected ? '#f5c234' : 'white';
-      Chevron = ChevronMiddle;
       break;
     case 'right':
       arrowColor = selected ? '#7ed321' : 'white';
-      Chevron = ChevronRight;
       break;
     default:
       arrowColor = styles.defaultMarkerStyle;
