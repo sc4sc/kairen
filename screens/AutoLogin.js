@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as apis from '../apis';
@@ -37,7 +37,7 @@ class AutoLogin extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>자동 로그인중 (화면좀 바꿔주세요.)</Text>
+        <ActivityIndicator size={20} />
       </View>
     );
   }
