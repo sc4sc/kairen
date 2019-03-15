@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
+  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -25,10 +26,11 @@ class NewComment extends React.Component {
   }
 
   onButtonPress() {
-    Alert.alert('댓글을 등록하시겠습니까?', '한 번 등록한 댓글은 삭제하실 수 없습니다', [
-      { text: '취소' },
-      { text: '확인', onPress: this.postComment.bind(this) },
-    ]);
+    Alert.alert(
+      '댓글을 등록하시겠습니까?',
+      '한 번 등록한 댓글은 삭제하실 수 없습니다',
+      [{ text: '취소' }, { text: '확인', onPress: this.postComment.bind(this) }]
+    );
   }
 
   postComment() {
@@ -57,17 +59,25 @@ class NewComment extends React.Component {
             </TouchableWithoutFeedback>
           </View>
 
-          <KeyboardAvoidingView style={styles.contentContainer} behavior="padding">
+          <KeyboardAvoidingView
+            style={styles.contentContainer}
+            behavior="padding"
+          >
             <TextInput
-              style={{ padding: 10, maxHeight: 200 }}
+              style={styles.textInputStyle}
               placeholder="여기에 입력하세요..."
               onChangeText={text => this.setState({ text })}
               value={this.state.text}
               multiline
               autoFocus
             />
-            <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 25 }}>
-              <TouchableOpacity style={styles.buttonStyle} onPress={this.onButtonPress.bind(this)}>
+            <View
+              style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 25 }}
+            >
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                onPress={this.onButtonPress.bind(this)}
+              >
                 <Text style={styles.buttonText}>등록하기</Text>
               </TouchableOpacity>
             </View>
@@ -78,8 +88,7 @@ class NewComment extends React.Component {
   }
 }
 
-export default connect(state => ({
-}))(NewComment);
+export default connect(state => ({}))(NewComment);
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
@@ -91,6 +100,12 @@ const styles = StyleSheet.create({
   },
   header: { fontSize: 20, fontWeight: '800', color: Colors.defaultBlack },
   contentContainer: { flex: 1, paddingHorizontal: 20 },
+  textInputStyle: {
+    padding: 10,
+    height: Dimensions.get('window').height * 0.3,
+    maxHeight: Dimensions.get('window').height * 0.3,
+    textAlignVertical: 'top',
+  },
   buttonStyle: {
     justifyContent: 'center',
     alignItems: 'center',
