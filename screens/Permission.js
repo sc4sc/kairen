@@ -20,10 +20,9 @@ export default class Permission extends React.Component {
 
   async componentDidMount() {
     const locationPermission = await requestPermission(Permissions.LOCATION);
-    const phoneCallPermission = await requestPermission(Permissions.CONTACTS);
 
     AppState.addEventListener('change', this.handleAppStateChange);
-    this.setState({ locationPermission, phoneCallPermission });
+    this.setState({ locationPermission });
   }
 
   componentWillUnmount() {
@@ -37,17 +36,10 @@ export default class Permission extends React.Component {
       nextAppState == 'active'
     ) {
       locationPermission = await Permissions.getAsync(Permissions.LOCATION);
-      phoneCallPermission = await Permissions.getAsync(Permissions.CONTACTS);
       if (locationPermission.status === 'granted') {
         this.setState({ locationPermission: true });
       } else {
         this.setState({ locationPermission: false });
-      }
-
-      if (phoneCallPermission.status === 'granted') {
-        this.setState({ phoneCallPermission: true });
-      } else {
-        this.setState({ phoneCallPermission: false });
       }
     }
     this.setState({ appState: nextAppState });
@@ -79,9 +71,6 @@ export default class Permission extends React.Component {
   }
 
   render() {
-    const getAllPermission =
-      this.state.locationPermission && this.state.phoneCallPermission;
-
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -113,28 +102,9 @@ export default class Permission extends React.Component {
               </Text>
             </View>
           </View>
-
-          <View style={styles.permissionContainer}>
-            <View style={{ width: 30, marginRight: 10 }}>
-              <Image source={require('../assets/images/callPermission.png')} />
-            </View>
-            <View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={styles.permissionType}>전화</Text>
-                {this.state.phoneCallPermission ? (
-                  <Image source={require('../assets/images/check.png')} />
-                ) : (
-                  <Text style={{ color: '#bdbdbd', letterSpacing: -0.9 }}>
-                    권한 승인 대기 중
-                  </Text>
-                )}
-              </View>
-              <Text style={styles.plainText}>
-                안전팀 및 캠퍼스 폴리스에 전화를 요청합니다.
-              </Text>
-            </View>
-          </View>
-          {getAllPermission ? this.renderGoNext() : this.renderPermissionWait()}
+          {this.state.locationPermission
+            ? this.renderGoNext()
+            : this.renderPermissionWait()}
         </View>
       </View>
     );
@@ -170,10 +140,12 @@ const styles = {
   },
   buttonStyle: {
     flexDirection: 'row',
+    width: '80%',
+    alignSelf: 'center',
     borderRadius: 5,
-    marginTop: 70,
+    marginTop: 35,
     marginHorizontal: 17,
-    paddingVertical: 20,
+    paddingVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
