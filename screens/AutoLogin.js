@@ -37,7 +37,7 @@ class AutoLogin extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size={20} />
+        <ActivityIndicator size={'small'} />
       </View>
     );
   }
