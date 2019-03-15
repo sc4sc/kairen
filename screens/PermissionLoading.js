@@ -9,11 +9,7 @@ export default class PermissionLoading extends React.Component {
       Permissions.LOCATION
     );
 
-    const { status: phoneCallPermission } = await Permissions.getAsync(
-      Permissions.CONTACTS
-    );
-
-    if (locationPermission === 'granted' && phoneCallPermission === 'granted') {
+    if (locationPermission === 'granted') {
       this.props.navigation.navigate('AuthLoading');
     } else {
       this.props.navigation.navigate('Permission');
@@ -22,10 +18,5 @@ export default class PermissionLoading extends React.Component {
 
   render() {
     return <View />;
-    // return (
-    //   <View style={{ flex: 1, backgroundColor: '#eaeaea' }}>
-    //     <Spinner />
-    //   </View>
-    // );
   }
 }

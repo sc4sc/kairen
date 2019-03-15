@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
+  Dimensions,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
@@ -72,7 +73,7 @@ class NewProgress extends React.Component {
             behavior="padding"
           >
             <TextInput
-              style={{ padding: 10, maxHeight: 200 }}
+              style={styles.textInputStyle}
               placeholder="여기에 입력하세요..."
               onChangeText={text => this.setState({ text })}
               value={this.state.text}
@@ -108,6 +109,12 @@ const styles = StyleSheet.create({
   },
   header: { fontSize: 20, fontWeight: '800', color: Colors.defaultBlack },
   contentContainer: { flex: 1, paddingHorizontal: 20 },
+  textInputStyle: {
+    padding: 10,
+    height: Dimensions.get('window').height * 0.3,
+    maxHeight: Dimensions.get('window').height * 0.3,
+    textAlignVertical: 'top',
+  },
   buttonStyle: {
     justifyContent: 'center',
     alignItems: 'center',

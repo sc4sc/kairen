@@ -2,10 +2,23 @@ import React from 'react';
 import { Text, TouchableOpacity, View, WebView } from 'react-native';
 import { FileSystem } from 'expo';
 import * as geojsonutil from 'geojson-utils';
+import { Sentry, SentrySeverity } from 'react-native-sentry';
 
 const htmlAsset = Expo.Asset.fromModule(require('../assets/map.html'));
 
+let downloaded = false;
+
 async function loadHtml() {
+  downloaded = false;
+  setTimeout(() => {
+    if (downloaded) {
+      return;
+    }
+    Sentry.captureMessage('Map is not downloading even after 3 seconds', {
+      level: SentrySeverity.Error,
+    }); // Default SentrySeverity.Error
+  }, 3000);
+
   let uri = '';
   if (__DEV__) {
     uri = htmlAsset.uri;
@@ -18,15 +31,23 @@ async function loadHtml() {
   }
   console.log('Map URI: ' + uri);
 
-  if (uri.startsWith('file')) {
-    console.log('Loading from the filesystem');
-    return FileSystem.readAsStringAsync(uri, {});
+  if (uri.startsWith('http')) {
+
+    console.log('Downloading from the remote server');
+    const response = await fetch(uri);
+    console.log('Downloaded map.html');
+    downloaded = true;
+    return response.text();
   }
 
-  console.log('Downloading from the remote server');
-  const response = await fetch(uri);
-  console.log('Downloaded map.html');
-  return response.text();
+  if (uri.startsWith('asset')) {
+    uri = `file://android_asset/${uri.split('://')[1]}`
+  }
+
+  console.log('Loading from the filesystem');
+  const content = FileSystem.readAsStringAsync(uri, {});
+  downloaded = true;
+  return content;
 }
 
 export default class NaverMap extends React.Component {
@@ -99,8 +120,9 @@ export default class NaverMap extends React.Component {
   };
 
   renderKAIST = () => {
-    const coords = require('../assets/geojson/KAIST.json').features[0].geometry.coordinates[0];
-    this.postAction('renderKAIST', {coords});
+    const coords = require('../assets/geojson/KAIST.json').features[0].geometry
+      .coordinates[0];
+    this.postAction('renderKAIST', { coords });
   };
 
   postAction = (type, payload) => {
