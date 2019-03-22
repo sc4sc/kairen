@@ -21,7 +21,8 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
+      "buildNumber" : "1.0.1",
+      "supportsTablet": false,
       "bundleIdentifier": "kr.ac.kaist.kairen.kairen"
     },
     "android": {
