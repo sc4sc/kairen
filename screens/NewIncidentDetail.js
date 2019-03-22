@@ -136,8 +136,15 @@ class NewIncidentDetail extends React.Component {
 
     const { longitude, latitude } = currentPosition;
     const coords = { lng: longitude, lat: latitude };
+    const point = { type: 'Point', coordinates: [coords.lng, coords.lat] };
+    if (!geojsonutil.pointInPolygon(point, kaist.features[0].geometry)) {
+      Alert.alert('위치를 지정할 수 없습니다.', 'KAIST 내부만 선택해주세요.', [
+        { text: '확인' },
+      ]);
+      return;
+    }
     this.updateLocationName(coords);
-    this.setState({ markerCoords: coords });
+    this.setState({markerCoords: coords});
     this.map.panTo(coords, {});
   }
 
