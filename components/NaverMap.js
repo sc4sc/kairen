@@ -23,16 +23,17 @@ async function loadHtml() {
   if (__DEV__) {
     uri = htmlAsset.uri;
   } else {
-    if (!htmlAsset.localUri) {
-      await htmlAsset.downloadAsync();
-      console.log('Downloading map.html...');
-    }
-    uri = htmlAsset.localUri;
+    await htmlAsset.downloadAsync();
+    uri = htmlAsset.uri;
+    // if (!htmlAsset.localUri) {
+    //   await htmlAsset.downloadAsync();
+    //   console.log('Downloading map.html...');
+    // }
+    // uri = htmlAsset.localUri;
   }
   console.log('Map URI: ' + uri);
 
   if (uri.startsWith('http')) {
-
     console.log('Downloading from the remote server');
     const response = await fetch(uri);
     console.log('Downloaded map.html');
@@ -41,7 +42,7 @@ async function loadHtml() {
   }
 
   if (uri.startsWith('asset')) {
-    uri = `file://android_asset/${uri.split('://')[1]}`
+    uri = `file://android_asset/${uri.split('://')[1]}`;
   }
 
   console.log('Loading from the filesystem');
