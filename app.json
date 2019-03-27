@@ -21,9 +21,12 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber" : "1.0.1",
+      "buildNumber" : "1.0.2",
       "supportsTablet": false,
-      "bundleIdentifier": "kr.ac.kaist.kairen.kairen"
+      "bundleIdentifier": "kr.ac.kaist.kairen.kairen",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "이 앱은 정확한 사고 제보를 위해 위치 정보를 사용합니다."
+      }
     },
     "android": {
       "package": "kr.ac.kaist.kairen.kairen",
