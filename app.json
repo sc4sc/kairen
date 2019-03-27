@@ -23,7 +23,10 @@
     "ios": {
       "buildNumber" : "1.0.1",
       "supportsTablet": false,
-      "bundleIdentifier": "kr.ac.kaist.kairen.kairen"
+      "bundleIdentifier": "kr.ac.kaist.kairen.kairen",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app uses location information for emergency notification of accident."
+      }
     },
     "android": {
       "package": "kr.ac.kaist.kairen.kairen",
