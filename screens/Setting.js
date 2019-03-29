@@ -95,7 +95,7 @@ class Setting extends React.Component {
           </View>
         </View>
 
-        <View style={styles.cardContainer}>
+        {/* <View style={styles.cardContainer}>
           <Text style={styles.cardTitle}> 알림 설정 </Text>
           <View style={styles.cardContent}>
             <Text style={{ fontSize: 15 }}> '주의' 제보 알림 받기 </Text>
@@ -111,7 +111,7 @@ class Setting extends React.Component {
               }
             />
           </View>
-        </View>
+        </View> */}
 
         <View style={styles.cardContainer} />
         <View style={styles.delimiter} />
