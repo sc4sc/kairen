@@ -18,7 +18,6 @@ class AutoLogin extends React.Component {
     }
 
     apis.setAppToken(appToken);
-
     const userProfile = await apis.getProfile();
 
     if (userProfile.error) {

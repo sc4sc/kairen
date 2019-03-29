@@ -29,7 +29,7 @@ class CommentCard extends React.Component {
 
   componentWillMount() {
     const { like, totalLike, reply } = this.props;
-    this.setState({ like: like, totalLike: totalLike, reply: reply });
+    this.setState({ like, totalLike, reply });
   }
 
   changeEditState() {
@@ -62,7 +62,6 @@ class CommentCard extends React.Component {
 
   renderReplyBox() {
     const { commentId, onPressReply, replyExist } = this.props;
-
     if (this.state.isEditReply) {
       return (
         <CommentReplyCard
@@ -75,7 +74,12 @@ class CommentCard extends React.Component {
 
     if (this.state.reply) {
       return (
-        <ProgressCard isComment author="안전팀" date={this.props.replyDate}>
+        <ProgressCard
+          isComment
+          author="안전팀"
+          date={this.props.replyDate}
+          propStyle={{ borderRadius: 10, paddingBottom: 15 }}
+        >
           {this.state.reply}
         </ProgressCard>
       );
@@ -148,7 +152,7 @@ class CommentCard extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    onPressReply: state.auth.user.isSecureTeam,
+    onPressReply: state.auth.user.isAdmin,
   };
 };
 
