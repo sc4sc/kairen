@@ -5,7 +5,7 @@
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": ["ios", "android"],
-    "version": "1.0.5",
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "notification": {
@@ -21,7 +21,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber" : "1.0.2",
+      "buildNumber" : "1",
       "supportsTablet": false,
       "bundleIdentifier": "kr.ac.kaist.kairen.kairen",
       "infoPlist": {
