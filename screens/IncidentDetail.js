@@ -270,7 +270,7 @@ class IncidentDetail extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <Text style={styles.subheaderText}>안전팀 확인 상태</Text>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
+        <View style={{ flex: 1, flexDirection: 'row', marginLeft: 'auto', marginRight: 'auto' }}>
           <StateMarker position="left" selected={progressState === '확인중'}>
             확인 중
           </StateMarker>

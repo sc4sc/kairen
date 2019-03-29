@@ -28,7 +28,7 @@ const ChevronRight = ({ children, color }) => (
   </View>
 );
 
-const arrowSize = 15;
+const arrowSize = 8;
 
 const styles = {
   chevron: {
