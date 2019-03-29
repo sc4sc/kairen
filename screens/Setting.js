@@ -6,7 +6,8 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   Image,
-  Linking, Alert,
+  Linking,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import SwitchToggle from 'react-native-switch-toggle';
@@ -43,13 +44,12 @@ class Setting extends React.Component {
 
   onLogoutPress = () => {
     Alert.alert('', '로그아웃 하시겠습니까?', [
-      { text: '취소'},
+      { text: '취소' },
       { text: '확인', onPress: () => this.handleLogout() },
     ]);
   };
 
   render() {
-    console.log(this.props.user);
     return (
       <SafeAreaView style={styles.container}>
         <AndroidTopMargin />

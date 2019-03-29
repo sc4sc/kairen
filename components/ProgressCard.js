@@ -19,7 +19,6 @@ export default class ProgressCard extends React.Component {
  */
   render() {
     const { author, date, children, propStyle } = this.props;
-
     return (
       <View
         style={[
