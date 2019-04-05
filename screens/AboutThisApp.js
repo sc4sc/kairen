@@ -33,7 +33,7 @@ export default function AboutThisApp(props) {
           style={styles.icon}
         />
         <Text style={styles.appTitle}>KAIREN</Text>
-        <Text style={styles.appVersion}>version 0.1.0</Text>
+        <Text style={styles.appVersion}>version 1.0.6</Text>
         <Text style={styles.makers}>만든 사람들</Text>
         <Text style={styles.people}>류석영</Text>
         <Text style={styles.people}>최민성</Text>
