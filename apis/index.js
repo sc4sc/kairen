@@ -2,7 +2,7 @@ import URLSearchParams from '@ungap/url-search-params';
 import axios from 'axios';
 
 // 개발 서버 설정해놓고 커밋에 올리지 말라고 해놓음
-import { URL as serverURL } from '../constants/Server';
+import serverURL from '../constants/Server';
 
 let axiosInstance = axios;
 

@@ -6,7 +6,11 @@
     "ios": "expo start --ios",
     "eject": "expo eject",
     "test": "node ./node_modules/jest/bin/jest.js --watchAll",
-    "json-server": "json-server --watch .mock/db.json --routes .mock/routes.json --port 8000"
+    "json-server": "json-server --watch .mock/db.json --routes .mock/routes.json --port 8000",
+    "build-ios-prod": "expo build:ios --release-channel production",
+    "build-ios-dev": "expo build:ios --release-channel development",
+    "build-android-prod": "expo build:android --release-channel production",
+    "build-android-dev": "expo build:android --release-channel development"
   },
   "jest": {
     "preset": "jest-expo"
