@@ -5,7 +5,7 @@ let URL;
 if ( Constants.manifest.releaseChannel && Constants.manifest.releaseChannel === 'production' ) {
   URL = 'https://lambda2.kaist.ac.kr';
 } else {
-  URL = 'https://kairen.kaist.ac.kr/api/dev/';
+  URL = 'https://lambda2.kaist.ac.kr';
 }
 
 export default URL;
