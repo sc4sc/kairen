@@ -31,18 +31,19 @@ const MainNavigator = createStackNavigator(
       {
         IncidentList,
         IncidentDetail,
+        Setting,
+        AboutUs: AboutThisApp,
+        NewIncidentDetail,
       },
       { headerMode: 'none' }
     ),
     NewIncident,
-    NewIncidentDetail,
     NewComment,
     ProgressList,
     NewProgress,
-    Setting,
-    AboutUs: AboutThisApp,
   },
   {
+    mode: 'modal',
     headerMode: 'none',
   }
 );
