@@ -26,7 +26,7 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "3",
+      "buildNumber": "4",
       "supportsTablet": false,
       "bundleIdentifier": "kr.ac.kaist.kairen.kairen",
       "infoPlist": {
@@ -35,7 +35,7 @@
     },
     "android": {
       "package": "kr.ac.kaist.kairen.kairen",
-      "versionCode": 4,
+      "versionCode": 5,
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"
