@@ -22,12 +22,6 @@ export default class SafetyContact extends React.Component {
       <View style={container}>
         <View>
           <Text style={headerText}>KAIREN</Text>
-
-          <View style={contentContainer}>
-            <Text style={betaVerNotice}>{`본 앱은 테스트 버전입니다.
-실제 사고를 반영하지 않습니다.`}</Text>
-          </View>
-
           <View style={contentContainer}>
             <View style={circle} />
             <View style={circle} />
