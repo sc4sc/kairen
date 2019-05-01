@@ -1,6 +1,7 @@
 import { Platform, StatusBar } from 'react-native';
 import { getStatusBarHeight as getIOSStatusBarHeight } from 'react-native-iphone-x-helper';
-import { Permissions } from 'expo';
+import { Permissions, Notifications } from 'expo';
+
 import moment from 'moment';
 import * as _ from 'lodash';
 import * as geojsonutil from 'geojson-utils';
@@ -42,6 +43,17 @@ export async function requestPermission(type) {
 
   // failed
   return false;
+}
+
+export async function getPushToken() {
+  try {
+    if (await requestPermission(Permissions.NOTIFICATIONS)) {
+      return Notifications.getExpoPushTokenAsync();
+    }
+  } catch (error) {
+    console.log('getPushToken Error:', error);
+  }
+  return '';
 }
 
 export function checkIsInbuilding(coords) {

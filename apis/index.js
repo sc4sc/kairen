@@ -5,6 +5,29 @@ import axios from 'axios';
 import serverURL from '../constants/Server';
 
 let axiosInstance = axios;
+applyInterceptors();
+
+function errorResponseHandler(error) {
+  // check for errorHandle config
+  let additionalData = {};
+
+  if (error.response) {
+    const { data, status } = error.response;
+    additionalData = { ...data, status };
+  }
+
+  return { data: Object.assign({ error: true }, additionalData) };
+
+}
+
+function applyInterceptors() {
+  // apply interceptor on response
+  axiosInstance.interceptors.response.use(
+    response => response,
+    errorResponseHandler
+  );
+}
+
 
 export function setAppToken(token) {
   axiosInstance = axios.create({
@@ -12,6 +35,7 @@ export function setAppToken(token) {
       Authorization: `JWT ${token}`,
     },
   });
+  applyInterceptors();
 }
 
 export function requestAuthentication(ssoToken, pushToken) {
@@ -32,6 +56,12 @@ export function requestLogout() {
   return axiosInstance
     .post(`${serverURL}/logout`)
     .then(response => response.data);
+}
+
+export function updatePushToken(expotoken) {
+  return axios.post(`${serverURL}/updatePushToken`, {
+    expotoken
+  }).then(response => response.data)
 }
 
 export function getProfile() {

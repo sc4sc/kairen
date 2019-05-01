@@ -30,6 +30,17 @@ class AutoLogin extends React.Component {
 
     this.props.authLoginSuccess(userProfile);
     console.log('[AutoLogin] Autologin Succeeded');
+
+    const tryUpdatePushToken = () => {
+      apis.updatePushToken().then(r => {
+        if (r.error) {
+          setTimeout(tryUpdatePushToken, 5000);
+        }
+      })
+    };
+
+    tryUpdatePushToken();
+
     navigation.navigate('App');
   };
 

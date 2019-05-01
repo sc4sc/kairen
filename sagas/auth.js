@@ -10,21 +10,7 @@ import {
   AUTH_LOGIN_SUCCESS,
   authLoginSuccess,
 } from '../actions/auth';
-import { requestPermission } from '../utils';
-
-function* getPushToken() {
-  let pushToken = '';
-
-  try {
-    if (yield call(requestPermission, Permissions.NOTIFICATIONS)) {
-      pushToken = yield call(Notifications.getExpoPushTokenAsync);
-    }
-  } catch (error) {
-    console.log('getPushToken Error:', error);
-  }
-
-  return pushToken;
-}
+import { getPushToken, requestPermission } from '../utils';
 
 function* storeToken(token) {
   yield call(SecureStore.setItemAsync, 'appToken', token);
