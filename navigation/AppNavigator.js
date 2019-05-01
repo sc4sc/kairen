@@ -34,10 +34,10 @@ const MainNavigator = createStackNavigator(
         Setting,
         AboutUs: AboutThisApp,
         NewIncidentDetail,
+        NewIncident,
       },
       { headerMode: 'none' }
     ),
-    NewIncident,
     NewComment,
     ProgressList,
     NewProgress,
