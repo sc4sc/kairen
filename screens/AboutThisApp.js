@@ -39,7 +39,7 @@ export default function AboutThisApp(props) {
         <Text style={styles.people}>최민성</Text>
         <Text style={styles.people}>김예준</Text>
         <Text style={styles.people}>서혜인</Text>
-        <Text style={styles.leo}> 정진우</Text>
+        <Text style={styles.leo}>정진우</Text>
         <Text style={styles.makers}>Special thanks to</Text>
         <Text style={styles.people}>윤현석</Text>
         <Text>Eric</Text>
