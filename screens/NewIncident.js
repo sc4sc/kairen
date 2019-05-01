@@ -1,5 +1,16 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View, Image, StatusBar, TouchableOpacity } from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  StatusBar,
+  TouchableOpacity,
+  Dimensions,
+  Animated,
+  Slider,
+} from 'react-native';
 import { StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
@@ -10,6 +21,9 @@ import { types as incidentTypes } from '../constants/Incidents';
 import { incidentsListRefresh } from '../actions/incidentsList';
 
 const statusBarHeight = getStatusBarHeight();
+
+const SCREEN_HEIGHT = Dimensions.get('window').height
+const SCREEN_WIDTH = Dimensions.get('window').width
 
 class NewIncident extends React.Component {
   constructor() {
@@ -35,6 +49,22 @@ class NewIncident extends React.Component {
 
     return (
       <View style={container}>
+
+        <Animated.View style={{ flex: 1, backgroundColor: 'white'}}>
+          <Animated.View
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              zIndex: 10,
+              backgroundColor: 'orange',
+              height: SCREEN_HEIGHT
+            }}
+          >
+            
+          </Animated.View>
+        </Animated.View>
+
         <StatusBar backgroundColor={'#ff0000'} barStyle={'light-content'} />
         <View style={headerContainer}>
           <Text style={headerText}>제보 종류 선택</Text>

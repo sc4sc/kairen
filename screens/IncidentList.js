@@ -6,6 +6,10 @@ import {
   Image,
   View,
   StatusBar,
+  Animated,
+  Dimensions,
+  PanResponder,
+  Slider
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Notifications, Location } from 'expo';
@@ -13,6 +17,7 @@ import { createSelector } from 'reselect';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import memoize from 'fast-memoize';
 
+import NewIncident from '../screens/NewIncident'
 import IncidentCard from '../components/IncidentCard';
 import { getBottomSpace } from '../utils';
 import Colors from '../constants/Colors';
@@ -28,6 +33,8 @@ import NaverMap from '../components/NaverMap';
 import { KAISTN1Coords } from '../constants/Geo';
 import { Ionicons } from '@expo/vector-icons';
 
+const SCREEN_HEIGHT = Dimensions.get('window').height
+const SCREEN_width = Dimensions.get('window').width
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
   constructor() {
@@ -49,6 +56,30 @@ class IncidentList extends React.Component {
     );
     this.handleRefresh();
     Location.watchPositionAsync({}, this.handleLocationUpdate);
+
+    this.animation = new Animated.ValueXY({x: 0, y: SCREEN_HEIGHT - 90})
+    this.panResponder = PanResponder.create({
+      onMoveShouldSetPanResponder:() => true,
+      onPanResponderGrant:(evt, gestureState) => {
+        this.animation.extractOffset()
+      },
+      onPanResponderMove: (evt, gestureState) => {
+        this.animation.setValue({x: 0, y: gestureState.dy})
+      },
+      onPanResponderRelease: (evt, gestureState) => {
+         if (gestureState.dy < 0) {
+           Animated.spring(this.animation.y, {
+             toValue: -SCREEN_HEIGHT+110,
+             tension: 0.5
+           }).start()
+         } else if (gestureState.dy > 0) {
+          Animated.spring(this.animation.y, {
+            toValue: SCREEN_HEIGHT-90,
+            tension: 0.5
+          }).start() 
+         }
+      }
+    })
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -71,7 +102,7 @@ class IncidentList extends React.Component {
 
   componentWillUnmount() {
     this.notificationSubscription.remove();
-    this.willFocusSubscription.remove();
+    this.willFocusSubscription.remove()
   }
 
   handleLocationUpdate = location => {
@@ -176,8 +207,12 @@ class IncidentList extends React.Component {
   render() {
     const selectedIncident = this.props.selectedIncident;
 
+    const animatedHeight = {
+      transform: this.animation.getTranslateTransform()
+    }
+
     return (
-      <View style={styles.container}>
+      <Animated.View style={{ flex: 1, backgroundColor: 'white'}}>
         <StatusBar backgroundColor={'transparent'} />
         <NaverMap
           ref={el => {
@@ -194,27 +229,39 @@ class IncidentList extends React.Component {
             this.state.currentLocation
           )}
         />
-
+        {this.renderCarousel()}
         <TouchableOpacity
           style={styles.menuIcon}
           onPress={() => this.props.navigation.openDrawer()}
         >
           <Image source={require('../assets/images/menu.png')} />
         </TouchableOpacity>
+        <Animated.View
+          style={[animatedHeight, {
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            zIndex: 10,
+            backgroundColor: 'orange',
+            height: SCREEN_HEIGHT,
+          }]}
+        >
+          <Animated.View
+            {... this.panResponder.panHandlers}
+            style={{
+              height: 80,
+              borderTopWidth: 1,
+              borderTopColor: '#ebe5e5',
+              flexDirection: 'row',
+              alignItems: 'center',
 
-        {this.renderCarousel()}
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.reportButton}
-            onPress={() => this.props.navigation.navigate('NewIncident')}
+            }}
           >
-            <Text style={styles.reportButtonText}>제보하기</Text>
-          </TouchableOpacity>
-        </View>
+            <NewIncident />
 
-        {/*<SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always'}}></SafeAreaView>*/}
-      </View>
+          </Animated.View>
+        </Animated.View>
+      </Animated.View>
     );
   }
 }
