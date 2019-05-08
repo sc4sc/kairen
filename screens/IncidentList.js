@@ -42,7 +42,7 @@ class IncidentList extends React.Component {
   constructor() {
     super();
 
-    this.state = { currentLocation: null };
+    this.state = { currentLocation: null, isExpanded: false };
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleEndReached = this.handleEndReached.bind(this);
     this.renderItem = this.renderItem.bind(this);
@@ -59,7 +59,7 @@ class IncidentList extends React.Component {
     this.handleRefresh();
     Location.watchPositionAsync({}, this.handleLocationUpdate);
 
-    this.animation = new Animated.ValueXY({x: 0, y: SCREEN_HEIGHT - (70 + bottomHeight)})
+    this.animation = new Animated.ValueXY({x: 0, y: SCREEN_HEIGHT - (65 + bottomHeight)})
     this.panResponder = PanResponder.create({
       onMoveShouldSetPanResponder:() => true,
       onPanResponderGrant:(evt, gestureState) => {
@@ -69,16 +69,32 @@ class IncidentList extends React.Component {
         this.animation.setValue({x: 0, y: gestureState.dy})
       },
       onPanResponderRelease: (evt, gestureState) => {
-        if (gestureState.dy < 0) {
+        if ((gestureState.dy < 0) && !this.state.isExpanded) {
           Animated.spring(this.animation.y, {
             toValue: bottomHeight == 0 ? -SCREEN_HEIGHT + 100 : -SCREEN_HEIGHT+150,
             duration: 50,
             tension: 50,
             friction: 10,
           }).start()
-        } else if (gestureState.dy > 0) {
+          this.setState({isExpanded: true})
+        } else if ((gestureState.dy < 0) && this.state.isExpanded) {
+          Animated.spring(this.animation.y, {
+            toValue: 0,
+            duration: 50,
+            tension: 50,
+            friction: 10,
+          }).start()
+        } else if ((gestureState.dy > 0) && this.state.isExpanded) {
           Animated.spring(this.animation.y, {
             toValue: bottomHeight == 0 ? SCREEN_HEIGHT - 100 : SCREEN_HEIGHT - 150,
+            duration: 50,
+            tension: 50,
+            friction: 8,
+          }).start()
+          this.setState({isExpanded: false})
+        } else if ((gestureState.dy > 0) && !this.state.isExpanded) {
+          Animated.spring(this.animation.y, {
+            toValue: 0,
             duration: 50,
             tension: 50,
             friction: 8,
@@ -257,7 +273,7 @@ class IncidentList extends React.Component {
             shadowOpacity: 1,
             shadowRadius: 10,
             backgroundColor: '#ff9412',
-            height: SCREEN_HEIGHT,
+            height: SCREEN_HEIGHT * 2,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             borderWidth: 1.5,
