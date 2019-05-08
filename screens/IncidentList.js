@@ -252,13 +252,16 @@ class IncidentList extends React.Component {
             left: 0,
             right: 0,
             elevation: 10,
+            shadowOffset: {width: 0, height: -5},
+            shadowColor: '#aaa',
+            shadowOpacity: 1,
+            shadowRadius: 10,
             backgroundColor: '#ff9412',
             height: SCREEN_HEIGHT,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             borderWidth: 1.5,
             borderColor: "#dd7507",
-            overflow: 'hidden',
           }]}
         >
           <Animated.View
