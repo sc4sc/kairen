@@ -42,7 +42,12 @@ class IncidentList extends React.Component {
   constructor() {
     super();
 
-    this.state = { currentLocation: null, isExpanded: false };
+    this.state = {
+      currentLocation: null,
+      isExpanded: false,
+      buttonWidth: new Animated.Value(SCREEN_WIDTH - 20),
+      buttonRightMargin: new Animated.Value(10),
+    };
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleEndReached = this.handleEndReached.bind(this);
     this.renderItem = this.renderItem.bind(this);
@@ -76,6 +81,14 @@ class IncidentList extends React.Component {
             tension: 50,
             friction: 10,
           }).start()
+          Animated.timing(this.state.buttonWidth, {
+            toValue: SCREEN_WIDTH,
+            duration: 200,
+          }).start();
+          Animated.timing(this.state.buttonRightMargin, {
+            toValue: 0,
+            duration: 200,
+          }).start();
           this.setState({isExpanded: true})
         } else if ((gestureState.dy < 0) && this.state.isExpanded) {
           Animated.spring(this.animation.y, {
@@ -91,6 +104,14 @@ class IncidentList extends React.Component {
             tension: 50,
             friction: 8,
           }).start()
+          Animated.timing(this.state.buttonWidth, {
+            toValue: SCREEN_WIDTH-20,
+            duration: 200,
+          }).start();
+          Animated.timing(this.state.buttonRightMargin, {
+            toValue: 10,
+            duration: 200,
+          }).start();
           this.setState({isExpanded: false})
         } else if ((gestureState.dy > 0) && !this.state.isExpanded) {
           Animated.spring(this.animation.y, {
@@ -263,22 +284,32 @@ class IncidentList extends React.Component {
           <Image source={require('../assets/images/menu.png')} />
         </TouchableOpacity>
         <Animated.View
-          style={[animatedHeight, {
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            elevation: 10,
-            shadowOffset: {width: 0, height: -5},
-            shadowColor: '#aaa',
-            shadowOpacity: 1,
-            shadowRadius: 10,
-            backgroundColor: '#ff9412',
-            height: SCREEN_HEIGHT * 2,
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            borderWidth: 1.5,
-            borderColor: "#dd7507",
-          }]}
+          style={[animatedHeight,
+            {
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              elevation: 10,
+              shadowOffset: {width: 0, height: -5},
+              shadowColor: '#aaa',
+              shadowOpacity: 1,
+              shadowRadius: 10,
+              backgroundColor: '#ff9412',
+              height: SCREEN_HEIGHT * 2,
+              width: this.state.buttonWidth.interpolate({
+                inputRange: [SCREEN_WIDTH - 20, SCREEN_WIDTH],
+                outputRange: [SCREEN_WIDTH - 20, SCREEN_WIDTH],
+              }),
+              marginLeft: this.state.buttonRightMargin.interpolate({
+                inputRange: [0, 10],
+                outputRange: [0, 10]
+              }),
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+              borderWidth: 1.5,
+              borderColor: "#dd7507",
+            },
+          ]}
         >
           <Animated.View
             {... this.panResponder.panHandlers}
