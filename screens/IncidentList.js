@@ -31,10 +31,12 @@ import {
 } from '../actions/incidentsList';
 import NaverMap from '../components/NaverMap';
 import { KAISTN1Coords } from '../constants/Geo';
-import { Ionicons } from '@expo/vector-icons';
+// import { Ionicons } from '@expo/vector-icons';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
-const SCREEN_width = Dimensions.get('window').width
+const SCREEN_WIDTH = Dimensions.get('window').width
+
+const bottomHeight = getBottomSpace()
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
   constructor() {
@@ -57,7 +59,7 @@ class IncidentList extends React.Component {
     this.handleRefresh();
     Location.watchPositionAsync({}, this.handleLocationUpdate);
 
-    this.animation = new Animated.ValueXY({x: 0, y: SCREEN_HEIGHT - 90})
+    this.animation = new Animated.ValueXY({x: 0, y: SCREEN_HEIGHT - (70 + bottomHeight)})
     this.panResponder = PanResponder.create({
       onMoveShouldSetPanResponder:() => true,
       onPanResponderGrant:(evt, gestureState) => {
@@ -67,17 +69,21 @@ class IncidentList extends React.Component {
         this.animation.setValue({x: 0, y: gestureState.dy})
       },
       onPanResponderRelease: (evt, gestureState) => {
-         if (gestureState.dy < 0) {
-           Animated.spring(this.animation.y, {
-             toValue: -SCREEN_HEIGHT+110,
-             tension: 0.5
-           }).start()
-         } else if (gestureState.dy > 0) {
+        if (gestureState.dy < 0) {
           Animated.spring(this.animation.y, {
-            toValue: SCREEN_HEIGHT-90,
-            tension: 0.5
-          }).start() 
-         }
+            toValue: bottomHeight == 0 ? -SCREEN_HEIGHT + 100 : -SCREEN_HEIGHT+150,
+            duration: 50,
+            tension: 50,
+            friction: 10,
+          }).start()
+        } else if (gestureState.dy > 0) {
+          Animated.spring(this.animation.y, {
+            toValue: bottomHeight == 0 ? SCREEN_HEIGHT - 100 : SCREEN_HEIGHT - 150,
+            duration: 50,
+            tension: 50,
+            friction: 8,
+          }).start()
+        }
       }
     })
   }
@@ -205,6 +211,7 @@ class IncidentList extends React.Component {
   }
 
   render() {
+    const { headerText } = styles;
     const selectedIncident = this.props.selectedIncident;
 
     const animatedHeight = {
@@ -212,8 +219,11 @@ class IncidentList extends React.Component {
     }
 
     return (
-      <Animated.View style={{ flex: 1, backgroundColor: 'white'}}>
-        <StatusBar backgroundColor={'transparent'} />
+      <Animated.View style={{
+        flex: 1,
+        backgroundColor: 'white',
+      }}>
+        {/* <StatusBar /> */}
         <NaverMap
           ref={el => {
             this._map = el;
@@ -241,25 +251,31 @@ class IncidentList extends React.Component {
             position: 'absolute',
             left: 0,
             right: 0,
-            zIndex: 10,
-            backgroundColor: 'orange',
+            elevation: 10,
+            backgroundColor: '#ff9412',
             height: SCREEN_HEIGHT,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            borderWidth: 1.5,
+            borderColor: "#dd7507",
+            overflow: 'hidden',
           }]}
         >
           <Animated.View
             {... this.panResponder.panHandlers}
             style={{
-              height: 80,
-              borderTopWidth: 1,
-              borderTopColor: '#ebe5e5',
+              height: 70 + bottomHeight,
+              width: SCREEN_WIDTH,
               flexDirection: 'row',
-              alignItems: 'center',
-
+              alignItems: 'flex-start',
+              paddingTop: 20,
             }}
           >
-            <NewIncident />
-
+            <View>
+              <Text style={headerText}>제보 종류 선택</Text>
+            </View>
           </Animated.View>
+          <NewIncident />
         </Animated.View>
       </Animated.View>
     );
@@ -283,6 +299,12 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: { fontSize: 28, fontWeight: '800', color: Colors.defaultBlack },
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    marginLeft: 20,
+  },
   menuIcon: {
     position: 'absolute',
     top: 50,
