@@ -107,7 +107,7 @@ class NewIncidentDetail extends React.Component {
         building: this.state.locationName,
       },
       () => {
-        this.props.navigation.dispatch(StackActions.popToTop());
+        // this.props.navigation.dispatch(StackActions.popToTop());
       }
     );
   }
@@ -168,34 +168,9 @@ class NewIncidentDetail extends React.Component {
 
     return (
       <View style={container}>
-        <StatusBar barStyle="light-content" backgroundColor="#ff9412" />
-        <View style={headerContainer}>
-          <TouchableWithoutFeedback
-            onPress={() => this.props.navigation.goBack()}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image
-                style={styles.backIcon}
-                source={require('../assets/images/group-5.png')}
-              />
-              <Text style={headerText}>{this.props.selectedIncident}</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.dispatch(StackActions.popToTop())
-            }
-          >
-            <Image
-              source={require('../assets/images/combined-shape.png')}
-              style={{ width: 20, height: 20, marginRight: 22 }}
-            />
-          </TouchableOpacity>
-        </View>
-
         <NaverMap
           ref={el => (this.map = el)}
-          style={{ flex: 1 }}
+          style={{ flex: 1, height: 500 }}
           onInit={this.handleMapInit}
           markers={this.getMarkers(this.state.markerCoords)}
           onPress={this.handlePressMap}
@@ -228,29 +203,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fffaf4',
-  },
-  headerContainer: {
-    paddingTop: statusBarHeight + (getBottomSpace() == 0 ? 20 : 25),
-    paddingBottom: 22,
-    flexDirection: 'row',
-    backgroundColor: '#ff9412',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-    marginLeft: 10,
-  },
-  backIcon: {
-    width: 19,
-    height: 22,
-    marginLeft: 20,
+    // marginTop: -100,
+    height: 100,
   },
   searchBoxContainer: {
     width: Layout.window.width - 40,
-    top: 115,
+    top: 20,
     position: 'absolute',
     borderRadius: 10,
     elevation: 3,
@@ -279,7 +237,7 @@ const styles = StyleSheet.create({
   buttonStyle: {
     position: 'absolute',
     width: Layout.window.width - 30,
-    bottom: 38,
+    bottom: 0,
     backgroundColor: '#f47b36',
     borderRadius: 10,
     marginHorizontal: 15,

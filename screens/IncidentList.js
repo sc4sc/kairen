@@ -18,6 +18,7 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 import memoize from 'fast-memoize';
 
 import NewIncident from '../screens/NewIncident'
+import NewIncidentDetail from '../screens/NewIncidentDetail'
 import IncidentCard from '../components/IncidentCard';
 import { getBottomSpace } from '../utils';
 import Colors from '../constants/Colors';
@@ -47,6 +48,7 @@ class IncidentList extends React.Component {
       isExpanded: false,
       buttonWidth: new Animated.Value(SCREEN_WIDTH - 20),
       buttonRightMargin: new Animated.Value(10),
+      page: 1,
     };
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleEndReached = this.handleEndReached.bind(this);
@@ -89,7 +91,7 @@ class IncidentList extends React.Component {
             toValue: 0,
             duration: 200,
           }).start();
-          this.setState({isExpanded: true})
+          this.setState({isExpanded: true })
         } else if ((gestureState.dy < 0) && this.state.isExpanded) {
           Animated.spring(this.animation.y, {
             toValue: 0,
@@ -112,7 +114,7 @@ class IncidentList extends React.Component {
             toValue: 10,
             duration: 200,
           }).start();
-          this.setState({isExpanded: false})
+          this.setState({isExpanded: false, page: 1})
         } else if ((gestureState.dy > 0) && !this.state.isExpanded) {
           Animated.spring(this.animation.y, {
             toValue: 0,
@@ -247,6 +249,12 @@ class IncidentList extends React.Component {
     );
   }
 
+  nextPage = () => {
+    this.setState({
+      page: 2,
+    })
+  }
+
   render() {
     const { headerText } = styles;
     const selectedIncident = this.props.selectedIncident;
@@ -295,7 +303,7 @@ class IncidentList extends React.Component {
               shadowOpacity: 1,
               shadowRadius: 10,
               backgroundColor: '#ff9412',
-              height: SCREEN_HEIGHT * 2,
+              height: SCREEN_HEIGHT-50,
               width: this.state.buttonWidth.interpolate({
                 inputRange: [SCREEN_WIDTH - 20, SCREEN_WIDTH],
                 outputRange: [SCREEN_WIDTH - 20, SCREEN_WIDTH],
@@ -315,6 +323,7 @@ class IncidentList extends React.Component {
             {... this.panResponder.panHandlers}
             style={{
               height: 70 + bottomHeight,
+              // height: 70,
               width: SCREEN_WIDTH,
               flexDirection: 'row',
               alignItems: 'flex-start',
@@ -325,7 +334,14 @@ class IncidentList extends React.Component {
               <Text style={headerText}>제보 종류 선택</Text>
             </View>
           </Animated.View>
-          <NewIncident />
+          {
+            this.state.page == 1
+            ? (
+              <NewIncident nextPage={this.nextPage}/>
+            ) : (
+              <NewIncidentDetail />
+            )
+          }
         </Animated.View>
       </Animated.View>
     );

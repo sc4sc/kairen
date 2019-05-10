@@ -32,7 +32,8 @@ class NewIncident extends React.Component {
         title={incident.title}
         onPress={() => {
           this.props.selectIncident(incident.type);
-          this.props.navigation.navigate('NewIncidentDetail');
+          this.props.nextPage()
+          // this.props.navigation.navigate('NewIncidentDetail');
         }}
       />
     );
