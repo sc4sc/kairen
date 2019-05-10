@@ -59,7 +59,7 @@ export function requestLogout() {
 }
 
 export function updatePushToken(expotoken) {
-  return axios.post(`${serverURL}/updatePushToken`, {
+  return axiosInstance.post(`${serverURL}/updatePushToken`, {
     expotoken
   }).then(response => response.data)
 }
