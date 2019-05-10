@@ -68,7 +68,9 @@ class IncidentList extends React.Component {
 
     this.animation = new Animated.ValueXY({x: 0, y: SCREEN_HEIGHT - (65 + bottomHeight)})
     this.panResponder = PanResponder.create({
-      onMoveShouldSetPanResponder:() => true,
+      onMoveShouldSetPanResponder:(evt, gestureState) => {
+        return !(gestureState.dx === 0 && gestureState.dy === 0)
+      },
       onPanResponderGrant:(evt, gestureState) => {
         this.animation.extractOffset()
       },
@@ -92,6 +94,7 @@ class IncidentList extends React.Component {
             duration: 200,
           }).start();
           this.setState({isExpanded: true })
+          console.log('open')
         } else if ((gestureState.dy < 0) && this.state.isExpanded) {
           Animated.spring(this.animation.y, {
             toValue: 0,
@@ -115,6 +118,7 @@ class IncidentList extends React.Component {
             duration: 200,
           }).start();
           this.setState({isExpanded: false, page: 1})
+          console.log('close')
         } else if ((gestureState.dy > 0) && !this.state.isExpanded) {
           Animated.spring(this.animation.y, {
             toValue: 0,
@@ -255,6 +259,44 @@ class IncidentList extends React.Component {
     })
   }
 
+  toggleButtonExpand = (e) => {
+    if (this.state.isExpanded) {
+      Animated.spring(this.animation.y, {
+        toValue: bottomHeight == 0 ? SCREEN_HEIGHT - 50 : SCREEN_HEIGHT - 100,
+        duration: 50,
+        tension: 50,
+        friction: 8,
+      }).start()
+      Animated.timing(this.state.buttonWidth, {
+        toValue: SCREEN_WIDTH-20,
+        duration: 200,
+      }).start();
+      Animated.timing(this.state.buttonRightMargin, {
+        toValue: 10,
+        duration: 200,
+      }).start();
+      this.setState({isExpanded: false, page: 1})
+      console.log('close')
+    } else {
+      Animated.spring(this.animation.y, {
+        toValue: bottomHeight == 0 ? 10 : 60,
+        duration: 50,
+        tension: 50,
+        friction: 10,
+      }).start()
+      Animated.timing(this.state.buttonWidth, {
+        toValue: SCREEN_WIDTH,
+        duration: 200,
+      }).start();
+      Animated.timing(this.state.buttonRightMargin, {
+        toValue: 0,
+        duration: 200,
+      }).start();
+      this.setState({isExpanded: true })
+      console.log('open')
+    }
+  }
+
   render() {
     const { headerText } = styles;
     const selectedIncident = this.props.selectedIncident;
@@ -319,21 +361,26 @@ class IncidentList extends React.Component {
             },
           ]}
         >
-          <Animated.View
-            {... this.panResponder.panHandlers}
-            style={{
-              height: 70 + bottomHeight,
-              // height: 70,
-              width: SCREEN_WIDTH,
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-              paddingTop: 20,
-            }}
-          >
-            <View>
-              <Text style={headerText}>제보 종류 선택</Text>
-            </View>
-          </Animated.View>
+            <Animated.View
+              {... this.panResponder.panHandlers}
+              style={{
+                height: 70 + bottomHeight,
+                // height: 70,
+                width: SCREEN_WIDTH,
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+                paddingTop: 20,
+              }}
+            >
+              <TouchableOpacity
+                onPress={e => this.toggleButtonExpand(e)}
+                style={{width: '100%', height: '100%'}}
+              >
+                <Text style={headerText}>
+                  제보 종류 선택
+                </Text>
+              </TouchableOpacity>
+            </Animated.View>
           {
             this.state.page == 1
             ? (
