@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, Linking, TouchableOpacity } from 'react-native';
 import { getBottomSpace, getStatusBarHeight } from '../utils/index.js';
 import * as contacts from '../constants/Contacts';
+import i18n from '../i18n';
 
 const topMargin = getStatusBarHeight();
 const bottomMargin = getBottomSpace();
@@ -22,13 +23,22 @@ export default class SafetyContact extends React.Component {
       <View style={container}>
         <View>
           <Text style={headerText}>KAIREN</Text>
+          {/* <View style={contentContainer}>
+            <View style={circle} />
+            <View style={circle} />
+            <View style={circle} />
+            <Text style={notAppliedText}> 주의 제보 (준비 중)</Text>
+          </View> */}
+
           <TouchableOpacity
             onPress={() => Linking.openURL(`tel:${contacts.campusPolice}`)}
           >
             <View style={contentContainer}>
               <Image source={require('../assets/images/group-9.png')} />
               <View style={{ width: 5 }} />
-              <Text style={{ fontSize: 16 }}> 캠퍼스 폴리스에 연락하기 </Text>
+              <Text style={{ fontSize: 16 }}>
+                {i18n.t('call_to_campus_police')}
+              </Text>
             </View>
           </TouchableOpacity>
 
@@ -38,7 +48,9 @@ export default class SafetyContact extends React.Component {
             <View style={contentContainer}>
               <Image source={require('../assets/images/group-9.png')} />
               <View style={{ width: 5 }} />
-              <Text style={{ fontSize: 16 }}> 안전팀에 연락하기 </Text>
+              <Text style={{ fontSize: 16 }}>
+                {i18n.t('call_to_secure_team')}
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -49,7 +61,7 @@ export default class SafetyContact extends React.Component {
           <View style={contentContainersecond}>
             <Image source={require('../assets/images/setting_icon.png')} />
             <View style={{ width: 5 }} />
-            <Text style={{ fontSize: 16 }}>설정</Text>
+            <Text style={{ fontSize: 16 }}>{i18n.t('setting')}</Text>
           </View>
         </TouchableOpacity>
       </View>

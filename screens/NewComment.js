@@ -14,11 +14,11 @@ import {
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
-
 import Spinner from '../components/Spinner';
 import * as apis from '../apis';
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
+import i18n from '../i18n';
 
 class NewComment extends React.Component {
   constructor() {
@@ -64,7 +64,7 @@ class NewComment extends React.Component {
           <AndroidTopMargin />
           {this.state.loading && <Spinner overlay />}
           <View style={styles.headerContainer}>
-            <Text style={styles.header}> 새로운 의견 등록하기 </Text>
+            <Text style={styles.header}>{i18n.t('new_comment')}</Text>
             <TouchableWithoutFeedback
               onPress={() => {
                 this.props.navigation.goBack();
@@ -95,7 +95,7 @@ class NewComment extends React.Component {
                 style={styles.buttonStyle}
                 onPress={this.onButtonPress.bind(this)}
               >
-                <Text style={styles.buttonText}>등록하기</Text>
+                <Text style={styles.buttonText}>{i18n.t('enroll')}</Text>
               </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>

@@ -27,7 +27,7 @@ export class CommentReplyCard extends React.Component {
           />
         </View>
         <View style={styles.buttonContainer}>
-          <Text style={styles.cancleText} onPress={this.props.onCanclePress}>
+          <Text style={styles.cancelText} onPress={this.props.onCancelPress}>
             취소
           </Text>
           <TouchableOpacity
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  cancleText: {
+  cancelText: {
     flex: 1,
     fontSize: 13,
     letterSpacing: -0.5,

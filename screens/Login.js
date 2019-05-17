@@ -1,21 +1,10 @@
 import React from 'react';
-import {
-  Alert,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { Alert, View, Text, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
-import { CheckBox } from 'react-native-elements';
-
+import i18n from '../i18n';
 import Layout from '../constants/Layout';
-import AndroidTopMargin from '../components/AndroidTopMargin';
 import Spinner from '../components/Spinner';
-import { authLoginRequest, authToggleSecureTeam } from '../actions/auth';
-
+import { authLoginRequest } from '../actions/auth';
 import { getStatusBarHeight } from '../utils/index.js';
 
 const statusBarHeight = getStatusBarHeight();
@@ -59,7 +48,7 @@ class Login extends React.Component {
             {this.props.isLoading ? (
               <Spinner size="small" />
             ) : (
-              <Text style={styles.mainText}>KAIST 통합아이디 로그인</Text>
+              <Text style={styles.mainText}>{i18n.t('SSO')}</Text>
             )}
           </TouchableOpacity>
           <Text
@@ -68,7 +57,7 @@ class Login extends React.Component {
               this.props.navigation.navigate('AboutUs', { parent: '로그인' })
             }
           >
-            이 앱에 대하여
+            {i18n.t('about_us')}
           </Text>
         </View>
       </View>

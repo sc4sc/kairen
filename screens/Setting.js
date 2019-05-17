@@ -16,6 +16,7 @@ import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import Spinner from '../components/Spinner';
 import * as apis from '../apis';
+import i18n from '../i18n';
 
 class Setting extends React.Component {
   constructor() {
@@ -56,7 +57,7 @@ class Setting extends React.Component {
         <AndroidTopMargin />
         {this.state.loading && <Spinner overlay />}
         <View style={styles.headerContainer}>
-          <Text style={styles.header}> 설정 </Text>
+          <Text style={styles.header}>{i18n.t('setting')}</Text>
           <View style={styles.buttonContainer}>
             <TouchableWithoutFeedback onPress={this.goBack.bind(this)}>
               <View style={{ width: 20, alignItems: 'center' }}>
@@ -67,7 +68,7 @@ class Setting extends React.Component {
         </View>
 
         <View style={styles.cardContainer}>
-          <Text style={styles.cardTitle}> 계정 </Text>
+          <Text style={styles.cardTitle}>{i18n.t('account')}</Text>
           <View style={[styles.cardContent, styles.accountContainer]}>
             <Text style={{ fontSize: 15 }}> {this.props.user.ku_kname} </Text>
             <TouchableOpacity onPress={this.onLogoutPress}>
@@ -121,13 +122,15 @@ class Setting extends React.Component {
           <TouchableWithoutFeedback
             onPress={() => Linking.openURL('mailto:kairen@kaist.ac.kr')}
           >
-            <Text style={{ fontSize: 15, marginVertical: 17 }}>문의하기</Text>
+            <Text style={{ fontSize: 15, marginVertical: 17 }}>
+              {i18n.t('ask_us')}
+            </Text>
           </TouchableWithoutFeedback>
           <Text
             style={{ fontSize: 15, marginVertical: 17 }}
             onPress={() => this.goToAboutPage()}
           >
-            이 앱에 대하여
+            {i18n.t('about_us')}
           </Text>
         </View>
       </SafeAreaView>

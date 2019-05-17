@@ -10,6 +10,7 @@ import {
 import Layout from '../constants/Layout';
 import { requestPermission } from '../utils';
 import * as Permissions from 'expo-permissions';
+import i18n from '../i18n';
 
 export default class Permission extends React.Component {
   state = {
@@ -48,7 +49,9 @@ export default class Permission extends React.Component {
   renderPermissionWait() {
     return (
       <View style={[styles.buttonStyle, styles.buttonDisabled]}>
-        <Text style={styles.buttonDisabledText}>권한 승인 대기 중</Text>
+        <Text style={styles.buttonDisabledText}>
+          {i18n.t('wait_for_permission')}
+        </Text>
       </View>
     );
   }
@@ -60,7 +63,7 @@ export default class Permission extends React.Component {
         onPress={() => this.props.navigation.navigate('AuthLoading')}
       >
         <Text style={[styles.buttonEnabledText, { alignItems: 'center' }]}>
-          다음으로
+          {i18n.t('next')}
         </Text>
         <Image
           style={{ marginLeft: 7.5 }}
@@ -76,9 +79,9 @@ export default class Permission extends React.Component {
         <StatusBar backgroundColor="white" barStyle="dark-content" />
 
         <View>
-          <Text style={styles.headerText}>권한 설정</Text>
+          <Text style={styles.headerText}>{i18n.t('permission')}</Text>
           <Text style={[styles.plainText, { marginBottom: 55 }]}>
-            KAIREN을 이용하기 위해서 다음의 권한이 필요합니다:
+            {i18n.t('permission_description')}
           </Text>
 
           <View style={styles.permissionContainer}>
@@ -88,18 +91,16 @@ export default class Permission extends React.Component {
 
             <View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={styles.permissionType}>위치</Text>
+                <Text style={styles.permissionType}>{i18n.t('location')}</Text>
                 {this.state.locationPermission ? (
                   <Image source={require('../assets/images/check.png')} />
                 ) : (
                   <Text style={{ color: '#bdbdbd', letterSpacing: -0.9 }}>
-                    권한 승인 대기 중
+                    {i18n.t('wait_for_permission')}
                   </Text>
                 )}
               </View>
-              <Text style={styles.plainText}>
-                현재 위치를 지도에 표시합니다.
-              </Text>
+              <Text style={styles.plainText}>{i18n.t('current_location')}</Text>
             </View>
           </View>
           {this.state.locationPermission

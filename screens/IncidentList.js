@@ -35,6 +35,7 @@ import {
 } from '../actions/incidentsList';
 import NaverMap from '../components/NaverMap';
 import { KAISTN1Coords } from '../constants/Geo';
+import i18n from '../i18n';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -221,7 +222,7 @@ class IncidentList extends React.Component {
       return (
         <View style={styles.emptyIncidentBox} pointerEvents={'none'}>
           <Text style={{ fontSize: 13, color: '#4a4a4a' }}>
-            사고 목록이 비어있습니다.
+            {i18n.t('empty_incidents')}
           </Text>
         </View>
       );
@@ -356,7 +357,7 @@ class IncidentList extends React.Component {
             style={styles.reportButton}
             onPress={() => this.props.navigation.navigate('NewIncident')}
           >
-            <Text style={styles.reportButtonText}>제보하기</Text>
+            <Text style={styles.reportButtonText}>{i18n.t('report')}</Text>
           </TouchableOpacity>
         </View>
         {/* to here */}

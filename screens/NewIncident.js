@@ -17,6 +17,7 @@ import * as actions from '../actions/newIncident';
 import { types as incidentTypes } from '../constants/Incidents';
 import { incidentsListRefresh } from '../actions/incidentsList';
 import { blockStatement } from '@babel/types';
+import i18n from '../i18n';
 
 const statusBarHeight = getStatusBarHeight();
 
@@ -53,10 +54,9 @@ class NewIncident extends React.Component {
 
     return (
       <View style={container}>
-        {/* TODO: Comment this block, from here */}
-        <StatusBar backgroundColor="#ff0000" barStyle="light-content" />
+        <StatusBar backgroundColor={'#ff9412'} barStyle={'light-content'} />
         <View style={headerContainer}>
-          <Text style={headerText}>제보 종류 선택</Text>
+          <Text style={headerText}>{i18n.t('select_incident')}</Text>
           <TouchableOpacity
             onPress={() =>
               this.props.navigation.dispatch(StackActions.popToTop())
@@ -71,16 +71,12 @@ class NewIncident extends React.Component {
         {/* to here */}
 
         <View style={{ flex: 1, paddingHorizontal: 20, marginTop: 27 }}>
-          <Text style={styles.subHeaderText}>긴급제보</Text>
+          <Text style={styles.subHeaderText}>{i18n.t('emergency_report')}</Text>
           <FlatList
+            showsVerticalScrollIndicator={false}
             data={incidentTypes}
-            keyExtractor={(item, index) => `${index}`}
             renderItem={this.renderItem}
           />
-
-          {/* TODO: Uncomment this View, from here */}
-          <View style={{ height: 40 }}></View>
-          {/* to here */}
         </View>
       </View>
     );
@@ -100,8 +96,8 @@ const styles = StyleSheet.create({
 
   // TODO: Comment this style block, from here
   headerContainer: {
-    paddingTop: statusBarHeight + (getBottomSpace() == 0 ? 20 : 25),
-    paddingBottom: 22,
+    paddingTop: statusBarHeight + (getBottomSpace() == 0 ? 15 : 20),
+    paddingBottom: 17,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
     justifyContent: 'space-between',

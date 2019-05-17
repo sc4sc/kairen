@@ -19,6 +19,7 @@ import * as apis from '../apis';
 import Spinner from '../components/Spinner';
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
+import i18n from '../i18n';
 
 class NewProgress extends React.Component {
   constructor() {
@@ -27,23 +28,10 @@ class NewProgress extends React.Component {
   }
 
   onButtonPress() {
-    if (this.state.text.trim() === '') {
-      Alert.alert(
-        '내용을 입력해주세요.',
-        '공백으로 이루어진 메세지는 등록하실 수 없습니다.'
-      );
-      this.setState({ text: '' });
-      return;
-    }
-
-    Alert.alert(
-      '진행 상황을 등록하시겠습니까?',
-      '가장 최근 진행 상황이 사건 사고 목록에 표시됩니다.',
-      [
-        { text: '취소' },
-        { text: '확인', onPress: this.postProgress.bind(this) },
-      ]
-    );
+    Alert.alert(i18n.t('progress_alert_title'), i18n.t('progress_alert'), [
+      { text: i18n.t('cancel') },
+      { text: i18n.t('confirm'), onPress: this.postProgress.bind(this) },
+    ]);
   }
 
   postProgress() {
@@ -72,7 +60,7 @@ class NewProgress extends React.Component {
           <AndroidTopMargin />
           {this.state.loading && <Spinner overlay />}
           <View style={styles.headerContainer}>
-            <Text style={styles.header}>진행 상황 등록하기</Text>
+            <Text style={styles.header}>{i18n.t('new_progress')}</Text>
             <TouchableWithoutFeedback
               onPress={() => {
                 this.props.navigation.goBack();
@@ -90,7 +78,7 @@ class NewProgress extends React.Component {
           >
             <TextInput
               style={styles.textInputStyle}
-              placeholder="여기에 입력하세요..."
+              placeholder={i18n.t('placeholder')}
               onChangeText={text => this.setState({ text })}
               value={this.state.text}
               multiline
@@ -103,7 +91,7 @@ class NewProgress extends React.Component {
                 style={styles.buttonStyle}
                 onPress={this.onButtonPress.bind(this)}
               >
-                <Text style={styles.buttonText}>등록하기</Text>
+                <Text style={styles.buttonText}>{i18n.t('enroll')}</Text>
               </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
