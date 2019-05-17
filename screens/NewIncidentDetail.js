@@ -98,7 +98,7 @@ class NewIncidentDetail extends React.Component {
     }
   };
 
-  report() {
+  report = async () =>{
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,
@@ -107,7 +107,8 @@ class NewIncidentDetail extends React.Component {
         building: this.state.locationName,
       },
       () => {
-        this.props.navigation.dispatch(StackActions.popToTop());
+        // this.props.navigation.dispatch(StackActions.popToTop());
+        this.props.shrinkButton()
       }
     );
   }
@@ -168,34 +169,9 @@ class NewIncidentDetail extends React.Component {
 
     return (
       <View style={container}>
-        <StatusBar barStyle="light-content" backgroundColor="#ff9412" />
-        <View style={headerContainer}>
-          <TouchableWithoutFeedback
-            onPress={() => this.props.navigation.goBack()}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image
-                style={styles.backIcon}
-                source={require('../assets/images/group-5.png')}
-              />
-              <Text style={headerText}>{this.props.selectedIncident}</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.dispatch(StackActions.popToTop())
-            }
-          >
-            <Image
-              source={require('../assets/images/combined-shape.png')}
-              style={{ width: 20, height: 20, marginRight: 22 }}
-            />
-          </TouchableOpacity>
-        </View>
-
         <NaverMap
           ref={el => (this.map = el)}
-          style={{ flex: 1 }}
+          style={{ flex: 1, height: 500 }}
           onInit={this.handleMapInit}
           markers={this.getMarkers(this.state.markerCoords)}
           onPress={this.handlePressMap}
@@ -206,51 +182,39 @@ class NewIncidentDetail extends React.Component {
             <Text style={styles.searchText}>{this.state.locationName}</Text>
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          onPress={this.handlePressReport}
-        >
-          <Text style={styles.buttonText}>제보 등록</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.gpsButton}
-          onPress={this.locatePosition}
-        >
-          <Image source={require('../assets/images/group-2.png')} />
-        </TouchableOpacity>
+        <View style={styles.buttons}>
+          <TouchableOpacity
+            style={styles.gpsButton}
+            onPress={this.locatePosition}
+          >
+            <Image source={require('../assets/images/group-2.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={this.handlePressReport}
+          >
+            <Text style={styles.buttonText}>제보 등록</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  buttons: {
+    position: 'absolute',
+    bottom: 60 + getBottomSpace(),
+  },
   container: {
     flex: 1,
     backgroundColor: '#fffaf4',
-  },
-  headerContainer: {
-    paddingTop: statusBarHeight + (getBottomSpace() == 0 ? 20 : 25),
-    paddingBottom: 22,
-    flexDirection: 'row',
-    backgroundColor: '#ff9412',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-    marginLeft: 10,
-  },
-  backIcon: {
-    width: 19,
-    height: 22,
-    marginLeft: 20,
+    // marginTop: -100,
+    height: 100,
   },
   searchBoxContainer: {
     width: Layout.window.width - 40,
-    top: 115,
+    top: 20,
     position: 'absolute',
     borderRadius: 10,
     elevation: 3,
@@ -277,9 +241,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonStyle: {
-    position: 'absolute',
     width: Layout.window.width - 30,
-    bottom: 38,
     backgroundColor: '#f47b36',
     borderRadius: 10,
     marginHorizontal: 15,
@@ -291,13 +253,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 10 },
   },
   gpsButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 116,
-    right: 22,
-    width: 45,
-    height: 45,
     alignSelf: 'flex-end',
     shadowOffset: { width: 0, height: 2 },
     shadowColor: 'black',

@@ -5,7 +5,9 @@ import {
   TouchableOpacity,
   Image,
   View,
-  StatusBar,
+  Animated,
+  Dimensions,
+  PanResponder,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Notifications, Location } from 'expo';
@@ -13,6 +15,8 @@ import { createSelector } from 'reselect';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import memoize from 'fast-memoize';
 
+import NewIncident from '../screens/NewIncident'
+import NewIncidentDetail from '../screens/NewIncidentDetail'
 import IncidentCard from '../components/IncidentCard';
 import { getBottomSpace } from '../utils';
 import Colors from '../constants/Colors';
@@ -26,14 +30,26 @@ import {
 } from '../actions/incidentsList';
 import NaverMap from '../components/NaverMap';
 import { KAISTN1Coords } from '../constants/Geo';
-import { Ionicons } from '@expo/vector-icons';
+// import { Ionicons } from '@expo/vector-icons';
 
+const SCREEN_HEIGHT = Dimensions.get('window').height
+const SCREEN_WIDTH = Dimensions.get('window').width
+
+const bottomHeight = getBottomSpace()
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
   constructor() {
     super();
 
-    this.state = { currentLocation: null };
+    this.state = {
+      currentLocation: null,
+      isExpanded: false,
+      buttonWidth: new Animated.Value(SCREEN_WIDTH - 20),
+      buttonRightMargin: new Animated.Value(10),
+      page: 1,
+      touchedOpen: false,
+      touchedClose: false,
+    };
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleEndReached = this.handleEndReached.bind(this);
     this.renderItem = this.renderItem.bind(this);
@@ -49,6 +65,68 @@ class IncidentList extends React.Component {
     );
     this.handleRefresh();
     Location.watchPositionAsync({}, this.handleLocationUpdate);
+
+    this.animation = new Animated.ValueXY({x: 0, y: SCREEN_HEIGHT - (65 + bottomHeight)})
+    this.panResponder = PanResponder.create({
+      onMoveShouldSetPanResponder:(evt, gestureState) => {
+        return !(gestureState.dx === 0 && gestureState.dy === 0)
+      },
+      onPanResponderGrant:(evt, gestureState) => {
+        this.animation.extractOffset()
+      },
+      onPanResponderMove: (evt, gestureState) => {
+        this.animation.setValue({x: 0, y: gestureState.dy})
+      },
+      onPanResponderRelease: (evt, gestureState) => {
+        if ((gestureState.dy < 0) && !this.state.isExpanded) {
+          Animated.spring(this.animation.y, {
+            toValue: bottomHeight == 0 ? -SCREEN_HEIGHT + 100 : -SCREEN_HEIGHT+150,
+            duration: 50,
+            tension: 50,
+            friction: 10,
+          }).start()
+          Animated.timing(this.state.buttonWidth, {
+            toValue: SCREEN_WIDTH,
+            duration: 200,
+          }).start();
+          Animated.timing(this.state.buttonRightMargin, {
+            toValue: 0,
+            duration: 200,
+          }).start();
+          this.setState({isExpanded: true })
+        } else if ((gestureState.dy < 0) && this.state.isExpanded) {
+          Animated.spring(this.animation.y, {
+            toValue: 0,
+            duration: 50,
+            tension: 50,
+            friction: 10,
+          }).start()
+        } else if ((gestureState.dy > 0) && this.state.isExpanded) {
+          Animated.spring(this.animation.y, {
+            toValue: bottomHeight == 0 ? SCREEN_HEIGHT - 100 : SCREEN_HEIGHT - 150,
+            duration: 50,
+            tension: 50,
+            friction: 8,
+          }).start()
+          Animated.timing(this.state.buttonWidth, {
+            toValue: SCREEN_WIDTH-20,
+            duration: 200,
+          }).start();
+          Animated.timing(this.state.buttonRightMargin, {
+            toValue: 10,
+            duration: 200,
+          }).start();
+          this.setState({isExpanded: false, page: 1})
+        } else if ((gestureState.dy > 0) && !this.state.isExpanded) {
+          Animated.spring(this.animation.y, {
+            toValue: 0,
+            duration: 50,
+            tension: 50,
+            friction: 8,
+          }).start()
+        }
+      }
+    })
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -71,7 +149,7 @@ class IncidentList extends React.Component {
 
   componentWillUnmount() {
     this.notificationSubscription.remove();
-    this.willFocusSubscription.remove();
+    this.willFocusSubscription.remove()
   }
 
   handleLocationUpdate = location => {
@@ -173,12 +251,56 @@ class IncidentList extends React.Component {
     );
   }
 
+  nextPage = () => {
+    this.setState({
+      page: 2,
+    })
+  }
+
+  shrinkButton = async () => {
+    if (this.state.isExpanded) {
+      Animated.spring(this.animation.y, {
+        toValue: (bottomHeight == 0) ? (this.state.touchedOpen ? 150 : -50) : (this.state.touchedOpen ?  200 : 0),
+        duration: 50,
+        tension: 50,
+        friction: 8,
+      }).start()
+      Animated.timing(this.state.buttonWidth, {
+        toValue: SCREEN_WIDTH-20,
+        duration: 200,
+      }).start();
+      Animated.timing(this.state.buttonRightMargin, {
+        toValue: 10,
+        duration: 200,
+      }).start();
+      await this.setState({isExpanded: false, page: 1, touchedOpen: false, touchedClose: true})
+
+      this.notificationSubscription = Notifications.addListener(notification =>
+        console.log('Notification arrived:', notification)
+      );
+      this.willFocusSubscription = this.props.navigation.addListener(
+        'willFocus',
+        this.handleRefresh
+      );
+      this.handleRefresh();
+      Location.watchPositionAsync({}, this.handleLocationUpdate);
+    }
+  }
+
   render() {
+    const { headerText } = styles;
     const selectedIncident = this.props.selectedIncident;
 
+    const animatedHeight = {
+      transform: this.animation.getTranslateTransform()
+    }
+
     return (
-      <View style={styles.container}>
-        <StatusBar backgroundColor={'transparent'} />
+      <Animated.View style={{
+        flex: 1,
+        backgroundColor: 'white',
+      }}>
+        {/* <StatusBar /> */}
         <NaverMap
           ref={el => {
             this._map = el;
@@ -194,27 +316,63 @@ class IncidentList extends React.Component {
             this.state.currentLocation
           )}
         />
-
+        {this.renderCarousel()}
         <TouchableOpacity
           style={styles.menuIcon}
           onPress={() => this.props.navigation.openDrawer()}
         >
           <Image source={require('../assets/images/menu.png')} />
         </TouchableOpacity>
-
-        {this.renderCarousel()}
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.reportButton}
-            onPress={() => this.props.navigation.navigate('NewIncident')}
-          >
-            <Text style={styles.reportButtonText}>제보하기</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/*<SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always'}}></SafeAreaView>*/}
-      </View>
+        <Animated.View
+          style={[animatedHeight,
+            {
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              elevation: 10,
+              shadowOffset: {width: 0, height: 0},
+              shadowColor: '#aaa',
+              shadowOpacity: 1,
+              shadowRadius: 5,
+              backgroundColor: '#ff9412',
+              height: SCREEN_HEIGHT,
+              width: this.state.buttonWidth.interpolate({
+                inputRange: [SCREEN_WIDTH - 20, SCREEN_WIDTH],
+                outputRange: [SCREEN_WIDTH - 20, SCREEN_WIDTH],
+              }),
+              marginLeft: this.state.buttonRightMargin.interpolate({
+                inputRange: [0, 10],
+                outputRange: [0, 10]
+              }),
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+            },
+          ]}
+        >
+            <Animated.View
+              {... this.panResponder.panHandlers}
+              style={{
+                height: this.state.isExpanded ? 70 : 70 + bottomHeight,
+                width: SCREEN_WIDTH,
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+                paddingTop: 20,
+              }}
+            >
+              <Text style={headerText}>
+                제보 하기
+              </Text>
+            </Animated.View>
+          {
+            this.state.page == 1
+            ? (
+              <NewIncident nextPage={this.nextPage}/>
+            ) : (
+              <NewIncidentDetail shrinkButton={this.shrinkButton}/>
+            )
+          }
+        </Animated.View>
+      </Animated.View>
     );
   }
 }
@@ -236,6 +394,12 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: { fontSize: 28, fontWeight: '800', color: Colors.defaultBlack },
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    marginLeft: 20,
+  },
   menuIcon: {
     position: 'absolute',
     top: 50,
