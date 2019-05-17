@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
   buttonStyle: {
     position: 'absolute',
     width: Layout.window.width - 30,
-    bottom: 0,
+    bottom: 50 + getBottomSpace(),
     backgroundColor: '#f47b36',
     borderRadius: 10,
     marginHorizontal: 15,

@@ -330,12 +330,12 @@ class IncidentList extends React.Component {
               left: 0,
               right: 0,
               elevation: 10,
-              shadowOffset: {width: 0, height: -5},
+              shadowOffset: {width: 0, height: 0},
               shadowColor: '#aaa',
               shadowOpacity: 1,
-              shadowRadius: 10,
+              shadowRadius: 5,
               backgroundColor: '#ff9412',
-              height: SCREEN_HEIGHT-50,
+              height: SCREEN_HEIGHT,
               width: this.state.buttonWidth.interpolate({
                 inputRange: [SCREEN_WIDTH - 20, SCREEN_WIDTH],
                 outputRange: [SCREEN_WIDTH - 20, SCREEN_WIDTH],
@@ -346,16 +346,13 @@ class IncidentList extends React.Component {
               }),
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
-              borderWidth: 1.5,
-              borderColor: "#dd7507",
             },
           ]}
         >
             <Animated.View
               {... this.panResponder.panHandlers}
               style={{
-                height: 70 + bottomHeight,
-                // height: 70,
+                height: this.state.isExpanded ? 70 : 70 + bottomHeight,
                 width: SCREEN_WIDTH,
                 flexDirection: 'row',
                 alignItems: 'flex-start',
@@ -363,7 +360,7 @@ class IncidentList extends React.Component {
               }}
             >
               <Text style={headerText}>
-                제보 종류 선택
+                제보 하기
               </Text>
             </Animated.View>
           {
