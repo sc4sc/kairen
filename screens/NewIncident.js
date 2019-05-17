@@ -40,13 +40,14 @@ class NewIncident extends React.Component {
   }
 
   render() {
-    const { container, headerContainer, headerText } = styles;
+    const { container } = styles;
 
     return (
       <View style={container}>
         <View style={{ flex: 1, paddingHorizontal: 20, marginTop: 27 }}>
           <Text style={styles.subHeaderText}>긴급제보</Text>
           <FlatList data={incidentTypes} renderItem={this.renderItem} />
+          <View style={{height: 40}}></View>
         </View>
       </View>
     );
@@ -58,31 +59,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  headerContainer: {
-    paddingTop: 45,
-    paddingBottom: 25,
-    flexDirection: 'row',
-    backgroundColor: '#ff9412',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-    marginLeft: 20,
-  },
   subHeaderText: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 10,
-  },
-  barContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 25,
-  },
-  stageBar: { width: 30, height: 3, borderRadius: 25.5 },
+  }
 });
 
 const mapStateToProps = state => {
