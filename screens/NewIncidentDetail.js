@@ -98,7 +98,7 @@ class NewIncidentDetail extends React.Component {
     }
   };
 
-  report() {
+  report = async () =>{
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,
@@ -108,6 +108,7 @@ class NewIncidentDetail extends React.Component {
       },
       () => {
         // this.props.navigation.dispatch(StackActions.popToTop());
+        this.props.shrinkButton()
       }
     );
   }

@@ -5,11 +5,9 @@ import {
   TouchableOpacity,
   Image,
   View,
-  StatusBar,
   Animated,
   Dimensions,
   PanResponder,
-  Slider
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Notifications, Location } from 'expo';
@@ -49,6 +47,8 @@ class IncidentList extends React.Component {
       buttonWidth: new Animated.Value(SCREEN_WIDTH - 20),
       buttonRightMargin: new Animated.Value(10),
       page: 1,
+      touchedOpen: false,
+      touchedClose: false,
     };
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleEndReached = this.handleEndReached.bind(this);
@@ -78,6 +78,7 @@ class IncidentList extends React.Component {
         this.animation.setValue({x: 0, y: gestureState.dy})
       },
       onPanResponderRelease: (evt, gestureState) => {
+        console.log(SCREEN_HEIGHT)
         if ((gestureState.dy < 0) && !this.state.isExpanded) {
           Animated.spring(this.animation.y, {
             toValue: bottomHeight == 0 ? -SCREEN_HEIGHT + 100 : -SCREEN_HEIGHT+150,
@@ -127,6 +128,7 @@ class IncidentList extends React.Component {
             friction: 8,
           }).start()
         }
+        console.log(this.animation.y)
       }
     })
   }
@@ -259,10 +261,10 @@ class IncidentList extends React.Component {
     })
   }
 
-  toggleButtonExpand = (e) => {
+  shrinkButton = async () => {
     if (this.state.isExpanded) {
       Animated.spring(this.animation.y, {
-        toValue: bottomHeight == 0 ? SCREEN_HEIGHT - 50 : SCREEN_HEIGHT - 100,
+        toValue: (bottomHeight == 0) ? (this.state.touchedOpen ? 150 : -50) : (this.state.touchedOpen ?  200 : 0),
         duration: 50,
         tension: 50,
         friction: 8,
@@ -275,25 +277,8 @@ class IncidentList extends React.Component {
         toValue: 10,
         duration: 200,
       }).start();
-      this.setState({isExpanded: false, page: 1})
-      console.log('close')
-    } else {
-      Animated.spring(this.animation.y, {
-        toValue: bottomHeight == 0 ? 10 : 60,
-        duration: 50,
-        tension: 50,
-        friction: 10,
-      }).start()
-      Animated.timing(this.state.buttonWidth, {
-        toValue: SCREEN_WIDTH,
-        duration: 200,
-      }).start();
-      Animated.timing(this.state.buttonRightMargin, {
-        toValue: 0,
-        duration: 200,
-      }).start();
-      this.setState({isExpanded: true })
-      console.log('open')
+      await this.setState({isExpanded: false, page: 1, touchedOpen: false, touchedClose: true})
+      await this.props.handleRefresh()
     }
   }
 
@@ -372,21 +357,16 @@ class IncidentList extends React.Component {
                 paddingTop: 20,
               }}
             >
-              <TouchableOpacity
-                onPress={e => this.toggleButtonExpand(e)}
-                style={{width: '100%', height: '100%'}}
-              >
-                <Text style={headerText}>
-                  제보 종류 선택
-                </Text>
-              </TouchableOpacity>
+              <Text style={headerText}>
+                제보 종류 선택
+              </Text>
             </Animated.View>
           {
             this.state.page == 1
             ? (
               <NewIncident nextPage={this.nextPage}/>
             ) : (
-              <NewIncidentDetail />
+              <NewIncidentDetail shrinkButton={this.shrinkButton}/>
             )
           }
         </Animated.View>
