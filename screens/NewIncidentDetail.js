@@ -182,25 +182,30 @@ class NewIncidentDetail extends React.Component {
             <Text style={styles.searchText}>{this.state.locationName}</Text>
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          onPress={this.handlePressReport}
-        >
-          <Text style={styles.buttonText}>제보 등록</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.gpsButton}
-          onPress={this.locatePosition}
-        >
-          <Image source={require('../assets/images/group-2.png')} />
-        </TouchableOpacity>
+        <View style={styles.buttons}>
+          <TouchableOpacity
+            style={styles.gpsButton}
+            onPress={this.locatePosition}
+          >
+            <Image source={require('../assets/images/group-2.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={this.handlePressReport}
+          >
+            <Text style={styles.buttonText}>제보 등록</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  buttons: {
+    position: 'absolute',
+    bottom: 60 + getBottomSpace(),
+  },
   container: {
     flex: 1,
     backgroundColor: '#fffaf4',
@@ -236,9 +241,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonStyle: {
-    position: 'absolute',
     width: Layout.window.width - 30,
-    bottom: 50 + getBottomSpace(),
     backgroundColor: '#f47b36',
     borderRadius: 10,
     marginHorizontal: 15,
@@ -250,13 +253,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 10 },
   },
   gpsButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 116,
-    right: 22,
-    width: 45,
-    height: 45,
     alignSelf: 'flex-end',
     shadowOffset: { width: 0, height: 2 },
     shadowColor: 'black',
