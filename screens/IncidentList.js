@@ -78,7 +78,6 @@ class IncidentList extends React.Component {
         this.animation.setValue({x: 0, y: gestureState.dy})
       },
       onPanResponderRelease: (evt, gestureState) => {
-        console.log(SCREEN_HEIGHT)
         if ((gestureState.dy < 0) && !this.state.isExpanded) {
           Animated.spring(this.animation.y, {
             toValue: bottomHeight == 0 ? -SCREEN_HEIGHT + 100 : -SCREEN_HEIGHT+150,
@@ -95,7 +94,6 @@ class IncidentList extends React.Component {
             duration: 200,
           }).start();
           this.setState({isExpanded: true })
-          console.log('open')
         } else if ((gestureState.dy < 0) && this.state.isExpanded) {
           Animated.spring(this.animation.y, {
             toValue: 0,
@@ -119,7 +117,6 @@ class IncidentList extends React.Component {
             duration: 200,
           }).start();
           this.setState({isExpanded: false, page: 1})
-          console.log('close')
         } else if ((gestureState.dy > 0) && !this.state.isExpanded) {
           Animated.spring(this.animation.y, {
             toValue: 0,
@@ -128,7 +125,6 @@ class IncidentList extends React.Component {
             friction: 8,
           }).start()
         }
-        console.log(this.animation.y)
       }
     })
   }
@@ -278,7 +274,16 @@ class IncidentList extends React.Component {
         duration: 200,
       }).start();
       await this.setState({isExpanded: false, page: 1, touchedOpen: false, touchedClose: true})
-      await this.props.handleRefresh()
+
+      this.notificationSubscription = Notifications.addListener(notification =>
+        console.log('Notification arrived:', notification)
+      );
+      this.willFocusSubscription = this.props.navigation.addListener(
+        'willFocus',
+        this.handleRefresh
+      );
+      this.handleRefresh();
+      Location.watchPositionAsync({}, this.handleLocationUpdate);
     }
   }
 
