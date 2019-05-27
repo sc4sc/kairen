@@ -14,6 +14,7 @@ class AutoLogin extends React.Component {
     const appToken = await SecureStore.getItemAsync('appToken');
     if (!appToken) {
       console.log('[AutoLogin] Token does not exist');
+      SplashScreen.hide()
       navigation.navigate('Login');
       return;
     }
