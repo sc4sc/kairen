@@ -13,11 +13,10 @@ function errorResponseHandler(error) {
 
   if (error.response) {
     const { data, status } = error.response;
-    additionalData = { ...data, status };
+    additionalData = { data, status };
   }
 
   return { data: Object.assign({ error: true }, additionalData) };
-
 }
 
 function applyInterceptors() {
@@ -27,7 +26,6 @@ function applyInterceptors() {
     errorResponseHandler
   );
 }
-
 
 export function setAppToken(token) {
   axiosInstance = axios.create({
@@ -59,9 +57,11 @@ export function requestLogout() {
 }
 
 export function updatePushToken(expotoken) {
-  return axiosInstance.post(`${serverURL}/updatePushToken`, {
-    expotoken
-  }).then(response => response.data)
+  return axiosInstance
+    .post(`${serverURL}/updatePushToken`, {
+      expotoken,
+    })
+    .then(response => response.data);
 }
 
 export function getProfile() {

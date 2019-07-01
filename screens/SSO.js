@@ -1,8 +1,7 @@
 import React from 'react';
-import { WebView } from 'react-native';
+import { WebView } from 'react-native-webview';
 import { SafeAreaView } from 'react-navigation';
 import * as _ from 'lodash';
-
 import { SSO_APP_KEY } from 'babel-dotenv';
 
 export default class SSO extends React.Component {
@@ -34,7 +33,8 @@ export default class SSO extends React.Component {
     }
 
     this._webview.injectJavaScript(`
-        window.postMessage(document.documentElement.innerHTML);
+        window.ReactNativeWebView.postMessage(document.documentElement.innerHTML);
+        true;
     `);
   }, 66);
 
@@ -49,6 +49,7 @@ export default class SSO extends React.Component {
 
   handleLogin = token => {
     this.props.navigation.goBack();
+    console.log(token);
     const onLogin = this.props.navigation.getParam('onLogin');
     if (onLogin) {
       onLogin(token);
@@ -66,7 +67,7 @@ export default class SSO extends React.Component {
           source={{
             uri: 'https://iam.kaist.ac.kr/iamps/requestAppLogin.do',
             method: 'POST',
-            body: 'appKey=' + SSO_APP_KEY,
+            body: `appKey=${SSO_APP_KEY}`,
           }}
           onNavigationStateChange={this.onNavigation}
           onMessage={this.handleMessage}

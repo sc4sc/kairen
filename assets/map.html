@@ -30,8 +30,6 @@
     </div>
 
     <script>
-      // document.getElementById('a').innerHTML = 'url: ' + location.href;
-
       (function() {
         function actionHandler(action) {
           var type = action.type;
@@ -56,8 +54,17 @@
             }
             case 'panTo': {
               const zoom = map.getZoom();
-              const building = new naver.maps.LatLng(Number(payload.coords.lat), Number(payload.coords.lng));
-              const coords = map.getProjection().getDestinationCoord(building, 180, zoom>=13 ? 50:1500/zoom);
+              const building = new naver.maps.LatLng(
+                Number(payload.coords.lat),
+                Number(payload.coords.lng)
+              );
+              const coords = map
+                .getProjection()
+                .getDestinationCoord(
+                  building,
+                  180,
+                  zoom >= 13 ? 50 : 1500 / zoom
+                );
 
               map.panTo(coords, payload.transitionOptions);
               return;
@@ -102,18 +109,16 @@
             case 'renderKAIST': {
               const kaist = [];
               for (var coor of payload.coords) {
-                  kaist.push(new naver.maps.LatLng(coor[1], coor[0]));
+                kaist.push(new naver.maps.LatLng(coor[1], coor[0]));
               }
               return new naver.maps.Polyline({
-                  map: map,
-                  path: kaist,
+                map: map,
+                path: kaist,
               });
-
             }
             default:
               return;
           }
-
         }
 
         function postAction(type, payload) {
@@ -121,7 +126,6 @@
           if (payload) {
             action.payload = payload;
           }
-
           postMessage(JSON.stringify(action));
         }
 
@@ -154,9 +158,9 @@
 
         var ping = setInterval(() => postAction('ping'), 66);
 
-        var min = {x: 127.35516786575319, y: 36.36317650086336},
-            max = {x: 127.37027406692503, y: 36.37634223427805};
-        var bounds = {north: max.y, east: max.x, south: min.y, west: min.x};
+        var min = { x: 127.35516786575319, y: 36.36317650086336 },
+          max = { x: 127.37027406692503, y: 36.37634223427805 };
+        var bounds = { north: max.y, east: max.x, south: min.y, west: min.x };
 
         var mapOptions = {
           center: { lat: 36.37334626411133, lng: 127.36397930294454 },
@@ -176,10 +180,6 @@
           const coord = e.coord;
           postAction('click', { lat: coord.y, lng: coord.x });
         });
-
-
-
-
       })();
     </script>
   </body>

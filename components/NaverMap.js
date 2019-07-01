@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, TouchableOpacity, View, WebView } from 'react-native';
+import { Text, TouchableOpacity, View, Platform } from 'react-native';
+import { WebView } from 'react-native-webview';
 import { FileSystem } from 'expo';
 import * as geojsonutil from 'geojson-utils';
 import { Sentry, SentrySeverity } from 'react-native-sentry';
@@ -25,11 +26,6 @@ async function loadHtml() {
   } else {
     await htmlAsset.downloadAsync();
     uri = htmlAsset.uri;
-    // if (!htmlAsset.localUri) {
-    //   await htmlAsset.downloadAsync();
-    //   console.log('Downloading map.html...');
-    // }
-    // uri = htmlAsset.localUri;
   }
   console.log('Map URI: ' + uri);
 
@@ -70,9 +66,6 @@ export default class NaverMap extends React.Component {
   }
 
   onWebViewInit = () => {
-    // this.postAction('panTo', {
-    //   coords: { lat: 36.37334626411133, lng: 127.36397930294454 },
-    // });
     this.renderKAIST();
     this.updateMarkers();
     this.updateOptions();
@@ -135,6 +128,7 @@ export default class NaverMap extends React.Component {
   handleMessage = ({ nativeEvent }) => {
     // console.log('handleMessage', nativeEvent.data);
     const action = JSON.parse(nativeEvent.data);
+
     switch (action.type) {
       case 'log': {
         // console.log('Log', action.payload);
