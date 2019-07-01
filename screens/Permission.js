@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Layout from '../constants/Layout';
 import { requestPermission } from '../utils';
-import { Permissions } from 'expo';
+import * as Permissions from 'expo-permissions';
 
 export default class Permission extends React.Component {
   state = {

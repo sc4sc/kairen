@@ -1,11 +1,9 @@
 import React from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-
+import * as SecureStore from 'expo-secure-store';
 import * as apis from '../apis';
 import { authLoginSuccess } from '../actions/auth';
-
-const { SecureStore } = Expo;
 
 class AutoLogin extends React.Component {
   componentDidMount = async () => {
@@ -36,7 +34,7 @@ class AutoLogin extends React.Component {
         if (r.error) {
           setTimeout(tryUpdatePushToken, 5000);
         }
-      })
+      });
     };
 
     tryUpdatePushToken();

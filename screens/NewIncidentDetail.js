@@ -5,26 +5,20 @@ import {
   Text,
   View,
   Image,
-  StatusBar,
   TouchableOpacity,
-  TouchableWithoutFeedback,
 } from 'react-native';
-import { StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { Location } from 'expo';
+import * as Location from 'expo-location';
 
 import memoize from 'fast-memoize';
 import * as geojsonutil from 'geojson-utils';
 import moment from 'moment';
 import * as apis from '../apis';
-import { getBottomSpace, getStatusBarHeight } from '../utils/index.js';
+import { getBottomSpace } from '../utils/index.js';
 import NaverMap from '../components/NaverMap';
 import Layout from '../constants/Layout';
 import { newIncidentPostRequested } from '../actions/newIncident';
 import { checkIsInbuilding } from '../utils';
-import Colors from '../constants/Colors';
-
-const statusBarHeight = getStatusBarHeight();
 
 class NewIncidentDetail extends React.Component {
   constructor() {
@@ -98,7 +92,7 @@ class NewIncidentDetail extends React.Component {
     }
   };
 
-  report = async () =>{
+  report = async () => {
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,
@@ -108,10 +102,10 @@ class NewIncidentDetail extends React.Component {
       },
       () => {
         // this.props.navigation.dispatch(StackActions.popToTop());
-        this.props.shrinkButton()
+        this.props.shrinkButton();
       }
     );
-  }
+  };
 
   updateLocationName = coords => {
     const locationGeoObj = checkIsInbuilding(coords);
@@ -137,7 +131,7 @@ class NewIncidentDetail extends React.Component {
 
     const { longitude, latitude } = currentPosition;
     const coords = { lng: longitude, lat: latitude };
-    const kaist = require('../assets/geojson/KAIST.json')
+    const kaist = require('../assets/geojson/KAIST.json');
     const point = { type: 'Point', coordinates: [coords.lng, coords.lat] };
     if (!geojsonutil.pointInPolygon(point, kaist.features[0].geometry)) {
       Alert.alert('위치를 지정할 수 없습니다.', 'KAIST 내부만 선택해주세요.', [
@@ -147,7 +141,7 @@ class NewIncidentDetail extends React.Component {
     }
 
     this.updateLocationName(coords);
-    this.setState({markerCoords: coords});
+    this.setState({ markerCoords: coords });
     this.map.panTo(coords, {});
   }
 
