@@ -21,7 +21,6 @@ import { getStatusBarHeight } from '../utils/index.js';
 const statusBarHeight = getStatusBarHeight();
 
 class Login extends React.Component {
-
   onButtonPress() {
     const { navigation } = this.props;
     const alertTitle = 'Login Failed';
@@ -43,14 +42,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const {
-      container,
-      headerText,
-      inputBox,
-      checkBoxContainer,
-      nameText,
-      mainText,
-    } = styles;
+    const { container, headerText } = styles;
     return (
       <View style={{ flex: 1 }}>
         <View style={container}>

@@ -35,6 +35,7 @@ export default class App extends React.Component {
     if (!this.state.isReady) {
       return (
         <AppLoading
+          autoHideSplash={false}
           startAsync={this._loadAssetsAsync}
           onFinish={() => this.setState({ isReady: true })}
           onError={console.warn}

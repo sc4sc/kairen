@@ -15,6 +15,7 @@ import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
+import Spinner from '../components/Spinner';
 import * as apis from '../apis';
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
@@ -22,10 +23,20 @@ import AndroidTopMargin from '../components/AndroidTopMargin';
 class NewComment extends React.Component {
   constructor() {
     super();
-    this.state = { text: '' };
+    this.state = { text: '', loading: false };
   }
 
   onButtonPress() {
+    Keyboard.dismiss();
+    if (this.state.text.trim() === '') {
+      Alert.alert(
+        '내용을 입력해주세요.',
+        '공백으로 이루어진 메세지는 등록하실 수 없습니다.'
+      );
+      this.setState({ text: '' });
+      return;
+    }
+
     Alert.alert(
       '댓글을 등록하시겠습니까?',
       '한 번 등록한 댓글은 삭제하실 수 없습니다',
@@ -34,11 +45,16 @@ class NewComment extends React.Component {
   }
 
   postComment() {
+    this.setState({ loading: true });
     apis
       .postComment(this.props.navigation.getParam('incidentId'), {
         content: this.state.text,
       })
-      .then(() => this.props.navigation.goBack());
+      .then(() => {
+        this.setState({ loading: false });
+        this.props.navigation.goBack();
+        Keyboard.dismiss();
+      });
   }
 
   render() {
@@ -46,6 +62,7 @@ class NewComment extends React.Component {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={styles.container}>
           <AndroidTopMargin />
+          {this.state.loading && <Spinner overlay />}
           <View style={styles.headerContainer}>
             <Text style={styles.header}> 새로운 의견 등록하기 </Text>
             <TouchableWithoutFeedback

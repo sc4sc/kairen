@@ -14,13 +14,14 @@ import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
+import Spinner from '../components/Spinner';
 import * as apis from '../apis';
 
 class Setting extends React.Component {
   constructor() {
     super();
 
-    this.state = { alertAlarm: false };
+    this.state = { alertAlarm: false, loading: false };
   }
 
   goBack() {
@@ -32,11 +33,13 @@ class Setting extends React.Component {
   }
 
   handleLogout = async () => {
+    this.setState({ loading: true });
     await Promise.all([
       SecureStore.deleteItemAsync('appToken'),
       apis.requestLogout(),
     ]);
 
+    this.setState({ loading: false });
     this.props.navigation.navigate('Login');
   };
 
@@ -51,6 +54,7 @@ class Setting extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         <AndroidTopMargin />
+        {this.state.loading && <Spinner overlay />}
         <View style={styles.headerContainer}>
           <Text style={styles.header}> 설정 </Text>
           <View style={styles.buttonContainer}>
