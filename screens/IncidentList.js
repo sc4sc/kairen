@@ -232,16 +232,12 @@ class IncidentList extends React.Component {
             paddingHorizontal: 0,
             marginBottom: 15,
           }}
-          dotStyle={{ width: 20 }}
-          inactiveDotStyle={{ width: 7 }}
-          inactiveDotScale={1}
-          carouselRef={this._carousel}
-          tappableDots
+          dotStyle={{ width: 15 }}
+          inactiveDotStyle={{ width: 8 }}
+          inactiveDotScale={0.7}
         />
         <Carousel
-          ref={el => {
-            this._carousel = el;
-          }}
+          keyExtractor={(item, index) => `${item.id}`}
           data={this.props.incidents}
           renderItem={this.renderItem.bind(this)}
           onBeforeSnapToItem={this.handleSnapToItem}
@@ -319,7 +315,6 @@ class IncidentList extends React.Component {
           backgroundColor: 'white',
         }}
       >
-        {/* <StatusBar /> */}
         <NaverMap
           ref={el => {
             this._map = el;

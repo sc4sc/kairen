@@ -27,8 +27,8 @@ export default class App extends React.Component {
 
   async _loadAssetsAsync() {
     const awesomeFont = cacheFonts([FontAwesome.font]);
-    const iconFont = Font.loadAsync({ ...Ionicons.font });
-    await Promise.all([...awesomeFont, ...iconFont]);
+    const iconFont = Font.loadAsync(Ionicons.font);
+    await Promise.all([awesomeFont, iconFont]);
   }
 
   render() {

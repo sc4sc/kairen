@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, Linking, TouchableOpacity } from 'react-native';
 import { getBottomSpace, getStatusBarHeight } from '../utils/index.js';
-import * as contacts from '../constants/Contacts'
+import * as contacts from '../constants/Contacts';
 
 const topMargin = getStatusBarHeight();
 const bottomMargin = getBottomSpace();
@@ -22,14 +22,6 @@ export default class SafetyContact extends React.Component {
       <View style={container}>
         <View>
           <Text style={headerText}>KAIREN</Text>
-          <View style={contentContainer}>
-            <View style={circle} />
-            <View style={circle} />
-            <View style={circle} />
-            <Text style={notAppliedText}> 주의 제보 (준비 중)</Text>
-          </View>
-
-
           <TouchableOpacity
             onPress={() => Linking.openURL(`tel:${contacts.campusPolice}`)}
           >
@@ -102,5 +94,5 @@ const styles = {
     marginRight: 5,
   },
   notAppliedText: { color: '#bebebe', fontSize: 16 },
-  betaVerNotice: {color: 'red'},
+  betaVerNotice: { color: 'red' },
 };

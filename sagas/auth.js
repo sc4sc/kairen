@@ -1,8 +1,6 @@
 import { call, put, spawn, takeLatest } from 'redux-saga/effects';
-const { SecureStore } = Expo;
-
+import * as SecureStore from 'expo-secure-store';
 import * as apis from '../apis';
-
 import {
   AUTH_LOGIN_FAILED,
   AUTH_LOGIN_REQUEST,
