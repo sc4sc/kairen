@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { SplashScreen } from 'expo';
+import { View, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as apis from '../apis';
@@ -13,6 +14,7 @@ class AutoLogin extends React.Component {
     const appToken = await SecureStore.getItemAsync('appToken');
     if (!appToken) {
       console.log('[AutoLogin] Token does not exist');
+      SplashScreen.hide()
       navigation.navigate('Login');
       return;
     }
@@ -24,6 +26,7 @@ class AutoLogin extends React.Component {
       // Invalidate token
       SecureStore.deleteItemAsync('appToken');
       console.log('[AutoLogin] Token is not valid - Server error');
+      SplashScreen.hide();
       navigation.navigate('Login');
       return;
     }
@@ -36,11 +39,11 @@ class AutoLogin extends React.Component {
         if (r.error) {
           setTimeout(tryUpdatePushToken, 5000);
         }
-      })
+      });
     };
 
     tryUpdatePushToken();
-
+    SplashScreen.hide();
     navigation.navigate('App');
   };
 

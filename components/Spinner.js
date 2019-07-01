@@ -1,21 +1,32 @@
 import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 
-const Spinner = ({ size }) => {
-  const { spinnerStyle } = styles;
-
+const Spinner = ({ size, overlay }) => {
+  const { boxStretchStyle, overlayStyle } = styles;
+  const containerStyle = overlay ? overlayStyle : boxStretchStyle;
   return (
-    <View style={spinnerStyle}>
-      <ActivityIndicator size={size || 'large'} color={'white'}/>
+    <View style={containerStyle}>
+      <ActivityIndicator size={size || 'large'} color={'white'} />
     </View>
   );
 };
 
 const styles = {
-  spinnerStyle: {
+  boxStretchStyle: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  overlayStyle: {
+    position: 'absolute',
+    backgroundColor: '#aaaa',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 999,
   },
 };
 

@@ -16,16 +16,26 @@ import { SafeAreaView } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 
 import * as apis from '../apis';
+import Spinner from '../components/Spinner';
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 
 class NewProgress extends React.Component {
   constructor() {
     super();
-    this.state = { text: '' };
+    this.state = { text: '', loading: false };
   }
 
   onButtonPress() {
+    if (this.state.text.trim() === '') {
+      Alert.alert(
+        '내용을 입력해주세요.',
+        '공백으로 이루어진 메세지는 등록하실 수 없습니다.'
+      );
+      this.setState({ text: '' });
+      return;
+    }
+
     Alert.alert(
       '진행 상황을 등록하시겠습니까?',
       '가장 최근 진행 상황이 사건 사고 목록에 표시됩니다.',
@@ -37,11 +47,16 @@ class NewProgress extends React.Component {
   }
 
   postProgress() {
+    this.setState({ loading: true });
     apis
       .postProgress(this.props.navigation.getParam('incidentId'), {
         content: this.state.text,
       })
-      .then(this.goBackAndShowList.bind(this));
+      .then(() => {
+        this.setState({ loading: false });
+        this.goBackAndShowList();
+        Keyboard.dismiss();
+      });
   }
 
   goBackAndShowList() {
@@ -55,8 +70,9 @@ class NewProgress extends React.Component {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={styles.container}>
           <AndroidTopMargin />
+          {this.state.loading && <Spinner overlay />}
           <View style={styles.headerContainer}>
-            <Text style={styles.header}> 진행 상황 등록하기 </Text>
+            <Text style={styles.header}>진행 상황 등록하기</Text>
             <TouchableWithoutFeedback
               onPress={() => {
                 this.props.navigation.goBack();
