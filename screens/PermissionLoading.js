@@ -1,7 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Permissions } from 'expo';
-import { Spinner } from '../components/Spinner';
+import * as Permissions from 'expo-permissions';
 
 export default class PermissionLoading extends React.Component {
   async componentDidMount() {

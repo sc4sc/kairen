@@ -1,16 +1,13 @@
 import { call, put, spawn, takeLatest } from 'redux-saga/effects';
-import { Permissions, Notifications } from 'expo';
-const { SecureStore } = Expo;
-
+import * as SecureStore from 'expo-secure-store';
 import * as apis from '../apis';
-
 import {
   AUTH_LOGIN_FAILED,
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
   authLoginSuccess,
 } from '../actions/auth';
-import { getPushToken, requestPermission } from '../utils';
+import { getPushToken } from '../utils';
 
 function* storeToken(token) {
   yield call(SecureStore.setItemAsync, 'appToken', token);

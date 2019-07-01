@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Provider } from 'react-redux';
-import { AppLoading, Font, Icon } from 'expo';
-import { FontAwesome } from '@expo/vector-icons';
+import { AppLoading } from 'expo';
+import * as Font from 'expo-font';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 
 import store from './store';
 import AppNavigator from './navigation/AppNavigator';
@@ -26,8 +27,8 @@ export default class App extends React.Component {
 
   async _loadAssetsAsync() {
     const awesomeFont = cacheFonts([FontAwesome.font]);
-    const iconFont = Font.loadAsync({ ...Icon.Ionicons.font });
-    await Promise.all([...awesomeFont, ...iconFont]);
+    const iconFont = Font.loadAsync(Ionicons.font);
+    await Promise.all([awesomeFont, iconFont]);
   }
 
   render() {

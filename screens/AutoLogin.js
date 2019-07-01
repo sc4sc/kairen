@@ -2,11 +2,9 @@ import React from 'react';
 import { SplashScreen } from 'expo';
 import { View, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-
+import * as SecureStore from 'expo-secure-store';
 import * as apis from '../apis';
 import { authLoginSuccess } from '../actions/auth';
-
-const { SecureStore } = Expo;
 
 class AutoLogin extends React.Component {
   componentDidMount = async () => {

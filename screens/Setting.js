@@ -10,9 +10,8 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-const { SecureStore } = Expo;
 import { connect } from 'react-redux';
-
+import * as SecureStore from 'expo-secure-store';
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
 import Spinner from '../components/Spinner';
