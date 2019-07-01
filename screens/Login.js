@@ -24,8 +24,8 @@ class Login extends React.Component {
 
   onButtonPress() {
     const { navigation } = this.props;
-    const alertTitle = 'Login Failed';
-    const alertMsg = 'Sorry, login has failed.';
+    const alertTitle = '로그인 실패';
+    const alertMsg = '알수 없는 이유로 로그인이 실패했습니다. 잠시 후에 다시 시도해주세요.';
 
     navigation.navigate('SSO', {
       onLogin: token => {
