@@ -372,6 +372,7 @@ class IncidentList extends React.Component {
               flexDirection: 'row',
               alignItems: 'flex-start',
               paddingTop: 20,
+              backgroundColor: 'transparent',
             }}
           >
             <Text style={headerText}>제보 하기</Text>
@@ -448,6 +449,7 @@ export const styles = StyleSheet.create({
     padding: 20,
     marginHorizontal: 15,
     paddingBottom: 16 + getBottomSpace(), // handle the bottom empty space for iPhone X
+    // paddingBottom: 16, // handle the bottom empty space for iPhone X
     shadowOffset: { width: 0, height: 1 },
     shadowColor: 'black',
     shadowOpacity: 0.22,
