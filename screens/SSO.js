@@ -32,10 +32,14 @@ export default class SSO extends React.Component {
       return;
     }
 
-    this._webview.injectJavaScript(`
-        window.ReactNativeWebView.postMessage(document.documentElement.innerHTML);
-        true;
-    `);
+    setTimeout(
+      () =>
+        this._webview.injectJavaScript(`
+      window.ReactNativeWebView.postMessage(document.documentElement.innerHTML);
+      true;
+    `),
+      300
+    );
   }, 66);
 
   handleMessage = ({ nativeEvent: { data } }) => {
