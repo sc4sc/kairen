@@ -32,7 +32,7 @@ class NewIncident extends React.Component {
         title={incident.title}
         onPress={() => {
           this.props.selectIncident(incident.type);
-          this.props.nextPage()
+          this.props.nextPage();
           // this.props.navigation.navigate('NewIncidentDetail');
         }}
       />
@@ -46,8 +46,12 @@ class NewIncident extends React.Component {
       <View style={container}>
         <View style={{ flex: 1, paddingHorizontal: 20, marginTop: 27 }}>
           <Text style={styles.subHeaderText}>긴급제보</Text>
-          <FlatList data={incidentTypes} renderItem={this.renderItem} />
-          <View style={{height: 40}}></View>
+          <FlatList
+            data={incidentTypes}
+            keyExtractor={(item, index) => `${index}`}
+            renderItem={this.renderItem}
+          />
+          <View style={{ height: 40 }}></View>
         </View>
       </View>
     );
@@ -63,7 +67,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 10,
-  }
+  },
 });
 
 const mapStateToProps = state => {

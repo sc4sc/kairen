@@ -11,7 +11,6 @@ import {
   Alert,
 } from 'react-native';
 
-import { AntDesign, Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -23,11 +22,14 @@ import StateMarker from '../components/StateMarker';
 import StateCheckButton from '../components/StateCheckButton';
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
-import { formatDate, getBottomSpace, checkIsInbuilding, getStatusBarHeight } from '../utils';
+import {
+  formatDate,
+  getBottomSpace,
+  checkIsInbuilding,
+  getStatusBarHeight,
+} from '../utils';
 import { getLocalData } from '../constants/Incidents';
 import NaverMap from '../components/NaverMap';
-import { IncidentList } from './index';
-import * as contacts from "../constants/Contacts";
 
 const statusBarHeight = getStatusBarHeight();
 
@@ -162,36 +164,32 @@ class IncidentDetail extends React.Component {
   }
 
   renderCallToInformant(name, mobile) {
-
     return (
-        <View
-            style={[styles.information, { backgroundColor: '#44aa25' }]}
-        >
-          <View>
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
-              사고 제보자에게 전화 걸기
-            </Text>
-            <Text style={{ fontSize: 10, color: 'white' }}>{name}, {mobile}</Text>
-          </View>
-          <TouchableOpacity
-              style={[styles.informationButton, { backgroundColor: '#27820d' }]}
-              onPress={() => Linking.openURL(`tel:${mobile}`)}
-          >
-            <Image source={require('../assets/images/call.png')} />
-          </TouchableOpacity>
+      <View style={[styles.information, { backgroundColor: '#44aa25' }]}>
+        <View>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
+            사고 제보자에게 전화 걸기
+          </Text>
+          <Text style={{ fontSize: 10, color: 'white' }}>
+            {name}, {mobile}
+          </Text>
         </View>
+        <TouchableOpacity
+          style={[styles.informationButton, { backgroundColor: '#27820d' }]}
+          onPress={() => Linking.openURL(`tel:${mobile}`)}
+        >
+          <Image source={require('../assets/images/call.png')} />
+        </TouchableOpacity>
+      </View>
     );
   }
-
 
   renderProtocol() {
     const localDetail = getLocalData(this.getIncidentDetail().type);
     const url = localDetail.safetyProtocol;
 
     return (
-      <View
-        style={[styles.information, { backgroundColor: '#ff9412' }]}
-      >
+      <View style={[styles.information, { backgroundColor: '#ff9412' }]}>
         <View>
           <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
             가까운 안전한 장소로 이동하세요
@@ -199,10 +197,10 @@ class IncidentDetail extends React.Component {
           <Text style={{ color: 'white' }}>자세한 행동 강령 보기</Text>
         </View>
         <TouchableOpacity
-          style={[styles.informationButton, {backgroundColor: '#db7d0a'}]}
+          style={[styles.informationButton, { backgroundColor: '#db7d0a' }]}
           onPress={() => Linking.openURL(url)}
         >
-          <Image source={require('../assets/images/right-arrow.png')}/>
+          <Image source={require('../assets/images/right-arrow.png')} />
         </TouchableOpacity>
       </View>
     );
@@ -270,7 +268,14 @@ class IncidentDetail extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <Text style={styles.subheaderText}>안전팀 확인 상태</Text>
-        <View style={{ flex: 1, flexDirection: 'row', marginLeft: 'auto', marginRight: 'auto' }}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }}
+        >
           <StateMarker position="left" selected={progressState === '확인중'}>
             확인 중
           </StateMarker>
@@ -390,25 +395,23 @@ class IncidentDetail extends React.Component {
     );
   }
 
-  checkHeaderOpacity = (event: Object) => {
-    if (event.nativeEvent.contentOffset.y >= (Layout.window.width - (statusBarHeight + 55))) {
+  checkHeaderOpacity = event => {
+    if (
+      event.nativeEvent.contentOffset.y >=
+      Layout.window.width - (statusBarHeight + 55)
+    ) {
       this.setState({
         headerBackToggle: true,
-      })
+      });
     } else {
       this.setState({
         headerBackToggle: false,
-      })
+      });
     }
   };
 
   render() {
-    const {
-      id: incidentId,
-      lat,
-      lng,
-      User
-    } = this.getIncidentDetail();
+    const { id: incidentId, lat, lng, User } = this.getIncidentDetail();
 
     const latitude = Number(lat);
     const longitude = Number(lng);
@@ -418,10 +421,27 @@ class IncidentDetail extends React.Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <View style={[styles.headerBack, {backgroundColor: this.state.headerBackToggle ? 'white' : 'rgba(0,0,0,0)', borderColor: this.state.headerBackToggle ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0)'}]}/>
-        <TouchableOpacity style={styles.backWard} onPress={() => {this.props.navigation.goBack()}}>
+        <View
+          style={[
+            styles.headerBack,
+            {
+              backgroundColor: this.state.headerBackToggle
+                ? 'white'
+                : 'rgba(0,0,0,0)',
+              borderColor: this.state.headerBackToggle
+                ? 'rgba(0,0,0,0.1)'
+                : 'rgba(0,0,0,0)',
+            },
+          ]}
+        />
+        <TouchableOpacity
+          style={styles.backWard}
+          onPress={() => {
+            this.props.navigation.goBack();
+          }}
+        >
           <Image source={require('../assets/images/back.png')} />
-          <Text style={{marginLeft: 5, fontSize: 18, fontWeight: '800'}}>
+          <Text style={{ marginLeft: 5, fontSize: 18, fontWeight: '800' }}>
             사고 목록
           </Text>
         </TouchableOpacity>

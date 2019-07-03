@@ -10,13 +10,10 @@ import { connect } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 import * as apis from '../apis';
 
-import ConfirmedText from './ConfirmedText';
 import CommentReplyCard from './CommentReplyCard';
 import ProgressCard from './ProgressCard';
 
-import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
-import { apisAreAvailable } from 'expo';
 
 class CommentCard extends React.Component {
   constructor(props) {

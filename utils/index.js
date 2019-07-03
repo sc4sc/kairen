@@ -1,6 +1,7 @@
 import { Platform, StatusBar } from 'react-native';
 import { getStatusBarHeight as getIOSStatusBarHeight } from 'react-native-iphone-x-helper';
-import { Permissions, Notifications } from 'expo';
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
 
 import moment from 'moment';
 import * as _ from 'lodash';

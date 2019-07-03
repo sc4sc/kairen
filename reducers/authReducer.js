@@ -23,7 +23,6 @@ export default (state = defaultState, action) =>
       case AUTH_LOGIN_SUCCESS: {
         draft.user = action.payload;
         draft.loginInProgress = false;
-        console.log(draft);
         break;
       }
       case AUTH_LOGIN_FAILED: {
