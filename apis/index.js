@@ -16,7 +16,7 @@ function errorResponseHandler(error) {
     additionalData = { data, status };
   }
 
-  return { data: Object.assign({ error: true }, additionalData) };
+  return { data: Object.assign({ error: true }, { message: additionalData }) };
 }
 
 function applyInterceptors() {
