@@ -21,6 +21,13 @@ export default class SSO extends React.Component {
       }
     }
 
+    // TODO: Page Loading Error: NSURLErrorDomain redirection 해결하기
+    if (e.url.startsWith('token')) {
+      this.handleLogin(e.url.slice(6));
+      e.url = 'about:blank';
+      return;
+    }
+
     if (!this._tokenExtracted) {
       this.extractInnerHTML();
     }
@@ -31,29 +38,25 @@ export default class SSO extends React.Component {
     if (!this._webview) {
       return;
     }
-
-    setTimeout(
-      () =>
-        this._webview.injectJavaScript(`
-      window.ReactNativeWebView.postMessage(document.documentElement.innerHTML);
-      true;
-    `),
-      300
-    );
+    this._webview.injectJavaScript(`
+      setTimeout(() => {
+        window.ReactNativeWebView.postMessage(document.documentElement.innerHTML);
+        true;
+      }, 0)
+    `);
   }, 66);
 
   handleMessage = ({ nativeEvent: { data } }) => {
     const tokenMatch = /"token:(.+)"/.exec(data);
     if (tokenMatch) {
       this._tokenExtracted = true;
-      console.log('SSO Token', tokenMatch[1]);
       this.handleLogin(tokenMatch[1]);
     }
   };
 
   handleLogin = token => {
     this.props.navigation.goBack();
-    console.log(token);
+    console.log(`SSO Token: ${token}`);
     const onLogin = this.props.navigation.getParam('onLogin');
     if (onLogin) {
       onLogin(token);
@@ -64,15 +67,25 @@ export default class SSO extends React.Component {
     return (
       <SafeAreaView forceInset={{ top: 'always' }} style={{ flex: 1 }}>
         <WebView
+          useWebKit={true}
           style={{ flex: 1 }}
           ref={el => {
             this._webview = el;
           }}
           source={{
-            uri: 'https://iam.kaist.ac.kr/iamps/requestAppLogin.do',
-            method: 'POST',
-            body: `appKey=${SSO_APP_KEY}`,
+            html: `
+            <form method="post" id="theForm" action="https://iam.kaist.ac.kr/iamps/requestAppLogin.do">
+              <input type="hidden" name="appKey" value="${SSO_APP_KEY}">
+            </form>
+          `,
           }}
+          injectedJavaScript={`
+            setTimeout(() => {
+              var form = document.getElementById('theForm')
+              return document.getElementById('theForm').submit()
+            }, 0)
+          `}
+          originWhitelist={['*']}
           onNavigationStateChange={this.onNavigation}
           onMessage={this.handleMessage}
         />
