@@ -96,7 +96,7 @@ class NewIncidentDetail extends React.Component {
     }
   };
   //TODO: Make this function to async (just put 'async')
-  report = () => {
+  report = async () => {
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,
@@ -106,10 +106,10 @@ class NewIncidentDetail extends React.Component {
       },
       () => {
         // TODO: Comment this function call
-        this.props.navigation.dispatch(StackActions.popToTop());
+        // this.props.navigation.dispatch(StackActions.popToTop());
 
         // TODO: Uncomment this function call
-        // this.props.shrinkButton();
+        this.props.shrinkButton();
       }
     );
   };
@@ -171,7 +171,7 @@ class NewIncidentDetail extends React.Component {
     return (
       <View style={container}>
         {/* TODO: Comment this block, from here */}
-        <StatusBar barStyle="light-content" backgroundColor="#ff9412" />
+        {/* <StatusBar barStyle="light-content" backgroundColor="#ff9412" />
         <View style={headerContainer}>
           <TouchableWithoutFeedback
             onPress={() => this.props.navigation.goBack()}
@@ -194,15 +194,15 @@ class NewIncidentDetail extends React.Component {
               style={{ width: 20, height: 20, marginRight: 22 }}
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
         {/* to here */}
 
         <NaverMap
           ref={el => (this.map = el)}
           // TODO: Comment this style
-          style={{ flex: 1 }}
+          // style={{ flex: 1 }}
           // TODO: Uncomment this style
-          // style={{ flex: 1, height: 500 }}
+          style={{ flex: 1, height: 500 }}
           onInit={this.handleMapInit}
           markers={this.getMarkers(this.state.markerCoords)}
           onPress={this.handlePressMap}
@@ -215,7 +215,7 @@ class NewIncidentDetail extends React.Component {
         </View>
 
         {/* TODO: Comment this block, from here */}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.buttonStyle}
           onPress={this.handlePressReport}
         >
@@ -226,11 +226,11 @@ class NewIncidentDetail extends React.Component {
           onPress={this.locatePosition}
         >
           <Image source={require('../assets/images/group-2.png')} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {/* to here */}
 
         {/* TODO: Uncomment this block, from here */}
-        {/* <View style={styles.buttons}>
+        <View style={styles.buttons}>
           <TouchableOpacity
             style={styles.gpsButton}
             onPress={this.locatePosition}
@@ -243,7 +243,7 @@ class NewIncidentDetail extends React.Component {
           >
             <Text style={styles.buttonText}>제보 등록</Text>
           </TouchableOpacity>
-        </View> */}
+        </View>
         {/* to here */}
       </View>
     );
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
   searchBoxContainer: {
     width: Layout.window.width - 40,
     // TODO: Change top from 115 to 20
-    top: 115,
+    top: 20,
     position: 'absolute',
     borderRadius: 10,
     elevation: 3,
@@ -292,10 +292,10 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     // TODO: Remove position.
-    position: 'absolute',
+    // position: 'absolute',
     width: Layout.window.width - 30,
     // TODO: Remove bottom.
-    bottom: 38,
+    // bottom: 38,
     backgroundColor: '#f47b36',
     borderRadius: 10,
     marginHorizontal: 15,
@@ -308,13 +308,13 @@ const styles = StyleSheet.create({
   },
   gpsButton: {
     // TODO: Comment this block, from here
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 116,
-    right: 22,
-    width: 45,
-    height: 45,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // position: 'absolute',
+    // bottom: 116,
+    // right: 22,
+    // width: 45,
+    // height: 45,
     // to here
 
     alignSelf: 'flex-end',
@@ -331,25 +331,25 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   // TODO: Comment this block, from here
-  headerContainer: {
-    paddingTop: getStatusBarHeight() + (getBottomSpace() == 0 ? 20 : 25),
-    paddingBottom: 22,
-    flexDirection: 'row',
-    backgroundColor: '#ff9412',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-    marginLeft: 10,
-  },
-  backIcon: {
-    width: 19,
-    height: 22,
-    marginLeft: 20,
-  },
+  // headerContainer: {
+  //   paddingTop: getStatusBarHeight() + (getBottomSpace() == 0 ? 20 : 25),
+  //   paddingBottom: 22,
+  //   flexDirection: 'row',
+  //   backgroundColor: '#ff9412',
+  //   justifyContent: 'space-between',
+  //   alignItems: 'center',
+  // },
+  // headerText: {
+  //   fontSize: 20,
+  //   fontWeight: 'bold',
+  //   color: 'white',
+  //   marginLeft: 10,
+  // },
+  // backIcon: {
+  //   width: 19,
+  //   height: 22,
+  //   marginLeft: 20,
+  // },
   // to here
 });
 

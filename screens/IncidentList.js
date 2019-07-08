@@ -6,7 +6,7 @@ import {
   Image,
   View,
   // Remove this after fix android full screen error for button transition.
-  StatusBar,
+  // StatusBar,
   // Remove this after fix android full screen error for button transition.
   Animated,
   Dimensions,
@@ -314,19 +314,17 @@ class IncidentList extends React.Component {
 
     return (
       // TODO: Uncomment this Animatied.View, from here
-      // <Animated.View
-      //   style={{
-      //     flex: 1,
-      //     backgroundColor: 'white',
-      //   }}
-      // >
-      // to here
-
-      // TODO: Comment this View, from here
-      <View style={styles.container}>
+      <Animated.View
+        style={{
+          flex: 1,
+          backgroundColor: 'white',
+        }}
+      >
+        {/* // to here */}
+        {/* // TODO: Comment this View, from here */}
+        {/* <View style={styles.container}> */}
+        {/* <StatusBar background="transparent" /> */}
         {/* to here */}
-
-        <StatusBar background="transparent" />
         <NaverMap
           ref={el => {
             this._map = el;
@@ -349,21 +347,18 @@ class IncidentList extends React.Component {
         >
           <Image source={require('../assets/images/menu.png')} />
         </TouchableOpacity>
-
         {/* TODO: Comment this View, from here*/}
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.reportButton}
             onPress={() => this.props.navigation.navigate('NewIncident')}
           >
             <Text style={styles.reportButtonText}>제보하기</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         {/* to here */}
-
         {/* TODO: Uncomment this Animatied.View, from here */}
-
-        {/* <Animated.View
+        <Animated.View
           style={[
             animatedHeight,
             {
@@ -408,16 +403,13 @@ class IncidentList extends React.Component {
           ) : (
             <NewIncidentDetail shrinkButton={this.shrinkButton} />
           )}
-        </Animated.View> */}
-
+        </Animated.View>
         {/* to here */}
-
         {/* TODO: Comment this View, from here */}
-      </View>
-      //to here
-
-      // TODO: Uncomment this Animatied.View
-      // </Animated.View>
+        {/* </View> */}
+        {/* //to here */}
+        {/* // TODO: Uncomment this Animatied.View */}
+      </Animated.View>
     );
   }
 }

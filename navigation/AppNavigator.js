@@ -36,14 +36,14 @@ const MainNavigator = createStackNavigator(
       },
       { headerMode: 'none' }
     ),
-    NewIncident,
-    NewIncidentDetail,
+    // NewIncident,
+    // NewIncidentDetail,
     NewComment,
     ProgressList,
     NewProgress,
   },
   {
-    // mode: 'modal',
+    mode: 'modal',
     headerMode: 'none',
   }
 );
