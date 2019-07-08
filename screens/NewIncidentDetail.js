@@ -2,11 +2,13 @@ import React from 'react';
 import {
   Alert,
   StyleSheet,
+  StatusBar,
   Text,
   View,
   Image,
   TouchableOpacity,
 } from 'react-native';
+import { StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import * as Location from 'expo-location';
 
@@ -19,6 +21,8 @@ import NaverMap from '../components/NaverMap';
 import Layout from '../constants/Layout';
 import { newIncidentPostRequested } from '../actions/newIncident';
 import { checkIsInbuilding } from '../utils';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 class NewIncidentDetail extends React.Component {
   constructor() {
@@ -91,8 +95,8 @@ class NewIncidentDetail extends React.Component {
       ]);
     }
   };
-
-  report = async () => {
+  //TODO: Make this function to async (just put 'async')
+  report = () => {
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,
@@ -101,8 +105,11 @@ class NewIncidentDetail extends React.Component {
         building: this.state.locationName,
       },
       () => {
-        // this.props.navigation.dispatch(StackActions.popToTop());
-        this.props.shrinkButton();
+        // TODO: Comment this function call
+        this.props.navigation.dispatch(StackActions.popToTop());
+
+        // TODO: Uncomment this function call
+        // this.props.shrinkButton();
       }
     );
   };
@@ -163,9 +170,39 @@ class NewIncidentDetail extends React.Component {
 
     return (
       <View style={container}>
+        {/* TODO: Comment this block, from here */}
+        <StatusBar barStyle="light-content" backgroundColor="#ff9412" />
+        <View style={headerContainer}>
+          <TouchableWithoutFeedback
+            onPress={() => this.props.navigation.goBack()}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image
+                style={styles.backIcon}
+                source={require('../assets/images/group-5.png')}
+              />
+              <Text style={headerText}>{this.props.selectedIncident}</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.dispatch(StackActions.popToTop())
+            }
+          >
+            <Image
+              source={require('../assets/images/combined-shape.png')}
+              style={{ width: 20, height: 20, marginRight: 22 }}
+            />
+          </TouchableOpacity>
+        </View>
+        {/* to here */}
+
         <NaverMap
           ref={el => (this.map = el)}
-          style={{ flex: 1, height: 500 }}
+          // TODO: Comment this style
+          style={{ flex: 1 }}
+          // TODO: Uncomment this style
+          // style={{ flex: 1, height: 500 }}
           onInit={this.handleMapInit}
           markers={this.getMarkers(this.state.markerCoords)}
           onPress={this.handlePressMap}
@@ -176,7 +213,24 @@ class NewIncidentDetail extends React.Component {
             <Text style={styles.searchText}>{this.state.locationName}</Text>
           </View>
         </View>
-        <View style={styles.buttons}>
+
+        {/* TODO: Comment this block, from here */}
+        <TouchableOpacity
+          style={styles.buttonStyle}
+          onPress={this.handlePressReport}
+        >
+          <Text style={styles.buttonText}>제보 등록</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.gpsButton}
+          onPress={this.locatePosition}
+        >
+          <Image source={require('../assets/images/group-2.png')} />
+        </TouchableOpacity>
+        {/* to here */}
+
+        {/* TODO: Uncomment this block, from here */}
+        {/* <View style={styles.buttons}>
           <TouchableOpacity
             style={styles.gpsButton}
             onPress={this.locatePosition}
@@ -189,7 +243,8 @@ class NewIncidentDetail extends React.Component {
           >
             <Text style={styles.buttonText}>제보 등록</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
+        {/* to here */}
       </View>
     );
   }
@@ -208,7 +263,8 @@ const styles = StyleSheet.create({
   },
   searchBoxContainer: {
     width: Layout.window.width - 40,
-    top: 20,
+    // TODO: Change top from 115 to 20
+    top: 115,
     position: 'absolute',
     borderRadius: 10,
     elevation: 3,
@@ -235,7 +291,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonStyle: {
+    // TODO: Remove position.
+    position: 'absolute',
     width: Layout.window.width - 30,
+    // TODO: Remove bottom.
+    bottom: 38,
     backgroundColor: '#f47b36',
     borderRadius: 10,
     marginHorizontal: 15,
@@ -247,6 +307,16 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 10 },
   },
   gpsButton: {
+    // TODO: Comment this block, from here
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 116,
+    right: 22,
+    width: 45,
+    height: 45,
+    // to here
+
     alignSelf: 'flex-end',
     shadowOffset: { width: 0, height: 2 },
     shadowColor: 'black',
@@ -260,6 +330,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  // TODO: Comment this block, from here
+  headerContainer: {
+    paddingTop: getStatusBarHeight() + (getBottomSpace() == 0 ? 20 : 25),
+    paddingBottom: 22,
+    flexDirection: 'row',
+    backgroundColor: '#ff9412',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    marginLeft: 10,
+  },
+  backIcon: {
+    width: 19,
+    height: 22,
+    marginLeft: 20,
+  },
+  // to here
 });
 
 export default connect(

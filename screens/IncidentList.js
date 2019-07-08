@@ -5,6 +5,9 @@ import {
   TouchableOpacity,
   Image,
   View,
+  // Remove this after fix android full screen error for button transition.
+  StatusBar,
+  // Remove this after fix android full screen error for button transition.
   Animated,
   Dimensions,
   PanResponder,
@@ -18,6 +21,7 @@ import memoize from 'fast-memoize';
 
 import NewIncident from '../screens/NewIncident';
 import NewIncidentDetail from '../screens/NewIncidentDetail';
+
 import IncidentCard from '../components/IncidentCard';
 import { getBottomSpace } from '../utils';
 import Colors from '../constants/Colors';
@@ -309,12 +313,20 @@ class IncidentList extends React.Component {
     };
 
     return (
-      <Animated.View
-        style={{
-          flex: 1,
-          backgroundColor: 'white',
-        }}
-      >
+      // TODO: Uncomment this Animatied.View, from here
+      // <Animated.View
+      //   style={{
+      //     flex: 1,
+      //     backgroundColor: 'white',
+      //   }}
+      // >
+      // to here
+
+      // TODO: Comment this View, from here
+      <View style={styles.container}>
+        {/* to here */}
+
+        <StatusBar background="transparent" />
         <NaverMap
           ref={el => {
             this._map = el;
@@ -337,7 +349,21 @@ class IncidentList extends React.Component {
         >
           <Image source={require('../assets/images/menu.png')} />
         </TouchableOpacity>
-        <Animated.View
+
+        {/* TODO: Comment this View, from here*/}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.reportButton}
+            onPress={() => this.props.navigation.navigate('NewIncident')}
+          >
+            <Text style={styles.reportButtonText}>제보하기</Text>
+          </TouchableOpacity>
+        </View>
+        {/* to here */}
+
+        {/* TODO: Uncomment this Animatied.View, from here */}
+
+        {/* <Animated.View
           style={[
             animatedHeight,
             {
@@ -382,8 +408,16 @@ class IncidentList extends React.Component {
           ) : (
             <NewIncidentDetail shrinkButton={this.shrinkButton} />
           )}
-        </Animated.View>
-      </Animated.View>
+        </Animated.View> */}
+
+        {/* to here */}
+
+        {/* TODO: Comment this View, from here */}
+      </View>
+      //to here
+
+      // TODO: Uncomment this Animatied.View
+      // </Animated.View>
     );
   }
 }
