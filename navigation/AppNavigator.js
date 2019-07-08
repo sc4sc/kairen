@@ -21,7 +21,7 @@ import {
   SafetyContact,
 } from '../screens';
 import SSO from '../screens/SSO';
-import AutoLogin from "../screens/AutoLogin";
+import AutoLogin from '../screens/AutoLogin';
 
 console.log(PermissionLoading);
 
@@ -33,17 +33,17 @@ const MainNavigator = createStackNavigator(
         IncidentDetail,
         Setting,
         AboutUs: AboutThisApp,
-        // NewIncidentDetail,
-        // NewIncident,
       },
       { headerMode: 'none' }
     ),
+    NewIncident,
+    NewIncidentDetail,
     NewComment,
     ProgressList,
     NewProgress,
   },
   {
-    mode: 'modal',
+    // mode: 'modal',
     headerMode: 'none',
   }
 );
