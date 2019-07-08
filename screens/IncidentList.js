@@ -36,6 +36,9 @@ import {
 import NaverMap from '../components/NaverMap';
 import { KAISTN1Coords } from '../constants/Geo';
 
+const diff_for_ANDROID =
+  Dimensions.get('screen').height - Dimensions.get('window').height;
+
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -269,10 +272,11 @@ class IncidentList extends React.Component {
           bottomHeight == 0
             ? this.state.touchedOpen
               ? 150
-              : -50
-            : this.state.touchedOpen
+              : -50 + diff_for_ANDROID
+            : // -50
+            this.state.touchedOpen
             ? 200
-            : 0,
+            : 0 + diff_for_ANDROID,
         duration: 50,
         tension: 50,
         friction: 8,
@@ -371,7 +375,7 @@ class IncidentList extends React.Component {
               shadowOpacity: 1,
               shadowRadius: 5,
               backgroundColor: '#ff9412',
-              height: SCREEN_HEIGHT,
+              height: SCREEN_HEIGHT + diff_for_ANDROID,
               width: this.state.buttonWidth.interpolate({
                 inputRange: [SCREEN_WIDTH - 20, SCREEN_WIDTH],
                 outputRange: [SCREEN_WIDTH - 20, SCREEN_WIDTH],
@@ -388,7 +392,9 @@ class IncidentList extends React.Component {
           <Animated.View
             {...this.panResponder.panHandlers}
             style={{
-              height: this.state.isExpanded ? 70 : 70 + bottomHeight,
+              height: this.state.isExpanded
+                ? 70
+                : 70 + bottomHeight + diff_for_ANDROID,
               width: SCREEN_WIDTH,
               flexDirection: 'row',
               alignItems: 'flex-start',
@@ -396,7 +402,9 @@ class IncidentList extends React.Component {
               backgroundColor: 'transparent',
             }}
           >
-            <Text style={headerText}>제보 하기</Text>
+            <Text style={headerText}>
+              제보 하기{diff_for_ANDROID} : {bottomHeight}
+            </Text>
           </Animated.View>
           {this.state.page == 1 ? (
             <NewIncident nextPage={this.nextPage} />
@@ -451,10 +459,13 @@ export const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 5,
   },
-  carouselContainer: { position: 'absolute', bottom: bottomUnsafeArea + 80 },
+  carouselContainer: {
+    position: 'absolute',
+    bottom: bottomUnsafeArea + 80 + diff_for_ANDROID,
+  },
   emptyIncidentBox: {
     position: 'absolute',
-    bottom: bottomUnsafeArea + 100,
+    bottom: bottomUnsafeArea + 100 + diff_for_ANDROID,
     height: 118,
     width: Layout.window.width - 112,
     marginHorizontal: 56,
