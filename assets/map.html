@@ -124,6 +124,9 @@
           if (payload) {
             action.payload = payload;
           }
+          if (!window.ReactNativeWebView) {
+            window.ReactNativeWebView = window['ReactABI33_0_0NativeWebView'];
+          }
           window.ReactNativeWebView.postMessage(JSON.stringify(action));
         }
 
@@ -147,12 +150,14 @@
           }
         }
 
-        document.addEventListener('message', function(event) {
-          var data = event.data;
-          postAction('log', data);
-          var action = JSON.parse(data);
+        window.receiveMessage = function(action) {
+          // var data = event.data;
+          postAction('log', action);
+          // var action = JSON.parse(data);
           actionHandler(action);
-        });
+        };
+
+        document.addEventListener('message', window.receiveMessage);
 
         var ping = setInterval(() => postAction('ping'), 66);
 

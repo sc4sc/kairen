@@ -120,7 +120,11 @@ export default class NaverMap extends React.Component {
 
   postAction = (type, payload) => {
     const action = { type, payload };
-    this._webview.postMessage(JSON.stringify(action));
+    // this._webview.postMessage(JSON.stringify(action));
+
+    this._webview.injectJavaScript(
+      `setTimeout(() => {window.receiveMessage(${JSON.stringify(action)});}, 0);`
+    );
   };
 
   // https://medium.com/@azharuddin31/react-native-pass-data-to-webview-and-get-data-out-of-webview-792ffbe7eb75
