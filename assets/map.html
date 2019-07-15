@@ -71,9 +71,7 @@
             }
             case 'updateMarkers': {
               const markers = payload;
-
               const removedMarkerSet = new Set(Object.keys(markers));
-
               // Efficient instance managing
               markers.forEach(function(marker, index) {
                 var key = index;
@@ -126,7 +124,7 @@
           if (payload) {
             action.payload = payload;
           }
-          postMessage(JSON.stringify(action));
+          window.ReactNativeWebView.postMessage(JSON.stringify(action));
         }
 
         function initMap(el, options) {
