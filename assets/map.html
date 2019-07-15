@@ -71,9 +71,7 @@
             }
             case 'updateMarkers': {
               const markers = payload;
-
               const removedMarkerSet = new Set(Object.keys(markers));
-
               // Efficient instance managing
               markers.forEach(function(marker, index) {
                 var key = index;
@@ -126,7 +124,10 @@
           if (payload) {
             action.payload = payload;
           }
-          postMessage(JSON.stringify(action));
+          if (!window.ReactNativeWebView) {
+            window.ReactNativeWebView = window['ReactABI33_0_0NativeWebView'];
+          }
+          window.ReactNativeWebView.postMessage(JSON.stringify(action));
         }
 
         function initMap(el, options) {
@@ -149,12 +150,14 @@
           }
         }
 
-        document.addEventListener('message', function(event) {
-          var data = event.data;
-          postAction('log', data);
-          var action = JSON.parse(data);
+        window.receiveMessage = function(action) {
+          // var data = event.data;
+          postAction('log', action);
+          // var action = JSON.parse(data);
           actionHandler(action);
-        });
+        };
+
+        document.addEventListener('message', window.receiveMessage);
 
         var ping = setInterval(() => postAction('ping'), 66);
 

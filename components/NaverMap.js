@@ -1,8 +1,7 @@
 import React from 'react';
-import { Text, TouchableOpacity, View, Platform } from 'react-native';
+import { View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { FileSystem } from 'expo';
-import * as geojsonutil from 'geojson-utils';
 import { Sentry, SentrySeverity } from 'react-native-sentry';
 
 const htmlAsset = Expo.Asset.fromModule(require('../assets/map.html'));
@@ -121,14 +120,16 @@ export default class NaverMap extends React.Component {
 
   postAction = (type, payload) => {
     const action = { type, payload };
-    this._webview.postMessage(JSON.stringify(action));
+    // this._webview.postMessage(JSON.stringify(action));
+
+    this._webview.injectJavaScript(
+      `setTimeout(() => {window.receiveMessage(${JSON.stringify(action)});}, 0);`
+    );
   };
 
   // https://medium.com/@azharuddin31/react-native-pass-data-to-webview-and-get-data-out-of-webview-792ffbe7eb75
   handleMessage = ({ nativeEvent }) => {
-    // console.log('handleMessage', nativeEvent.data);
     const action = JSON.parse(nativeEvent.data);
-
     switch (action.type) {
       case 'log': {
         // console.log('Log', action.payload);
