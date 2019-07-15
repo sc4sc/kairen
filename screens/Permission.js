@@ -11,6 +11,7 @@ import Layout from '../constants/Layout';
 import { requestPermission } from '../utils';
 import * as Permissions from 'expo-permissions';
 import i18n from '../i18n';
+import * as Permissions from 'expo-permissions';
 
 export default class Permission extends React.Component {
   state = {

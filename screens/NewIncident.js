@@ -54,7 +54,8 @@ class NewIncident extends React.Component {
 
     return (
       <View style={container}>
-        <StatusBar backgroundColor={'#ff9412'} barStyle={'light-content'} />
+        {/* TODO: Comment this block, from here */}
+        <StatusBar backgroundColor="#ff0000" barStyle="light-content" />
         <View style={headerContainer}>
           <Text style={headerText}>{i18n.t('select_incident')}</Text>
           <TouchableOpacity
@@ -73,10 +74,14 @@ class NewIncident extends React.Component {
         <View style={{ flex: 1, paddingHorizontal: 20, marginTop: 27 }}>
           <Text style={styles.subHeaderText}>{i18n.t('emergency_report')}</Text>
           <FlatList
-            showsVerticalScrollIndicator={false}
             data={incidentTypes}
+            keyExtractor={(item, index) => `${index}`}
             renderItem={this.renderItem}
           />
+
+          {/* TODO: Uncomment this View, from here */}
+          <View style={{ height: 40 }} />
+          {/* to here */}
         </View>
       </View>
     );

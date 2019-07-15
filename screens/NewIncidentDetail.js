@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Alert,
   StyleSheet,
@@ -7,70 +7,72 @@ import {
   View,
   Image,
   TouchableOpacity,
-} from 'react-native';
-import { StackActions } from 'react-navigation';
-import { connect } from 'react-redux';
-import * as Location from 'expo-location';
+} from 'react-native'
+import { StackActions } from 'react-navigation'
+import { connect } from 'react-redux'
+import * as Location from 'expo-location'
 
-import memoize from 'fast-memoize';
-import * as geojsonutil from 'geojson-utils';
-import moment from 'moment';
-import * as apis from '../apis';
-import { getBottomSpace } from '../utils/index.js';
-import NaverMap from '../components/NaverMap';
-import Layout from '../constants/Layout';
-import { newIncidentPostRequested } from '../actions/newIncident';
-import { checkIsInbuilding } from '../utils';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
-import i18n from '../i18n';
+import memoize from 'fast-memoize'
+import * as geojsonutil from 'geojson-utils'
+import moment from 'moment'
+import * as apis from '../apis'
+import { getBottomSpace } from '../utils/index.js'
+import NaverMap from '../components/NaverMap'
+import Layout from '../constants/Layout'
+import { newIncidentPostRequested } from '../actions/newIncident'
+import { checkIsInbuilding } from '../utils'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { getStatusBarHeight } from 'react-native-iphone-x-helper'
+import i18n from '../i18n'
 
-const statusBarHeight = getStatusBarHeight();
+const statusBarHeight = getStatusBarHeight()
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 
 class NewIncidentDetail extends React.Component {
   constructor() {
-    super();
+    super()
 
     this.state = {
       markerCoords: null,
       locationName: '',
-    };
-    this.handlePressReport = this.handlePressReport.bind(this);
-    this.report = this.report.bind(this);
-    this.locatePosition = this.locatePosition.bind(this);
-    this.locating = false;
-    this.locateTransactionId = 0;
+    }
+    this.handlePressReport = this.handlePressReport.bind(this)
+    this.report = this.report.bind(this)
+    this.locatePosition = this.locatePosition.bind(this)
+    this.locating = false
+    this.locateTransactionId = 0
   }
 
   handleMapInit = () => {
-    this.locatePosition();
-  };
+    this.locatePosition()
+  }
 
   async handlePressReport() {
-    let currentIncidents;
+    let currentIncidents
     await apis
       .listIncidents({ size: 100 })
-      .then(res => (currentIncidents = res));
+      .then(res => (currentIncidents = res))
 
     for (let i = 0; i < currentIncidents.length; i++) {
-      const { type, lat, lng, createdAt } = currentIncidents[i];
-      const incidentGeoObj = checkIsInbuilding({ lat, lng });
+      const { type, lat, lng, createdAt } = currentIncidents[i]
+      const incidentGeoObj = checkIsInbuilding({ lat, lng })
       const incidentLocation = incidentGeoObj
         ? incidentGeoObj.properties.name
-        : '';
-      const timePassed = moment().diff(moment(createdAt), 'seconds');
+        : ''
+      const timePassed = moment().diff(moment(createdAt), 'seconds')
 
-      const isBuildingSame = incidentLocation === this.state.locationName;
-      const isTimeClose = timePassed / (60 * 60) < 1;
-      const isTypeSame = type === this.props.selectedIncident;
+      const isBuildingSame = incidentLocation === this.state.locationName
+      const isTimeClose = timePassed / (60 * 60) < 1
+      const isTypeSame = type === this.props.selectedIncident
 
       if (isBuildingSame && isTimeClose && isTypeSame) {
         Alert.alert(
           i18n.t('duplicate_alert_title'),
           i18n.t('duplicate_alert_detail'),
           [{ text: '취소' }, { text: '확인', onPress: () => this.report() }]
-        );
-        return;
+        )
+        return
       }
     }
 
@@ -78,28 +80,28 @@ class NewIncidentDetail extends React.Component {
       i18n.t('report_confirm_title'),
       i18n.t('report_confirm_detail'),
       [{ text: '취소' }, { text: '확인', onPress: () => this.report() }]
-    );
+    )
   }
 
   handlePressMap = coords => {
-    const kaist = require('../assets/geojson/KAIST.json');
-    const point = { type: 'Point', coordinates: [coords.lng, coords.lat] };
+    const kaist = require('../assets/geojson/KAIST.json')
+    const point = { type: 'Point', coordinates: [coords.lng, coords.lat] }
 
     if (geojsonutil.pointInPolygon(point, kaist.features[0].geometry)) {
-      this.updateLocationName(coords);
+      this.updateLocationName(coords)
       this.setState({
         markerCoords: coords,
-      });
+      })
       // After an manual marker update, locating should stop
-      this.locateTransactionId += 1;
+      this.locateTransactionId += 1
     } else {
       Alert.alert(
         i18n.t('location_error_title'),
         i18n.t('location_error_detail'),
         [{ text: i18n.t('confirm') }]
-      );
+      )
     }
-  };
+  }
   //TODO: Make this function to async (just put 'async')
   report = () => {
     this.props.newIncidentPostRequested(
@@ -111,68 +113,68 @@ class NewIncidentDetail extends React.Component {
       },
       () => {
         // TODO: Comment this function call
-        this.props.navigation.dispatch(StackActions.popToTop());
+        this.props.navigation.dispatch(StackActions.popToTop())
 
         // TODO: Uncomment this function call
         // this.props.shrinkButton();
       }
-    );
-  };
+    )
+  }
 
   updateLocationName = coords => {
-    const locationGeoObj = checkIsInbuilding(coords);
+    const locationGeoObj = checkIsInbuilding(coords)
     this.setState({
       locationName: locationGeoObj ? locationGeoObj.properties.name : '',
-    });
-  };
+    })
+  }
 
   async locatePosition() {
-    if (this.locating) return;
+    if (this.locating) return
 
-    this.locating = true;
+    this.locating = true
 
-    const transactionId = this.locateTransactionId;
+    const transactionId = this.locateTransactionId
 
     const currentPosition = (await Location.getCurrentPositionAsync({
       maximumAge: 5000,
-    })).coords;
+    })).coords
 
-    if (transactionId !== this.locateTransactionId) return;
+    if (transactionId !== this.locateTransactionId) return
 
-    this.locating = false;
+    this.locating = false
 
-    const { longitude, latitude } = currentPosition;
-    const coords = { lng: longitude, lat: latitude };
-    const kaist = require('../assets/geojson/KAIST.json');
-    const point = { type: 'Point', coordinates: [coords.lng, coords.lat] };
+    const { longitude, latitude } = currentPosition
+    const coords = { lng: longitude, lat: latitude }
+    const kaist = require('../assets/geojson/KAIST.json')
+    const point = { type: 'Point', coordinates: [coords.lng, coords.lat] }
     if (!geojsonutil.pointInPolygon(point, kaist.features[0].geometry)) {
       Alert.alert(
         i18n.t('location_error_title'),
         i18n.t('location_error_detail'),
         [{ text: i18n.t('confirm') }]
-      );
-      return;
+      )
+      return
     }
 
-    this.updateLocationName(coords);
-    this.setState({ markerCoords: coords });
-    this.map.panTo(coords, {});
+    this.updateLocationName(coords)
+    this.setState({ markerCoords: coords })
+    this.map.panTo(coords, {})
   }
 
   getMarkers = memoize(markerCoords => {
     if (!markerCoords) {
-      return [];
+      return []
     }
     return [
       {
         key: 'incidentLocation',
         coords: markerCoords,
       },
-    ];
-  });
+    ]
+  })
 
   render() {
-    const { container, headerContainer, headerText } = styles;
+    const { container, headerContainer, headerText } = styles
 
     return (
       <View style={container}>
@@ -180,8 +182,7 @@ class NewIncidentDetail extends React.Component {
         <StatusBar barStyle="light-content" backgroundColor="#ff9412" />
         <View style={headerContainer}>
           <TouchableWithoutFeedback
-            onPress={() => this.props.navigation.goBack()}
-          >
+            onPress={() => this.props.navigation.goBack()}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
                 style={styles.backIcon}
@@ -193,8 +194,7 @@ class NewIncidentDetail extends React.Component {
           <TouchableOpacity
             onPress={() =>
               this.props.navigation.dispatch(StackActions.popToTop())
-            }
-          >
+            }>
             <Image
               source={require('../assets/images/combined-shape.png')}
               style={{ width: 20, height: 20, marginRight: 22 }}
@@ -223,14 +223,12 @@ class NewIncidentDetail extends React.Component {
         {/* TODO: Comment this block, from here */}
         <TouchableOpacity
           style={styles.buttonStyle}
-          onPress={this.handlePressReport}
-        >
+          onPress={this.handlePressReport}>
           <Text style={styles.buttonText}>{i18n.t('upload_report')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.gpsButton}
-          onPress={this.locatePosition}
-        >
+          onPress={this.locatePosition}>
           <Image source={require('../assets/images/group-2.png')} />
         </TouchableOpacity>
         {/* to here */}
@@ -252,7 +250,7 @@ class NewIncidentDetail extends React.Component {
         </View> */}
         {/* to here */}
       </View>
-    );
+    )
   }
 }
 
@@ -265,7 +263,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fffaf4',
     // marginTop: -100,
-    height: 100,
+    // height: 100,
   },
   headerContainer: {
     paddingTop: statusBarHeight + (getBottomSpace() == 0 ? 15 : 20),
@@ -376,15 +374,15 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   // to here
-});
+})
 
 export default connect(
   state => {
     return {
       selectedIncident: state.newIncident.selectedIncident,
-    };
+    }
   },
   {
     newIncidentPostRequested,
   }
-)(NewIncidentDetail);
+)(NewIncidentDetail)

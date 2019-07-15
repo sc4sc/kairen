@@ -28,6 +28,15 @@ class NewProgress extends React.Component {
   }
 
   onButtonPress() {
+    if (this.state.text.trim() === '') {
+      Alert.alert(
+        '내용을 입력해주세요.',
+        '공백으로 이루어진 메세지는 등록하실 수 없습니다.'
+      );
+      this.setState({ text: '' });
+      return;
+    }
+
     Alert.alert(i18n.t('progress_alert_title'), i18n.t('progress_alert'), [
       { text: i18n.t('cancel') },
       { text: i18n.t('confirm'), onPress: this.postProgress.bind(this) },
