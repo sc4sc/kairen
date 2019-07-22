@@ -11,7 +11,7 @@ export const en = {
   SSO: 'KAIST SSO Login',
   new_comment: 'Upload new comment',
   new_progress: 'Upload new progress',
-  emergency_report: 'Emergency Report',
+  emergency_report: 'Incidents',
   select_incident: 'Select incident',
   logout: 'Log out',
 
@@ -51,6 +51,7 @@ export const en = {
   comment_alert: 'You cannot delete a registered comment once.',
   blank_alert_title: 'Please enter the contents.',
   blank_alert: 'You cannot register a blank message.',
+  logout_alert: 'Do you want to logout?',
 
   _button_text: '// 버튼 텍스트',
   placeholder: 'Enter here...',
@@ -84,4 +85,4 @@ export const en = {
   확인중: 'checking',
   처리중: 'in progress',
   완료: 'complete',
-};
+}

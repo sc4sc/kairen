@@ -26,8 +26,6 @@ import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 import i18n from '../i18n'
 
 const statusBarHeight = getStatusBarHeight()
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 
 class NewIncidentDetail extends React.Component {
   constructor() {

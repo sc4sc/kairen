@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   AppState,
   View,
@@ -6,46 +6,45 @@ import {
   StatusBar,
   Image,
   TouchableOpacity,
-} from 'react-native';
-import Layout from '../constants/Layout';
-import { requestPermission } from '../utils';
-import * as Permissions from 'expo-permissions';
-import i18n from '../i18n';
-import * as Permissions from 'expo-permissions';
+} from 'react-native'
+import Layout from '../constants/Layout'
+import { requestPermission } from '../utils'
+import * as Permissions from 'expo-permissions'
+import i18n from '../i18n'
 
 export default class Permission extends React.Component {
   state = {
     locationPermission: false,
     phoneCallPermission: false,
     appState: AppState.currentState,
-  };
+  }
 
   async componentDidMount() {
-    const locationPermission = await requestPermission(Permissions.LOCATION);
+    const locationPermission = await requestPermission(Permissions.LOCATION)
 
-    AppState.addEventListener('change', this.handleAppStateChange);
-    this.setState({ locationPermission });
+    AppState.addEventListener('change', this.handleAppStateChange)
+    this.setState({ locationPermission })
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this.handleAppStateChange);
+    AppState.removeEventListener('change', this.handleAppStateChange)
   }
 
   handleAppStateChange = async nextAppState => {
-    let locationPermission, phoneCallPermission;
+    let locationPermission, phoneCallPermission
     if (
       this.state.appState.match(/inactive|background/) &&
       nextAppState == 'active'
     ) {
-      locationPermission = await Permissions.getAsync(Permissions.LOCATION);
+      locationPermission = await Permissions.getAsync(Permissions.LOCATION)
       if (locationPermission.status === 'granted') {
-        this.setState({ locationPermission: true });
+        this.setState({ locationPermission: true })
       } else {
-        this.setState({ locationPermission: false });
+        this.setState({ locationPermission: false })
       }
     }
-    this.setState({ appState: nextAppState });
-  };
+    this.setState({ appState: nextAppState })
+  }
 
   renderPermissionWait() {
     return (
@@ -54,15 +53,14 @@ export default class Permission extends React.Component {
           {i18n.t('wait_for_permission')}
         </Text>
       </View>
-    );
+    )
   }
 
   renderGoNext() {
     return (
       <TouchableOpacity
         style={[styles.buttonStyle, styles.buttonEnabled]}
-        onPress={() => this.props.navigation.navigate('AuthLoading')}
-      >
+        onPress={() => this.props.navigation.navigate('AuthLoading')}>
         <Text style={[styles.buttonEnabledText, { alignItems: 'center' }]}>
           {i18n.t('next')}
         </Text>
@@ -71,7 +69,7 @@ export default class Permission extends React.Component {
           source={require('../assets/images/next.png')}
         />
       </TouchableOpacity>
-    );
+    )
   }
 
   render() {
@@ -109,7 +107,7 @@ export default class Permission extends React.Component {
             : this.renderPermissionWait()}
         </View>
       </View>
-    );
+    )
   }
 }
 
@@ -167,4 +165,4 @@ const styles = {
     letterSpacing: -0.6,
     color: '#d3d3d3',
   },
-};
+}

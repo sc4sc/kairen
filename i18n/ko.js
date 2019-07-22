@@ -50,6 +50,7 @@ export const ko = {
   comment_alert: '한 번 등록한 댓글은 삭제하실 수 없습니다',
   blank_alert_title: '내용을 입력해주세요.',
   blank_alert: '공백으로 이루어진 메세지는 등록하실 수 없습니다.',
+  logout_alert: '로그아웃 하시겠습니까?',
 
   _button_text: '// 버튼 텍스트',
   placeholder: '여기에 입력하세요...',
@@ -83,4 +84,4 @@ export const ko = {
   확인중: '확인 중',
   처리중: '진행 중',
   완료: '완료',
-};
+}
