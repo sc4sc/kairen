@@ -14,11 +14,11 @@ import {
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
-
 import Spinner from '../components/Spinner';
 import * as apis from '../apis';
 import Colors from '../constants/Colors';
 import AndroidTopMargin from '../components/AndroidTopMargin';
+import i18n from '../i18n';
 
 class NewComment extends React.Component {
   constructor() {
@@ -29,19 +29,15 @@ class NewComment extends React.Component {
   onButtonPress() {
     Keyboard.dismiss();
     if (this.state.text.trim() === '') {
-      Alert.alert(
-        '내용을 입력해주세요.',
-        '공백으로 이루어진 메세지는 등록하실 수 없습니다.'
-      );
+      Alert.alert(i18n.t('blank_alert_title'), i18n.t('blank_alert'));
       this.setState({ text: '' });
       return;
     }
 
-    Alert.alert(
-      '댓글을 등록하시겠습니까?',
-      '한 번 등록한 댓글은 삭제하실 수 없습니다',
-      [{ text: '취소' }, { text: '확인', onPress: this.postComment.bind(this) }]
-    );
+    Alert.alert(i18n.t('comment_alert_title'), i18n.t('comment_alert'), [
+      { text: '취소' },
+      { text: '확인', onPress: this.postComment.bind(this) },
+    ]);
   }
 
   postComment() {
@@ -64,7 +60,7 @@ class NewComment extends React.Component {
           <AndroidTopMargin />
           {this.state.loading && <Spinner overlay />}
           <View style={styles.headerContainer}>
-            <Text style={styles.header}> 새로운 의견 등록하기 </Text>
+            <Text style={styles.header}>{i18n.t('new_comment')}</Text>
             <TouchableWithoutFeedback
               onPress={() => {
                 this.props.navigation.goBack();
@@ -82,7 +78,7 @@ class NewComment extends React.Component {
           >
             <TextInput
               style={styles.textInputStyle}
-              placeholder="여기에 입력하세요..."
+              placeholder={i18n.t('placeholder')}
               onChangeText={text => this.setState({ text })}
               value={this.state.text}
               multiline
@@ -95,7 +91,7 @@ class NewComment extends React.Component {
                 style={styles.buttonStyle}
                 onPress={this.onButtonPress.bind(this)}
               >
-                <Text style={styles.buttonText}>등록하기</Text>
+                <Text style={styles.buttonText}>{i18n.t('enroll')}</Text>
               </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>

@@ -2,19 +2,17 @@ import React from 'react';
 import {
   FlatList,
   Linking,
-  StyleSheet,
   Text,
+  StyleSheet,
   TouchableOpacity,
   View,
   Platform,
   Image,
   Alert,
 } from 'react-native';
-
-import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-import * as actions from '../actions/newIncident';
+import { connect } from 'react-redux';
+import * as actions from '../actions/incidentsList';
 import * as apis from '../apis';
 import ProgressCard from '../components/ProgressCard';
 import CommentCard from '../components/CommentCard';
@@ -24,12 +22,13 @@ import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
 import {
   formatDate,
-  getBottomSpace,
   checkIsInbuilding,
   getStatusBarHeight,
+  getBottomSpace,
 } from '../utils';
 import { getLocalData } from '../constants/Incidents';
 import NaverMap from '../components/NaverMap';
+import i18n from '../i18n';
 
 const statusBarHeight = getStatusBarHeight();
 
@@ -168,7 +167,7 @@ class IncidentDetail extends React.Component {
       <View style={[styles.information, { backgroundColor: '#44aa25' }]}>
         <View>
           <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
-            사고 제보자에게 전화 걸기
+            {i18n.t('call_to_informant')}
           </Text>
           <Text style={{ fontSize: 10, color: 'white' }}>
             {name}, {mobile}
@@ -192,9 +191,9 @@ class IncidentDetail extends React.Component {
       <View style={[styles.information, { backgroundColor: '#ff9412' }]}>
         <View>
           <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
-            가까운 안전한 장소로 이동하세요
+            {i18n.t('safety_instructions')}
           </Text>
-          <Text style={{ color: 'white' }}>자세한 행동 강령 보기</Text>
+          <Text style={{ color: 'white' }}>{i18n.t('code_of_conduct')}</Text>
         </View>
         <TouchableOpacity
           style={[styles.informationButton, { backgroundColor: '#db7d0a' }]}
@@ -210,7 +209,7 @@ class IncidentDetail extends React.Component {
     const { progressState } = this.state;
     return (
       <View>
-        <Text style={styles.subheaderText}>안전팀 확인 상태</Text>
+        <Text style={styles.subheaderText}>{i18n.t('progress_status')}</Text>
         <View style={styles.statusContainer}>
           <StateCheckButton
             color="#d62c2c"
@@ -218,7 +217,7 @@ class IncidentDetail extends React.Component {
             onPress={() => this.onStateButtonPress('확인중')}
             disabled={!this.props.isSecureTeam}
           >
-            확인 중
+            {i18n.t('확인중')}
           </StateCheckButton>
           <StateCheckButton
             color="#f5c234"
@@ -226,7 +225,7 @@ class IncidentDetail extends React.Component {
             onPress={() => this.onStateButtonPress('처리중')}
             disabled={!this.props.isSecureTeam}
           >
-            처리 중
+            {i18n.t('처리중')}
           </StateCheckButton>
           <StateCheckButton
             color="#7ed321"
@@ -234,7 +233,7 @@ class IncidentDetail extends React.Component {
             onPress={() => this.onStateButtonPress('완료')}
             disabled={!this.props.isSecureTeam}
           >
-            완료
+            {i18n.t('완료')}
           </StateCheckButton>
         </View>
         <TouchableOpacity
@@ -249,15 +248,12 @@ class IncidentDetail extends React.Component {
           onPress={this.onWrongReportButtonPress}
         >
           <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>
-            오인 신고로 변경
+            {i18n.t('change_to_misreport')}
           </Text>
         </TouchableOpacity>
         <Text style={{ fontSize: 11, letterSpacing: 0.15, color: '#959595' }}>
-          <Text style={{ fontWeight: 'bold' }}>
-            * 이 작업은 취소할 수 없습니다.{' '}
-          </Text>
-          오인 신고로 변경될 경우, 해당 사고는 일반 사용자에게 더 이상 표시되지
-          않으며 진행 상황 등록 및 댓글 작성이 불가합니다.
+          <Text style={{ fontWeight: 'bold' }}>{i18n.t('cannot_cancel')}</Text>
+          {i18n.t('misreport_alert')}
         </Text>
       </View>
     );
@@ -267,7 +263,7 @@ class IncidentDetail extends React.Component {
     const { progressState } = this.state;
     return (
       <View style={{ flex: 1 }}>
-        <Text style={styles.subheaderText}>안전팀 확인 상태</Text>
+        <Text style={styles.subheaderText}>{i18n.t('progress_status')}</Text>
         <View
           style={{
             flex: 1,
@@ -277,13 +273,13 @@ class IncidentDetail extends React.Component {
           }}
         >
           <StateMarker position="left" selected={progressState === '확인중'}>
-            확인 중
+            {i18n.t('확인중')}
           </StateMarker>
           <StateMarker position="center" selected={progressState === '처리중'}>
-            처리 중
+            {i18n.t('처리중')}
           </StateMarker>
           <StateMarker position="right" selected={progressState === '완료'}>
-            완료
+            {i18n.t('완료')}
           </StateMarker>
         </View>
       </View>
@@ -303,7 +299,7 @@ class IncidentDetail extends React.Component {
           this.props.navigation.navigate('NewProgress', { incidentId });
         }}
       >
-        <Text style={styles.commentButtonText}>진행 상황 등록하기</Text>
+        <Text style={styles.commentButtonText}>{i18n.t('new_progress')}</Text>
       </TouchableOpacity>
     );
   }
@@ -329,7 +325,7 @@ class IncidentDetail extends React.Component {
       recentView = (
         <View style={{ alignItems: 'center' }}>
           <Text style={{ fontSize: 13, color: '#b7b7b7' }}>
-            진행 상황이 없습니다.
+            {i18n.t('empty_progress')}
           </Text>
         </View>
       );
@@ -354,7 +350,7 @@ class IncidentDetail extends React.Component {
                 });
               }}
             >
-              더보기
+              {i18n.t('more')}
             </Text>
           ) : null}
         </View>
@@ -442,7 +438,7 @@ class IncidentDetail extends React.Component {
         >
           <Image source={require('../assets/images/back.png')} />
           <Text style={{ marginLeft: 5, fontSize: 18, fontWeight: '800' }}>
-            사고 목록
+            {i18n.t('incident_list')}
           </Text>
         </TouchableOpacity>
         <KeyboardAwareScrollView
@@ -492,7 +488,9 @@ class IncidentDetail extends React.Component {
                 this.props.navigation.navigate('NewComment', { incidentId });
               }}
             >
-              <Text style={styles.commentButtonText}>새로운 의견 등록하기</Text>
+              <Text style={styles.commentButtonText}>
+                {i18n.t('new_comment')}
+              </Text>
             </TouchableOpacity>
 
             <FlatList
@@ -501,7 +499,7 @@ class IncidentDetail extends React.Component {
               renderItem={this.renderComment}
             />
 
-            <Text style={styles.noCommentText}>의견이 없습니다</Text>
+            <Text style={styles.noCommentText}>{i18n.t('empty_comment')}</Text>
           </View>
         </KeyboardAwareScrollView>
       </View>

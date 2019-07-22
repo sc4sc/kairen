@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   StyleSheet,
   Text,
@@ -11,39 +11,36 @@ import {
   Animated,
   Dimensions,
   PanResponder,
-} from 'react-native';
-import { connect } from 'react-redux';
-import { Notifications } from 'expo';
-import * as Location from 'expo-location';
-import { createSelector } from 'reselect';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-import memoize from 'fast-memoize';
-
-import NewIncident from '../screens/NewIncident';
-import NewIncidentDetail from '../screens/NewIncidentDetail';
-
-import IncidentCard from '../components/IncidentCard';
-import { getBottomSpace } from '../utils';
-import Colors from '../constants/Colors';
-import Layout from '../constants/Layout';
+} from 'react-native'
+import { connect } from 'react-redux'
+import { Notifications } from 'expo'
+import * as Location from 'expo-location'
+import { createSelector } from 'reselect'
+import Carousel, { Pagination } from 'react-native-snap-carousel'
+import memoize from 'fast-memoize'
+import IncidentCard from '../components/IncidentCard'
+import { getBottomSpace } from '../utils'
+import Colors from '../constants/Colors'
+import Layout from '../constants/Layout'
 
 import {
   incidentsListLoadMore,
   incidentsListRefresh,
   incidentsListReset,
   incidentsListSelect,
-} from '../actions/incidentsList';
-import NaverMap from '../components/NaverMap';
-import { KAISTN1Coords } from '../constants/Geo';
+} from '../actions/incidentsList'
+import NaverMap from '../components/NaverMap'
+import { KAISTN1Coords } from '../constants/Geo'
+import i18n from '../i18n'
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = Dimensions.get('window').height
+const SCREEN_WIDTH = Dimensions.get('window').width
 
-const bottomHeight = getBottomSpace();
+const bottomHeight = getBottomSpace()
 // TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
   constructor() {
-    super();
+    super()
 
     this.state = {
       currentLocation: null,
@@ -53,36 +50,36 @@ class IncidentList extends React.Component {
       page: 1,
       touchedOpen: false,
       touchedClose: false,
-    };
-    this.handleRefresh = this.handleRefresh.bind(this);
-    this.handleEndReached = this.handleEndReached.bind(this);
-    this.renderItem = this.renderItem.bind(this);
+    }
+    this.handleRefresh = this.handleRefresh.bind(this)
+    this.handleEndReached = this.handleEndReached.bind(this)
+    this.renderItem = this.renderItem.bind(this)
   }
 
   componentWillMount() {
     this.notificationSubscription = Notifications.addListener(notification =>
       console.log('Notification arrived:', notification)
-    );
+    )
     this.willFocusSubscription = this.props.navigation.addListener(
       'willFocus',
       this.handleRefresh
-    );
-    this.handleRefresh();
-    Location.watchPositionAsync({}, this.handleLocationUpdate);
+    )
+    this.handleRefresh()
+    Location.watchPositionAsync({}, this.handleLocationUpdate)
 
     this.animation = new Animated.ValueXY({
       x: 0,
       y: SCREEN_HEIGHT - (65 + bottomHeight),
-    });
+    })
     this.panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: (evt, gestureState) => {
-        return !(gestureState.dx === 0 && gestureState.dy === 0);
+        return !(gestureState.dx === 0 && gestureState.dy === 0)
       },
       onPanResponderGrant: (evt, gestureState) => {
-        this.animation.extractOffset();
+        this.animation.extractOffset()
       },
       onPanResponderMove: (evt, gestureState) => {
-        this.animation.setValue({ x: 0, y: gestureState.dy });
+        this.animation.setValue({ x: 0, y: gestureState.dy })
       },
       onPanResponderRelease: (evt, gestureState) => {
         if (gestureState.dy < 0 && !this.state.isExpanded) {
@@ -92,23 +89,23 @@ class IncidentList extends React.Component {
             duration: 50,
             tension: 50,
             friction: 10,
-          }).start();
+          }).start()
           Animated.timing(this.state.buttonWidth, {
             toValue: SCREEN_WIDTH,
             duration: 200,
-          }).start();
+          }).start()
           Animated.timing(this.state.buttonRightMargin, {
             toValue: 0,
             duration: 200,
-          }).start();
-          this.setState({ isExpanded: true });
+          }).start()
+          this.setState({ isExpanded: true })
         } else if (gestureState.dy < 0 && this.state.isExpanded) {
           Animated.spring(this.animation.y, {
             toValue: 0,
             duration: 50,
             tension: 50,
             friction: 10,
-          }).start();
+          }).start()
         } else if (gestureState.dy > 0 && this.state.isExpanded) {
           Animated.spring(this.animation.y, {
             toValue:
@@ -116,92 +113,92 @@ class IncidentList extends React.Component {
             duration: 50,
             tension: 50,
             friction: 8,
-          }).start();
+          }).start()
           Animated.timing(this.state.buttonWidth, {
             toValue: SCREEN_WIDTH - 20,
             duration: 200,
-          }).start();
+          }).start()
           Animated.timing(this.state.buttonRightMargin, {
             toValue: 10,
             duration: 200,
-          }).start();
-          this.setState({ isExpanded: false, page: 1 });
+          }).start()
+          this.setState({ isExpanded: false, page: 1 })
         } else if (gestureState.dy > 0 && !this.state.isExpanded) {
           Animated.spring(this.animation.y, {
             toValue: 0,
             duration: 50,
             tension: 50,
             friction: 8,
-          }).start();
+          }).start()
         }
       },
-    });
+    })
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const refreshing =
       prevProps.incidents.length === 0 &&
-      prevProps.incidents !== this.props.incidents;
+      prevProps.incidents !== this.props.incidents
     if (refreshing) {
-      this.props.incidentsListSelect(0);
+      this.props.incidentsListSelect(0)
     }
 
     // It handles cases where
     // 1. List refreshes after map initialization (initialCoords cannot handle it)
     // 2. Selection changes as user swipe carousel
-    const incident = this.props.incidents[this.props.indexSelected];
-    const prevIncident = prevProps.incidents[prevProps.indexSelected];
+    const incident = this.props.incidents[this.props.indexSelected]
+    const prevIncident = prevProps.incidents[prevProps.indexSelected]
     if (prevIncident !== incident && incident) {
-      this._map.panTo(getCoordsFromIncident(incident), {});
+      this._map.panTo(getCoordsFromIncident(incident), {})
     }
   }
 
   componentWillUnmount() {
-    this.notificationSubscription.remove();
-    this.willFocusSubscription.remove();
+    this.notificationSubscription.remove()
+    this.willFocusSubscription.remove()
   }
 
   handleLocationUpdate = location => {
-    this.setState({ currentLocation: location });
-  };
+    this.setState({ currentLocation: location })
+  }
 
   handleRefresh() {
-    this.props.incidentsListRefresh();
+    this.props.incidentsListRefresh()
   }
 
   handleEndReached() {
-    this.props.incidentsListLoadMore();
+    this.props.incidentsListLoadMore()
   }
 
   handleSnapToItem = slideIndex => {
-    this.props.incidentsListSelect(slideIndex);
-  };
+    this.props.incidentsListSelect(slideIndex)
+  }
 
   // To prevent NaverMap from updating by reusing the old array
   getMarkers = memoize((selectedIncident, currentLocation) => {
-    let markers = [];
+    let markers = []
 
     if (selectedIncident) {
       markers = markers.concat({
         key: 'selected',
         coords: getCoordsFromIncident(selectedIncident),
-      });
+      })
     }
 
     if (currentLocation) {
-      const { latitude, longitude } = currentLocation.coords;
+      const { latitude, longitude } = currentLocation.coords
       const myLocation = {
         key: 'myLocation',
         coords: { lat: latitude, lng: longitude },
         icon: Expo.Asset.fromModule(
           require('../assets/images/current_location_pin.png')
         ).uri,
-      };
-      markers = markers.concat(myLocation);
+      }
+      markers = markers.concat(myLocation)
     }
 
-    return markers;
-  });
+    return markers
+  })
 
   renderItem({ item: incident }) {
     return (
@@ -213,7 +210,7 @@ class IncidentList extends React.Component {
           })
         }
       />
-    );
+    )
   }
 
   renderCarousel() {
@@ -221,10 +218,10 @@ class IncidentList extends React.Component {
       return (
         <View style={styles.emptyIncidentBox} pointerEvents={'none'}>
           <Text style={{ fontSize: 13, color: '#4a4a4a' }}>
-            사고 목록이 비어있습니다.
+            {i18n.t('empty_incidents')}
           </Text>
         </View>
-      );
+      )
     }
     return (
       <View style={styles.carouselContainer}>
@@ -253,14 +250,14 @@ class IncidentList extends React.Component {
           inactiveSlideScale={1}
         />
       </View>
-    );
+    )
   }
 
   nextPage = () => {
     this.setState({
       page: 2,
-    });
-  };
+    })
+  }
 
   shrinkButton = async () => {
     if (this.state.isExpanded) {
@@ -276,41 +273,41 @@ class IncidentList extends React.Component {
         duration: 50,
         tension: 50,
         friction: 8,
-      }).start();
+      }).start()
       Animated.timing(this.state.buttonWidth, {
         toValue: SCREEN_WIDTH - 20,
         duration: 200,
-      }).start();
+      }).start()
       Animated.timing(this.state.buttonRightMargin, {
         toValue: 10,
         duration: 200,
-      }).start();
+      }).start()
       await this.setState({
         isExpanded: false,
         page: 1,
         touchedOpen: false,
         touchedClose: true,
-      });
+      })
 
       this.notificationSubscription = Notifications.addListener(notification =>
         console.log('Notification arrived:', notification)
-      );
+      )
       this.willFocusSubscription = this.props.navigation.addListener(
         'willFocus',
         this.handleRefresh
-      );
-      this.handleRefresh();
-      Location.watchPositionAsync({}, this.handleLocationUpdate);
+      )
+      this.handleRefresh()
+      Location.watchPositionAsync({}, this.handleLocationUpdate)
     }
-  };
+  }
 
   render() {
-    const { headerText } = styles;
-    const selectedIncident = this.props.selectedIncident;
+    const { headerText } = styles
+    const selectedIncident = this.props.selectedIncident
 
     const animatedHeight = {
       transform: this.animation.getTranslateTransform(),
-    };
+    }
 
     return (
       // TODO: Uncomment this Animatied.View, from here
@@ -329,7 +326,7 @@ class IncidentList extends React.Component {
         <StatusBar background="transparent" />
         <NaverMap
           ref={el => {
-            this._map = el;
+            this._map = el
           }}
           initialCoords={
             selectedIncident
@@ -345,8 +342,7 @@ class IncidentList extends React.Component {
         {this.renderCarousel()}
         <TouchableOpacity
           style={styles.menuIcon}
-          onPress={() => this.props.navigation.openDrawer()}
-        >
+          onPress={() => this.props.navigation.openDrawer()}>
           <Image source={require('../assets/images/menu.png')} />
         </TouchableOpacity>
 
@@ -354,9 +350,8 @@ class IncidentList extends React.Component {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.reportButton}
-            onPress={() => this.props.navigation.navigate('NewIncident')}
-          >
-            <Text style={styles.reportButtonText}>제보하기</Text>
+            onPress={() => this.props.navigation.navigate('NewIncident')}>
+            <Text style={styles.reportButtonText}>{i18n.t('report')}</Text>
           </TouchableOpacity>
         </View>
         {/* to here */}
@@ -418,11 +413,11 @@ class IncidentList extends React.Component {
 
       // TODO: Uncomment this Animatied.View
       // </Animated.View>
-    );
+    )
   }
 }
 
-const bottomUnsafeArea = getBottomSpace();
+const bottomUnsafeArea = getBottomSpace()
 
 export const styles = StyleSheet.create({
   container: {
@@ -491,36 +486,36 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   reportButtonText: { color: 'white', fontWeight: 'bold', fontSize: 20 },
-});
+})
 
 const getCoordsFromIncident = incident => ({
   lat: incident.lat,
   lng: incident.lng,
-});
+})
 
 const incidentsSelector = createSelector(
   state => state.incidentsList.byId,
   state => state.incidentsList.idList,
   (byId, idList) => idList.map(id => byId[id])
-);
+)
 
 const selectedIncidentSelector = createSelector(
   incidentsSelector,
   state => state.incidentsList.indexSelected,
   (incidents, indexSelected) => incidents[indexSelected]
-);
+)
 
 export default connect(
   state => {
-    const { loading, indexSelected } = state.incidentsList;
-    const incidents = incidentsSelector(state);
+    const { loading, indexSelected } = state.incidentsList
+    const incidents = incidentsSelector(state)
 
     return {
       incidents,
       selectedIncident: selectedIncidentSelector(state),
       loading,
       indexSelected,
-    };
+    }
   },
   {
     incidentsListLoadMore,
@@ -528,4 +523,4 @@ export default connect(
     incidentsListRefresh,
     incidentsListSelect,
   }
-)(IncidentList);
+)(IncidentList)

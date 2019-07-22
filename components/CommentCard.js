@@ -1,72 +1,70 @@
-import React from 'react';
+import React from 'react'
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
-} from 'react-native';
-import { connect } from 'react-redux';
-import { AntDesign } from '@expo/vector-icons';
-import * as apis from '../apis';
-
-import CommentReplyCard from './CommentReplyCard';
-import ProgressCard from './ProgressCard';
-
-import Colors from '../constants/Colors';
+} from 'react-native'
+import { connect } from 'react-redux'
+import { AntDesign } from '@expo/vector-icons'
+import * as apis from '../apis'
+import CommentReplyCard from './CommentReplyCard'
+import ProgressCard from './ProgressCard'
+import Colors from '../constants/Colors'
 
 class CommentCard extends React.Component {
   constructor(props) {
-    super(props);
-    state = { like: false, totalLike: 0, reply: '', isEditReply: false };
+    super(props)
+    state = { like: false, totalLike: 0, reply: '', isEditReply: false }
 
-    this.changeEditState = this.changeEditState.bind(this);
-    this.onConfirmPress = this.onConfirmPress.bind(this);
+    this.changeEditState = this.changeEditState.bind(this)
+    this.onConfirmPress = this.onConfirmPress.bind(this)
   }
 
   componentWillMount() {
-    const { like, totalLike, reply } = this.props;
-    this.setState({ like, totalLike, reply });
+    const { like, totalLike, reply } = this.props
+    this.setState({ like, totalLike, reply })
   }
 
   changeEditState() {
-    this.setState({ isEditReply: !this.state.isEditReply });
+    this.setState({ isEditReply: !this.state.isEditReply })
   }
 
   onConfirmPress(text) {
     apis.postReply(this.props.commentId, {
       content: text,
-    });
+    })
 
     this.setState({
       isEditReply: !this.state.isEditReply,
       reply: text,
-    });
+    })
   }
 
   onLikePress() {
-    const { commentId } = this.props;
+    const { commentId } = this.props
 
     if (this.state.like) {
-      apis.postUnlike(commentId);
-      this.setState({ totalLike: this.state.totalLike - 1 });
+      apis.postUnlike(commentId)
+      this.setState({ totalLike: this.state.totalLike - 1 })
     } else {
-      apis.postLike(commentId);
-      this.setState({ totalLike: this.state.totalLike + 1 });
+      apis.postLike(commentId)
+      this.setState({ totalLike: this.state.totalLike + 1 })
     }
-    this.setState({ like: !this.state.like });
+    this.setState({ like: !this.state.like })
   }
 
   renderReplyBox() {
-    const { commentId, onPressReply, replyExist } = this.props;
+    const { commentId, onPressReply, replyExist } = this.props
     if (this.state.isEditReply) {
       return (
         <CommentReplyCard
           commentId={commentId}
-          onCanclePress={this.changeEditState}
+          onCancelPress={this.changeEditState}
           onConfirmPress={this.onConfirmPress}
         />
-      );
+      )
     }
 
     if (this.state.reply) {
@@ -75,32 +73,30 @@ class CommentCard extends React.Component {
           isComment
           author="안전팀"
           date={this.props.replyDate}
-          propStyle={{ borderRadius: 10, paddingBottom: 15 }}
-        >
+          propStyle={{ borderRadius: 10, paddingBottom: 15 }}>
           {this.state.reply}
         </ProgressCard>
-      );
+      )
     }
 
     if (onPressReply) {
       return (
         <TouchableOpacity
           style={styles.replyBoxStyle}
-          onPress={this.changeEditState}
-        >
+          onPress={this.changeEditState}>
           <View style={{ flex: 1 }} />
           <View style={styles.replyTextContainer}>
             <Text style={styles.replyTextStyle}> 답변 추가하기 </Text>
           </View>
         </TouchableOpacity>
-      );
+      )
     }
 
-    return null;
+    return null
   }
 
   render() {
-    const { index, author, date, children } = this.props;
+    const { index, author, date, children } = this.props
 
     const {
       borderedContentBox,
@@ -109,7 +105,7 @@ class CommentCard extends React.Component {
       dateStyle,
       commentStyle,
       likeStyle,
-    } = styles;
+    } = styles
 
     return (
       <View style={{ flex: 1 }}>
@@ -128,8 +124,7 @@ class CommentCard extends React.Component {
           </View>
 
           <View
-            style={{ flexDirection: 'row', alignItems: 'center', padding: 5 }}
-          >
+            style={{ flexDirection: 'row', alignItems: 'center', padding: 5 }}>
             <Text style={likeStyle}>{this.state.totalLike}</Text>
             <View style={{ width: 5 }} />
             <TouchableWithoutFeedback onPress={this.onLikePress.bind(this)}>
@@ -143,17 +138,17 @@ class CommentCard extends React.Component {
         </View>
         {this.renderReplyBox()}
       </View>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => {
   return {
     onPressReply: state.auth.user.isAdmin,
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps)(CommentCard);
+export default connect(mapStateToProps)(CommentCard)
 
 const styles = StyleSheet.create({
   authorContainer: {
@@ -199,4 +194,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: -0.5,
   },
-});
+})

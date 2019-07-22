@@ -13,6 +13,7 @@ import Colors from '../constants/Colors';
 import { formatDate, checkIsInbuilding } from '../utils';
 import { typeMap } from '../constants/Incidents';
 import * as contacts from '../constants/Contacts';
+import i18n from '../i18n';
 
 export default class IncidentCard extends React.Component {
   renderWrongIncident(progressStateColor, doc, location) {
@@ -130,7 +131,7 @@ export default class IncidentCard extends React.Component {
             ) : (
               <View style={styles.placeholderContainer}>
                 <Text style={styles.placeholderStyle}>
-                  진행상황이 없습니다.
+                  {i18n.t('empty_progress')}
                 </Text>
               </View>
             )}
@@ -142,7 +143,7 @@ export default class IncidentCard extends React.Component {
             { backgroundColor: progressStateColor },
           ]}
         >
-          <Text style={styles.progressText}>{state}</Text>
+          <Text style={styles.progressText}>{i18n.t(state)}</Text>
         </View>
       </View>
     );

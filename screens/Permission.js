@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   AppState,
   View,
@@ -6,68 +6,70 @@ import {
   StatusBar,
   Image,
   TouchableOpacity,
-} from 'react-native';
-import Layout from '../constants/Layout';
-import { requestPermission } from '../utils';
-import * as Permissions from 'expo-permissions';
+} from 'react-native'
+import Layout from '../constants/Layout'
+import { requestPermission } from '../utils'
+import * as Permissions from 'expo-permissions'
+import i18n from '../i18n'
 
 export default class Permission extends React.Component {
   state = {
     locationPermission: false,
     phoneCallPermission: false,
     appState: AppState.currentState,
-  };
+  }
 
   async componentDidMount() {
-    const locationPermission = await requestPermission(Permissions.LOCATION);
+    const locationPermission = await requestPermission(Permissions.LOCATION)
 
-    AppState.addEventListener('change', this.handleAppStateChange);
-    this.setState({ locationPermission });
+    AppState.addEventListener('change', this.handleAppStateChange)
+    this.setState({ locationPermission })
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this.handleAppStateChange);
+    AppState.removeEventListener('change', this.handleAppStateChange)
   }
 
   handleAppStateChange = async nextAppState => {
-    let locationPermission, phoneCallPermission;
+    let locationPermission, phoneCallPermission
     if (
       this.state.appState.match(/inactive|background/) &&
       nextAppState == 'active'
     ) {
-      locationPermission = await Permissions.getAsync(Permissions.LOCATION);
+      locationPermission = await Permissions.getAsync(Permissions.LOCATION)
       if (locationPermission.status === 'granted') {
-        this.setState({ locationPermission: true });
+        this.setState({ locationPermission: true })
       } else {
-        this.setState({ locationPermission: false });
+        this.setState({ locationPermission: false })
       }
     }
-    this.setState({ appState: nextAppState });
-  };
+    this.setState({ appState: nextAppState })
+  }
 
   renderPermissionWait() {
     return (
       <View style={[styles.buttonStyle, styles.buttonDisabled]}>
-        <Text style={styles.buttonDisabledText}>권한 승인 대기 중</Text>
+        <Text style={styles.buttonDisabledText}>
+          {i18n.t('wait_for_permission')}
+        </Text>
       </View>
-    );
+    )
   }
 
   renderGoNext() {
     return (
       <TouchableOpacity
         style={[styles.buttonStyle, styles.buttonEnabled]}
-        onPress={() => this.props.navigation.navigate('AuthLoading')}
-      >
+        onPress={() => this.props.navigation.navigate('AuthLoading')}>
         <Text style={[styles.buttonEnabledText, { alignItems: 'center' }]}>
-          다음으로
+          {i18n.t('next')}
         </Text>
         <Image
           style={{ marginLeft: 7.5 }}
           source={require('../assets/images/next.png')}
         />
       </TouchableOpacity>
-    );
+    )
   }
 
   render() {
@@ -76,9 +78,9 @@ export default class Permission extends React.Component {
         <StatusBar backgroundColor="white" barStyle="dark-content" />
 
         <View>
-          <Text style={styles.headerText}>권한 설정</Text>
+          <Text style={styles.headerText}>{i18n.t('permission')}</Text>
           <Text style={[styles.plainText, { marginBottom: 55 }]}>
-            KAIREN을 이용하기 위해서 다음의 권한이 필요합니다:
+            {i18n.t('permission_description')}
           </Text>
 
           <View style={styles.permissionContainer}>
@@ -88,18 +90,16 @@ export default class Permission extends React.Component {
 
             <View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={styles.permissionType}>위치</Text>
+                <Text style={styles.permissionType}>{i18n.t('location')}</Text>
                 {this.state.locationPermission ? (
                   <Image source={require('../assets/images/check.png')} />
                 ) : (
                   <Text style={{ color: '#bdbdbd', letterSpacing: -0.9 }}>
-                    권한 승인 대기 중
+                    {i18n.t('wait_for_permission')}
                   </Text>
                 )}
               </View>
-              <Text style={styles.plainText}>
-                현재 위치를 지도에 표시합니다.
-              </Text>
+              <Text style={styles.plainText}>{i18n.t('current_location')}</Text>
             </View>
           </View>
           {this.state.locationPermission
@@ -107,7 +107,7 @@ export default class Permission extends React.Component {
             : this.renderPermissionWait()}
         </View>
       </View>
-    );
+    )
   }
 }
 
@@ -165,4 +165,4 @@ const styles = {
     letterSpacing: -0.6,
     color: '#d3d3d3',
   },
-};
+}
