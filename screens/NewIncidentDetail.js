@@ -188,7 +188,9 @@ class NewIncidentDetail extends React.Component {
                 style={styles.backIcon}
                 source={require('../assets/images/group-5.png')}
               />
-              <Text style={headerText}>{this.props.selectedIncident}</Text>
+              <Text style={headerText}>
+                {i18n.t(this.props.selectedIncident)}
+              </Text>
             </View>
           </TouchableWithoutFeedback>
           <TouchableOpacity

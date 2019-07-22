@@ -13,6 +13,7 @@ export const ko = {
   new_progress: '진행 상황 등록하기',
   emergency_report: '긴급 제보',
   select_incident: '제보 종류 선택',
+  logout: '로그아웃',
 
   _incident_screen: '// 사건 스크린 텍스트',
   incident_list: '사고 목록',
@@ -45,6 +46,10 @@ export const ko = {
   where_is_location: '장소는 어디인가요?',
   progress_alert_title: '진행 상황을 등록하시겠습니까?',
   progress_alert: '가장 최근 진행 상황이 사건 사고 목록에 표시됩니다.',
+  comment_alert_title: '댓글을 등록하시겠습니까?',
+  comment_alert: '한 번 등록한 댓글은 삭제하실 수 없습니다',
+  blank_alert_title: '내용을 입력해주세요.',
+  blank_alert: '공백으로 이루어진 메세지는 등록하실 수 없습니다.',
 
   _button_text: '// 버튼 텍스트',
   placeholder: '여기에 입력하세요...',
@@ -60,4 +65,22 @@ export const ko = {
   confirm: '확인',
   cancel: '취소',
   upload_report: '제보 등록',
+
+  _about_us: '// 만든 이들',
+  created_by: '만든 사람들',
+
+  _incident_type: '// 사건 종류',
+  화재: '화재',
+  가스: '가스',
+  '화학물질 누출': '화학물질 누출',
+  '생물학적 유해물질 누출': '생물학적 유해물질 누출',
+  방사선: '방사선',
+  지진: '지진',
+  '엘레베이터 사고': '엘레베이터 사고',
+  정전: '정전',
+
+  state: '// 상태',
+  확인중: '확인 중',
+  처리중: '진행 중',
+  완료: '완료',
 };

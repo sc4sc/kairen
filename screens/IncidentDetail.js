@@ -3,6 +3,7 @@ import {
   FlatList,
   Linking,
   Text,
+  StyleSheet,
   TouchableOpacity,
   View,
   Platform,
@@ -10,6 +11,8 @@ import {
   Alert,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { connect } from 'react-redux';
+import * as actions from '../actions/incidentsList';
 import * as apis from '../apis';
 import ProgressCard from '../components/ProgressCard';
 import CommentCard from '../components/CommentCard';
@@ -17,7 +20,12 @@ import StateMarker from '../components/StateMarker';
 import StateCheckButton from '../components/StateCheckButton';
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
-import { formatDate, checkIsInbuilding, getStatusBarHeight } from '../utils';
+import {
+  formatDate,
+  checkIsInbuilding,
+  getStatusBarHeight,
+  getBottomSpace,
+} from '../utils';
 import { getLocalData } from '../constants/Incidents';
 import NaverMap from '../components/NaverMap';
 import i18n from '../i18n';
@@ -209,7 +217,7 @@ class IncidentDetail extends React.Component {
             onPress={() => this.onStateButtonPress('확인중')}
             disabled={!this.props.isSecureTeam}
           >
-            {i18n.t('in_check')}
+            {i18n.t('확인중')}
           </StateCheckButton>
           <StateCheckButton
             color="#f5c234"
@@ -217,7 +225,7 @@ class IncidentDetail extends React.Component {
             onPress={() => this.onStateButtonPress('처리중')}
             disabled={!this.props.isSecureTeam}
           >
-            {i18n.t('in_process')}
+            {i18n.t('처리중')}
           </StateCheckButton>
           <StateCheckButton
             color="#7ed321"
@@ -225,7 +233,7 @@ class IncidentDetail extends React.Component {
             onPress={() => this.onStateButtonPress('완료')}
             disabled={!this.props.isSecureTeam}
           >
-            {i18n.t('in_complete')}
+            {i18n.t('완료')}
           </StateCheckButton>
         </View>
         <TouchableOpacity
@@ -265,13 +273,13 @@ class IncidentDetail extends React.Component {
           }}
         >
           <StateMarker position="left" selected={progressState === '확인중'}>
-            {i18n.t('in_check')}
+            {i18n.t('확인중')}
           </StateMarker>
           <StateMarker position="center" selected={progressState === '처리중'}>
-            {i18n.t('in_process')}
+            {i18n.t('처리중')}
           </StateMarker>
           <StateMarker position="right" selected={progressState === '완료'}>
-            {i18n.t('in_complete')}
+            {i18n.t('완료')}
           </StateMarker>
         </View>
       </View>

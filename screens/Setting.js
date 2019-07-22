@@ -30,7 +30,7 @@ class Setting extends React.Component {
   }
 
   goToAboutPage() {
-    this.props.navigation.navigate('AboutUs', { parent: '설정' });
+    this.props.navigation.navigate('AboutUs', { parent: i18n.t('setting') });
   }
 
   handleLogout = async () => {
@@ -87,7 +87,7 @@ class Setting extends React.Component {
                     marginRight: 5,
                   }}
                 >
-                  로그아웃
+                  {i18n.t('logout')}
                 </Text>
                 <Image
                   style={{ width: 12, height: 10 }}

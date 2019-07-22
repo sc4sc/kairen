@@ -29,19 +29,15 @@ class NewComment extends React.Component {
   onButtonPress() {
     Keyboard.dismiss();
     if (this.state.text.trim() === '') {
-      Alert.alert(
-        '내용을 입력해주세요.',
-        '공백으로 이루어진 메세지는 등록하실 수 없습니다.'
-      );
+      Alert.alert(i18n.t('blank_alert_title'), i18n.t('blank_alert'));
       this.setState({ text: '' });
       return;
     }
 
-    Alert.alert(
-      '댓글을 등록하시겠습니까?',
-      '한 번 등록한 댓글은 삭제하실 수 없습니다',
-      [{ text: '취소' }, { text: '확인', onPress: this.postComment.bind(this) }]
-    );
+    Alert.alert(i18n.t('comment_alert_title'), i18n.t('comment_alert'), [
+      { text: '취소' },
+      { text: '확인', onPress: this.postComment.bind(this) },
+    ]);
   }
 
   postComment() {
@@ -82,7 +78,7 @@ class NewComment extends React.Component {
           >
             <TextInput
               style={styles.textInputStyle}
-              placeholder="여기에 입력하세요..."
+              placeholder={i18n.t('placeholder')}
               onChangeText={text => this.setState({ text })}
               value={this.state.text}
               multiline

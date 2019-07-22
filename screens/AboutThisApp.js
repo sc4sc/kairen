@@ -9,6 +9,7 @@ import {
 import { SafeAreaView } from 'react-navigation';
 import Layout from '../constants/Layout';
 import { getStatusBarHeight } from '../utils';
+import i18n from '../i18n';
 
 const statusBarHeight = getStatusBarHeight();
 
@@ -34,7 +35,7 @@ export default function AboutThisApp(props) {
         />
         <Text style={styles.appTitle}>KAIREN</Text>
         <Text style={styles.appVersion}>version 1.0.6</Text>
-        <Text style={styles.makers}>만든 사람들</Text>
+        <Text style={styles.makers}>{i18n.t('created_by')}</Text>
         <Text style={styles.people}>류석영</Text>
         <Text style={styles.people}>최민성</Text>
         <Text style={styles.people}>김예준</Text>
