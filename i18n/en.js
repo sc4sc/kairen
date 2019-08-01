@@ -33,6 +33,8 @@ export const en = {
   cannot_cancel: '* This work CANNOT be canceled.',
 
   _modal_text: '// 모달 텍스트',
+  login_alert: 'Failed to login',
+  login_alert_detail: 'Please try again a few later.',
   misreport_alert:
     'If you change to a misidentified incident, the incident will no longer be visible to the public and you will not be able to register and comment on your progress.',
   duplicate_alert_title: 'Notice of duplication',
