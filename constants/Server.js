@@ -8,8 +8,9 @@ if (
 ) {
   URL = 'https://lambda2.kaist.ac.kr'
 } else {
+  // No Tailing slash
   // Development / Test Apps
-  URL = 'https://kairen.kaist.ac.kr/api'
+  URL = 'http://35.244.187.226'
   // URL = 'http://kairen.kaist.ac.kr:12422'
 }
 
