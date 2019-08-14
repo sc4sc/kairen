@@ -6,11 +6,11 @@ if (
   Constants.manifest.releaseChannel &&
   Constants.manifest.releaseChannel === 'production'
 ) {
-  URL = 'https://lambda2.kaist.ac.kr'
+  URL = 'https://kairen.xyz:443/api'
 } else {
   // No Tailing slash
   // Development / Test Apps
-  URL = 'http://35.244.187.226'
+  URL = 'https://kairen.xyz:443/api'
 }
 
 export default URL
