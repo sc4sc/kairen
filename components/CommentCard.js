@@ -86,7 +86,7 @@ class CommentCard extends React.Component {
           onPress={this.changeEditState}>
           <View style={{ flex: 1 }} />
           <View style={styles.replyTextContainer}>
-            <Text style={styles.replyTextStyle}> 답변 추가하기 </Text>
+            <Text style={styles.replyTextStyle}>{I18n.t('add_reply')}</Text>
           </View>
         </TouchableOpacity>
       )
@@ -98,14 +98,7 @@ class CommentCard extends React.Component {
   render() {
     const { index, author, date, children } = this.props
 
-    const {
-      borderedContentBox,
-      authorContainer,
-      authorText,
-      dateStyle,
-      commentStyle,
-      likeStyle,
-    } = styles
+    const { authorContainer, dateStyle, commentStyle, likeStyle } = styles
 
     return (
       <View style={{ flex: 1 }}>
