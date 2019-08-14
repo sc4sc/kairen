@@ -11,7 +11,6 @@ if (
   // No Tailing slash
   // Development / Test Apps
   URL = 'http://35.244.187.226'
-  // URL = 'http://kairen.kaist.ac.kr:12422'
 }
 
 export default URL

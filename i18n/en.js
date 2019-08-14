@@ -24,6 +24,7 @@ export const en = {
   safety_instructions: 'Move to a safe place nearby.',
   code_of_conduct: 'See the code of conduct.',
   progress_status: 'Current status',
+  add_reply: 'Add reply',
 
   _secure_status: '// 안전팀 상태 체크 텍스트',
   in_check: 'in check',
@@ -31,6 +32,7 @@ export const en = {
   in_complete: 'completed',
   change_to_misreport: 'Change to misidentified incident',
   cannot_cancel: '* This work CANNOT be canceled.',
+  wrong_incident: 'Misidentified incident.',
 
   _modal_text: '// 모달 텍스트',
   misreport_alert:
@@ -46,7 +48,7 @@ export const en = {
   where_is_location: 'Where is the location?',
   progress_alert_title: 'Are you sure?',
   progress_alert:
-    'The most recent progress will be shown in ㅅthe incident list.',
+    'The most recent progress will be shown in the incident list.',
   comment_alert_title: 'Are you sure?',
   comment_alert: 'You cannot delete a registered comment once.',
   blank_alert_title: 'Please enter the contents.',
