@@ -24,6 +24,7 @@ export const ko = {
   safety_instructions: '가까운 안전한 장소로 이동하세요.',
   code_of_conduct: '자세한 행동 강령 보기',
   progress_status: '안전팀 확인 상태',
+  add_reply: '답변 추가하기',
 
   _secure_status: '// 안전팀 상태 체크 텍스트',
   in_check: '확인 중',
@@ -31,6 +32,7 @@ export const ko = {
   in_complete: '완료',
   change_to_misreport: '오인 신고로 변경',
   cannot_cancel: '* 이 작업은 취소할 수 없습니다.',
+  wrong_incident: '잘못된 제보입니다.',
 
   _modal_text: '// 모달 텍스트',
   login_alert: '로그인 실패',

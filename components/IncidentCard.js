@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Text,
   TouchableOpacity,
@@ -6,19 +6,19 @@ import {
   StyleSheet,
   Image,
   Linking,
-} from 'react-native';
+} from 'react-native'
 
-import ProgressCard from './ProgressCard';
-import Colors from '../constants/Colors';
-import { formatDate, checkIsInbuilding } from '../utils';
-import { typeMap } from '../constants/Incidents';
-import * as contacts from '../constants/Contacts';
-import i18n from '../i18n';
+import ProgressCard from './ProgressCard'
+import Colors from '../constants/Colors'
+import { formatDate, checkIsInbuilding } from '../utils'
+import { typeMap } from '../constants/Incidents'
+import * as contacts from '../constants/Contacts'
+import i18n from '../i18n'
 
 export default class IncidentCard extends React.Component {
   renderWrongIncident(progressStateColor, doc, location) {
-    const { data } = this.props;
-    const { createdAt } = data;
+    const { data } = this.props
+    const { createdAt } = data
 
     return (
       <View style={styles.container}>
@@ -26,7 +26,7 @@ export default class IncidentCard extends React.Component {
           <View style={styles.wrongContent}>
             <View>
               <Text style={styles.wrongDate}>{formatDate(createdAt)}</Text>
-              <Text style={styles.wrongTitle}>잘못된 제보입니다.</Text>
+              <Text style={styles.wrongTitle}>{I18n.t('wrong_incident')}</Text>
               <Text style={styles.wrongInfo}>
                 {doc.title}, {location.properties.name}
               </Text>
@@ -34,8 +34,7 @@ export default class IncidentCard extends React.Component {
           </View>
         </View>
         <TouchableOpacity
-          onPress={() => Linking.openURL(`tel:${contacts.secureTeam}`)}
-        >
+          onPress={() => Linking.openURL(`tel:${contacts.secureTeam}`)}>
           <View
             style={[
               styles.progressState,
@@ -45,67 +44,68 @@ export default class IncidentCard extends React.Component {
                 flexDirection: 'row',
                 marginTop: 15,
               },
-            ]}
-          >
+            ]}>
             <Image
               style={styles.callIcon}
               source={require('../assets/images/group-9.png')}
             />
-            <Text style={styles.callSafeTeam}>안전팀에 문의하기</Text>
+            <Text style={styles.callSafeTeam}>
+              {I18n.t('call_to_secure_team')}
+            </Text>
           </View>
         </TouchableOpacity>
       </View>
-    );
+    )
   }
 
   render() {
-    const { onPress, data } = this.props;
-    const { type, createdAt, state, Progresses, lat, lng } = data;
-    const confirmed = Progresses.length > 0;
-    const location = checkIsInbuilding({ lat, lng });
-    const doc = typeMap[type];
+    const { onPress, data } = this.props
+    const { type, createdAt, state, Progresses, lat, lng } = data
+    const confirmed = Progresses.length > 0
+    const location = checkIsInbuilding({ lat, lng })
+    const doc = typeMap[type]
 
-    let progressStateColor = '';
+    let progressStateColor = ''
     switch (state) {
       case '확인중':
-        progressStateColor = '#d62c2c';
-        break;
+        progressStateColor = '#d62c2c'
+        break
       case '처리중':
-        progressStateColor = '#f5c234';
-        break;
+        progressStateColor = '#f5c234'
+        break
       case '완료':
-        progressStateColor = '#7ed321';
-        break;
+        progressStateColor = '#7ed321'
+        break
       default:
-        progressStateColor = 'black';
+        progressStateColor = 'black'
     }
 
-    let imageSrc;
+    let imageSrc
     switch (type) {
       case '화재':
-        imageSrc = require('../assets/images/incidentDetail/fire.jpg');
-        break;
+        imageSrc = require('../assets/images/incidentDetail/fire.jpg')
+        break
       case '가스':
-        imageSrc = require('../assets/images/incidentDetail/gas.jpg');
-        break;
+        imageSrc = require('../assets/images/incidentDetail/gas.jpg')
+        break
       case '화학물질 누출':
-        imageSrc = require('../assets/images/incidentDetail/flask.jpg');
-        break;
+        imageSrc = require('../assets/images/incidentDetail/flask.jpg')
+        break
       case '생물학적 유해물질 누출':
-        imageSrc = require('../assets/images/incidentDetail/biohazard.jpg');
-        break;
+        imageSrc = require('../assets/images/incidentDetail/biohazard.jpg')
+        break
       case '방사선':
-        imageSrc = require('../assets/images/incidentDetail/radiation.jpg');
-        break;
+        imageSrc = require('../assets/images/incidentDetail/radiation.jpg')
+        break
       case '지진':
-        imageSrc = require('../assets/images/incidentDetail/earthquake.jpg');
-        break;
+        imageSrc = require('../assets/images/incidentDetail/earthquake.jpg')
+        break
       case '엘레베이터 사고':
-        imageSrc = require('../assets/images/incidentDetail/lift.jpg');
-        break;
+        imageSrc = require('../assets/images/incidentDetail/lift.jpg')
+        break
       case '정전':
-        imageSrc = require('../assets/images/incidentDetail/antistatic.jpg');
-        break;
+        imageSrc = require('../assets/images/incidentDetail/antistatic.jpg')
+        break
     }
 
     return progressStateColor === 'black' ? (
@@ -141,12 +141,11 @@ export default class IncidentCard extends React.Component {
           style={[
             styles.progressState,
             { backgroundColor: progressStateColor },
-          ]}
-        >
+          ]}>
           <Text style={styles.progressText}>{i18n.t(state)}</Text>
         </View>
       </View>
-    );
+    )
   }
 }
 
@@ -227,4 +226,4 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
   },
-});
+})

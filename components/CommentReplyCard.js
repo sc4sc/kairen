@@ -1,17 +1,15 @@
-import React from 'react';
+import React from 'react'
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
-} from 'react-native';
-import ConfirmedText from './ConfirmedText';
-
-import Colors from '../constants/Colors';
+} from 'react-native'
+import Colors from '../constants/Colors'
 
 export class CommentReplyCard extends React.Component {
-  state = { text: '' };
+  state = { text: '' }
 
   render() {
     return (
@@ -19,7 +17,7 @@ export class CommentReplyCard extends React.Component {
         <View style={{ height: 50 }} />
         <View style={styles.inputContainer}>
           <TextInput
-            placeholder={'여기에 입력하세요...'}
+            placeholder={I18n.t('placeholder')}
             style={{ fontSize: 13, paddingHorizontal: 5 }}
             multiline
             onChangeText={text => this.setState({ text: text })}
@@ -28,17 +26,16 @@ export class CommentReplyCard extends React.Component {
         </View>
         <View style={styles.buttonContainer}>
           <Text style={styles.cancelText} onPress={this.props.onCancelPress}>
-            취소
+            {I18n.t('cancel')}
           </Text>
           <TouchableOpacity
             style={styles.buttonStyle}
-            onPress={() => this.props.onConfirmPress(this.state.text)}
-          >
-            <Text style={styles.confirmText}> 등록 </Text>
+            onPress={() => this.props.onConfirmPress(this.state.text)}>
+            <Text style={styles.confirmText}>{I18n.t('confirm')}</Text>
           </TouchableOpacity>
         </View>
       </View>
-    );
+    )
   }
 }
 
@@ -85,6 +82,6 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
     fontWeight: 'bold',
   },
-});
+})
 
-export default CommentReplyCard;
+export default CommentReplyCard
