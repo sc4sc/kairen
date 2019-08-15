@@ -21,7 +21,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "13",
+      "buildNumber": "16",
       "supportsTablet": false,
       "bundleIdentifier": "kr.ac.kaist.kairen.kairen",
       "infoPlist": {
@@ -30,7 +30,7 @@
     },
     "android": {
       "package": "kr.ac.kaist.kairen.kairen",
-      "versionCode": 13,
+      "versionCode": 16,
       "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
     }
   }
