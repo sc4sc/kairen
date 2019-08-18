@@ -1,79 +1,79 @@
-import { Platform, StatusBar } from 'react-native';
-import { getStatusBarHeight as getIOSStatusBarHeight } from 'react-native-iphone-x-helper';
-import { Notifications } from 'expo';
-import * as Permissions from 'expo-permissions';
+import { Platform, StatusBar } from 'react-native'
+import { getStatusBarHeight as getIOSStatusBarHeight } from 'react-native-iphone-x-helper'
+import { Notifications } from 'expo'
+import * as Permissions from 'expo-permissions'
 
-import moment from 'moment';
-import * as _ from 'lodash';
-import * as geojsonutil from 'geojson-utils';
+import moment from 'moment'
+import * as _ from 'lodash'
+import * as geojsonutil from 'geojson-utils'
 
 export const getStatusBarHeight = () => {
   if (Platform.OS === 'android') {
     if (global.Expo) {
-      return global.Expo.Constants.statusBarHeight;
+      return global.Expo.Constants.statusBarHeight
     } else if (StatusBar && StatusBar.currentHeight) {
       if (Platform.Version <= 18) {
-        return 0;
+        return 0
       } else {
-        return StatusBar.currentHeight;
+        return StatusBar.currentHeight
       }
     } else {
-      return 0;
+      return 0
     }
   } else {
-    return getIOSStatusBarHeight();
+    return getIOSStatusBarHeight()
   }
-};
+}
 
-export { getBottomSpace } from 'react-native-iphone-x-helper';
+export { getBottomSpace } from 'react-native-iphone-x-helper'
 
 export function formatDate(dateString) {
-  return moment(dateString).format('lll');
+  return moment(dateString).format('lll')
 }
 
 export async function requestPermission(type) {
   // if already granted
   if ((await Permissions.getAsync(type)).status === 'granted') {
-    return true;
+    return true
   }
 
   // otherwise request permission
   if ((await Permissions.askAsync(type)).status === 'granted') {
-    return true;
+    return true
   }
 
   // failed
-  return false;
+  return false
 }
 
 export async function getPushToken() {
   try {
     if (await requestPermission(Permissions.NOTIFICATIONS)) {
-      return Notifications.getExpoPushTokenAsync();
+      return Notifications.getExpoPushTokenAsync()
     }
   } catch (error) {
-    console.log('getPushToken Error:', error);
+    console.log('getPushToken Error:', error)
   }
-  return '';
+  return ''
 }
 
 export function checkIsInbuilding(coords) {
-  const point = { type: 'Point', coordinates: [coords.lng, coords.lat] };
+  const point = { type: 'Point', coordinates: [coords.lng, coords.lat] }
 
-  const west = require('../assets/geojson/WestKAIST.json');
-  const north = require('../assets/geojson/NorthKAIST.json');
-  const east = require('../assets/geojson/EastKAIST.json');
-  const dorm = require('../assets/geojson/Dormitory.json');
+  const west = require('../assets/geojson/WestKAIST.json')
+  const north = require('../assets/geojson/NorthKAIST.json')
+  const east = require('../assets/geojson/EastKAIST.json')
+  const dorm = require('../assets/geojson/Dormitory.json')
 
   const areas = _.flatMap(
     [west, north, east, dorm],
     section => section.features
-  );
+  )
   const locatedAreasByPriority = _.sortBy(
     areas.filter(area => geojsonutil.pointInPolygon(point, area.geometry)),
     area => area.properties.priority
-  );
+  )
 
-  const locationFound = locatedAreasByPriority.length > 0;
-  return locationFound ? locatedAreasByPriority[0] : undefined;
+  const locationFound = locatedAreasByPriority.length > 0
+  return locationFound ? locatedAreasByPriority[0] : undefined
 }
