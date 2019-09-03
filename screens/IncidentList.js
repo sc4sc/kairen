@@ -134,7 +134,7 @@ class IncidentList extends React.Component {
       },
     })
   }
-
+  
   componentDidUpdate(prevProps, prevState, snapshot) {
     const refreshing =
       prevProps.incidents.length === 0 &&
@@ -214,6 +214,38 @@ class IncidentList extends React.Component {
   }
 
   renderCarousel() {
+    const SampleIncident = [{
+      Progresses: [{
+        IncidentId: 2,
+        content: "샘플사고입니다.",
+        createdAt: "2019-09-03T13:32:21.763Z",
+        id: 1,
+        updatedAt: "2019-09-03T13:32:21.763Z",
+      }],
+      User: {
+        createdAt: "2019-09-03T13:14:38.173Z",
+        displayname: "Jeong, Jinwoo",
+        expotoken: "ExponentPushToken[l76xK-D7LuYw5qWFujqF6_]",
+        id: 1,
+        isAdmin: false,
+        kaist_uid: "00088348",
+        ku_kaist_org_id: "4421",
+        ku_kname: "정진우",
+        mobile: "010-4602-9500",
+        updatedAt: "2019-09-03T13:19:25.057Z",
+      },
+      UserId: 1,
+      contract: null,
+      createdAt: "2019-09-03T12:41:15.078Z",
+      id: 2,
+      lat: "36.374356",
+      lng: "127.3605294",
+      state: "완료",
+      type: "정전",
+      updatedAt: "2019-09-03T12:41:15.078Z",
+    }]
+    const incidentsWithSample = this.props.incidents.length == 0 ? SampleIncident : this.props.incidents.concat(SampleIncident)
+    
     if (this.props.incidents.length === 0) {
       return (
         <View style={styles.emptyIncidentBox} pointerEvents={'none'}>
@@ -223,11 +255,12 @@ class IncidentList extends React.Component {
         </View>
       )
     }
+
     return (
       <View style={styles.carouselContainer}>
         <Pagination
-          dotsLength={this.props.incidents.length}
-          activeDotIndex={this.props.indexSelected}
+          dotsLength={incidentsWithSample.length}
+          activeDotIndex={incidentsWithSample}
           containerStyle={{
             paddingVertical: 0,
             paddingHorizontal: 0,
@@ -239,7 +272,7 @@ class IncidentList extends React.Component {
         />
         <Carousel
           keyExtractor={(item, index) => `${item.id}`}
-          data={this.props.incidents}
+          data={incidentsWithSample}
           renderItem={this.renderItem.bind(this)}
           onBeforeSnapToItem={this.handleSnapToItem}
           sliderWidth={Layout.window.width}
