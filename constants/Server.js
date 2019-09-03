@@ -9,8 +9,8 @@ if (
   URL = 'https://kairen.xyz:443/api'
 } else {
   // No Tailing slash
-  // Development / Test Apps
-  URL = 'https://kairen.xyz:443/api'
+  // Development / Test App
+  URL = 'http://35.221.93.138:12422'
 }
 
 export default URL
