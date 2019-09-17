@@ -9,6 +9,7 @@ export function userLoginRequest(ssoToken, onSuccess, onFailed) {
     },
   }
 }
+
 export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS'
 export function userLoginSuccess(result) {
   return {
@@ -16,4 +17,12 @@ export function userLoginSuccess(result) {
     payload: result,
   }
 }
+
 export const USER_LOGIN_FAILED = 'USER_LOGIN_FAILED'
+
+export const USER_CHANGE_MODE = 'USER_CHANGE_MODE'
+export function userChangeMode() {
+  return {
+    type: USER_CHANGE_MODE,
+  }
+}
