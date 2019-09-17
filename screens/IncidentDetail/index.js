@@ -145,12 +145,6 @@ class IncidentDetail extends React.Component {
       case '지진':
         imageSrc = require('../../assets/images/incidentDetail/earthquake.jpg')
         break
-      case '엘레베이터 사고':
-        imageSrc = require('../../assets/images/incidentDetail/lift.jpg')
-        break
-      case '정전':
-        imageSrc = require('../../assets/images/incidentDetail/antistatic.jpg')
-        break
     }
 
     return (
@@ -519,7 +513,6 @@ class IncidentDetail extends React.Component {
 
 const mapStateToProps = state => ({
   isSecureTeam: state.auth.user.isAdmin,
-  isTraining: true,
 })
 
 export default connect(

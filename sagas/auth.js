@@ -2,9 +2,9 @@ import { call, put, spawn, takeLatest } from 'redux-saga/effects'
 import * as SecureStore from 'expo-secure-store'
 import * as apis from '../apis'
 import {
-  AUTH_LOGIN_FAILED,
-  AUTH_LOGIN_REQUEST,
-  AUTH_LOGIN_SUCCESS,
+  USER_LOGIN_FAILED,
+  USER_LOGIN_REQUEST,
+  USER_LOGIN_SUCCESS,
   authLoginSuccess,
 } from '../actions/auth'
 import { getPushToken } from '../utils'
@@ -35,12 +35,12 @@ function* authLogin(action) {
     yield call(onSuccess)
   } catch (error) {
     console.log('Login Error', error)
-    yield put({ type: AUTH_LOGIN_FAILED, payload: error, error: true })
+    yield put({ type: USER_LOGIN_FAILED, payload: error, error: true })
     yield call(onFailed)
     return
   }
 }
 
 export function* watchAuthLoginRequest() {
-  yield takeLatest(AUTH_LOGIN_REQUEST, authLogin)
+  yield takeLatest(USER_LOGIN_REQUEST, authLogin)
 }
