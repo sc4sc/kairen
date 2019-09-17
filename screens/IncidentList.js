@@ -322,8 +322,6 @@ class IncidentList extends React.Component {
       // TODO: Comment this View, from here
       <View style={styles.container}>
         {/* to here */}
-
-        <StatusBar background="transparent" />
         <NaverMap
           ref={el => {
             this._map = el
@@ -339,7 +337,29 @@ class IncidentList extends React.Component {
             this.state.currentLocation
           )}
         />
+
+        {this.props.isTraining ? (
+          <StatusBar
+            backgroundColor={'#d43434'}
+            translucent={true}
+            barStyle={'light-content'}
+          />
+        ) : (
+          <StatusBar
+            backgroundColor={'transparent'}
+            translucent={true}
+            barStyle={'dark-content'}
+          />
+        )}
+
+        {this.props.isTraining && (
+          <View style={styles.trainingModeContainer}>
+            <Text style={{ color: 'white' }}>훈련 모드</Text>
+          </View>
+        )}
+
         {this.renderCarousel()}
+
         <TouchableOpacity
           style={styles.menuIcon}
           onPress={() => this.props.navigation.openDrawer()}>
@@ -425,6 +445,15 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'stretch',
   },
+  trainingModeContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: 20,
+    width: '100%',
+    height: '5%',
+    backgroundColor: '#d43434',
+  },
   headerContainer: {
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -442,7 +471,7 @@ export const styles = StyleSheet.create({
   },
   menuIcon: {
     position: 'absolute',
-    top: 50,
+    top: 60,
     left: 20,
     padding: 10,
     backgroundColor: 'white',
@@ -515,6 +544,7 @@ export default connect(
       selectedIncident: selectedIncidentSelector(state),
       loading,
       indexSelected,
+      isTraining: state.user.data.isTraining,
     }
   },
   {
