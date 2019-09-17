@@ -92,9 +92,9 @@ export function listIncidents(query) {
     .then(response => response.data)
 }
 
-export function postIncident({ type, lat, lng, building }) {
+export function postIncident({ type, lat, lng, building, isTraining }) {
   return axiosInstance
-    .post(`${serverURL}/incidents`, { type, lat, lng, building })
+    .post(`${serverURL}/incidents`, { type, lat, lng, building, isTraining })
     .then(response => response.data)
 }
 
