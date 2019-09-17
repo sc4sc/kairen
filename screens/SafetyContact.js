@@ -1,5 +1,8 @@
 import React from 'react'
 import { View, Text, Image, Linking, TouchableOpacity } from 'react-native'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { userChangeMode } from '../actions/user'
 import { getBottomSpace, getStatusBarHeight } from '../utils/index.js'
 import * as contacts from '../constants/Contacts'
 import i18n from '../i18n'
@@ -7,13 +10,7 @@ import i18n from '../i18n'
 const topMargin = getStatusBarHeight()
 const bottomMargin = getBottomSpace()
 
-export default class SafetyContact extends React.Component {
-  state = { isTraining: false }
-
-  toggleTrainingMode = () => {
-    this.setState({ isTraining: !this.state.isTraining })
-  }
-
+class SafetyContact extends React.Component {
   render() {
     const {
       container,
@@ -49,8 +46,8 @@ export default class SafetyContact extends React.Component {
             </View>
           </TouchableOpacity>
 
-          {this.state.isTraining ? (
-            <TouchableOpacity onPress={this.toggleTrainingMode}>
+          {this.props.user.isTraining ? (
+            <TouchableOpacity onPress={() => this.props.changeMode()}>
               <View style={[contentContainer, { backgroundColor: '#50d434' }]}>
                 <Image source={require('../assets/images/unlock.png')} />
                 <View style={{ width: 10 }} />
@@ -60,7 +57,7 @@ export default class SafetyContact extends React.Component {
               </View>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={this.toggleTrainingMode}>
+            <TouchableOpacity onPress={() => this.props.changeMode()}>
               <View style={[contentContainer, { backgroundColor: '#d43434' }]}>
                 <Image source={require('../assets/images/lock.png')} />
                 <View style={{ width: 10 }} />
@@ -142,3 +139,8 @@ const styles = {
   notAppliedText: { color: '#bebebe', fontSize: 16 },
   betaVerNotice: { color: 'red' },
 }
+
+export default connect(
+  state => ({ user: state.user.data }),
+  dispatch => ({ changeMode: bindActionCreators(userChangeMode, dispatch) })
+)(SafetyContact)

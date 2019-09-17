@@ -28,7 +28,6 @@ function* userLogin(action) {
     const appToken = result.appToken
 
     yield call(apis.setAppToken, appToken)
-    // Won't care even though storing token fails
     yield spawn(storeToken, appToken)
 
     yield put(userLoginSuccess(result))

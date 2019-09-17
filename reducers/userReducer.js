@@ -3,11 +3,14 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAILED,
+  USER_CHANGE_MODE,
 } from '../actions/user'
 
 const defaultState = {
   loginInProgress: false,
-  data: {},
+  data: {
+    isTraining: false,
+  },
 }
 
 export default (state = defaultState, action) =>
@@ -24,6 +27,10 @@ export default (state = defaultState, action) =>
       }
       case USER_LOGIN_FAILED: {
         draft.loginInProgress = false
+        break
+      }
+      case USER_CHANGE_MODE: {
+        draft.data.isTraining = !draft.data.isTraining
         break
       }
       default:
