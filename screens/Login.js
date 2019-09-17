@@ -60,8 +60,8 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  isSecureTeam: state.auth.user.isAdmin,
-  isLoading: state.auth.loginInProgress,
+  isSecureTeam: state.user.data.isAdmin,
+  isLoading: state.user.loginInProgress,
 })
 
 export default connect(
