@@ -218,14 +218,14 @@ class IncidentList extends React.Component {
       Progresses: [{
         IncidentId: 2,
         content: "샘플사고입니다.",
-        createdAt: "2019-09-03T13:32:21.763Z",
+        createdAt: "2018-09-03T13:32:21.763Z",
         id: 1,
-        updatedAt: "2019-09-03T13:32:21.763Z",
+        updatedAt: "2018-09-03T13:32:21.763Z",
       }],
       User: {
         createdAt: "2019-09-03T13:14:38.173Z",
         displayname: "Jeong, Jinwoo",
-        expotoken: "ExponentPushToken[l76xK-D7LuYw5qWFujqF6_]",
+        // expotoken: "ExponentPushToken[l76xK-D7LuYw5qWFujqF6_]",
         id: 1,
         isAdmin: false,
         kaist_uid: "00088348",
@@ -246,15 +246,15 @@ class IncidentList extends React.Component {
     }]
     const incidentsWithSample = this.props.incidents.length == 0 ? SampleIncident : this.props.incidents.concat(SampleIncident)
     
-    if (this.props.incidents.length === 0) {
-      return (
-        <View style={styles.emptyIncidentBox} pointerEvents={'none'}>
-          <Text style={{ fontSize: 13, color: '#4a4a4a' }}>
-            {i18n.t('empty_incidents')}
-          </Text>
-        </View>
-      )
-    }
+    // if (this.props.incidents.length === 0) {
+    //   return (
+    //     <View style={styles.emptyIncidentBox} pointerEvents={'none'}>
+    //       <Text style={{ fontSize: 13, color: '#4a4a4a' }}>
+    //         {i18n.t('empty_incidents')}
+    //       </Text>
+    //     </View>
+    //   )
+    // }
 
     return (
       <View style={styles.carouselContainer}>
