@@ -204,11 +204,15 @@ class IncidentList extends React.Component {
     return (
       <IncidentCard
         data={incident}
-        onPress={() =>
-          this.props.navigation.navigate('IncidentDetail', {
-            incidentDetail: incident,
-          })
-        }
+        onPress={() => {
+          if (incident.id === 0) {
+            this.props.navigation.navigate('IncidentDetailSample')
+          } else {
+            this.props.navigation.navigate('IncidentDetail', {
+              incidentDetail: incident,
+            })
+          }
+        }}
       />
     )
   }
@@ -225,7 +229,6 @@ class IncidentList extends React.Component {
       User: {
         createdAt: "2019-09-03T13:14:38.173Z",
         displayname: "Jeong, Jinwoo",
-        // expotoken: "ExponentPushToken[l76xK-D7LuYw5qWFujqF6_]",
         id: 1,
         isAdmin: false,
         kaist_uid: "00088348",
@@ -237,7 +240,7 @@ class IncidentList extends React.Component {
       UserId: 1,
       contract: null,
       createdAt: "2019-09-03T12:41:15.078Z",
-      id: 2,
+      id: 0,
       lat: "36.374356",
       lng: "127.3605294",
       state: "완료",

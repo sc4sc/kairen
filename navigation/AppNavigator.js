@@ -8,6 +8,7 @@ import {
 import {
   AboutThisApp,
   IncidentDetail,
+  IncidentDetailSample,
   IncidentList,
   Login,
   NewComment,
@@ -31,6 +32,7 @@ const MainNavigator = createStackNavigator(
       {
         IncidentList,
         IncidentDetail,
+        IncidentDetailSample,
         Setting,
         AboutUs: AboutThisApp,
       },
