@@ -55,7 +55,11 @@ class NewIncident extends React.Component {
     return (
       <View style={container}>
         {/* TODO: Comment this block, from here */}
-        <StatusBar backgroundColor="#ff0000" barStyle="light-content" />
+        <StatusBar
+          backgroundColor={'#ff9412'}
+          translucent={true}
+          barStyle={'light-content'}
+        />
         <View style={headerContainer}>
           <Text style={headerText}>{i18n.t('select_incident')}</Text>
           <TouchableOpacity

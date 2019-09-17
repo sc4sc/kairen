@@ -24,6 +24,7 @@ export class CommentReplyCard extends React.Component {
             value={this.state.text}
           />
         </View>
+
         <View style={styles.buttonContainer}>
           <Text style={styles.cancelText} onPress={this.props.onCancelPress}>
             {I18n.t('cancel')}
