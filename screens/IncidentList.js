@@ -538,13 +538,22 @@ export default connect(
   state => {
     const { loading, indexSelected } = state.incidentsList
     const incidents = incidentsSelector(state)
+    const { isTraining } = state.user.data
+
+    const incidentsToShow = incidents.filter(incident => {
+      if (isTraining) {
+        return incident.isTraining
+      } else {
+        return !incident.isTraining
+      }
+    })
 
     return {
-      incidents,
+      incidents: incidentsToShow,
       selectedIncident: selectedIncidentSelector(state),
       loading,
       indexSelected,
-      isTraining: state.user.data.isTraining,
+      isTraining,
     }
   },
   {
