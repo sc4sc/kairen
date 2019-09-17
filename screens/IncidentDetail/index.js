@@ -30,6 +30,7 @@ import { getLocalData } from '../../constants/Incidents';
 import NaverMap from '../../components/NaverMap';
 import i18n from '../../i18n';
 import DeleteIncident from "./DeleteIncident";
+import {StackActions} from "react-navigation";
 
 const statusBarHeight = getStatusBarHeight();
 
@@ -48,6 +49,7 @@ class IncidentDetail extends React.Component {
     this.handleRefresh = this.handleRefresh.bind(this);
     this.onStateButtonPress = this.onStateButtonPress.bind(this);
     this.onWrongReportButtonPress = this.onWrongReportButtonPress.bind(this);
+    this.onDeletePress = this.onDeletePress.bind(this);
   }
 
   componentWillMount() {
@@ -58,19 +60,35 @@ class IncidentDetail extends React.Component {
     this.handleRefresh();
   }
 
-  componentWillUnmount() {
-    this.willFocusSubscription.remove();
-  }
-
-  async onStateButtonPress(state) {
-    const incidentId = await this.getIncidentDetail().id;
-    await this.setState({ progressState: state });
-    await apis.postIncidentState(incidentId, {
-      state: this.state.progressState,
-    });
-    if (state === '오인신고') {
-      this.props.navigation.navigate('IncidentList');
+    componentWillUnmount() {
+      this.willFocusSubscription.remove();
     }
+
+    async onStateButtonPress(state) {
+      const incidentId = await this.getIncidentDetail().id;
+      await this.setState({ progressState: state });
+      await apis.postIncidentState(incidentId, {
+        state: this.state.progressState,
+      });
+      if (state === '오인신고') {
+        this.props.navigation.navigate('IncidentList');
+      }
+    }
+
+    async onDeletePress() {
+      try {
+        await Promise.reject({ response: { status: 500 } });
+        this.props.navigation.dispatch(StackActions.popToTop());
+      } catch (e) {
+        if (e.response && e.response.status === 404) {
+          Alert.alert('더 이상 존재하지 않는 제보입니다.');
+          this.props.navigation.dispatch(StackActions.popToTop());
+        } else if (e.request && !e.response) {
+          Alert.alert('네트워크 오류가 발생했습니다.\n 잠시 후에 다시 시도해주세요.'); // network
+        } else {
+          Alert.alert('알 수 없는 오류가 발생했습니다.\n 잠시 후에 다시 시도해주세요.'); // 500 or others
+        }
+      }
   }
 
   onWrongReportButtonPress() {
@@ -413,6 +431,8 @@ class IncidentDetail extends React.Component {
     const latitude = Number(lat);
     const longitude = Number(lng);
 
+    const { isSecureTeam, isTraining } = this.props;
+
     // 좋아요 에러 재발 시 (item , index) 로 되돌리기. 혹시 모르니 적어둠.
     const keyExtractor = item => item.id.toString();
 
@@ -459,7 +479,9 @@ class IncidentDetail extends React.Component {
               { key: 'incidentPos', coords: { lat: latitude, lng: longitude } },
             ]}
           />
-          {true ? <DeleteIncident/> : undefined}
+          {isSecureTeam && isTraining
+              ? <DeleteIncident onPress={this.onDeletePress}/>
+              : undefined}
           <View
             style={{
               backgroundColor: '#ffffff',
@@ -469,11 +491,11 @@ class IncidentDetail extends React.Component {
           >
             {this.renderHeader()}
             <View style={{ height: 28 }} />
-            {this.props.isSecureTeam
+            {isSecureTeam
               ? this.renderCallToInformant(User.ku_kname, User.mobile)
               : this.renderProtocol()}
             <View style={{ height: 24 }} />
-            {this.props.isSecureTeam
+            {isSecureTeam
               ? this.renderAdminStateBar()
               : this.renderClientStateBar()}
             <View style={{ height: 24 }} />
@@ -509,6 +531,7 @@ class IncidentDetail extends React.Component {
 
 const mapStateToProps = state => ({
   isSecureTeam: state.auth.user.isAdmin,
+  isTraining: true
 });
 
 export default connect(
