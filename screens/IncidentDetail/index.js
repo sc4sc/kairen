@@ -12,23 +12,24 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
-import * as actions from '../actions/incidentsList';
-import * as apis from '../apis';
-import ProgressCard from '../components/ProgressCard';
-import CommentCard from '../components/CommentCard';
-import StateMarker from '../components/StateMarker';
-import StateCheckButton from '../components/StateCheckButton';
-import Layout from '../constants/Layout';
-import Colors from '../constants/Colors';
+import * as actions from '../../actions/incidentsList';
+import * as apis from '../../apis';
+import ProgressCard from '../../components/ProgressCard';
+import CommentCard from '../../components/CommentCard';
+import StateMarker from '../../components/StateMarker';
+import StateCheckButton from '../../components/StateCheckButton';
+import Layout from '../../constants/Layout';
+import Colors from '../../constants/Colors';
 import {
   formatDate,
   checkIsInbuilding,
   getStatusBarHeight,
   getBottomSpace,
-} from '../utils';
-import { getLocalData } from '../constants/Incidents';
-import NaverMap from '../components/NaverMap';
-import i18n from '../i18n';
+} from '../../utils';
+import { getLocalData } from '../../constants/Incidents';
+import NaverMap from '../../components/NaverMap';
+import i18n from '../../i18n';
+import DeleteIncident from "./DeleteIncident";
 
 const statusBarHeight = getStatusBarHeight();
 
@@ -105,28 +106,28 @@ class IncidentDetail extends React.Component {
 
     switch (localDetail.type) {
       case '화재':
-        imageSrc = require('../assets/images/incidentDetail/fire.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/fire.jpg');
         break;
       case '가스':
-        imageSrc = require('../assets/images/incidentDetail/gas.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/gas.jpg');
         break;
       case '화학물질 누출':
-        imageSrc = require('../assets/images/incidentDetail/flask.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/flask.jpg');
         break;
       case '생물학적 유해물질 누출':
-        imageSrc = require('../assets/images/incidentDetail/biohazard.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/biohazard.jpg');
         break;
       case '방사선':
-        imageSrc = require('../assets/images/incidentDetail/radiation.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/radiation.jpg');
         break;
       case '지진':
-        imageSrc = require('../assets/images/incidentDetail/earthquake.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/earthquake.jpg');
         break;
       case '엘레베이터 사고':
-        imageSrc = require('../assets/images/incidentDetail/lift.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/lift.jpg');
         break;
       case '정전':
-        imageSrc = require('../assets/images/incidentDetail/antistatic.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/antistatic.jpg');
         break;
     }
 
@@ -177,7 +178,7 @@ class IncidentDetail extends React.Component {
           style={[styles.informationButton, { backgroundColor: '#27820d' }]}
           onPress={() => Linking.openURL(`tel:${mobile}`)}
         >
-          <Image source={require('../assets/images/call.png')} />
+          <Image source={require('../../assets/images/call.png')} />
         </TouchableOpacity>
       </View>
     );
@@ -199,7 +200,7 @@ class IncidentDetail extends React.Component {
           style={[styles.informationButton, { backgroundColor: '#db7d0a' }]}
           onPress={() => Linking.openURL(url)}
         >
-          <Image source={require('../assets/images/right-arrow.png')} />
+          <Image source={require('../../assets/images/right-arrow.png')} />
         </TouchableOpacity>
       </View>
     );
@@ -436,7 +437,7 @@ class IncidentDetail extends React.Component {
             this.props.navigation.goBack();
           }}
         >
-          <Image source={require('../assets/images/back.png')} />
+          <Image source={require('../../assets/images/back.png')} />
           <Text style={{ marginLeft: 5, fontSize: 18, fontWeight: '800' }}>
             {i18n.t('incident_list')}
           </Text>
@@ -458,11 +459,10 @@ class IncidentDetail extends React.Component {
               { key: 'incidentPos', coords: { lat: latitude, lng: longitude } },
             ]}
           />
-
+          {true ? <DeleteIncident/> : undefined}
           <View
             style={{
               backgroundColor: '#ffffff',
-              marginTop: -30,
               paddingVertical: 18,
               paddingHorizontal: 15,
             }}
