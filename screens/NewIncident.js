@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   FlatList,
   StyleSheet,
@@ -7,24 +7,24 @@ import {
   Image,
   StatusBar,
   TouchableOpacity,
-} from 'react-native';
-import { StackActions } from 'react-navigation';
-import { connect } from 'react-redux';
+} from 'react-native'
+import { StackActions } from 'react-navigation'
+import { connect } from 'react-redux'
 
-import ReportItem from '../components/ReportItem';
-import { getBottomSpace, getStatusBarHeight } from '../utils/index.js';
-import * as actions from '../actions/newIncident';
-import { types as incidentTypes } from '../constants/Incidents';
-import { incidentsListRefresh } from '../actions/incidentsList';
-import { blockStatement } from '@babel/types';
-import i18n from '../i18n';
+import ReportItem from '../components/ReportItem'
+import { getBottomSpace, getStatusBarHeight } from '../utils/index.js'
+import * as actions from '../actions/newIncident'
+import { types as incidentTypes } from '../constants/Incidents'
+import { incidentsListRefresh } from '../actions/incidentsList'
+import { blockStatement } from '@babel/types'
+import i18n from '../i18n'
 
-const statusBarHeight = getStatusBarHeight();
+const statusBarHeight = getStatusBarHeight()
 
 class NewIncident extends React.Component {
   constructor() {
-    super();
-    this.renderItem = this.renderItem.bind(this);
+    super()
+    this.renderItem = this.renderItem.bind(this)
   }
 
   renderItem({ item: incident }) {
@@ -33,16 +33,16 @@ class NewIncident extends React.Component {
         type={incident.type}
         title={incident.title}
         onPress={() => {
-          this.props.selectIncident(incident.type);
+          this.props.selectIncident(incident.type)
 
           // TODO: Uncomment this function call
           // this.props.nextPage();
 
           // TODO: Comment this function call
-          this.props.navigation.navigate('NewIncidentDetail');
+          this.props.navigation.navigate('NewIncidentDetail')
         }}
       />
-    );
+    )
   }
 
   render() {
@@ -50,7 +50,7 @@ class NewIncident extends React.Component {
     // const { container } = styles;
 
     // TODO: Comment this style.
-    const { container, headerContainer, headerText } = styles;
+    const { container, headerContainer, headerText } = styles
 
     return (
       <View style={container}>
@@ -61,10 +61,9 @@ class NewIncident extends React.Component {
           <TouchableOpacity
             onPress={() =>
               this.props.navigation.dispatch(StackActions.popToTop())
-            }
-          >
+            }>
             <Image
-              source={require('../assets/images/combined-shape.png')}
+              source={require('../assets/images/close.png')}
               style={{ width: 20, height: 20, marginRight: 22 }}
             />
           </TouchableOpacity>
@@ -84,7 +83,7 @@ class NewIncident extends React.Component {
           {/* to here */}
         </View>
       </View>
-    );
+    )
   }
 }
 
@@ -120,17 +119,17 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   // to here
-});
+})
 
 const mapStateToProps = state => {
-  const { selectedIncident, isFirstStage } = state.newIncident;
+  const { selectedIncident, isFirstStage } = state.newIncident
   return {
     selectedIncident,
     isFirstStage,
-  };
-};
+  }
+}
 
 export default connect(
   mapStateToProps,
   { ...actions, incidentsListRefresh }
-)(NewIncident);
+)(NewIncident)

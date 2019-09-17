@@ -196,7 +196,7 @@ class NewIncidentDetail extends React.Component {
               this.props.navigation.dispatch(StackActions.popToTop())
             }>
             <Image
-              source={require('../assets/images/combined-shape.png')}
+              source={require('../assets/images/close.png')}
               style={{ width: 20, height: 20, marginRight: 22 }}
             />
           </TouchableOpacity>

@@ -1,38 +1,34 @@
-import React from 'react';
-import { View, Text, Image, Linking, TouchableOpacity } from 'react-native';
-import { getBottomSpace, getStatusBarHeight } from '../utils/index.js';
-import * as contacts from '../constants/Contacts';
-import i18n from '../i18n';
+import React from 'react'
+import { View, Text, Image, Linking, TouchableOpacity } from 'react-native'
+import { getBottomSpace, getStatusBarHeight } from '../utils/index.js'
+import * as contacts from '../constants/Contacts'
+import i18n from '../i18n'
 
-const topMargin = getStatusBarHeight();
-const bottomMargin = getBottomSpace();
+const topMargin = getStatusBarHeight()
+const bottomMargin = getBottomSpace()
 
 export default class SafetyContact extends React.Component {
+  state = { isTraining: false }
+
+  toggleTrainingMode = () => {
+    this.setState({ isTraining: !this.state.isTraining })
+  }
+
   render() {
     const {
       container,
       headerText,
       contentContainer,
-      circle,
-      notAppliedText,
       contentContainersecond,
-      betaVerNotice,
-    } = styles;
+      cautionContainer,
+    } = styles
 
     return (
       <View style={container}>
         <View>
           <Text style={headerText}>KAIREN</Text>
-          {/* <View style={contentContainer}>
-            <View style={circle} />
-            <View style={circle} />
-            <View style={circle} />
-            <Text style={notAppliedText}> 주의 제보 (준비 중)</Text>
-          </View> */}
-
           <TouchableOpacity
-            onPress={() => Linking.openURL(`tel:${contacts.campusPolice}`)}
-          >
+            onPress={() => Linking.openURL(`tel:${contacts.campusPolice}`)}>
             <View style={contentContainer}>
               <Image source={require('../assets/images/group-9.png')} />
               <View style={{ width: 5 }} />
@@ -43,8 +39,7 @@ export default class SafetyContact extends React.Component {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => Linking.openURL(`tel:${contacts.secureTeam}`)}
-          >
+            onPress={() => Linking.openURL(`tel:${contacts.secureTeam}`)}>
             <View style={contentContainer}>
               <Image source={require('../assets/images/group-9.png')} />
               <View style={{ width: 5 }} />
@@ -53,11 +48,44 @@ export default class SafetyContact extends React.Component {
               </Text>
             </View>
           </TouchableOpacity>
+
+          {this.state.isTraining ? (
+            <TouchableOpacity onPress={this.toggleTrainingMode}>
+              <View style={[contentContainer, { backgroundColor: '#50d434' }]}>
+                <Image source={require('../assets/images/unlock.png')} />
+                <View style={{ width: 10 }} />
+                <Text style={{ fontSize: 16, color: 'white' }}>
+                  훈련 모드 해제
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={this.toggleTrainingMode}>
+              <View style={[contentContainer, { backgroundColor: '#d43434' }]}>
+                <Image source={require('../assets/images/lock.png')} />
+                <View style={{ width: 10 }} />
+                <Text style={{ fontSize: 16, color: 'white' }}>
+                  훈련 모드 시작
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+
+          <View style={cautionContainer}>
+            <Image
+              style={{ marginTop: 4 }}
+              source={require('../assets/images/caution.png')}
+            />
+            <View style={{ width: 5 }} />
+            <Text style={{ fontSize: 12, color: '#979797' }}>
+              훈련 모드 시 등록된 제보는 실제 사고를 반영하지 않는 것으로
+              간주하며, 추후 예고 없이 삭제될 수 있습니다.
+            </Text>
+          </View>
         </View>
 
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('Setting')}
-        >
+          onPress={() => this.props.navigation.navigate('Setting')}>
           <View style={contentContainersecond}>
             <Image source={require('../assets/images/setting_icon.png')} />
             <View style={{ width: 5 }} />
@@ -65,7 +93,7 @@ export default class SafetyContact extends React.Component {
           </View>
         </TouchableOpacity>
       </View>
-    );
+    )
   }
 }
 
@@ -89,14 +117,20 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 15,
-    paddingLeft: 16,
+    paddingHorizontal: 16,
   },
   contentContainersecond: {
     height: 48 + bottomMargin,
     flexDirection: 'row',
     paddingTop: 16,
     backgroundColor: 'rgb(230,230,230)',
+    paddingHorizontal: 16,
+  },
+  cautionContainer: {
+    flexDirection: 'row',
+    paddingVertical: 15,
     paddingLeft: 16,
+    paddingRight: 30,
   },
   circle: {
     width: 3,
@@ -107,4 +141,4 @@ const styles = {
   },
   notAppliedText: { color: '#bebebe', fontSize: 16 },
   betaVerNotice: { color: 'red' },
-};
+}
