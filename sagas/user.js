@@ -5,15 +5,15 @@ import {
   USER_LOGIN_FAILED,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
-  authLoginSuccess,
-} from '../actions/auth'
+  userLoginSuccess,
+} from '../actions/user'
 import { getPushToken } from '../utils'
 
 function* storeToken(token) {
   yield call(SecureStore.setItemAsync, 'appToken', token)
 }
 
-function* authLogin(action) {
+function* userLogin(action) {
   const { ssoToken, onSuccess, onFailed } = action.payload
   try {
     const pushToken = yield call(getPushToken)
@@ -31,7 +31,7 @@ function* authLogin(action) {
     // Won't care even though storing token fails
     yield spawn(storeToken, appToken)
 
-    yield put(authLoginSuccess(result))
+    yield put(userLoginSuccess(result))
     yield call(onSuccess)
   } catch (error) {
     console.log('Login Error', error)
@@ -41,6 +41,6 @@ function* authLogin(action) {
   }
 }
 
-export function* watchAuthLoginRequest() {
-  yield takeLatest(USER_LOGIN_REQUEST, authLogin)
+export function* watchUserLoginRequest() {
+  yield takeLatest(USER_LOGIN_REQUEST, userLogin)
 }
