@@ -9,7 +9,7 @@ import StateMarker from '../components/StateMarker'
 import CommentCard from '../components/CommentCard'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import NaverMap from '../components/NaverMap'
-import { getBottomSpace } from '../utils'
+import { getBottomSpace, formatDate } from '../utils'
 import Colors from '../constants/Colors'
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 import Layout from '../constants/Layout'
@@ -24,7 +24,17 @@ export default class IncidentDetailSample extends React.Component {
   constructor() {
     super()
     this.state = {
-      headerBackToggle: false,      
+      headerBackToggle: false,
+      commentList: [{
+        id: 0,
+        User: {ku_kname: "홍길동"},
+        like: false,
+        content: "test",
+        createdAt: "2019-04-01T00:00:00",
+        updatedAt: "2019-04-01T00:00:00",
+        totalLike: 1,
+      }],
+      recentProgress: [],
     }
   }
 
@@ -176,12 +186,33 @@ export default class IncidentDetailSample extends React.Component {
     )
   }
 
-  renderComment() {
+  renderComment(data) {
+    const {
+      id,
+      User: { ku_kname },
+      like,
+      content,
+      createdAt,
+      updatedAt,
+      totalLike,
+      commentIndex,
+      reply,
+    } = data.item
+    const commentDate = formatDate(createdAt)
+    const replyDate = formatDate(updatedAt)
+
     return(
-      <CommentCard>
-        <Text>
-          컨텐츠
-        </Text>
+      <CommentCard
+        commentId={id}
+        author={ku_kname}
+        like={like}
+        totalLike={totalLike}
+        date={commentDate}
+        replyDate={replyDate}
+        index={commentIndex}
+        reply={reply}
+      >
+        {content}
       </CommentCard>
     )
   }
@@ -202,6 +233,8 @@ export default class IncidentDetailSample extends React.Component {
   }
 
   render() {
+    const keyExtractor = item => item.id.toString()
+
     return (
       <View style={{ flex: 1 }}>
         <View
@@ -261,6 +294,8 @@ export default class IncidentDetailSample extends React.Component {
               Comment
             </Text>
             <FlatList
+              data={this.state.commentList}
+              keyExtractor={keyExtractor}
               renderItem={this.renderComment}
             />
 
