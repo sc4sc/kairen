@@ -77,7 +77,8 @@ class IncidentDetail extends React.Component {
 
   async onDeletePress() {
     try {
-      await Promise.reject({ response: { status: 500 } })
+      const incidentId = this.getIncidentDetail().id
+      await apis.deleteIncident(incidentId)
       this.props.navigation.dispatch(StackActions.popToTop())
     } catch (e) {
       if (e.response && e.response.status === 404) {
