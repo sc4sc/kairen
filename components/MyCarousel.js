@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-import IncidentCard from './IncidentCard';
-import Layout from '../constants/Layout';
+import React, { Component } from 'react'
+import { View } from 'react-native'
+import Carousel, { Pagination } from 'react-native-snap-carousel'
+import IncidentCard from './IncidentCard'
+import Layout from '../constants/Layout'
 
 export default class MyCarousel extends Component {
-  state = { activeSlide: 0 };
+  state = { activeSlide: 0 }
 
   _renderItem({ item: incident }) {
     return (
@@ -17,12 +17,12 @@ export default class MyCarousel extends Component {
           })
         }
       />
-    );
+    )
   }
 
   get pagination() {
-    const { entries } = this.props;
-    const { activeSlide } = this.state;
+    const { entries } = this.props
+    const { activeSlide } = this.state
     return (
       <Pagination
         pointerEvents="none"
@@ -38,7 +38,7 @@ export default class MyCarousel extends Component {
         inactiveDotOpacity={0.4}
         inactiveDotScale={0.6}
       />
-    );
+    )
   }
 
   render() {
@@ -60,6 +60,6 @@ export default class MyCarousel extends Component {
           inactiveSlideScale={1}
         />
       </View>
-    );
+    )
   }
 }

@@ -1,45 +1,45 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { connect } from 'react-redux';
-import * as actions from '../actions/newIncident';
+import React from 'react'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { connect } from 'react-redux'
+import * as actions from '../actions/newIncident'
 
 class ReportItem extends React.Component {
   render() {
-    const { title, type } = this.props;
-    const empty = <View style={{ flex: 1 }} />;
+    const { title, type } = this.props
+    const empty = <View style={{ flex: 1 }} />
 
-    let imageSrc;
+    let imageSrc
     switch (type) {
       case '화재':
-        imageSrc = require('../assets/images/incidentSend/fire.png');
-        break;
+        imageSrc = require('../assets/images/incidentSend/fire.png')
+        break
       case '가스':
-        imageSrc = require('../assets/images/incidentSend/gas.png');
-        break;
+        imageSrc = require('../assets/images/incidentSend/gas.png')
+        break
       case '화학물질 누출':
-        imageSrc = require('../assets/images/incidentSend/flask.png');
-        break;
+        imageSrc = require('../assets/images/incidentSend/flask.png')
+        break
       case '생물학적 유해물질 누출':
-        imageSrc = require('../assets/images/incidentSend/biohazard.png');
-        break;
+        imageSrc = require('../assets/images/incidentSend/biohazard.png')
+        break
       case '방사선':
-        imageSrc = require('../assets/images/incidentSend/radiation.png');
-        break;
+        imageSrc = require('../assets/images/incidentSend/radiation.png')
+        break
       case '지진':
-        imageSrc = require('../assets/images/incidentSend/earthquake.png');
-        break;
+        imageSrc = require('../assets/images/incidentSend/earthquake.png')
+        break
       case '엘레베이터 사고':
-        imageSrc = require('../assets/images/incidentSend/lift.png');
-        break;
+        imageSrc = require('../assets/images/incidentSend/lift.png')
+        break
       case '정전':
-        imageSrc = require('../assets/images/incidentSend/antistatic.png');
-        break;
+        imageSrc = require('../assets/images/incidentSend/antistatic.png')
+        break
     }
     const image = (
       <View style={{ flex: 1, alignItems: 'center' }}>
         <Image source={imageSrc} />
       </View>
-    );
+    )
 
     return (
       <TouchableOpacity onPress={this.props.onPress}>
@@ -49,7 +49,7 @@ class ReportItem extends React.Component {
           {empty}
         </View>
       </TouchableOpacity>
-    );
+    )
   }
 }
 
@@ -71,13 +71,13 @@ const styles = {
     fontWeight: 'bold',
     fontSize: 16,
   },
-};
+}
 
 const mapStateToProps = (state, ownProps) => ({
   selected: state.newIncident.selectedIncident === ownProps.type,
-});
+})
 
 export default connect(
   mapStateToProps,
   actions
-)(ReportItem);
+)(ReportItem)

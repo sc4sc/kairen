@@ -339,23 +339,23 @@ class IncidentList extends React.Component {
         />
 
         {this.props.isTraining ? (
-          <StatusBar
-            backgroundColor={'#d43434'}
-            translucent={true}
-            barStyle={'light-content'}
-          />
+          <>
+            <StatusBar
+              backgroundColor={'#d43434'}
+              translucent={true}
+              barStyle={'light-content'}
+            />
+
+            <View style={styles.trainingModeContainer}>
+              <Text style={{ color: 'white' }}>훈련 모드</Text>
+            </View>
+          </>
         ) : (
           <StatusBar
             backgroundColor={'transparent'}
             translucent={true}
             barStyle={'dark-content'}
           />
-        )}
-
-        {this.props.isTraining && (
-          <View style={styles.trainingModeContainer}>
-            <Text style={{ color: 'white' }}>훈련 모드</Text>
-          </View>
         )}
 
         {this.renderCarousel()}

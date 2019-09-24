@@ -10,13 +10,11 @@ import {
 } from 'react-native'
 import { StackActions } from 'react-navigation'
 import { connect } from 'react-redux'
-
 import ReportItem from '../components/ReportItem'
 import { getBottomSpace, getStatusBarHeight } from '../utils/index.js'
 import * as actions from '../actions/newIncident'
 import { types as incidentTypes } from '../constants/Incidents'
 import { incidentsListRefresh } from '../actions/incidentsList'
-import { blockStatement } from '@babel/types'
 import i18n from '../i18n'
 
 const statusBarHeight = getStatusBarHeight()

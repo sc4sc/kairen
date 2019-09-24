@@ -1,38 +1,37 @@
-import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-navigation';
+import React from 'react'
+import { StyleSheet, Text, View, FlatList } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import { SafeAreaView } from 'react-navigation'
 
-import * as apis from '../apis';
-import { formatDate } from '../utils';
-import ProgressCard from '../components/ProgressCard';
-import Colors from '../constants/Colors';
-import AndroidTopMargin from '../components/AndroidTopMargin';
+import * as apis from '../apis'
+import { formatDate } from '../utils'
+import ProgressCard from '../components/ProgressCard'
+import Colors from '../constants/Colors'
+import AndroidTopMargin from '../components/AndroidTopMargin'
 
 export default class ProgressList extends React.Component {
   constructor() {
-    super();
-    this.state = { progressList: [] };
+    super()
+    this.state = { progressList: [] }
   }
 
   componentWillMount() {
     apis
       .getProgressList(this.props.navigation.getParam('incidentId'))
-      .then(response => this.setState({ progressList: response.data }));
+      .then(response => this.setState({ progressList: response.data }))
   }
 
   renderProgress(data) {
-    const { content, createdAt } = data.item;
+    const { content, createdAt } = data.item
 
     return (
       <ProgressCard
         author="안전팀"
         date={formatDate(createdAt)}
-        propStyle={styles.progressBox}
-      >
+        propStyle={styles.progressBox}>
         {content}
       </ProgressCard>
-    );
+    )
   }
 
   render() {
@@ -46,7 +45,7 @@ export default class ProgressList extends React.Component {
               name="md-close"
               size={26}
               onPress={() => {
-                this.props.navigation.goBack();
+                this.props.navigation.goBack()
               }}
             />
           </View>
@@ -59,7 +58,7 @@ export default class ProgressList extends React.Component {
           />
         </View>
       </SafeAreaView>
-    );
+    )
   }
 }
 
@@ -89,4 +88,4 @@ const styles = StyleSheet.create({
     minHeight: 100,
     marginBottom: 10,
   },
-});
+})

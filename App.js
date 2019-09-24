@@ -1,34 +1,34 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Provider } from 'react-redux';
-import { AppLoading } from 'expo';
-import * as Font from 'expo-font';
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import { Provider } from 'react-redux'
+import { AppLoading } from 'expo'
+import * as Font from 'expo-font'
+import { FontAwesome, Ionicons } from '@expo/vector-icons'
 
-import store from './store';
-import AppNavigator from './navigation/AppNavigator';
+import store from './store'
+import AppNavigator from './navigation/AppNavigator'
 
-import { Sentry } from 'react-native-sentry';
-import { SENTRY_DSN } from 'babel-dotenv';
+import { Sentry } from 'react-native-sentry'
+import { SENTRY_DSN } from 'babel-dotenv'
 
-console.disableYellowBox = true;
+console.disableYellowBox = true
 
 function cacheFonts(fonts) {
-  return fonts.map(font => Font.loadAsync(font));
+  return fonts.map(font => Font.loadAsync(font))
 }
 
 export default class App extends React.Component {
   constructor() {
-    super();
+    super()
     this.state = {
       isReady: false,
-    };
+    }
   }
 
   async _loadAssetsAsync() {
-    const awesomeFont = cacheFonts([FontAwesome.font]);
-    const iconFont = Font.loadAsync(Ionicons.font);
-    await Promise.all([awesomeFont, iconFont]);
+    const awesomeFont = cacheFonts([FontAwesome.font])
+    const iconFont = Font.loadAsync(Ionicons.font)
+    await Promise.all([awesomeFont, iconFont])
   }
 
   render() {
@@ -40,7 +40,7 @@ export default class App extends React.Component {
           onFinish={() => this.setState({ isReady: true })}
           onError={console.warn}
         />
-      );
+      )
     }
 
     return (
@@ -49,17 +49,17 @@ export default class App extends React.Component {
           <AppNavigator />
         </View>
       </Provider>
-    );
+    )
   }
 }
 
 if (SENTRY_DSN) {
-  Sentry.config(SENTRY_DSN).install();
+  Sentry.config(SENTRY_DSN).install()
   // set the tag context
   Sentry.setTagsContext({
     environment: __DEV__ ? 'development' : 'production',
     react: true,
-  });
+  })
 }
 
 const styles = StyleSheet.create({
@@ -67,4 +67,4 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-});
+})

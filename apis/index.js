@@ -40,9 +40,7 @@ export function requestAuthentication(ssoToken, pushToken) {
   return axios
     .post(
       `${serverURL}/authenticate`,
-      {
-        expotoken: pushToken,
-      },
+      { expotoken: pushToken },
       { headers: { Authorization: `Bearer ${ssoToken}` } }
     )
     .then(response => {

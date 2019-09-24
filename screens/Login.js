@@ -13,7 +13,7 @@ class Login extends React.Component {
   onButtonPress() {
     const { navigation } = this.props
     const alertTitle = i18n.t('login_alert')
-    const alertMsg = 'login_alert_detail'
+    const alertMsg = i18n.t('login_alert_detail')
 
     navigation.navigate('SSO', {
       onLogin: token => {
