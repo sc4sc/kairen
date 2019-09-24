@@ -3,8 +3,9 @@ import { View } from 'react-native'
 import { WebView } from 'react-native-webview'
 import { FileSystem } from 'expo'
 import { Sentry, SentrySeverity } from 'react-native-sentry'
+import { Asset } from 'expo-asset'
 
-const htmlAsset = Expo.Asset.fromModule(require('../assets/map.html'))
+const htmlAsset = Asset.fromModule(require('../assets/map.html'))
 
 let downloaded = false
 

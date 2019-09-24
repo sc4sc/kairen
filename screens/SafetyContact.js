@@ -1,11 +1,11 @@
-import React from 'react';
-import { View, Text, Image, Linking, TouchableOpacity } from 'react-native';
-import { getBottomSpace, getStatusBarHeight } from '../utils/index.js';
-import * as contacts from '../constants/Contacts';
-import i18n from '../i18n';
+import React from 'react'
+import { View, Text, Image, Linking, TouchableOpacity } from 'react-native'
+import { getBottomSpace, getStatusBarHeight } from '../utils/index.js'
+import * as contacts from '../constants/Contacts'
+import i18n from '../i18n'
 
-const topMargin = getStatusBarHeight();
-const bottomMargin = getBottomSpace();
+const topMargin = getStatusBarHeight()
+const bottomMargin = getBottomSpace()
 
 export default class SafetyContact extends React.Component {
   render() {
@@ -17,7 +17,7 @@ export default class SafetyContact extends React.Component {
       notAppliedText,
       contentContainersecond,
       betaVerNotice,
-    } = styles;
+    } = styles
 
     return (
       <View style={container}>
@@ -31,8 +31,7 @@ export default class SafetyContact extends React.Component {
           </View> */}
 
           <TouchableOpacity
-            onPress={() => Linking.openURL(`tel:${contacts.campusPolice}`)}
-          >
+            onPress={() => Linking.openURL(`tel:${contacts.campusPolice}`)}>
             <View style={contentContainer}>
               <Image source={require('../assets/images/group-9.png')} />
               <View style={{ width: 5 }} />
@@ -43,8 +42,7 @@ export default class SafetyContact extends React.Component {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => Linking.openURL(`tel:${contacts.secureTeam}`)}
-          >
+            onPress={() => Linking.openURL(`tel:${contacts.secureTeam}`)}>
             <View style={contentContainer}>
               <Image source={require('../assets/images/group-9.png')} />
               <View style={{ width: 5 }} />
@@ -56,8 +54,7 @@ export default class SafetyContact extends React.Component {
         </View>
 
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('Setting')}
-        >
+          onPress={() => this.props.navigation.navigate('Setting')}>
           <View style={contentContainersecond}>
             <Image source={require('../assets/images/setting_icon.png')} />
             <View style={{ width: 5 }} />
@@ -65,7 +62,7 @@ export default class SafetyContact extends React.Component {
           </View>
         </TouchableOpacity>
       </View>
-    );
+    )
   }
 }
 
@@ -107,4 +104,4 @@ const styles = {
   },
   notAppliedText: { color: '#bebebe', fontSize: 16 },
   betaVerNotice: { color: 'red' },
-};
+}

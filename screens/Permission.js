@@ -26,6 +26,7 @@ export default class Permission extends React.Component {
     const locationPermission = await requestPermission(Permissions.LOCATION)
     AppState.addEventListener('change', this.handleAppStateChange)
     this.setState({ locationPermission })
+    this.props.navigation.navigate('AuthLoading')
   }
 
   componentWillUnmount() {

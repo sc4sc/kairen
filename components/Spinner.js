@@ -1,15 +1,15 @@
-import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import React from 'react'
+import { View, ActivityIndicator } from 'react-native'
 
 const Spinner = ({ size, overlay }) => {
-  const { boxStretchStyle, overlayStyle } = styles;
-  const containerStyle = overlay ? overlayStyle : boxStretchStyle;
+  const { boxStretchStyle, overlayStyle } = styles
+  const containerStyle = overlay ? overlayStyle : boxStretchStyle
   return (
     <View style={containerStyle}>
       <ActivityIndicator size={size || 'large'} color={'white'} />
     </View>
-  );
-};
+  )
+}
 
 const styles = {
   boxStretchStyle: {
@@ -28,6 +28,6 @@ const styles = {
     justifyContent: 'center',
     zIndex: 999,
   },
-};
+}
 
-export default Spinner;
+export default Spinner

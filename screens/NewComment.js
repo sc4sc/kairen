@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   View,
   Text,
@@ -10,47 +10,47 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Dimensions,
-} from 'react-native';
-import { SafeAreaView } from 'react-navigation';
-import { connect } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons';
-import Spinner from '../components/Spinner';
-import * as apis from '../apis';
-import Colors from '../constants/Colors';
-import AndroidTopMargin from '../components/AndroidTopMargin';
-import i18n from '../i18n';
+} from 'react-native'
+import { SafeAreaView } from 'react-navigation'
+import { connect } from 'react-redux'
+import { Ionicons } from '@expo/vector-icons'
+import Spinner from '../components/Spinner'
+import * as apis from '../apis'
+import Colors from '../constants/Colors'
+import AndroidTopMargin from '../components/AndroidTopMargin'
+import i18n from '../i18n'
 
 class NewComment extends React.Component {
   constructor() {
-    super();
-    this.state = { text: '', loading: false };
+    super()
+    this.state = { text: '', loading: false }
   }
 
   onButtonPress() {
-    Keyboard.dismiss();
+    Keyboard.dismiss()
     if (this.state.text.trim() === '') {
-      Alert.alert(i18n.t('blank_alert_title'), i18n.t('blank_alert'));
-      this.setState({ text: '' });
-      return;
+      Alert.alert(i18n.t('blank_alert_title'), i18n.t('blank_alert'))
+      this.setState({ text: '' })
+      return
     }
 
     Alert.alert(i18n.t('comment_alert_title'), i18n.t('comment_alert'), [
       { text: '취소' },
       { text: '확인', onPress: this.postComment.bind(this) },
-    ]);
+    ])
   }
 
   postComment() {
-    this.setState({ loading: true });
+    this.setState({ loading: true })
     apis
       .postComment(this.props.navigation.getParam('incidentId'), {
         content: this.state.text,
       })
       .then(() => {
-        this.setState({ loading: false });
-        this.props.navigation.goBack();
-        Keyboard.dismiss();
-      });
+        this.setState({ loading: false })
+        this.props.navigation.goBack()
+        Keyboard.dismiss()
+      })
   }
 
   render() {
@@ -63,9 +63,8 @@ class NewComment extends React.Component {
             <Text style={styles.header}>{i18n.t('new_comment')}</Text>
             <TouchableWithoutFeedback
               onPress={() => {
-                this.props.navigation.goBack();
-              }}
-            >
+                this.props.navigation.goBack()
+              }}>
               <View style={{ width: 30, alignItems: 'center' }}>
                 <Ionicons name="md-close" size={26} />
               </View>
@@ -74,8 +73,7 @@ class NewComment extends React.Component {
 
           <KeyboardAvoidingView
             style={styles.contentContainer}
-            behavior="padding"
-          >
+            behavior="padding">
             <TextInput
               style={styles.textInputStyle}
               placeholder={i18n.t('placeholder')}
@@ -85,23 +83,21 @@ class NewComment extends React.Component {
               autoFocus
             />
             <View
-              style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 25 }}
-            >
+              style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 25 }}>
               <TouchableOpacity
                 style={styles.buttonStyle}
-                onPress={this.onButtonPress.bind(this)}
-              >
+                onPress={this.onButtonPress.bind(this)}>
                 <Text style={styles.buttonText}>{i18n.t('enroll')}</Text>
               </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </SafeAreaView>
       </TouchableWithoutFeedback>
-    );
+    )
   }
 }
 
-export default connect(state => ({}))(NewComment);
+export default connect(state => ({}))(NewComment)
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
@@ -136,4 +132,4 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: 'white',
   },
-});
+})

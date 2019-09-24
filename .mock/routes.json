@@ -1,4 +1,4 @@
 {
-    "/incidents/:id/comments": "/comments",
-    "/incidents/:id/progresses": "/progresses"
+  "/incidents/:id/comments": "/comments",
+  "/incidents/:id/progresses": "/progresses"
 }

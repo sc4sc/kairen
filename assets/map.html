@@ -30,112 +30,112 @@
     </div>
 
     <script>
-      (function() {
+      ;(function() {
         function actionHandler(action) {
-          var type = action.type;
-          var payload = action.payload;
+          var type = action.type
+          var payload = action.payload
           switch (action.type) {
             case 'pong': {
-              clearInterval(ping);
-              return;
+              clearInterval(ping)
+              return
             }
             case 'initialize': {
-              initMap(mapContainer, mapOptions);
-              return;
+              initMap(mapContainer, mapOptions)
+              return
             }
             case 'setOptions': {
-              map.setOptions(payload);
-              return;
+              map.setOptions(payload)
+              return
             }
             case 'setCenter': {
               // CoordLiteral
-              map.setCenter(payload);
-              return;
+              map.setCenter(payload)
+              return
             }
             case 'panTo': {
-              const zoom = map.getZoom();
+              const zoom = map.getZoom()
               const building = new naver.maps.LatLng(
                 Number(payload.coords.lat),
                 Number(payload.coords.lng)
-              );
+              )
               const coords = map
                 .getProjection()
                 .getDestinationCoord(
                   building,
                   180,
                   zoom >= 13 ? 50 : 1500 / zoom
-                );
+                )
 
-              map.panTo(coords, payload.transitionOptions);
-              return;
+              map.panTo(coords, payload.transitionOptions)
+              return
             }
             case 'updateMarkers': {
-              const markers = payload;
-              const removedMarkerSet = new Set(Object.keys(markers));
+              const markers = payload
+              const removedMarkerSet = new Set(Object.keys(markers))
               // Efficient instance managing
               markers.forEach(function(marker, index) {
-                var key = index;
+                var key = index
                 if (marker.key) {
-                  key = marker.key;
+                  key = marker.key
                 }
 
-                var markerInstance = markerById[key];
+                var markerInstance = markerById[key]
 
                 var markerOptions = {
                   position: marker.coords,
                   map: map,
                   icon: marker.icon,
-                };
+                }
                 // Create
                 if (!markerInstance) {
-                  markerInstance = new naver.maps.Marker(markerOptions);
-                  markerById[key] = markerInstance;
+                  markerInstance = new naver.maps.Marker(markerOptions)
+                  markerById[key] = markerInstance
                 } else {
                   // Update
-                  markerInstance.setOptions(markerOptions);
-                  removedMarkerSet.delete(key);
+                  markerInstance.setOptions(markerOptions)
+                  removedMarkerSet.delete(key)
                 }
-              });
+              })
               // Delete
               for (var removedMarkerKey of removedMarkerSet) {
-                var markerInstance = markerById[removedMarkerKey];
-                delete markerById[removedMarkerKey];
-                markerInstance.setMap(null);
+                var markerInstance = markerById[removedMarkerKey]
+                delete markerById[removedMarkerKey]
+                markerInstance.setMap(null)
               }
-              return;
+              return
             }
             case 'renderKAIST': {
-              const kaist = [];
+              const kaist = []
               for (var coor of payload.coords) {
-                kaist.push(new naver.maps.LatLng(coor[1], coor[0]));
+                kaist.push(new naver.maps.LatLng(coor[1], coor[0]))
               }
               return new naver.maps.Polyline({
                 map: map,
                 path: kaist,
-              });
+              })
             }
             default:
-              return;
+              return
           }
         }
 
         function postAction(type, payload) {
-          var action = { type: type };
+          var action = { type: type }
           if (payload) {
-            action.payload = payload;
+            action.payload = payload
           }
           if (!window.ReactNativeWebView) {
-            window.ReactNativeWebView = window['ReactABI33_0_0NativeWebView'];
+            window.ReactNativeWebView = window['ReactABI33_0_0NativeWebView']
           }
-          window.ReactNativeWebView.postMessage(JSON.stringify(action));
+          window.ReactNativeWebView.postMessage(JSON.stringify(action))
         }
 
         function initMap(el, options) {
           if (map) {
-            map.destroy();
-            markerById = {};
+            map.destroy()
+            markerById = {}
           }
-          map = new naver.maps.Map(el, options);
+          map = new naver.maps.Map(el, options)
           var legalButton = document
             .evaluate(
               "//a[contains(@href,'legal.html')]",
@@ -144,26 +144,26 @@
               XPathResult.UNORDERED_NODE_ITERATOR_TYPE,
               null
             )
-            .iterateNext();
+            .iterateNext()
           if (legalButton) {
-            legalButton.removeAttribute('href');
+            legalButton.removeAttribute('href')
           }
         }
 
         window.receiveMessage = function(action) {
           // var data = event.data;
-          postAction('log', action);
+          postAction('log', action)
           // var action = JSON.parse(data);
-          actionHandler(action);
-        };
+          actionHandler(action)
+        }
 
-        document.addEventListener('message', window.receiveMessage);
+        document.addEventListener('message', window.receiveMessage)
 
-        var ping = setInterval(() => postAction('ping'), 66);
+        var ping = setInterval(() => postAction('ping'), 66)
 
         var min = { x: 127.35516786575319, y: 36.36317650086336 },
-          max = { x: 127.37027406692503, y: 36.37634223427805 };
-        var bounds = { north: max.y, east: max.x, south: min.y, west: min.x };
+          max = { x: 127.37027406692503, y: 36.37634223427805 }
+        var bounds = { north: max.y, east: max.x, south: min.y, west: min.x }
 
         var mapOptions = {
           center: { lat: 36.37334626411133, lng: 127.36397930294454 },
@@ -171,19 +171,19 @@
           minZoom: 10,
           maxZoom: 14,
           maxBounds: bounds,
-        };
+        }
 
-        var mapContainer = document.getElementById('map');
-        var map = null;
-        var markerById = {};
+        var mapContainer = document.getElementById('map')
+        var map = null
+        var markerById = {}
 
-        initMap(mapContainer, mapOptions);
+        initMap(mapContainer, mapOptions)
 
         naver.maps.Event.addListener(map, 'click', function(e) {
-          const coord = e.coord;
-          postAction('click', { lat: coord.y, lng: coord.x });
-        });
-      })();
+          const coord = e.coord
+          postAction('click', { lat: coord.y, lng: coord.x })
+        })
+      })()
     </script>
   </body>
 </html>
