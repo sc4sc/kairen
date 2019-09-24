@@ -385,6 +385,7 @@ class IncidentDetail extends React.Component {
         replyDate={replyDate}
         index={commentIndex}
         reply={reply}
+        clickable={true}
       >
         {content}
       </CommentCard>

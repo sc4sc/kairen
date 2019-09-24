@@ -43,7 +43,9 @@ class CommentCard extends React.Component {
   }
 
   onLikePress() {
-    const { commentId } = this.props
+    const { commentId, clickable } = this.props
+
+    if (!clickable) return
 
     if (this.state.like) {
       apis.postUnlike(commentId)
