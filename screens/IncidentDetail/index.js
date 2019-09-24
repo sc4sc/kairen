@@ -512,7 +512,7 @@ class IncidentDetail extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  isSecureTeam: state.auth.user.isAdmin,
+  isSecureTeam: state.user.data.isAdmin,
 })
 
 export default connect(
