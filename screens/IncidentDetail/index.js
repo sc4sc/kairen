@@ -12,23 +12,25 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
-import * as actions from '../actions/incidentsList';
-import * as apis from '../apis';
-import ProgressCard from '../components/ProgressCard';
-import CommentCard from '../components/CommentCard';
-import StateMarker from '../components/StateMarker';
-import StateCheckButton from '../components/StateCheckButton';
-import Layout from '../constants/Layout';
-import Colors from '../constants/Colors';
+import * as actions from '../../actions/incidentsList';
+import * as apis from '../../apis';
+import ProgressCard from '../../components/ProgressCard';
+import CommentCard from '../../components/CommentCard';
+import StateMarker from '../../components/StateMarker';
+import StateCheckButton from '../../components/StateCheckButton';
+import Layout from '../../constants/Layout';
+import Colors from '../../constants/Colors';
 import {
   formatDate,
   checkIsInbuilding,
   getStatusBarHeight,
   getBottomSpace,
-} from '../utils';
-import { getLocalData } from '../constants/Incidents';
-import NaverMap from '../components/NaverMap';
-import i18n from '../i18n';
+} from '../../utils';
+import { getLocalData } from '../../constants/Incidents';
+import NaverMap from '../../components/NaverMap';
+import i18n from '../../i18n';
+import DeleteIncident from "./DeleteIncident";
+import {StackActions} from "react-navigation";
 
 const statusBarHeight = getStatusBarHeight();
 
@@ -47,6 +49,7 @@ class IncidentDetail extends React.Component {
     this.handleRefresh = this.handleRefresh.bind(this);
     this.onStateButtonPress = this.onStateButtonPress.bind(this);
     this.onWrongReportButtonPress = this.onWrongReportButtonPress.bind(this);
+    this.onDeletePress = this.onDeletePress.bind(this);
   }
 
   componentWillMount() {
@@ -57,19 +60,35 @@ class IncidentDetail extends React.Component {
     this.handleRefresh();
   }
 
-  componentWillUnmount() {
-    this.willFocusSubscription.remove();
-  }
-
-  async onStateButtonPress(state) {
-    const incidentId = await this.getIncidentDetail().id;
-    await this.setState({ progressState: state });
-    await apis.postIncidentState(incidentId, {
-      state: this.state.progressState,
-    });
-    if (state === '오인신고') {
-      this.props.navigation.navigate('IncidentList');
+    componentWillUnmount() {
+      this.willFocusSubscription.remove();
     }
+
+    async onStateButtonPress(state) {
+      const incidentId = await this.getIncidentDetail().id;
+      await this.setState({ progressState: state });
+      await apis.postIncidentState(incidentId, {
+        state: this.state.progressState,
+      });
+      if (state === '오인신고') {
+        this.props.navigation.navigate('IncidentList');
+      }
+    }
+
+    async onDeletePress() {
+      try {
+        await Promise.reject({ response: { status: 500 } });
+        this.props.navigation.dispatch(StackActions.popToTop());
+      } catch (e) {
+        if (e.response && e.response.status === 404) {
+          Alert.alert('더 이상 존재하지 않는 제보입니다.');
+          this.props.navigation.dispatch(StackActions.popToTop());
+        } else if (e.request && !e.response) {
+          Alert.alert('네트워크 오류가 발생했습니다.\n 잠시 후에 다시 시도해주세요.'); // network
+        } else {
+          Alert.alert('알 수 없는 오류가 발생했습니다.\n 잠시 후에 다시 시도해주세요.'); // 500 or others
+        }
+      }
   }
 
   onWrongReportButtonPress() {
@@ -105,28 +124,28 @@ class IncidentDetail extends React.Component {
 
     switch (localDetail.type) {
       case '화재':
-        imageSrc = require('../assets/images/incidentDetail/fire.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/fire.jpg');
         break;
       case '가스':
-        imageSrc = require('../assets/images/incidentDetail/gas.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/gas.jpg');
         break;
       case '화학물질 누출':
-        imageSrc = require('../assets/images/incidentDetail/flask.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/flask.jpg');
         break;
       case '생물학적 유해물질 누출':
-        imageSrc = require('../assets/images/incidentDetail/biohazard.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/biohazard.jpg');
         break;
       case '방사선':
-        imageSrc = require('../assets/images/incidentDetail/radiation.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/radiation.jpg');
         break;
       case '지진':
-        imageSrc = require('../assets/images/incidentDetail/earthquake.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/earthquake.jpg');
         break;
       case '엘레베이터 사고':
-        imageSrc = require('../assets/images/incidentDetail/lift.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/lift.jpg');
         break;
       case '정전':
-        imageSrc = require('../assets/images/incidentDetail/antistatic.jpg');
+        imageSrc = require('../../assets/images/incidentDetail/antistatic.jpg');
         break;
     }
 
@@ -177,7 +196,7 @@ class IncidentDetail extends React.Component {
           style={[styles.informationButton, { backgroundColor: '#27820d' }]}
           onPress={() => Linking.openURL(`tel:${mobile}`)}
         >
-          <Image source={require('../assets/images/call.png')} />
+          <Image source={require('../../assets/images/call.png')} />
         </TouchableOpacity>
       </View>
     );
@@ -199,7 +218,7 @@ class IncidentDetail extends React.Component {
           style={[styles.informationButton, { backgroundColor: '#db7d0a' }]}
           onPress={() => Linking.openURL(url)}
         >
-          <Image source={require('../assets/images/right-arrow.png')} />
+          <Image source={require('../../assets/images/right-arrow.png')} />
         </TouchableOpacity>
       </View>
     );
@@ -412,6 +431,8 @@ class IncidentDetail extends React.Component {
     const latitude = Number(lat);
     const longitude = Number(lng);
 
+    const { isSecureTeam, isTraining } = this.props;
+
     // 좋아요 에러 재발 시 (item , index) 로 되돌리기. 혹시 모르니 적어둠.
     const keyExtractor = item => item.id.toString();
 
@@ -436,7 +457,7 @@ class IncidentDetail extends React.Component {
             this.props.navigation.goBack();
           }}
         >
-          <Image source={require('../assets/images/back.png')} />
+          <Image source={require('../../assets/images/back.png')} />
           <Text style={{ marginLeft: 5, fontSize: 18, fontWeight: '800' }}>
             {i18n.t('incident_list')}
           </Text>
@@ -458,22 +479,23 @@ class IncidentDetail extends React.Component {
               { key: 'incidentPos', coords: { lat: latitude, lng: longitude } },
             ]}
           />
-
+          {isSecureTeam && isTraining
+              ? <DeleteIncident onPress={this.onDeletePress}/>
+              : undefined}
           <View
             style={{
               backgroundColor: '#ffffff',
-              marginTop: -30,
               paddingVertical: 18,
               paddingHorizontal: 15,
             }}
           >
             {this.renderHeader()}
             <View style={{ height: 28 }} />
-            {this.props.isSecureTeam
+            {isSecureTeam
               ? this.renderCallToInformant(User.ku_kname, User.mobile)
               : this.renderProtocol()}
             <View style={{ height: 24 }} />
-            {this.props.isSecureTeam
+            {isSecureTeam
               ? this.renderAdminStateBar()
               : this.renderClientStateBar()}
             <View style={{ height: 24 }} />
@@ -509,6 +531,7 @@ class IncidentDetail extends React.Component {
 
 const mapStateToProps = state => ({
   isSecureTeam: state.auth.user.isAdmin,
+  isTraining: true
 });
 
 export default connect(
