@@ -140,19 +140,16 @@ export default class IncidentDetailSample extends React.Component {
       <View style={[styles.information, { backgroundColor: '#ff9412' }]}>
         <View>
           <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
-            행동 강령
+            {i18n.t('safety_instructions')}
           </Text>
           <Text style={{ color: 'white' }}>
-            code of conduct
+            {i18n.t('code_of_conduct')}
           </Text>
         </View>
         <TouchableOpacity
           style={[styles.informationButton, { backgroundColor: '#db7d0a'}]}
         >
-          <Text>
-            
-          화살표
-          </Text>
+          <Image source={require("../assets/images/right-arrow.png")} />
         </TouchableOpacity>
       </View>
     )
