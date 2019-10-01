@@ -59,7 +59,7 @@ class CommentCard extends React.Component {
   }
 
   renderReplyBox() {
-    const { commentId, onPressReply, replyExist, clickable } = this.props
+    const { commentId, onPressReply, replyExist, clickable, isSecureTeam  } = this.props
     if (this.state.isEditReply) {
       return (
         <CommentReplyCard
@@ -82,7 +82,7 @@ class CommentCard extends React.Component {
       )
     }
 
-    if (clickable && onPressReply) {
+    if (clickable && onPressReply && isSecureTeam) {
       return (
         <TouchableOpacity
           style={styles.replyBoxStyle}
@@ -140,7 +140,7 @@ class CommentCard extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    onPressReply: state.auth.user.isAdmin,
+    isSecureTeam: state.user.data.isAdmin,
   }
 }
 

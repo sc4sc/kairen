@@ -1,4 +1,4 @@
-import i18n from '../i18n';
+import i18n from '../i18n'
 
 export const types = [
   {
@@ -36,22 +36,16 @@ export const types = [
       'http://m.safekorea.go.kr/idsiSFK/neo/main_m/nat/earthquake.html',
   },
   {
-    type: '엘레베이터 사고',
-    title: i18n.t('엘레베이터 사고'),
+    type: '샘플',
+    title: i18n.t('sample'),
     safetyProtocol:
-      'http://m.safekorea.go.kr/idsiSFK/neo/main_m/lit/elevator.html',
-  },
-  {
-    type: '정전',
-    title: i18n.t('정전'),
-    safetyProtocol:
-      'http://m.safekorea.go.kr/idsiSFK/neo/main_m/sot/blackout.html',
-  },
-];
+      'http://m.safekorea.go.kr/idsiSFK/neo/main_m/sot/electricGas.html'
+  }
+]
 
 export const typeMap = types.reduce((obj, el) => {
-  obj[el.type] = el;
-  return obj;
-}, {});
+  obj[el.type] = el
+  return obj
+}, {})
 
-export const getLocalData = type => typeMap[type];
+export const getLocalData = type => typeMap[type]

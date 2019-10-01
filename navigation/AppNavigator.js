@@ -1,10 +1,10 @@
-import Layout from '../constants/Layout';
+import Layout from '../constants/Layout'
 import {
   createAppContainer,
   createSwitchNavigator,
   createStackNavigator,
   createDrawerNavigator,
-} from 'react-navigation';
+} from 'react-navigation'
 import {
   AboutThisApp,
   IncidentDetail,
@@ -20,11 +20,11 @@ import {
   ProgressList,
   Setting,
   SafetyContact,
-} from '../screens';
-import SSO from '../screens/SSO';
-import AutoLogin from '../screens/AutoLogin';
+} from '../screens'
+import SSO from '../screens/SSO'
+import AutoLogin from '../screens/AutoLogin'
 
-console.log(PermissionLoading);
+console.log(PermissionLoading)
 
 const MainNavigator = createStackNavigator(
   {
@@ -48,7 +48,7 @@ const MainNavigator = createStackNavigator(
     // mode: 'modal',
     headerMode: 'none',
   }
-);
+)
 
 const drawerNavigator = createDrawerNavigator(
   {
@@ -60,7 +60,7 @@ const drawerNavigator = createDrawerNavigator(
     contentComponent: SafetyContact,
     drawerWidth: Layout.window.width - 100,
   }
-);
+)
 
 const LoginNavigator = createStackNavigator(
   {
@@ -69,7 +69,7 @@ const LoginNavigator = createStackNavigator(
     SSO: SSO,
   },
   { headerMode: 'none' }
-);
+)
 
 const AppNavigator = createSwitchNavigator(
   {
@@ -80,6 +80,6 @@ const AppNavigator = createSwitchNavigator(
     App: drawerNavigator,
   },
   { headerMode: 'none' }
-);
+)
 
-export default createAppContainer(AppNavigator);
+export default createAppContainer(AppNavigator)

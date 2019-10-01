@@ -102,12 +102,14 @@ class NewIncidentDetail extends React.Component {
   }
   //TODO: Make this function to async (just put 'async')
   report = () => {
+    console.log(this.props.isTraining)
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,
         lat: this.state.markerCoords.lat,
         lng: this.state.markerCoords.lng,
         building: this.state.locationName,
+        isTraining: this.props.isTraining,
       },
       () => {
         // TODO: Comment this function call
@@ -196,7 +198,7 @@ class NewIncidentDetail extends React.Component {
               this.props.navigation.dispatch(StackActions.popToTop())
             }>
             <Image
-              source={require('../assets/images/combined-shape.png')}
+              source={require('../assets/images/close.png')}
               style={{ width: 20, height: 20, marginRight: 22 }}
             />
           </TouchableOpacity>
@@ -377,12 +379,9 @@ const styles = StyleSheet.create({
 })
 
 export default connect(
-  state => {
-    return {
-      selectedIncident: state.newIncident.selectedIncident,
-    }
-  },
-  {
-    newIncidentPostRequested,
-  }
+  state => ({
+    selectedIncident: state.newIncident.selectedIncident,
+    isTraining: state.user.data.isTraining,
+  }),
+  { newIncidentPostRequested }
 )(NewIncidentDetail)

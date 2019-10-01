@@ -1,34 +1,88 @@
-import React from 'react';
-import { View } from 'react-native';
-import Layout from '../constants/Layout';
+import React from 'react'
+import { View } from 'react-native'
+import Layout from '../constants/Layout'
 
 const ChevronLeft = ({ children, color }) => (
   <View style={styles.chevron}>
-    <View style={[styles.chevronMain, { backgroundColor: color }]}>{children}</View>
-    <View style={[styles.chevronTriangle, styles.chevronTopRight, { borderLeftColor: color }]} />
-    <View style={[styles.chevronTriangle, styles.chevronBottomRight, { borderLeftColor: color }]} />
+    <View style={[styles.chevronMain, { backgroundColor: color }]}>
+      {children}
+    </View>
+    <View
+      style={[
+        styles.chevronTriangle,
+        styles.chevronTopRight,
+        { borderLeftColor: color },
+      ]}
+    />
+    <View
+      style={[
+        styles.chevronTriangle,
+        styles.chevronBottomRight,
+        { borderLeftColor: color },
+      ]}
+    />
   </View>
-);
+)
 
 const ChevronMiddle = ({ children, color }) => (
   <View style={styles.chevron}>
-    <View style={[styles.chevronMain, { backgroundColor: color }]}>{children}</View>
-    <View style={[styles.chevronTriangle, styles.chevronTopLeft, { borderLeftColor: color }]} />
-    <View style={[styles.chevronTriangle, styles.chevronTopRight, { borderLeftColor: color }]} />
-    <View style={[styles.chevronTriangle, styles.chevronBottomLeft, { borderLeftColor: color }]} />
-    <View style={[styles.chevronTriangle, styles.chevronBottomRight, { borderLeftColor: color }]} />
+    <View style={[styles.chevronMain, { backgroundColor: color }]}>
+      {children}
+    </View>
+    <View
+      style={[
+        styles.chevronTriangle,
+        styles.chevronTopLeft,
+        { borderLeftColor: color },
+      ]}
+    />
+    <View
+      style={[
+        styles.chevronTriangle,
+        styles.chevronTopRight,
+        { borderLeftColor: color },
+      ]}
+    />
+    <View
+      style={[
+        styles.chevronTriangle,
+        styles.chevronBottomLeft,
+        { borderLeftColor: color },
+      ]}
+    />
+    <View
+      style={[
+        styles.chevronTriangle,
+        styles.chevronBottomRight,
+        { borderLeftColor: color },
+      ]}
+    />
   </View>
-);
+)
 
 const ChevronRight = ({ children, color }) => (
   <View style={styles.chevron}>
-    <View style={[styles.chevronMain, { backgroundColor: color }]}>{children}</View>
-    <View style={[styles.chevronTriangle, styles.chevronTopLeft, { borderLeftColor: color }]} />
-    <View style={[styles.chevronTriangle, styles.chevronBottomLeft, { borderLeftColor: color }]} />
+    <View style={[styles.chevronMain, { backgroundColor: color }]}>
+      {children}
+    </View>
+    <View
+      style={[
+        styles.chevronTriangle,
+        styles.chevronTopLeft,
+        { borderLeftColor: color },
+      ]}
+    />
+    <View
+      style={[
+        styles.chevronTriangle,
+        styles.chevronBottomLeft,
+        { borderLeftColor: color },
+      ]}
+    />
   </View>
-);
+)
 
-const arrowSize = 8;
+const arrowSize = 8
 
 const styles = {
   chevron: {
@@ -75,6 +129,6 @@ const styles = {
     right: -arrowSize,
     transform: [{ scaleY: -1 }],
   },
-};
+}
 
-export { ChevronLeft, ChevronMiddle, ChevronRight };
+export { ChevronLeft, ChevronMiddle, ChevronRight }

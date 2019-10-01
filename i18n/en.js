@@ -84,6 +84,7 @@ export const en = {
   지진: 'Earthquake',
   '엘레베이터 사고': 'Elevator Accident',
   정전: 'Blackout',
+  sample: 'Gas (Sample)',
 
   state: '// 상태',
   확인중: 'checking',

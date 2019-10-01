@@ -1,22 +1,22 @@
-import URLSearchParams from '@ungap/url-search-params';
-import axios from 'axios';
+import URLSearchParams from '@ungap/url-search-params'
+import axios from 'axios'
 
 // 개발 서버 설정해놓고 커밋에 올리지 말라고 해놓음
-import serverURL from '../constants/Server';
+import serverURL from '../constants/Server'
 
-let axiosInstance = axios;
-applyInterceptors();
+let axiosInstance = axios
+applyInterceptors()
 
 function errorResponseHandler(error) {
   // check for errorHandle config
-  let additionalData = {};
+  let additionalData = {}
 
   if (error.response) {
-    const { data, status } = error.response;
-    additionalData = { data, status };
+    const { data, status } = error.response
+    additionalData = { data, status }
   }
 
-  return { data: Object.assign({ error: true }, { message: additionalData }) };
+  return { data: Object.assign({ error: true }, { message: additionalData }) }
 }
 
 function applyInterceptors() {
@@ -24,7 +24,7 @@ function applyInterceptors() {
   axiosInstance.interceptors.response.use(
     response => response,
     errorResponseHandler
-  );
+  )
 }
 
 export function setAppToken(token) {
@@ -32,8 +32,8 @@ export function setAppToken(token) {
     headers: {
       Authorization: `JWT ${token}`,
     },
-  });
-  applyInterceptors();
+  })
+  applyInterceptors()
 }
 
 export function requestAuthentication(ssoToken, pushToken) {
@@ -46,14 +46,14 @@ export function requestAuthentication(ssoToken, pushToken) {
       { headers: { Authorization: `Bearer ${ssoToken}` } }
     )
     .then(response => {
-      return response.data;
-    });
+      return response.data
+    })
 }
 
 export function requestLogout() {
   return axiosInstance
     .post(`${serverURL}/logout`)
-    .then(response => response.data);
+    .then(response => response.data)
 }
 
 export function updatePushToken(expotoken) {
@@ -61,93 +61,104 @@ export function updatePushToken(expotoken) {
     .post(`${serverURL}/updatePushToken`, {
       expotoken,
     })
-    .then(response => response.data);
+    .then(response => response.data)
+}
+
+export function changeMode(value) {
+  return axiosInstance
+    .post(`${serverURL}/modechange`, { isTraining: value })
+    .then(response => console.log(response))
+    .catch(error => console.log(error))
 }
 
 export function getProfile() {
   return axiosInstance.get(`${serverURL}/profile`).then(response => {
-    const result = response.data;
+    const result = response.data
 
     if (result.error) {
-      return result;
+      return result
     }
     if (!result.id) {
       return {
         error: true,
         message: result,
-      };
+      }
     }
 
-    return result;
-  });
+    return result
+  })
 }
 
 function getQueryString(q) {
-  return new URLSearchParams(q).toString();
+  return new URLSearchParams(q).toString()
 }
 
 export function listIncidents(query) {
   return axiosInstance
     .get(`${serverURL}/incidents?${getQueryString(query)}`)
-    .then(response => response.data);
+    .then(response => response.data)
 }
 
-export function postIncident({ type, lat, lng, building }) {
+export function postIncident({ type, lat, lng, building, isTraining }) {
   return axiosInstance
-    .post(`${serverURL}/incidents`, { type, lat, lng, building })
-    .then(response => response.data);
+    .post(`${serverURL}/incidents`, { type, lat, lng, building, isTraining })
+    .then(response => response.data)
 }
 
 export function getIncidentComments(incidentId, query) {
-  let queryString = '';
+  let queryString = ''
 
   if (query) {
-    queryString = `&${getQueryString(query)}`;
+    queryString = `&${getQueryString(query)}`
   }
 
   return axiosInstance.get(
     `${serverURL}/incidents/${incidentId}/comments${queryString}`
-  );
+  )
 }
 
 export function postComment(incidentId, body) {
   return axiosInstance.post(
     `${serverURL}/incidents/${incidentId}/comments`,
     body
-  );
+  )
 }
 
 export function postReply(commentId, body) {
-  return axiosInstance.post(`${serverURL}/comments/${commentId}/reply`, body);
+  return axiosInstance.post(`${serverURL}/comments/${commentId}/reply`, body)
 }
 
 export function getRecentProgress(incidentId) {
-  return axiosInstance.get(`${serverURL}/incidents/${incidentId}/progresses`);
+  return axiosInstance.get(`${serverURL}/incidents/${incidentId}/progresses`)
 }
 
 export function getProgressList(incidentId) {
-  return axiosInstance.get(`${serverURL}/incidents/${incidentId}/progresses`);
+  return axiosInstance.get(`${serverURL}/incidents/${incidentId}/progresses`)
 }
 
 export function postProgress(incidentId, body) {
   return axiosInstance.post(
     `${serverURL}/incidents/${incidentId}/progresses`,
     body
-  );
+  )
 }
 
 export function postLike(commentId) {
-  return axiosInstance.post(`${serverURL}/comments/${commentId}/like`);
+  return axiosInstance.post(`${serverURL}/comments/${commentId}/like`)
 }
 
 export function postUnlike(commentId) {
-  return axiosInstance.post(`${serverURL}/comments/${commentId}/unlike`);
+  return axiosInstance.post(`${serverURL}/comments/${commentId}/unlike`)
 }
 
 export function getIncidentState(incidentId) {
-  return axiosInstance.get(`${serverURL}/incidents/${incidentId}`);
+  return axiosInstance.get(`${serverURL}/incidents/${incidentId}`)
 }
 
 export function postIncidentState(incidentId, body) {
-  return axiosInstance.post(`${serverURL}/incidents/${incidentId}`, body);
+  return axiosInstance.post(`${serverURL}/incidents/${incidentId}`, body)
+}
+
+export function deleteIncident(incidentId) {
+  return axiosInstance.post(`${serverURL}/incidents/${incidentId}/delete`);
 }

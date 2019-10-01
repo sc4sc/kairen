@@ -1,4 +1,4 @@
-const tintColor = '#2f95dc';
+const tintColor = '#2f95dc'
 
 export default {
   tintColor,
@@ -26,4 +26,4 @@ export default {
   textRed: '#d0021b',
   likeBlue: '#4a90e2',
   switchGreen: '#7ed321',
-};
+}

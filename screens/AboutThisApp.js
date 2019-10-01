@@ -1,17 +1,17 @@
-import React from 'react';
+import React from 'react'
 import {
   View,
   Text,
   Image,
   TouchableWithoutFeedback,
   Platform,
-} from 'react-native';
-import { SafeAreaView } from 'react-navigation';
-import Layout from '../constants/Layout';
-import { getStatusBarHeight } from '../utils';
-import i18n from '../i18n';
+} from 'react-native'
+import { SafeAreaView } from 'react-navigation'
+import Layout from '../constants/Layout'
+import { getStatusBarHeight } from '../utils'
+import i18n from '../i18n'
 
-const statusBarHeight = getStatusBarHeight();
+const statusBarHeight = getStatusBarHeight()
 
 export default function AboutThisApp(props) {
   return (
@@ -46,7 +46,7 @@ export default function AboutThisApp(props) {
         <Text>Eric</Text>
       </View>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = {
@@ -105,4 +105,4 @@ const styles = {
   leo: {
     marginBottom: 45,
   },
-};
+}

@@ -1,16 +1,16 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import ConfirmedText from './ConfirmedText';
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+import ConfirmedText from './ConfirmedText'
 
-import Colors from '../constants/Colors';
+import Colors from '../constants/Colors'
 
 export default class ProgressCard extends React.Component {
   renderEmptyBox() {
     if (this.props.isComment) {
-      return <View style={{ height: 50 }} />;
+      return <View style={{ height: 50 }} />
     }
 
-    return <View />;
+    return <View />
   }
 
   /*
@@ -18,15 +18,14 @@ export default class ProgressCard extends React.Component {
     ProgressCard를 쓰는 곳은 전부 수정 필요. ex) ProgressList , IncidentDetail..
  */
   render() {
-    const { author, date, children, propStyle } = this.props;
+    const { author, date, children, propStyle } = this.props
     return (
       <View
         style={[
           styles.borderedContentBox,
           { marginTop: this.props.isComment ? -55 : 0 },
           propStyle,
-        ]}
-      >
+        ]}>
         {this.renderEmptyBox()}
         <View style={{ flexDirection: 'row' }}>
           <ConfirmedText fontWeight="bold">{author}</ConfirmedText>
@@ -38,7 +37,7 @@ export default class ProgressCard extends React.Component {
           <Text style={{ color: '#4a4a4a', fontSize: 13 }}>{children}</Text>
         </View>
       </View>
-    );
+    )
   }
 }
 
@@ -52,4 +51,4 @@ const styles = StyleSheet.create({
     paddingTop: 13,
     backgroundColor: '#eaf8e5',
   },
-});
+})

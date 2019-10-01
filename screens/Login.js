@@ -1,37 +1,33 @@
-import React from 'react';
-import { Alert, View, Text, TouchableOpacity, Image } from 'react-native';
-import { connect } from 'react-redux';
-import i18n from '../i18n';
-import Layout from '../constants/Layout';
-import Spinner from '../components/Spinner';
-import { authLoginRequest } from '../actions/auth';
-import { getStatusBarHeight } from '../utils/index.js';
+import React from 'react'
+import { Alert, View, Text, TouchableOpacity, Image } from 'react-native'
+import { connect } from 'react-redux'
+import i18n from '../i18n'
+import Layout from '../constants/Layout'
+import Spinner from '../components/Spinner'
+import { userLoginRequest } from '../actions/user'
+import { getStatusBarHeight } from '../utils/index.js'
 
-const statusBarHeight = getStatusBarHeight();
+const statusBarHeight = getStatusBarHeight()
 
 class Login extends React.Component {
   onButtonPress() {
-    const { navigation } = this.props;
-    const alertTitle = '로그인 실패';
-    const alertMsg = '알수 없는 이유로 로그인이 실패했습니다. 잠시 후에 다시 시도해주세요.';
+    const { navigation } = this.props
+    const alertTitle = i18n.t('login_alert')
+    const alertMsg = 'login_alert_detail'
 
     navigation.navigate('SSO', {
       onLogin: token => {
-        this.props.authLoginRequest(
+        this.props.userLoginRequest(
           token,
-          () => {
-            navigation.navigate('App');
-          },
-          () => {
-            Alert.alert(alertTitle, alertMsg);
-          }
-        );
+          () => navigation.navigate('App'),
+          () => Alert.alert(alertTitle, alertMsg)
+        )
       },
-    });
+    })
   }
 
   render() {
-    const { container, headerText } = styles;
+    const { container, headerText } = styles
     return (
       <View style={{ flex: 1 }}>
         <View style={container}>
@@ -43,8 +39,7 @@ class Login extends React.Component {
           <TouchableOpacity
             style={styles.loginButton}
             onPress={this.onButtonPress.bind(this)}
-            disabled={this.props.isLoading}
-          >
+            disabled={this.props.isLoading}>
             {this.props.isLoading ? (
               <Spinner size="small" />
             ) : (
@@ -55,25 +50,24 @@ class Login extends React.Component {
             style={styles.aboutText}
             onPress={() =>
               this.props.navigation.navigate('AboutUs', { parent: '로그인' })
-            }
-          >
+            }>
             {i18n.t('about_us')}
           </Text>
         </View>
       </View>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => ({
-  isSecureTeam: state.auth.user.isAdmin,
-  isLoading: state.auth.loginInProgress,
-});
+  isSecureTeam: state.user.data.isAdmin,
+  isLoading: state.user.loginInProgress,
+})
 
 export default connect(
   mapStateToProps,
-  { authLoginRequest }
-)(Login);
+  { userLoginRequest }
+)(Login)
 
 const styles = {
   container: {
@@ -135,4 +129,4 @@ const styles = {
     marginTop: 25,
     textDecorationLine: 'underline',
   },
-};
+}

@@ -103,11 +103,8 @@ export default class IncidentDetailSample extends React.Component {
               color: Colors.defaultBlack,
             }}
           >
-            {i18n.t('정전')}
+            {i18n.t('sample')}
           </Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image source={require('../assets/images/incidentDetail/antistatic.jpg')} />
-          </View>
         </View>
         <Text style={{ color: Colors.defaultBlack }}>
           N10 교양분관
