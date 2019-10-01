@@ -64,6 +64,13 @@ export function updatePushToken(expotoken) {
     .then(response => response.data)
 }
 
+export function changeMode(value) {
+  return axiosInstance
+    .post(`${serverURL}/modechange`, { isTraining: value })
+    .then(response => console.log(response))
+    .catch(error => console.log(error))
+}
+
 export function getProfile() {
   return axiosInstance.get(`${serverURL}/profile`).then(response => {
     const result = response.data

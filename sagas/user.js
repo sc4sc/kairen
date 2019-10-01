@@ -13,7 +13,9 @@ function* storeToken(token) {
   yield call(SecureStore.setItemAsync, 'appToken', token)
 }
 
-function* requestChangeMode() {}
+function* requestChangeMode(value) {
+  yield call(apis.changeMode, value)
+}
 
 function* userLogin(action) {
   const { ssoToken, onSuccess, onFailed } = action.payload

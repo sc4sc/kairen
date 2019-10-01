@@ -6,6 +6,7 @@ import { userChangeMode } from '../actions/user'
 import { getBottomSpace, getStatusBarHeight } from '../utils/index.js'
 import * as contacts from '../constants/Contacts'
 import i18n from '../i18n'
+import * as apis from '../apis'
 
 const topMargin = getStatusBarHeight()
 const bottomMargin = getBottomSpace()
@@ -48,7 +49,11 @@ class SafetyContact extends React.Component {
           </TouchableOpacity>
 
           {this.props.user.isTraining ? (
-            <TouchableOpacity onPress={() => this.props.changeMode()}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.changeMode()
+                apis.changeMode(false)
+              }}>
               <View style={[contentContainer, { backgroundColor: '#50d434' }]}>
                 <Image source={require('../assets/images/unlock.png')} />
                 <View style={{ width: 10 }} />
@@ -58,7 +63,11 @@ class SafetyContact extends React.Component {
               </View>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={() => this.props.changeMode()}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.changeMode()
+                apis.changeMode(true)
+              }}>
               <View style={[contentContainer, { backgroundColor: '#d43434' }]}>
                 <Image source={require('../assets/images/lock.png')} />
                 <View style={{ width: 10 }} />

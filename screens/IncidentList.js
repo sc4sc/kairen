@@ -300,7 +300,6 @@ class IncidentList extends React.Component {
   }
 
   render() {
-    const { headerText } = styles
     const selectedIncident = this.props.selectedIncident
 
     const animatedHeight = {
@@ -351,7 +350,7 @@ class IncidentList extends React.Component {
           onPress={() => this.props.navigation.openDrawer()}>
           <Image source={require('../assets/images/menu.png')} />
         </TouchableOpacity>
-        ㄴ
+
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.reportButton}
@@ -374,6 +373,7 @@ export const styles = StyleSheet.create({
   },
   trainingModeContainer: {
     position: 'absolute',
+    top: StatusBar.currentHeight,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
