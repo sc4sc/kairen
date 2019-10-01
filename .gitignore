@@ -11,3 +11,4 @@ npm-debug.*
 screens/Aboutthisapp.js
 .env
 .env.*
+npm-audit.html
