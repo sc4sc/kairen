@@ -256,51 +256,8 @@ class IncidentList extends React.Component {
     })
   }
 
-  shrinkButton = async () => {
-    if (this.state.isExpanded) {
-      Animated.spring(this.animation.y, {
-        toValue:
-          bottomHeight == 0
-            ? this.state.touchedOpen
-              ? 150
-              : -50
-            : this.state.touchedOpen
-            ? 200
-            : 0,
-        duration: 50,
-        tension: 50,
-        friction: 8,
-      }).start()
-      Animated.timing(this.state.buttonWidth, {
-        toValue: SCREEN_WIDTH - 20,
-        duration: 200,
-      }).start()
-      Animated.timing(this.state.buttonRightMargin, {
-        toValue: 10,
-        duration: 200,
-      }).start()
-      await this.setState({
-        isExpanded: false,
-        page: 1,
-        touchedOpen: false,
-        touchedClose: true,
-      })
-
-      this.notificationSubscription = Notifications.addListener(notification =>
-        console.log('Notification arrived:', notification)
-      )
-      this.willFocusSubscription = this.props.navigation.addListener(
-        'willFocus',
-        this.handleRefresh
-      )
-      this.handleRefresh()
-      Location.watchPositionAsync({}, this.handleLocationUpdate)
-    }
-  }
-
   render() {
     const selectedIncident = this.props.selectedIncident
-
     const animatedHeight = {
       transform: this.animation.getTranslateTransform(),
     }
@@ -448,7 +405,11 @@ const getCoordsFromIncident = incident => ({
 const incidentsSelector = createSelector(
   state => state.incidentsList.byId,
   state => state.incidentsList.idList,
-  (byId, idList) => idList.map(id => byId[id])
+  state => state.user.data.isTraining,
+  (byId, idList, isTraining) =>
+    idList
+      .map(id => byId[id])
+      .filter(incident => incident.isTraining === isTraining)
 )
 
 const selectedIncidentSelector = createSelector(
@@ -472,7 +433,7 @@ export default connect(
     })
 
     return {
-      incidents: incidentsToShow,
+      incidents: incidents,
       selectedIncident: selectedIncidentSelector(state),
       loading,
       indexSelected,

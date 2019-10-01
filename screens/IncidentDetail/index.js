@@ -398,8 +398,7 @@ class IncidentDetail extends React.Component {
         replyDate={replyDate}
         index={commentIndex}
         reply={reply}
-        clickable={true}
-      >
+        clickable={true}>
         {content}
       </CommentCard>
     )
@@ -472,10 +471,8 @@ class IncidentDetail extends React.Component {
               { key: 'incidentPos', coords: { lat: latitude, lng: longitude } },
             ]}
           />
-          {isSecureTeam && isTraining ? (
+          {isSecureTeam && isTraining && (
             <DeleteIncident onPress={this.onDeletePress} />
-          ) : (
-            undefined
           )}
           <View
             style={{
@@ -524,6 +521,7 @@ class IncidentDetail extends React.Component {
 
 const mapStateToProps = state => ({
   isSecureTeam: state.user.data.isAdmin,
+  isTraining: state.user.data.isTraining,
 })
 
 export default connect(

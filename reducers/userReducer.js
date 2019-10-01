@@ -22,7 +22,6 @@ export default (state = defaultState, action) =>
       }
       case USER_LOGIN_SUCCESS: {
         draft.data = action.payload
-        console.log(action.payload)
         draft.loginInProgress = false
         break
       }
