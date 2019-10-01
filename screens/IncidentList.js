@@ -221,7 +221,7 @@ class IncidentList extends React.Component {
     const SampleIncident = [{
       Progresses: [{
         IncidentId: 2,
-        content: "샘플사고입니다.",
+        content: "상황 종료되었습니다. 정확한 사고 경위를 정리하여 빠른 시일 내에 발표하겠습니다.",
         createdAt: "2018-09-03T13:32:21.763Z",
         id: 1,
         updatedAt: "2018-09-03T13:32:21.763Z",
@@ -239,13 +239,13 @@ class IncidentList extends React.Component {
       },
       UserId: 1,
       contract: null,
-      createdAt: "2019-09-03T12:41:15.078Z",
+      createdAt: "2019-09-01T08:58",
       id: 0,
       lat: "36.374356",
       lng: "127.3605294",
       state: "완료",
       type: "정전",
-      updatedAt: "2019-09-03T12:41:15.078Z",
+      updatedAt: "2019-09-01T08:58",
     }]
     const incidentsWithSample = this.props.incidents.length == 0 ? SampleIncident : this.props.incidents.concat(SampleIncident)
     

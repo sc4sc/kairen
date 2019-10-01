@@ -12,6 +12,7 @@ import * as apis from '../apis'
 import CommentReplyCard from './CommentReplyCard'
 import ProgressCard from './ProgressCard'
 import Colors from '../constants/Colors'
+import i18n from '../i18n';
 
 class CommentCard extends React.Component {
   constructor(props) {
@@ -88,7 +89,7 @@ class CommentCard extends React.Component {
           onPress={this.changeEditState}>
           <View style={{ flex: 1 }} />
           <View style={styles.replyTextContainer}>
-            <Text style={styles.replyTextStyle}>{I18n.t('add_reply')}</Text>
+            <Text style={styles.replyTextStyle}>{i18n.t('add_reply')}</Text>
           </View>
         </TouchableOpacity>
       )

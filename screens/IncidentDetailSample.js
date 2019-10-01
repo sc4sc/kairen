@@ -43,6 +43,8 @@ export default class IncidentDetailSample extends React.Component {
         updatedAt: "2019-04-01T10:02:00",
         totalLike: 0,
         commentIndex: 4,
+        reply: "오후 4시 이전으로 예상 중입니다. 정확한 통제 관련 정보는 추후 다시 공지해 드리겠습니다.",
+        updatedAt: "2019-04-01T12:33"
       },{
         id: 2,
         User: {ku_kname: "서민진"},
@@ -61,6 +63,8 @@ export default class IncidentDetailSample extends React.Component {
         updatedAt: "2019-04-01T09:17:00",
         totalLike: 0,
         commentIndex: 2,
+        reply: "현재 확인된 바로는 없습니다.",
+        updatedAt: "2019-04-01T10:02"
       },{
         id: 0,
         User: {ku_kname: "정해준"},
@@ -184,15 +188,18 @@ export default class IncidentDetailSample extends React.Component {
   }
 
   renderProgress() {
+    const progress = [{
+      content: "상황 종료되었습니다. 정확한 사고 경위를 정리하여 빠른 시일 내에 발표하겠습니다.",
+      createdAt: "2019-04-01T15:32"
+    }]
+
     const recentView = (
       <ProgressCard
         author="안전팀"
-        date="010101"
+        date={formatDate(progress[0].createdAt)}
         propStyle={styles.progressBox}
       >
-        <Text>
-          컨텐츠
-        </Text>
+        {progress[0].content}
       </ProgressCard>
     )
 
@@ -207,15 +214,13 @@ export default class IncidentDetailSample extends React.Component {
           <Text style={styles.subheaderText}>
             Progress
           </Text>
-          <Text
+          {/* <Text
             style={[styles.subheaderText, { fontSize: 13 }]}
           >
             더보기
-          </Text>
+          </Text> */}
         </View>
-        <Text>
-          최근 프로그레스
-        </Text>
+        {recentView}
       </View>
     )
   }
