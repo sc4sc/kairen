@@ -35,6 +35,12 @@ export const types = [
     safetyProtocol:
       'http://m.safekorea.go.kr/idsiSFK/neo/main_m/nat/earthquake.html',
   },
+  {
+    type: '샘플',
+    title: i18n.t('sample'),
+    safetyProtocol:
+      'http://m.safekorea.go.kr/idsiSFK/neo/main_m/sot/electricGas.html'
+  }
 ]
 
 export const typeMap = types.reduce((obj, el) => {

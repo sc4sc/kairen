@@ -30,6 +30,7 @@ import {
 import NaverMap from '../components/NaverMap'
 import { KAISTN1Coords } from '../constants/Geo'
 import i18n from '../i18n'
+import { sampleIncident } from '../constants/SampleIncidents'
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
@@ -132,7 +133,7 @@ class IncidentList extends React.Component {
       },
     })
   }
-
+  
   componentDidUpdate(prevProps, prevState, snapshot) {
     const refreshing =
       prevProps.incidents.length === 0 &&
@@ -202,30 +203,28 @@ class IncidentList extends React.Component {
     return (
       <IncidentCard
         data={incident}
-        onPress={() =>
-          this.props.navigation.navigate('IncidentDetail', {
-            incidentDetail: incident,
-          })
-        }
+        onPress={() => {
+          if (incident.id === 0) {
+            this.props.navigation.navigate('IncidentDetailSample')
+          } else {
+            this.props.navigation.navigate('IncidentDetail', {
+              incidentDetail: incident,
+            })
+          }
+        }}
       />
     )
   }
 
   renderCarousel() {
-    if (this.props.incidents.length === 0) {
-      return (
-        <View style={styles.emptyIncidentBox} pointerEvents={'none'}>
-          <Text style={{ fontSize: 13, color: '#4a4a4a' }}>
-            {i18n.t('empty_incidents')}
-          </Text>
-        </View>
-      )
-    }
+    const SampleIncident = sampleIncident
+    const incidentsWithSample = this.props.incidents.length == 0 ? SampleIncident : this.props.incidents.concat(SampleIncident)
+
     return (
       <View style={styles.carouselContainer}>
         <Pagination
-          dotsLength={this.props.incidents.length}
-          activeDotIndex={this.props.indexSelected}
+          dotsLength={incidentsWithSample.length}
+          activeDotIndex={incidentsWithSample}
           containerStyle={{
             paddingVertical: 0,
             paddingHorizontal: 0,
@@ -237,7 +236,7 @@ class IncidentList extends React.Component {
         />
         <Carousel
           keyExtractor={(item, index) => `${item.id}`}
-          data={this.props.incidents}
+          data={incidentsWithSample}
           renderItem={this.renderItem.bind(this)}
           onBeforeSnapToItem={this.handleSnapToItem}
           sliderWidth={Layout.window.width}

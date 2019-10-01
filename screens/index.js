@@ -1,5 +1,6 @@
 export AboutThisApp from './AboutThisApp'
 export IncidentDetail from './IncidentDetail'
+export IncidentDetailSample from './IncidentDetailSample'
 export IncidentList from './IncidentList'
 export Login from './Login'
 export NewComment from './NewComment'

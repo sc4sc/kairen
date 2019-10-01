@@ -12,6 +12,7 @@ import * as apis from '../apis'
 import CommentReplyCard from './CommentReplyCard'
 import ProgressCard from './ProgressCard'
 import Colors from '../constants/Colors'
+import i18n from '../i18n'
 
 class CommentCard extends React.Component {
   constructor(props) {
@@ -43,7 +44,9 @@ class CommentCard extends React.Component {
   }
 
   onLikePress() {
-    const { commentId } = this.props
+    const { commentId, clickable } = this.props
+
+    if (!clickable) return
 
     if (this.state.like) {
       apis.postUnlike(commentId)
@@ -56,7 +59,7 @@ class CommentCard extends React.Component {
   }
 
   renderReplyBox() {
-    const { commentId, isSecureTeam } = this.props
+    const { commentId, onPressReply, replyExist, clickable, isSecureTeam  } = this.props
     if (this.state.isEditReply) {
       return (
         <CommentReplyCard
@@ -79,14 +82,14 @@ class CommentCard extends React.Component {
       )
     }
 
-    if (isSecureTeam) {
+    if (clickable && onPressReply && isSecureTeam) {
       return (
         <TouchableOpacity
           style={styles.replyBoxStyle}
           onPress={this.changeEditState}>
           <View style={{ flex: 1 }} />
           <View style={styles.replyTextContainer}>
-            <Text style={styles.replyTextStyle}>{I18n.t('add_reply')}</Text>
+            <Text style={styles.replyTextStyle}>{i18n.t('add_reply')}</Text>
           </View>
         </TouchableOpacity>
       )

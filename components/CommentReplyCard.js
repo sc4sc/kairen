@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import Colors from '../constants/Colors'
+import i18n from '../i18n'
 
 export class CommentReplyCard extends React.Component {
   state = { text: '' }
@@ -17,7 +18,7 @@ export class CommentReplyCard extends React.Component {
         <View style={{ height: 50 }} />
         <View style={styles.inputContainer}>
           <TextInput
-            placeholder={I18n.t('placeholder')}
+            placeholder={i18n.t('placeholder')}
             style={{ fontSize: 13, paddingHorizontal: 5 }}
             multiline
             onChangeText={text => this.setState({ text: text })}
@@ -27,12 +28,12 @@ export class CommentReplyCard extends React.Component {
 
         <View style={styles.buttonContainer}>
           <Text style={styles.cancelText} onPress={this.props.onCancelPress}>
-            {I18n.t('cancel')}
+            {i18n.t('cancel')}
           </Text>
           <TouchableOpacity
             style={styles.buttonStyle}
             onPress={() => this.props.onConfirmPress(this.state.text)}>
-            <Text style={styles.confirmText}>{I18n.t('confirm')}</Text>
+            <Text style={styles.confirmText}>{i18n.t('confirm')}</Text>
           </TouchableOpacity>
         </View>
       </View>

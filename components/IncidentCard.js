@@ -26,7 +26,7 @@ export default class IncidentCard extends React.Component {
           <View style={styles.wrongContent}>
             <View>
               <Text style={styles.wrongDate}>{formatDate(createdAt)}</Text>
-              <Text style={styles.wrongTitle}>{I18n.t('wrong_incident')}</Text>
+              <Text style={styles.wrongTitle}>{i18n.t('wrong_incident')}</Text>
               <Text style={styles.wrongInfo}>
                 {doc.title}, {location.properties.name}
               </Text>
@@ -50,7 +50,7 @@ export default class IncidentCard extends React.Component {
               source={require('../assets/images/group-9.png')}
             />
             <Text style={styles.callSafeTeam}>
-              {I18n.t('call_to_secure_team')}
+              {i18n.t('call_to_secure_team')}
             </Text>
           </View>
         </TouchableOpacity>
