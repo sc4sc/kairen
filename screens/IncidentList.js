@@ -224,7 +224,7 @@ class IncidentList extends React.Component {
       <View style={styles.carouselContainer}>
         <Pagination
           dotsLength={incidentsWithSample.length}
-          activeDotIndex={incidentsWithSample}
+          activeDotIndex={this.props.indexSelected}
           containerStyle={{
             paddingVertical: 0,
             paddingHorizontal: 0,
