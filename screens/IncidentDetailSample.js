@@ -258,11 +258,11 @@ export default class IncidentDetailSample extends React.Component {
     ) {
       this.setState({
         headerBackToggle: true,
-      });
+      })
     } else {
       this.setState({
         headerBackToggle: false,
-      });
+      })
     }
   }
 

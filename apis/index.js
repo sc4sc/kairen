@@ -160,5 +160,5 @@ export function postIncidentState(incidentId, body) {
 }
 
 export function deleteIncident(incidentId) {
-  return axiosInstance.post(`${serverURL}/incidents/${incidentId}/delete`);
+  return axiosInstance.post(`${serverURL}/incidents/${incidentId}/delete`)
 }

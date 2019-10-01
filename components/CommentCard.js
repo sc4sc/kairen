@@ -12,7 +12,7 @@ import * as apis from '../apis'
 import CommentReplyCard from './CommentReplyCard'
 import ProgressCard from './ProgressCard'
 import Colors from '../constants/Colors'
-import i18n from '../i18n';
+import i18n from '../i18n'
 
 class CommentCard extends React.Component {
   constructor(props) {
