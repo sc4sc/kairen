@@ -5,9 +5,8 @@ import {
   TouchableOpacity,
   Image,
   View,
-  // Remove this after fix android full screen error for button transition.
+  SafeAreaView,
   StatusBar,
-  // Remove this after fix android full screen error for button transition.
   Animated,
   Dimensions,
   PanResponder,
@@ -22,7 +21,6 @@ import IncidentCard from '../components/IncidentCard'
 import { getBottomSpace } from '../utils'
 import Colors from '../constants/Colors'
 import Layout from '../constants/Layout'
-
 import {
   incidentsListLoadMore,
   incidentsListRefresh,
@@ -37,7 +35,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 
 const bottomHeight = getBottomSpace()
-// TODO : 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
+// TODO: 리스트 로딩이 의외로 눈에 거슬림. 로딩을 줄일 수 있는 방법?
 class IncidentList extends React.Component {
   constructor() {
     super()
@@ -302,7 +300,6 @@ class IncidentList extends React.Component {
   }
 
   render() {
-    const { headerText } = styles
     const selectedIncident = this.props.selectedIncident
 
     const animatedHeight = {
@@ -310,20 +307,7 @@ class IncidentList extends React.Component {
     }
 
     return (
-      // TODO: Uncomment this Animatied.View, from here
-      // <Animated.View
-      //   style={{
-      //     flex: 1,
-      //     backgroundColor: 'white',
-      //   }}
-      // >
-      // to here
-
-      // TODO: Comment this View, from here
       <View style={styles.container}>
-        {/* to here */}
-
-        <StatusBar background="transparent" />
         <NaverMap
           ref={el => {
             this._map = el
@@ -339,6 +323,27 @@ class IncidentList extends React.Component {
             this.state.currentLocation
           )}
         />
+        {this.props.isTraining ? (
+          <>
+            <StatusBar
+              backgroundColor={'#d43434'}
+              translucent={true}
+              barStyle={'light-content'}
+            />
+
+            <SafeAreaView style={styles.trainingModeContainer}>
+              <Text style={{ paddingVertical: 10, color: 'white' }}>
+                훈련 모드
+              </Text>
+            </SafeAreaView>
+          </>
+        ) : (
+          <StatusBar
+            backgroundColor={'transparent'}
+            translucent={true}
+            barStyle={'dark-content'}
+          />
+        )}
         {this.renderCarousel()}
         <TouchableOpacity
           style={styles.menuIcon}
@@ -346,7 +351,6 @@ class IncidentList extends React.Component {
           <Image source={require('../assets/images/menu.png')} />
         </TouchableOpacity>
 
-        {/* TODO: Comment this View, from here*/}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.reportButton}
@@ -354,65 +358,7 @@ class IncidentList extends React.Component {
             <Text style={styles.reportButtonText}>{i18n.t('report')}</Text>
           </TouchableOpacity>
         </View>
-        {/* to here */}
-
-        {/* TODO: Uncomment this Animatied.View, from here */}
-
-        {/* <Animated.View
-          style={[
-            animatedHeight,
-            {
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              elevation: 10,
-              shadowOffset: { width: 0, height: 0 },
-              shadowColor: '#aaa',
-              shadowOpacity: 1,
-              shadowRadius: 5,
-              backgroundColor: '#ff9412',
-              height: SCREEN_HEIGHT,
-              width: this.state.buttonWidth.interpolate({
-                inputRange: [SCREEN_WIDTH - 20, SCREEN_WIDTH],
-                outputRange: [SCREEN_WIDTH - 20, SCREEN_WIDTH],
-              }),
-              marginLeft: this.state.buttonRightMargin.interpolate({
-                inputRange: [0, 10],
-                outputRange: [0, 10],
-              }),
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-            },
-          ]}
-        >
-          <Animated.View
-            {...this.panResponder.panHandlers}
-            style={{
-              height: this.state.isExpanded ? 70 : 70 + bottomHeight,
-              width: SCREEN_WIDTH,
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-              paddingTop: 20,
-              backgroundColor: 'transparent',
-            }}
-          >
-            <Text style={headerText}>제보 하기</Text>
-          </Animated.View>
-          {this.state.page == 1 ? (
-            <NewIncident nextPage={this.nextPage} />
-          ) : (
-            <NewIncidentDetail shrinkButton={this.shrinkButton} />
-          )}
-        </Animated.View> */}
-
-        {/* to here */}
-
-        {/* TODO: Comment this View, from here */}
       </View>
-      //to here
-
-      // TODO: Uncomment this Animatied.View
-      // </Animated.View>
     )
   }
 }
@@ -424,6 +370,14 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'stretch',
+  },
+  trainingModeContainer: {
+    position: 'absolute',
+    top: StatusBar.currentHeight,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    backgroundColor: '#d43434',
   },
   headerContainer: {
     paddingVertical: 10,
@@ -442,7 +396,7 @@ export const styles = StyleSheet.create({
   },
   menuIcon: {
     position: 'absolute',
-    top: 50,
+    top: 60,
     left: 20,
     padding: 10,
     backgroundColor: 'white',
@@ -478,7 +432,6 @@ export const styles = StyleSheet.create({
     padding: 20,
     marginHorizontal: 15,
     paddingBottom: 16 + getBottomSpace(), // handle the bottom empty space for iPhone X
-    // paddingBottom: 16, // handle the bottom empty space for iPhone X
     shadowOffset: { width: 0, height: 1 },
     shadowColor: 'black',
     shadowOpacity: 0.22,
@@ -509,12 +462,22 @@ export default connect(
   state => {
     const { loading, indexSelected } = state.incidentsList
     const incidents = incidentsSelector(state)
+    const { isTraining } = state.user.data
+
+    const incidentsToShow = incidents.filter(incident => {
+      if (isTraining) {
+        return incident.isTraining
+      } else {
+        return !incident.isTraining
+      }
+    })
 
     return {
-      incidents,
+      incidents: incidentsToShow,
       selectedIncident: selectedIncidentSelector(state),
       loading,
       indexSelected,
+      isTraining,
     }
   },
   {

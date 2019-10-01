@@ -2,18 +2,22 @@ import { call, put, spawn, takeLatest } from 'redux-saga/effects'
 import * as SecureStore from 'expo-secure-store'
 import * as apis from '../apis'
 import {
-  AUTH_LOGIN_FAILED,
-  AUTH_LOGIN_REQUEST,
-  AUTH_LOGIN_SUCCESS,
-  authLoginSuccess,
-} from '../actions/auth'
+  USER_LOGIN_FAILED,
+  USER_LOGIN_REQUEST,
+  USER_LOGIN_SUCCESS,
+  userLoginSuccess,
+} from '../actions/user'
 import { getPushToken } from '../utils'
 
 function* storeToken(token) {
   yield call(SecureStore.setItemAsync, 'appToken', token)
 }
 
-function* authLogin(action) {
+function* requestChangeMode(value) {
+  yield call(apis.changeMode, value)
+}
+
+function* userLogin(action) {
   const { ssoToken, onSuccess, onFailed } = action.payload
   try {
     const pushToken = yield call(getPushToken)
@@ -28,19 +32,18 @@ function* authLogin(action) {
     const appToken = result.appToken
 
     yield call(apis.setAppToken, appToken)
-    // Won't care even though storing token fails
     yield spawn(storeToken, appToken)
 
-    yield put(authLoginSuccess(result))
+    yield put(userLoginSuccess(result))
     yield call(onSuccess)
   } catch (error) {
     console.log('Login Error', error)
-    yield put({ type: AUTH_LOGIN_FAILED, payload: error, error: true })
+    yield put({ type: USER_LOGIN_FAILED, payload: error, error: true })
     yield call(onFailed)
     return
   }
 }
 
-export function* watchAuthLoginRequest() {
-  yield takeLatest(AUTH_LOGIN_REQUEST, authLogin)
+export function* watchUserLoginRequest() {
+  yield takeLatest(USER_LOGIN_REQUEST, userLogin)
 }

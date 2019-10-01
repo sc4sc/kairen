@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user,
+    user: state.user.data,
   }
 }
 export default connect(mapStateToProps)(Setting)

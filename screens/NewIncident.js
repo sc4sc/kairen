@@ -55,7 +55,11 @@ class NewIncident extends React.Component {
     return (
       <View style={container}>
         {/* TODO: Comment this block, from here */}
-        <StatusBar backgroundColor="#ff0000" barStyle="light-content" />
+        <StatusBar
+          backgroundColor={'#ff9412'}
+          translucent={true}
+          barStyle={'light-content'}
+        />
         <View style={headerContainer}>
           <Text style={headerText}>{i18n.t('select_incident')}</Text>
           <TouchableOpacity
@@ -63,7 +67,7 @@ class NewIncident extends React.Component {
               this.props.navigation.dispatch(StackActions.popToTop())
             }>
             <Image
-              source={require('../assets/images/combined-shape.png')}
+              source={require('../assets/images/close.png')}
               style={{ width: 20, height: 20, marginRight: 22 }}
             />
           </TouchableOpacity>

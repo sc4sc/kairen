@@ -4,7 +4,7 @@ import { View, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import * as SecureStore from 'expo-secure-store'
 import * as apis from '../apis'
-import { authLoginSuccess } from '../actions/auth'
+import { userLoginSuccess } from '../actions/user'
 
 class AutoLogin extends React.Component {
   componentDidMount = async () => {
@@ -57,6 +57,6 @@ class AutoLogin extends React.Component {
 export default connect(
   null,
   {
-    authLoginSuccess,
+    authLoginSuccess: userLoginSuccess,
   }
 )(AutoLogin)

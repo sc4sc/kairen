@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import i18n from '../i18n'
 import Layout from '../constants/Layout'
 import Spinner from '../components/Spinner'
-import { authLoginRequest } from '../actions/auth'
+import { userLoginRequest } from '../actions/user'
 import { getStatusBarHeight } from '../utils/index.js'
 
 const statusBarHeight = getStatusBarHeight()
@@ -17,7 +17,7 @@ class Login extends React.Component {
 
     navigation.navigate('SSO', {
       onLogin: token => {
-        this.props.authLoginRequest(
+        this.props.userLoginRequest(
           token,
           () => navigation.navigate('App'),
           () => Alert.alert(alertTitle, alertMsg)
@@ -60,13 +60,13 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  isSecureTeam: state.auth.user.isAdmin,
-  isLoading: state.auth.loginInProgress,
+  isSecureTeam: state.user.data.isAdmin,
+  isLoading: state.user.loginInProgress,
 })
 
 export default connect(
   mapStateToProps,
-  { authLoginRequest }
+  { userLoginRequest }
 )(Login)
 
 const styles = {

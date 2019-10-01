@@ -1,6 +1,6 @@
 import { all, takeEvery } from 'redux-saga/effects'
 import incidentsListSaga from './incidentsList'
-import { watchAuthLoginRequest } from './auth'
+import { watchUserLoginRequest } from './user'
 import { watchPostNewIncident } from './newIncident'
 
 // This is just an example
@@ -14,7 +14,7 @@ export default function* rootSaga() {
   yield all([
     helloSaga(),
     incidentsListSaga(),
-    watchAuthLoginRequest(),
+    watchUserLoginRequest(),
     watchPostNewIncident(),
   ])
 }
