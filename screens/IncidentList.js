@@ -30,6 +30,7 @@ import {
 import NaverMap from '../components/NaverMap'
 import { KAISTN1Coords } from '../constants/Geo'
 import i18n from '../i18n'
+import { sampleIncident } from '../constants/SampleIncidents'
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
@@ -216,46 +217,8 @@ class IncidentList extends React.Component {
   }
 
   renderCarousel() {
-    const SampleIncident = [{
-      Progresses: [{
-        IncidentId: 2,
-        content: "상황 종료되었습니다. 정확한 사고 경위를 정리하여 빠른 시일 내에 발표하겠습니다.",
-        createdAt: "2018-09-03T13:32:21.763Z",
-        id: 1,
-        updatedAt: "2018-09-03T13:32:21.763Z",
-      }],
-      User: {
-        createdAt: "2019-09-03T13:14:38.173Z",
-        displayname: "Jeong, Jinwoo",
-        id: 1,
-        isAdmin: false,
-        kaist_uid: "00088348",
-        ku_kaist_org_id: "4421",
-        ku_kname: "정진우",
-        mobile: "010-4602-9500",
-        updatedAt: "2019-09-03T13:19:25.057Z",
-      },
-      UserId: 1,
-      contract: null,
-      createdAt: "2019-09-01T08:58",
-      id: 0,
-      lat: "36.374356",
-      lng: "127.3605294",
-      state: "완료",
-      type: "샘플",
-      updatedAt: "2019-09-01T08:58",
-    }]
+    const SampleIncident = sampleIncident
     const incidentsWithSample = this.props.incidents.length == 0 ? SampleIncident : this.props.incidents.concat(SampleIncident)
-    
-    // if (this.props.incidents.length === 0) {
-    //   return (
-    //     <View style={styles.emptyIncidentBox} pointerEvents={'none'}>
-    //       <Text style={{ fontSize: 13, color: '#4a4a4a' }}>
-    //         {i18n.t('empty_incidents')}
-    //       </Text>
-    //     </View>
-    //   )
-    // }
 
     return (
       <View style={styles.carouselContainer}>
