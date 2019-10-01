@@ -75,24 +75,33 @@ class IncidentDetail extends React.Component {
     }
   }
 
-  async onDeletePress() {
-    try {
-      await Promise.reject({ response: { status: 500 } })
-      this.props.navigation.dispatch(StackActions.popToTop())
-    } catch (e) {
-      if (e.response && e.response.status === 404) {
-        Alert.alert('더 이상 존재하지 않는 제보입니다.')
+  onDeletePress() {
+    const onConfirm = async () => {
+      try {
+        const incidentId = this.getIncidentDetail().id
+        await apis.deleteIncident(incidentId)
         this.props.navigation.dispatch(StackActions.popToTop())
-      } else if (e.request && !e.response) {
-        Alert.alert(
-          '네트워크 오류가 발생했습니다.\n 잠시 후에 다시 시도해주세요.'
-        ) // network
-      } else {
-        Alert.alert(
-          '알 수 없는 오류가 발생했습니다.\n 잠시 후에 다시 시도해주세요.'
-        ) // 500 or others
+      } catch (e) {
+        if (e.response && e.response.status === 404) {
+          Alert.alert('더 이상 존재하지 않는 제보입니다.')
+          this.props.navigation.dispatch(StackActions.popToTop())
+        } else if (e.request && !e.response) {
+          Alert.alert(
+            '네트워크 오류가 발생했습니다.\n 잠시 후에 다시 시도해주세요.'
+          ) // network
+        } else {
+          Alert.alert(
+            '알 수 없는 오류가 발생했습니다.\n 잠시 후에 다시 시도해주세요.'
+          ) // 500 or others
+        }
       }
     }
+
+    Alert.alert(
+      '제보 삭제',
+      '제보를 삭제하시겠습니까?\n 이 작업은 되돌릴 수 없습니다.',
+      [{ text: '취소' }, { text: '확인', onPress: onConfirm }]
+    )
   }
 
   onWrongReportButtonPress() {
