@@ -3,8 +3,9 @@ import {
   StyleSheet,
   View,
   Text,
+  TouchableOpacity
 } from 'react-native'
-import { TouchableOpacity, FlatList } from 'react-native-gesture-handler'
+import { FlatList } from 'react-native-gesture-handler'
 import StateMarker from '../components/StateMarker'
 import CommentCard from '../components/CommentCard'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -211,11 +212,6 @@ export default class IncidentDetailSample extends React.Component {
           <Text style={styles.subheaderText}>
             Progress
           </Text>
-          {/* <Text
-            style={[styles.subheaderText, { fontSize: 13 }]}
-          >
-            더보기
-          </Text> */}
         </View>
         {recentView}
       </View>
@@ -292,8 +288,7 @@ export default class IncidentDetailSample extends React.Component {
           style={styles.backWard}
           onPress={() => {
             this.props.navigation.goBack()
-          }}
-        >
+          }}>
           <Image source={require('../assets/images/back.png')} />
           <Text style={{ marginLeft: 5, fontSize: 18, fontWeight: '800' }}>
             {i18n.t('incident_list')}
