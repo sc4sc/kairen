@@ -527,7 +527,6 @@ const styles = StyleSheet.create({
     zIndex: 1,
     width: Layout.window.width,
     height: statusBarHeight + 55,
-    // backgroundColor: 'white',
     borderBottomWidth: 1,
     borderColor: 'rgba(0,0,0,0.1)',
   },

@@ -314,6 +314,9 @@ export default class IncidentDetailSample extends React.Component {
           <NaverMap
             draggable={false}
             style={styles.map}
+            markers={[
+              {}
+            ]}
           />
           <View
             style={{
