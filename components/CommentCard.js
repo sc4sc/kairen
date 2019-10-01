@@ -59,7 +59,7 @@ class CommentCard extends React.Component {
   }
 
   renderReplyBox() {
-    const { commentId, onPressReply, replyExist } = this.props
+    const { commentId, onPressReply, replyExist, clickable } = this.props
     if (this.state.isEditReply) {
       return (
         <CommentReplyCard
@@ -82,7 +82,7 @@ class CommentCard extends React.Component {
       )
     }
 
-    if (onPressReply) {
+    if (clickable && onPressReply) {
       return (
         <TouchableOpacity
           style={styles.replyBoxStyle}

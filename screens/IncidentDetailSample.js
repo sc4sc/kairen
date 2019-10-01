@@ -251,6 +251,7 @@ export default class IncidentDetailSample extends React.Component {
         index={commentIndex}
         reply={reply}
         clickable={false}
+        onPressReply={false}
       >
         {content}
       </CommentCard>
