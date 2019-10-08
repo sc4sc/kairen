@@ -302,7 +302,7 @@ class IncidentList extends React.Component {
         )}
         {this.renderCarousel()}
         <TouchableOpacity
-          style={styles.menuIcon}
+          style={!this.props.isTraining ? styles.menuIcon : styles.menuIconForTraining}
           onPress={() => this.props.navigation.openDrawer()}>
           <Image source={require('../assets/images/menu.png')} />
         </TouchableOpacity>
@@ -353,6 +353,20 @@ export const styles = StyleSheet.create({
   menuIcon: {
     position: 'absolute',
     top: 60,
+    left: 20,
+    padding: 10,
+    backgroundColor: 'white',
+    shadowOffset: { width: 0, height: 1 },
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 5,
+    borderRadius: 5,
+  },
+  menuIconForTraining: {
+    position: 'absolute',
+    top: 100,
     left: 20,
     padding: 10,
     backgroundColor: 'white',
