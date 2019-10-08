@@ -28,6 +28,9 @@ class NewIncident extends React.Component {
   }
 
   renderItem({ item: incident }) {
+    if (incident.type === "샘플") {
+      return null
+    }
     return (
       <ReportItem
         type={incident.type}
