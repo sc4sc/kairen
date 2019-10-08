@@ -133,7 +133,7 @@ class IncidentList extends React.Component {
       },
     })
   }
-  
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     const refreshing =
       prevProps.incidents.length === 0 &&
@@ -217,13 +217,10 @@ class IncidentList extends React.Component {
   }
 
   renderCarousel() {
-    const SampleIncident = sampleIncident
-    const incidentsWithSample = this.props.incidents.length == 0 ? SampleIncident : this.props.incidents.concat(SampleIncident)
-
     return (
       <View style={styles.carouselContainer}>
         <Pagination
-          dotsLength={incidentsWithSample.length}
+          dotsLength={this.props.incidents.length}
           activeDotIndex={this.props.indexSelected}
           containerStyle={{
             paddingVertical: 0,
@@ -236,7 +233,7 @@ class IncidentList extends React.Component {
         />
         <Carousel
           keyExtractor={(item, index) => `${item.id}`}
-          data={incidentsWithSample}
+          data={this.props.incidents}
           renderItem={this.renderItem.bind(this)}
           onBeforeSnapToItem={this.handleSnapToItem}
           sliderWidth={Layout.window.width}
@@ -258,9 +255,6 @@ class IncidentList extends React.Component {
 
   render() {
     const selectedIncident = this.props.selectedIncident
-    const animatedHeight = {
-      transform: this.animation.getTranslateTransform(),
-    }
 
     return (
       <View style={styles.container}>
@@ -279,6 +273,7 @@ class IncidentList extends React.Component {
             this.state.currentLocation
           )}
         />
+
         {this.props.isTraining ? (
           <>
             <StatusBar
@@ -300,9 +295,15 @@ class IncidentList extends React.Component {
             barStyle={'dark-content'}
           />
         )}
+
         {this.renderCarousel()}
+
         <TouchableOpacity
-          style={!this.props.isTraining ? styles.menuIcon : styles.menuIconForTraining}
+          style={
+            !this.props.isTraining
+              ? styles.menuIcon
+              : styles.menuIconForTraining
+          }
           onPress={() => this.props.navigation.openDrawer()}>
           <Image source={require('../assets/images/menu.png')} />
         </TouchableOpacity>
@@ -424,6 +425,7 @@ const incidentsSelector = createSelector(
     idList
       .map(id => byId[id])
       .filter(incident => incident.isTraining === isTraining)
+      .concat(sampleIncident)
 )
 
 const selectedIncidentSelector = createSelector(
