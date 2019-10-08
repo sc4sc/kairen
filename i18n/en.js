@@ -56,6 +56,9 @@ export const en = {
   blank_alert_title: 'Please enter the contents.',
   blank_alert: 'You cannot register a blank message.',
   logout_alert: 'Do you want to logout?',
+  training_alert_title: 'Change to Training Mode',
+  training_alert_detail:
+    'Reports in training mode are not considered to reflect actual accidents and may be deleted without notice.',
 
   _button_text: '// 버튼 텍스트',
   placeholder: 'Enter here...',
@@ -71,6 +74,8 @@ export const en = {
   confirm: 'OK',
   cancel: 'Cancel',
   upload_report: 'Send report',
+  training_on: 'Turn on training mode',
+  training_off: 'Turn off training mode',
 
   _about_us: '// 만든 이들',
   created_by: 'Created by',

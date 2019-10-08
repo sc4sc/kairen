@@ -56,6 +56,9 @@ export const ko = {
   blank_alert_title: '내용을 입력해주세요.',
   blank_alert: '공백으로 이루어진 메세지는 등록하실 수 없습니다.',
   logout_alert: '로그아웃 하시겠습니까?',
+  training_alert_title: '훈련 모드로 전환하시겠습니까?',
+  training_alert_detail:
+    '훈련 모드에서의 제보는 실제 사고를 반영하지 않는 것으로 간주하며, 추후 예고 없이 삭제될 수 있습니다.',
 
   _button_text: '// 버튼 텍스트',
   placeholder: '여기에 입력하세요...',
@@ -71,6 +74,8 @@ export const ko = {
   confirm: '확인',
   cancel: '취소',
   upload_report: '제보 등록',
+  training_on: '훈련 모드 시작',
+  training_off: '훈련 모드 해제',
 
   _about_us: '// 만든 이들',
   created_by: '만든 사람들',

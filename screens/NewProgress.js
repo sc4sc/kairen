@@ -29,10 +29,7 @@ class NewProgress extends React.Component {
 
   onButtonPress() {
     if (this.state.text.trim() === '') {
-      Alert.alert(
-        '내용을 입력해주세요.',
-        '공백으로 이루어진 메세지는 등록하실 수 없습니다.'
-      )
+      Alert.alert(i18n.t('blank_alert_title'), i18n.t('blank_alert'))
       this.setState({ text: '' })
       return
     }

@@ -68,7 +68,10 @@ class NewIncidentDetail extends React.Component {
         Alert.alert(
           i18n.t('duplicate_alert_title'),
           i18n.t('duplicate_alert_detail'),
-          [{ text: '취소' }, { text: '확인', onPress: () => this.report() }]
+          [
+            { text: i18n.t('cancel') },
+            { text: i18n.t('confirm'), onPress: () => this.report() },
+          ]
         )
         return
       }
@@ -77,7 +80,10 @@ class NewIncidentDetail extends React.Component {
     Alert.alert(
       i18n.t('report_confirm_title'),
       i18n.t('report_confirm_detail'),
-      [{ text: '취소' }, { text: '확인', onPress: () => this.report() }]
+      [
+        { text: i18n.t('cancel') },
+        { text: i18n.t('confirm'), onPress: () => this.report() },
+      ]
     )
   }
 

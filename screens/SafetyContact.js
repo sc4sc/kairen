@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, Text, Image, Linking, TouchableOpacity } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  Linking,
+  TouchableOpacity,
+  Alert,
+} from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { userChangeMode } from '../actions/user'
@@ -12,13 +19,31 @@ const topMargin = getStatusBarHeight()
 const bottomMargin = getBottomSpace()
 
 class SafetyContact extends React.Component {
+  displayAlertForTraining() {
+    Alert.alert(
+      i18n.t('training_alert_title'),
+      i18n.t('training_alert_detail'),
+      [
+        { text: i18n.t('cancel') },
+        {
+          text: i18n.t('confirm'),
+          onPress: () => this.handleModeChange(true),
+        },
+      ]
+    )
+  }
+
+  handleModeChange(value) {
+    this.props.changeMode()
+    apis.changeMode(value)
+  }
+
   render() {
     const {
       container,
       headerText,
       contentContainer,
       contentContainersecond,
-      betaVerNotice,
       cautionContainer,
     } = styles
 
@@ -49,30 +74,22 @@ class SafetyContact extends React.Component {
           </TouchableOpacity>
 
           {this.props.user.isTraining ? (
-            <TouchableOpacity
-              onPress={() => {
-                this.props.changeMode()
-                apis.changeMode(false)
-              }}>
+            <TouchableOpacity onPress={() => this.handleModeChange(false)}>
               <View style={[contentContainer, { backgroundColor: '#50d434' }]}>
                 <Image source={require('../assets/images/unlock.png')} />
                 <View style={{ width: 10 }} />
                 <Text style={{ fontSize: 16, color: 'white' }}>
-                  훈련 모드 해제
+                  {i18n.t('training_off')}
                 </Text>
               </View>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity
-              onPress={() => {
-                this.props.changeMode()
-                apis.changeMode(true)
-              }}>
+            <TouchableOpacity onPress={() => this.displayAlertForTraining()}>
               <View style={[contentContainer, { backgroundColor: '#d43434' }]}>
                 <Image source={require('../assets/images/lock.png')} />
                 <View style={{ width: 10 }} />
                 <Text style={{ fontSize: 16, color: 'white' }}>
-                  훈련 모드 시작
+                  {i18n.t('training_on')}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -85,8 +102,7 @@ class SafetyContact extends React.Component {
             />
             <View style={{ width: 5 }} />
             <Text style={{ fontSize: 12, color: '#979797' }}>
-              훈련 모드 시 등록된 제보는 실제 사고를 반영하지 않는 것으로
-              간주하며, 추후 예고 없이 삭제될 수 있습니다.
+              {i18n.t('training_alert_detail')}
             </Text>
           </View>
         </View>
@@ -147,7 +163,6 @@ const styles = {
     marginRight: 5,
   },
   notAppliedText: { color: '#bebebe', fontSize: 16 },
-  betaVerNotice: { color: 'red' },
 }
 
 export default connect(
