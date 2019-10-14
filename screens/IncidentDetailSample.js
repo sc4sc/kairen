@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity
-} from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import StateMarker from '../components/StateMarker'
 import CommentCard from '../components/CommentCard'
@@ -32,14 +27,12 @@ export default class IncidentDetailSample extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentWillMount() {}
 
-  }
-  
   renderHeader() {
-    return(
+    return (
       <View>
-        <Text style={{ color: Colors.dateLightGrey}}>
+        <Text style={{ color: Colors.dateLightGrey }}>
           April 1, 2019 8:58 PM
         </Text>
         <View
@@ -47,88 +40,68 @@ export default class IncidentDetailSample extends React.Component {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-          }}
-        >
+          }}>
           <Text
             style={{
               fontWeight: 'bold',
               fontSize: 28,
               color: Colors.defaultBlack,
-            }}
-          >
+            }}>
             {i18n.t('sample')}
           </Text>
         </View>
-        <Text style={{ color: Colors.defaultBlack }}>
-          N10 교양분관
-        </Text>
+        <Text style={{ color: Colors.defaultBlack }}>N10 교양분관</Text>
       </View>
     )
   }
 
   renderCallToInformant() {
-    return(
+    return (
       <View style={[styles.information, { backgroundColor: '#44aa25' }]}>
         <View>
           <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
             전화하기
           </Text>
-          <Text style={{ fontSize: 10, color: 'white' }}>
-            이름과 전화번호
-          </Text>
+          <Text style={{ fontSize: 10, color: 'white' }}>이름과 전화번호</Text>
         </View>
         <TouchableOpacity
-          style={[styles.informationButton, { backgroundColor: '#27820d' }]}
-        >
-          <Text>
-
-          이미지
-          </Text>
+          style={[styles.informationButton, { backgroundColor: '#27820d' }]}>
+          <Text>이미지</Text>
         </TouchableOpacity>
       </View>
     )
   }
 
   renderProtocol() {
-    return(
+    return (
       <View style={[styles.information, { backgroundColor: '#ff9412' }]}>
         <View>
           <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
             {i18n.t('safety_instructions')}
           </Text>
-          <Text style={{ color: 'white' }}>
-            {i18n.t('code_of_conduct')}
-          </Text>
+          <Text style={{ color: 'white' }}>{i18n.t('code_of_conduct')}</Text>
         </View>
         <TouchableOpacity
-          style={[styles.informationButton, { backgroundColor: '#db7d0a'}]}
-        >
-          <Image source={require("../assets/images/right-arrow.png")} />
+          style={[styles.informationButton, { backgroundColor: '#db7d0a' }]}>
+          <Image source={require('../assets/images/right-arrow.png')} />
         </TouchableOpacity>
       </View>
     )
   }
 
   renderStatusBar() {
-    return(
+    return (
       <View style={{ flex: 1 }}>
-        <Text style={styles.subheaderText}>
-          {i18n.t('progress_status')}
-        </Text>
+        <Text style={styles.subheaderText}>{i18n.t('progress_status')}</Text>
         <View
           style={{
             flex: 1,
             flexDirection: 'row',
             marginLeft: 'auto',
             marginRight: 'auto',
-          }}
-        >
-          <StateMarker position="left">
-            {i18n.t('확인중')}
-          </StateMarker>
-          <StateMarker position="center">
-            {i18n.t('처리중')}
-          </StateMarker>
+          }}>
+          <StateMarker position="left">{i18n.t('확인중')}</StateMarker>
+          <StateMarker position="center">{i18n.t('처리중')}</StateMarker>
           <StateMarker position="right" selected={true}>
             {i18n.t('완료')}
           </StateMarker>
@@ -138,32 +111,30 @@ export default class IncidentDetailSample extends React.Component {
   }
 
   renderProgress() {
-    const progress = [{
-      content: "상황 종료되었습니다. 정확한 사고 경위를 정리하여 빠른 시일 내에 발표하겠습니다.",
-      createdAt: "2019-04-01T15:32"
-    }]
+    const progress = [
+      {
+        content: i18n.t('sample_content'),
+        createdAt: '2019-04-01T15:32',
+      },
+    ]
 
     const recentView = (
       <ProgressCard
         author="안전팀"
         date={formatDate(progress[0].createdAt)}
-        propStyle={styles.progressBox}
-      >
+        propStyle={styles.progressBox}>
         {progress[0].content}
       </ProgressCard>
     )
 
-    return(
+    return (
       <View>
         <View
           style={[
             styles.subheaderContainer,
             { flexDirection: 'row', justifyContent: 'space-between' },
-          ]}
-        >
-          <Text style={styles.subheaderText}>
-            Progress
-          </Text>
+          ]}>
+          <Text style={styles.subheaderText}>Progress</Text>
         </View>
         {recentView}
       </View>
@@ -185,7 +156,7 @@ export default class IncidentDetailSample extends React.Component {
     const commentDate = formatDate(createdAt)
     const replyDate = formatDate(updatedAt)
 
-    return(
+    return (
       <CommentCard
         commentId={id}
         author={ku_kname}
@@ -196,8 +167,7 @@ export default class IncidentDetailSample extends React.Component {
         index={commentIndex}
         reply={reply}
         clickable={false}
-        onPressReply={false}
-      >
+        onPressReply={false}>
         {content}
       </CommentCard>
     )
@@ -233,7 +203,7 @@ export default class IncidentDetailSample extends React.Component {
               borderColor: this.state.headerBackToggle
                 ? 'rgba(0,0,0,0.1)'
                 : 'rgba(0,0,0,0)',
-            }
+            },
           ]}
         />
         <TouchableOpacity
@@ -253,23 +223,15 @@ export default class IncidentDetailSample extends React.Component {
           enableAutomaticScroll
           extraScrollHeight={Platform.OS === 'android' ? 100 : 0}
           keyboardShouldPersistTaps="handled"
-          bounces={false}
-        >
-          <NaverMap
-            draggable={false}
-            style={styles.map}
-            markers={[
-              {}
-            ]}
-          />
+          bounces={false}>
+          <NaverMap draggable={false} style={styles.map} markers={[{}]} />
           <View
             style={{
               backgroundColor: '#ffffff',
               marginTop: -30,
               paddingVertical: 18,
               paddingHorizontal: 15,
-            }}
-          >
+            }}>
             {this.renderHeader()}
             <View style={{ height: 28 }} />
             {this.renderProtocol()}
@@ -298,7 +260,7 @@ export default class IncidentDetailSample extends React.Component {
 const styles = StyleSheet.create({
   scrollingContainer: {
     alignItems: 'stretch',
-    paddingBottom: getBottomSpace()
+    paddingBottom: getBottomSpace(),
   },
   headerBack: {
     position: 'absolute',
@@ -323,9 +285,9 @@ const styles = StyleSheet.create({
   },
   subheaderContainer: { marginBottom: 6 },
   subheaderText: {
-    fontSize: 16, 
+    fontSize: 16,
     color: Colors.defaultGrey,
-    marginBottom: 5
+    marginBottom: 5,
   },
   information: {
     flexDirection: 'row',
@@ -338,9 +300,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   informationButton: {
-    width: 46, 
+    width: 46,
     height: 46,
-    borderRadius: 46, 
+    borderRadius: 46,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -366,5 +328,5 @@ const styles = StyleSheet.create({
     color: '#b7b7b7',
     letterSpacing: -0.5,
     marginVertical: 55,
-  }
+  },
 })

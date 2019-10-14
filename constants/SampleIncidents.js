@@ -1,10 +1,11 @@
+import i18n from '../i18n'
+
 export const sampleIncident = [
   {
     Progresses: [
       {
         IncidentId: 2,
-        content:
-          '상황 종료되었습니다. 정확한 사고 경위를 정리하여 빠른 시일 내에 발표하겠습니다.',
+        content: i18n.t('sample_content'),
         createdAt: '2018-09-03T13:32:21.763Z',
         id: 1,
         updatedAt: '2018-09-03T13:32:21.763Z',
@@ -38,7 +39,7 @@ export const sampleComments = [
     id: 4,
     User: { ku_kname: '최성인' },
     like: false,
-    content: '오후는 되어야 한다고 하셨어요!',
+    content: i18n.t('sample_comment_4'),
     createdAt: '2019-04-01T10:11:00',
     updatedAt: '2019-04-01T10:11:00',
     totalLike: 0,
@@ -48,21 +49,19 @@ export const sampleComments = [
     id: 3,
     User: { ku_kname: '류예영' },
     like: false,
-    content: '언제쯤 통제가 풀리나요?',
+    content: i18n.t('sample_comment_3'),
     createdAt: '2019-04-01T10:02:00',
     updatedAt: '2019-04-01T10:02:00',
     totalLike: 0,
     commentIndex: 4,
-    reply:
-      '오후 4시 이전으로 예상 중입니다. 정확한 통제 관련 정보는 추후 다시 공지해 드리겠습니다.',
+    reply: i18n.t('sample_reply_3'),
     updatedAt: '2019-04-01T12:33',
   },
   {
     id: 2,
     User: { ku_kname: '서민진' },
     like: true,
-    content:
-      '최근에 근처에서 비슷한 유출 사고가 있었던 것 같은데, 확실하게 조사할 필요가 있는 것 같습니다.',
+    content: i18n.t('sample_comment_2'),
     createdAt: '2019-04-01T09:48:00',
     updatedAt: '2019-04-01T09:48:00',
     totalLike: 1,
@@ -72,19 +71,19 @@ export const sampleComments = [
     id: 1,
     User: { ku_kname: '김석우' },
     like: false,
-    content: '인명 피해는 없나요?',
+    content: i18n.t('sample_comment_1'),
     createdAt: '2019-04-01T09:17:00',
     updatedAt: '2019-04-01T09:17:00',
     totalLike: 0,
     commentIndex: 2,
-    reply: '현재 확인된 바로는 없습니다.',
+    reply: i18n.t('sample_reply_1'),
     updatedAt: '2019-04-01T10:02',
   },
   {
     id: 0,
     User: { ku_kname: '정해준' },
     like: false,
-    content: '무슨 가스가 유출된 거애요?',
+    content: i18n.t('sample_comment_0'),
     createdAt: '2019-04-01T09:01:00',
     updatedAt: '2019-04-01T09:01:00',
     totalLike: 1,

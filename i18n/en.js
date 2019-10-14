@@ -21,15 +21,15 @@ export const en = {
   empty_progress: 'No progresses.',
   empty_comment: 'No comments.',
   call_to_informant: 'Call to informant.',
-  safety_instructions: 'Move to a safe place nearby.',
-  code_of_conduct: 'See the code of conduct.',
+  safety_instructions: 'Evacuate to a safe place nearby.',
+  code_of_conduct: 'See detailed instructions.',
   progress_status: 'Current status',
   add_reply: 'Add reply',
 
   _secure_status: '// 안전팀 상태 체크 텍스트',
-  in_check: 'in check',
-  in_process: 'in process',
-  in_complete: 'completed',
+  in_check: 'Confirming',
+  in_process: 'Proceeding',
+  in_complete: 'Complete',
   change_to_misreport: 'Change to misidentified incident',
   cannot_cancel: '* This work CANNOT be canceled.',
   wrong_incident: 'Misidentified incident.',
@@ -91,8 +91,21 @@ export const en = {
   정전: 'Blackout',
   sample: 'Gas (Sample)',
 
-  state: '// 상태',
+  _state: '// 상태',
   확인중: 'checking',
   처리중: 'in progress',
   완료: 'complete',
+
+  _sample_text: '// 샘플 제보 번역',
+  sample_content:
+    'The situation has been handled. We will announce the accident details as soon as possible.',
+  sample_comment_0: 'What gas was leaked?',
+  sample_comment_1: 'Are there any casualties?',
+  sample_reply_1: 'None confirmed yet.',
+  sample_comment_2:
+    'There seems to have been a similar leak accident nearby recently. We definitely need to look into the matter.',
+  sample_comment_3: 'When will the regulations be lifted?',
+  sample_reply_3:
+    'We are expecting before 4PM. We will make an announcement about the exact regulations later.',
+  sample_comment_4: 'They said it should be at least afternoon!',
 }
