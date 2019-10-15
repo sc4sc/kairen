@@ -5,12 +5,13 @@ import {
   TouchableOpacity,
   Image,
   View,
-  SafeAreaView,
   StatusBar,
+  Platform,
   Animated,
   Dimensions,
   PanResponder,
 } from 'react-native'
+import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import { Notifications } from 'expo'
 import * as Location from 'expo-location'
@@ -53,6 +54,12 @@ class IncidentList extends React.Component {
     this.handleRefresh = this.handleRefresh.bind(this)
     this.handleEndReached = this.handleEndReached.bind(this)
     this.renderItem = this.renderItem.bind(this)
+  }
+
+  componentDidMount = () => {
+    if (Platform.OS === 'android') {
+      SafeAreaView.setStatusBarHeight(0)
+    }
   }
 
   componentWillMount() {
@@ -248,9 +255,7 @@ class IncidentList extends React.Component {
   }
 
   nextPage = () => {
-    this.setState({
-      page: 2,
-    })
+    this.setState({ page: 2 })
   }
 
   render() {
@@ -276,12 +281,7 @@ class IncidentList extends React.Component {
 
         {this.props.isTraining ? (
           <>
-            <StatusBar
-              backgroundColor={'#d43434'}
-              translucent={true}
-              barStyle={'light-content'}
-            />
-
+            <StatusBar backgroundColor={'#d43434'} barStyle={'light-content'} />
             <SafeAreaView style={styles.trainingModeContainer}>
               <Text style={{ paddingVertical: 10, color: 'white' }}>
                 훈련 모드
@@ -289,21 +289,13 @@ class IncidentList extends React.Component {
             </SafeAreaView>
           </>
         ) : (
-          <StatusBar
-            backgroundColor={'transparent'}
-            translucent={true}
-            barStyle={'dark-content'}
-          />
+          <StatusBar backgroundColor={'#9B9B9B'} barStyle={'light-content'} />
         )}
 
         {this.renderCarousel()}
 
         <TouchableOpacity
-          style={
-            !this.props.isTraining
-              ? styles.menuIcon
-              : styles.menuIconForTraining
-          }
+          style={styles.menuIcon}
           onPress={() => this.props.navigation.openDrawer()}>
           <Image source={require('../assets/images/menu.png')} />
         </TouchableOpacity>
@@ -330,7 +322,6 @@ export const styles = StyleSheet.create({
   },
   trainingModeContainer: {
     position: 'absolute',
-    top: StatusBar.currentHeight,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
@@ -354,20 +345,6 @@ export const styles = StyleSheet.create({
   menuIcon: {
     position: 'absolute',
     top: 60,
-    left: 20,
-    padding: 10,
-    backgroundColor: 'white',
-    shadowOffset: { width: 0, height: 1 },
-    shadowColor: 'black',
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 5 },
-    elevation: 5,
-    borderRadius: 5,
-  },
-  menuIconForTraining: {
-    position: 'absolute',
-    top: 100,
     left: 20,
     padding: 10,
     backgroundColor: 'white',

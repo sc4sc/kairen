@@ -184,7 +184,6 @@ class NewIncidentDetail extends React.Component {
 
     return (
       <View style={container}>
-        {/* TODO: Comment this block, from here */}
         <StatusBar barStyle="light-content" backgroundColor="#ff9412" />
         <View style={headerContainer}>
           <TouchableWithoutFeedback
@@ -209,14 +208,10 @@ class NewIncidentDetail extends React.Component {
             />
           </TouchableOpacity>
         </View>
-        {/* to here */}
 
         <NaverMap
           ref={el => (this.map = el)}
-          // TODO: Comment this style
           style={{ flex: 1 }}
-          // TODO: Uncomment this style
-          // style={{ flex: 1, height: 500 }}
           onInit={this.handleMapInit}
           markers={this.getMarkers(this.state.markerCoords)}
           onPress={this.handlePressMap}
@@ -270,11 +265,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fffaf4',
-    // marginTop: -100,
-    // height: 100,
   },
   headerContainer: {
-    paddingTop: statusBarHeight + (getBottomSpace() == 0 ? 15 : 20),
+    paddingTop: getBottomSpace() == 0 ? 15 : 20,
     paddingBottom: 17,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
@@ -360,26 +353,6 @@ const styles = StyleSheet.create({
     fontSize: 19,
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  // TODO: Comment this block, from here
-  headerContainer: {
-    paddingTop: getStatusBarHeight() + (getBottomSpace() == 0 ? 20 : 25),
-    paddingBottom: 22,
-    flexDirection: 'row',
-    backgroundColor: '#ff9412',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-    marginLeft: 10,
-  },
-  backIcon: {
-    width: 19,
-    height: 22,
-    marginLeft: 20,
   },
   // to here
 })

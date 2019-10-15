@@ -6,6 +6,7 @@ import {
   Linking,
   TouchableOpacity,
   Alert,
+  StatusBar,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -15,7 +16,6 @@ import * as contacts from '../constants/Contacts'
 import i18n from '../i18n'
 import * as apis from '../apis'
 
-const topMargin = getStatusBarHeight()
 const bottomMargin = getBottomSpace()
 
 class SafetyContact extends React.Component {
@@ -128,7 +128,7 @@ const styles = {
     backgroundColor: 'white',
   },
   headerText: {
-    marginTop: 20 + topMargin,
+    marginTop: 20,
     marginBottom: 40,
     fontSize: 24,
     fontWeight: 'bold',

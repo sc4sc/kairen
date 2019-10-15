@@ -28,7 +28,7 @@ class NewIncident extends React.Component {
   }
 
   renderItem({ item: incident }) {
-    if (incident.type === "샘플") {
+    if (incident.type === '샘플') {
       return null
     }
     return (
@@ -58,11 +58,7 @@ class NewIncident extends React.Component {
     return (
       <View style={container}>
         {/* TODO: Comment this block, from here */}
-        <StatusBar
-          backgroundColor={'#ff9412'}
-          translucent={true}
-          barStyle={'light-content'}
-        />
+        <StatusBar backgroundColor={'#ff9412'} barStyle={'light-content'} />
         <View style={headerContainer}>
           <Text style={headerText}>{i18n.t('select_incident')}</Text>
           <TouchableOpacity
@@ -107,7 +103,7 @@ const styles = StyleSheet.create({
 
   // TODO: Comment this style block, from here
   headerContainer: {
-    paddingTop: statusBarHeight + (getBottomSpace() == 0 ? 15 : 20),
+    paddingTop: getBottomSpace() == 0 ? 15 : 20,
     paddingBottom: 17,
     flexDirection: 'row',
     backgroundColor: '#ff9412',
