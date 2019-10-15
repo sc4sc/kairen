@@ -5,7 +5,7 @@
     "privacy": "public",
     "sdkVersion": "33.0.0",
     "platforms": ["ios", "android", "web"],
-    "version": "1.0.6",
+    "version": "1.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "notification": {
@@ -21,7 +21,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "17",
+      "buildNumber": "18",
       "supportsTablet": false,
       "bundleIdentifier": "kr.ac.kaist.kairen.kairen",
       "infoPlist": {
@@ -30,7 +30,7 @@
     },
     "android": {
       "package": "kr.ac.kaist.kairen.kairen",
-      "versionCode": 17,
+      "versionCode": 18,
       "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
     },
     "androidStatusBar": {
