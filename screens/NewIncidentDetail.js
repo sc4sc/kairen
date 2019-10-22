@@ -8,7 +8,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native'
-import { StackActions } from 'react-navigation'
+import { StackActions, SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import * as Location from 'expo-location'
 
@@ -185,7 +185,7 @@ class NewIncidentDetail extends React.Component {
     return (
       <View style={container}>
         <StatusBar barStyle="light-content" backgroundColor="#ff9412" />
-        <View style={headerContainer}>
+        <SafeAreaView style={headerContainer}>
           <TouchableWithoutFeedback
             onPress={() => this.props.navigation.goBack()}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -207,7 +207,7 @@ class NewIncidentDetail extends React.Component {
               style={{ width: 20, height: 20, marginRight: 22 }}
             />
           </TouchableOpacity>
-        </View>
+        </SafeAreaView>
 
         <NaverMap
           ref={el => (this.map = el)}

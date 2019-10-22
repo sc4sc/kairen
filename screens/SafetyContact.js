@@ -6,8 +6,8 @@ import {
   Linking,
   TouchableOpacity,
   Alert,
-  StatusBar,
 } from 'react-native'
+import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { userChangeMode } from '../actions/user'
@@ -49,7 +49,7 @@ class SafetyContact extends React.Component {
 
     return (
       <View style={container}>
-        <View>
+        <SafeAreaView>
           <Text style={headerText}>KAIREN</Text>
           <TouchableOpacity
             onPress={() => Linking.openURL(`tel:${contacts.campusPolice}`)}>
@@ -105,7 +105,7 @@ class SafetyContact extends React.Component {
               {i18n.t('training_alert_detail')}
             </Text>
           </View>
-        </View>
+        </SafeAreaView>
 
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate('Setting')}>

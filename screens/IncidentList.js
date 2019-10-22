@@ -289,7 +289,7 @@ class IncidentList extends React.Component {
             </SafeAreaView>
           </>
         ) : (
-          <StatusBar backgroundColor={'#9B9B9B'} barStyle={'light-content'} />
+          <StatusBar backgroundColor={'#9B9B9B'} />
         )}
 
         {this.renderCarousel()}
