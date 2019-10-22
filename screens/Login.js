@@ -1,5 +1,12 @@
 import React from 'react'
-import { Alert, View, Text, TouchableOpacity, Image } from 'react-native'
+import {
+  Alert,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StatusBar,
+} from 'react-native'
 import { connect } from 'react-redux'
 import i18n from '../i18n'
 import Layout from '../constants/Layout'
@@ -13,7 +20,7 @@ class Login extends React.Component {
   onButtonPress() {
     const { navigation } = this.props
     const alertTitle = i18n.t('login_alert')
-    const alertMsg = 'login_alert_detail'
+    const alertMsg = i18n.t('login_alert_detail')
 
     navigation.navigate('SSO', {
       onLogin: token => {
@@ -30,6 +37,7 @@ class Login extends React.Component {
     const { container, headerText } = styles
     return (
       <View style={{ flex: 1 }}>
+        <StatusBar barStyle={'dark-content'} />
         <View style={container}>
           <Image
             style={{ marginLeft: -10 }}

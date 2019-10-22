@@ -8,7 +8,7 @@ import {
   StatusBar,
   TouchableOpacity,
 } from 'react-native'
-import { StackActions } from 'react-navigation'
+import { StackActions, SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 
 import ReportItem from '../components/ReportItem'
@@ -28,7 +28,7 @@ class NewIncident extends React.Component {
   }
 
   renderItem({ item: incident }) {
-    if (incident.type === "샘플") {
+    if (incident.type === '샘플') {
       return null
     }
     return (
@@ -58,12 +58,8 @@ class NewIncident extends React.Component {
     return (
       <View style={container}>
         {/* TODO: Comment this block, from here */}
-        <StatusBar
-          backgroundColor={'#ff9412'}
-          translucent={true}
-          barStyle={'light-content'}
-        />
-        <View style={headerContainer}>
+        <StatusBar backgroundColor={'#ff9412'} barStyle={'light-content'} />
+        <SafeAreaView style={headerContainer}>
           <Text style={headerText}>{i18n.t('select_incident')}</Text>
           <TouchableOpacity
             onPress={() =>
@@ -74,7 +70,7 @@ class NewIncident extends React.Component {
               style={{ width: 20, height: 20, marginRight: 22 }}
             />
           </TouchableOpacity>
-        </View>
+        </SafeAreaView>
         {/* to here */}
 
         <View style={{ flex: 1, paddingHorizontal: 20, marginTop: 27 }}>
@@ -107,7 +103,7 @@ const styles = StyleSheet.create({
 
   // TODO: Comment this style block, from here
   headerContainer: {
-    paddingTop: statusBarHeight + (getBottomSpace() == 0 ? 15 : 20),
+    paddingTop: getBottomSpace() == 0 ? 15 : 20,
     paddingBottom: 17,
     flexDirection: 'row',
     backgroundColor: '#ff9412',

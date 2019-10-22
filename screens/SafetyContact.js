@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native'
+import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { userChangeMode } from '../actions/user'
@@ -15,7 +16,6 @@ import * as contacts from '../constants/Contacts'
 import i18n from '../i18n'
 import * as apis from '../apis'
 
-const topMargin = getStatusBarHeight()
 const bottomMargin = getBottomSpace()
 
 class SafetyContact extends React.Component {
@@ -49,7 +49,7 @@ class SafetyContact extends React.Component {
 
     return (
       <View style={container}>
-        <View>
+        <SafeAreaView>
           <Text style={headerText}>KAIREN</Text>
           <TouchableOpacity
             onPress={() => Linking.openURL(`tel:${contacts.campusPolice}`)}>
@@ -105,7 +105,7 @@ class SafetyContact extends React.Component {
               {i18n.t('training_alert_detail')}
             </Text>
           </View>
-        </View>
+        </SafeAreaView>
 
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate('Setting')}>
@@ -128,7 +128,7 @@ const styles = {
     backgroundColor: 'white',
   },
   headerText: {
-    marginTop: 20 + topMargin,
+    marginTop: 20,
     marginBottom: 40,
     fontSize: 24,
     fontWeight: 'bold',

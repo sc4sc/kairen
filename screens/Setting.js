@@ -8,6 +8,7 @@ import {
   Image,
   Linking,
   Alert,
+  StatusBar,
 } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -54,7 +55,7 @@ class Setting extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <AndroidTopMargin />
+        <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
         {this.state.loading && <Spinner overlay />}
         <View style={styles.headerContainer}>
           <Text style={styles.header}>{i18n.t('setting')}</Text>
