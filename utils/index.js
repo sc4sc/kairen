@@ -54,7 +54,7 @@ export async function getPushToken() {
   } catch (error) {
     console.log('getPushToken Error:', error)
   }
-  return ''
+  return null
 }
 
 export function checkIsInbuilding(coords) {

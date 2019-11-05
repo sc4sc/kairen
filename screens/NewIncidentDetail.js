@@ -56,8 +56,8 @@ class NewIncidentDetail extends React.Component {
       const { type, lat, lng, createdAt } = currentIncidents[i]
       const incidentGeoObj = checkIsInbuilding({ lat, lng })
       const incidentLocation = incidentGeoObj
-        ? incidentGeoObj.properties.name
-        : ''
+        ? incidentGeoObj.properties.names
+        : 'KAIST'
       const timePassed = moment().diff(moment(createdAt), 'seconds')
 
       const isBuildingSame = incidentLocation === this.state.locationName
@@ -130,7 +130,7 @@ class NewIncidentDetail extends React.Component {
   updateLocationName = coords => {
     const locationGeoObj = checkIsInbuilding(coords)
     this.setState({
-      locationName: locationGeoObj ? locationGeoObj.properties.name : '',
+      locationName: locationGeoObj ? locationGeoObj.properties.name : 'KAIST',
     })
   }
 
