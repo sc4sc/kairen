@@ -28,7 +28,7 @@ export default class IncidentCard extends React.Component {
               <Text style={styles.wrongDate}>{formatDate(createdAt)}</Text>
               <Text style={styles.wrongTitle}>{i18n.t('wrong_incident')}</Text>
               <Text style={styles.wrongInfo}>
-                {doc.title}, {location.properties.name}
+                {doc.title}, {location ? location.properties.name : 'KAIST'}
               </Text>
             </View>
           </View>
