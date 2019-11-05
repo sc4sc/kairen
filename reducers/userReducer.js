@@ -30,7 +30,7 @@ export default (state = defaultState, action) =>
         break
       }
       case USER_CHANGE_MODE: {
-        draft.data.isTraining = !draft.data.isTraining
+        draft.data.isTraining = action.payload
         break
       }
       default:

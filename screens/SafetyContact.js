@@ -9,12 +9,11 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import { userChangeMode } from '../actions/user'
-import { getBottomSpace, getStatusBarHeight } from '../utils/index.js'
+import { getBottomSpace } from '../utils/index.js'
 import * as contacts from '../constants/Contacts'
 import i18n from '../i18n'
-import * as apis from '../apis'
+import { incidentsListRefresh } from '../actions/incidentsList'
 
 const bottomMargin = getBottomSpace()
 
@@ -34,8 +33,8 @@ class SafetyContact extends React.Component {
   }
 
   handleModeChange(value) {
-    this.props.changeMode()
-    apis.changeMode(value)
+    this.props.userChangeMode(value)
+    this.props.incidentsListRefresh()
   }
 
   render() {
@@ -167,5 +166,5 @@ const styles = {
 
 export default connect(
   state => ({ user: state.user.data }),
-  dispatch => ({ changeMode: bindActionCreators(userChangeMode, dispatch) })
+  { incidentsListRefresh, userChangeMode }
 )(SafetyContact)

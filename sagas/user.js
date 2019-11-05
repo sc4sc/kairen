@@ -4,8 +4,9 @@ import * as apis from '../apis'
 import {
   USER_LOGIN_FAILED,
   USER_LOGIN_REQUEST,
-  USER_LOGIN_SUCCESS,
+  USER_CHANGE_MODE,
   userLoginSuccess,
+  userChangeMode,
 } from '../actions/user'
 import { getPushToken } from '../utils'
 
@@ -13,8 +14,11 @@ function* storeToken(token) {
   yield call(SecureStore.setItemAsync, 'appToken', token)
 }
 
-function* requestChangeMode(value) {
+function* requestChangeMode(action) {
+  const value = action.payload
+
   yield call(apis.changeMode, value)
+  yield put(userChangeMode(value))
 }
 
 function* userLogin(action) {
@@ -46,4 +50,8 @@ function* userLogin(action) {
 
 export function* watchUserLoginRequest() {
   yield takeLatest(USER_LOGIN_REQUEST, userLogin)
+}
+
+export function* watchUserChangeMode() {
+  yield takeLatest(USER_CHANGE_MODE, requestChangeMode)
 }

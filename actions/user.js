@@ -21,8 +21,9 @@ export function userLoginSuccess(result) {
 export const USER_LOGIN_FAILED = 'USER_LOGIN_FAILED'
 
 export const USER_CHANGE_MODE = 'USER_CHANGE_MODE'
-export function userChangeMode() {
+export function userChangeMode(value) {
   return {
     type: USER_CHANGE_MODE,
+    payload: value,
   }
 }
