@@ -18,7 +18,6 @@ function* requestChangeMode(action) {
   const value = action.payload
 
   yield call(apis.changeMode, value)
-  yield put(userChangeMode(value))
 }
 
 function* userLogin(action) {

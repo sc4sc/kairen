@@ -56,7 +56,7 @@ class NewIncidentDetail extends React.Component {
       const { type, lat, lng, createdAt } = currentIncidents[i]
       const incidentGeoObj = checkIsInbuilding({ lat, lng })
       const incidentLocation = incidentGeoObj
-        ? incidentGeoObj.properties.names
+        ? incidentGeoObj.properties.name
         : 'KAIST'
       const timePassed = moment().diff(moment(createdAt), 'seconds')
 
@@ -108,7 +108,6 @@ class NewIncidentDetail extends React.Component {
   }
   //TODO: Make this function to async (just put 'async')
   report = () => {
-    console.log(this.props.isTraining)
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,
