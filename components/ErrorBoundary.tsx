@@ -2,13 +2,17 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Sentry } from 'react-native-sentry'
 
-class ErrorBoundary extends React.Component {
+interface ErrorBoundaryState {
+  hasError: boolean
+}
+
+class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
   constructor(props) {
     super(props)
     this.state = { hasError: false }
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error): ErrorBoundaryState {
     return { hasError: true }
   }
 
@@ -17,7 +21,7 @@ class ErrorBoundary extends React.Component {
   }
 
   handleClickRefresh = () => {
-    this.setState({ hasError: false });
+    this.setState({ hasError: false })
   }
 
   render() {
@@ -29,7 +33,9 @@ class ErrorBoundary extends React.Component {
             지속되면 kairen@kaist.ac.kr로 문의해주세요.
           </Text>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={this.handleClickRefresh}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this.handleClickRefresh}>
               <Text>새로고침</Text>
             </TouchableOpacity>
           </View>

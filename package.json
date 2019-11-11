@@ -56,13 +56,15 @@
   "devDependencies": {
     "@types/googlemaps": "^3.36.5",
     "@types/markerclustererplus": "^2.1.33",
-    "@types/react": "^16.8.22",
-    "babel-plugin-dotenv": "^0.1.1",
+    "@types/react": "^16.9.11",
+    "@types/react-native": "^0.60.22",
     "babel-preset-expo": "^5.2.0",
+    "babel-plugin-dotenv": "^0.1.1",
     "eslint": "^6.0.1",
     "eslint-config-rallycoding": "^3.2.0",
     "jest-expo": "^33.0.0",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "typescript": "^3.7.2"
   },
   "private": true
 }
