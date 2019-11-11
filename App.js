@@ -18,7 +18,7 @@ function cacheFonts(fonts) {
   return fonts.map(font => Font.loadAsync(font))
 }
 
-export default class App extends React.Component {
+class App extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -71,3 +71,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 })
+
+export default App;
