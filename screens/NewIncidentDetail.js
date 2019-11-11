@@ -108,7 +108,6 @@ class NewIncidentDetail extends React.Component {
   }
   //TODO: Make this function to async (just put 'async')
   report = () => {
-    console.log(this.props.isTraining)
     this.props.newIncidentPostRequested(
       {
         type: this.props.selectedIncident,
