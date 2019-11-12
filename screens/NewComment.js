@@ -10,6 +10,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Dimensions,
+  StatusBar,
 } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -55,44 +56,48 @@ class NewComment extends React.Component {
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <SafeAreaView style={styles.container}>
-          <AndroidTopMargin />
-          {this.state.loading && <Spinner overlay />}
-          <View style={styles.headerContainer}>
-            <Text style={styles.header}>{i18n.t('new_comment')}</Text>
-            <TouchableWithoutFeedback
-              onPress={() => {
-                this.props.navigation.goBack()
-              }}>
-              <View style={{ width: 30, alignItems: 'center' }}>
-                <Ionicons name="md-close" size={26} />
+      <View className={styles.container}>
+        <StatusBar barStyle={'dark-content'}/>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <SafeAreaView>
+            <AndroidTopMargin />
+            {this.state.loading && <Spinner overlay />}
+            <View style={styles.headerContainer}>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  this.props.navigation.goBack()
+                }}
+                className={styles.closeIcon}
+                >
+                <View>
+                  <Ionicons name="md-close" size={26} />
+                </View>
+              </TouchableWithoutFeedback>
+              <Text style={styles.header}>{i18n.t('new_comment')}</Text>
+              <View
+                style={styles.buttonStyle}>
+                <TouchableOpacity
+                  onPress={this.onButtonPress.bind(this)}>
+                  <Text style={styles.buttonText}>{i18n.t('enroll')}</Text>
+                </TouchableOpacity>
               </View>
-            </TouchableWithoutFeedback>
-          </View>
-
-          <KeyboardAvoidingView
-            style={styles.contentContainer}
-            behavior="padding">
-            <TextInput
-              style={styles.textInputStyle}
-              placeholder={i18n.t('placeholder')}
-              onChangeText={text => this.setState({ text })}
-              value={this.state.text}
-              multiline
-              autoFocus
-            />
-            <View
-              style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 25 }}>
-              <TouchableOpacity
-                style={styles.buttonStyle}
-                onPress={this.onButtonPress.bind(this)}>
-                <Text style={styles.buttonText}>{i18n.t('enroll')}</Text>
-              </TouchableOpacity>
             </View>
-          </KeyboardAvoidingView>
-        </SafeAreaView>
-      </TouchableWithoutFeedback>
+
+            <KeyboardAvoidingView
+              style={styles.contentContainer}
+              behavior="padding">
+              <TextInput
+                style={styles.textInputStyle}
+                placeholder={i18n.t('placeholder')}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                multiline
+                autoFocus
+              />
+            </KeyboardAvoidingView>
+          </SafeAreaView>
+        </TouchableWithoutFeedback>
+      </View>
     )
   }
 }
@@ -100,15 +105,32 @@ class NewComment extends React.Component {
 export default connect(state => ({}))(NewComment)
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginVertical: 20,
+  container: {
+    flex: 1,
+    backgroundColor: '#fff'
   },
-  header: { fontSize: 20, fontWeight: '800', color: Colors.defaultBlack },
-  contentContainer: { flex: 1, paddingHorizontal: 20 },
+  headerContainer: {
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    paddingHorizontal: 15,
+    marginVertical: 15,
+  },
+  header: {
+    alignSelf: 'center',
+    fontSize: 20,
+    fontWeight: '800',
+    color: Colors.defaultBlack,
+    marginTop: -20,
+  },
+  closeIcon: {
+    alignSelf: 'flex-end',
+    width: 30,
+  },
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: 15,
+  },
   textInputStyle: {
     padding: 10,
     height: Dimensions.get('window').height * 0.3,
@@ -116,20 +138,13 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   buttonStyle: {
+    marginTop: -20,
+    alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 13,
-    marginVertical: 20,
-    backgroundColor: Colors.buttonGrey,
-    borderRadius: 10,
-    shadowOffset: { width: 0, height: 2 },
-    shadowColor: 'black',
-    shadowOpacity: 0.22,
-    shadowRadius: 2,
-    elevation: 5,
   },
   buttonText: {
-    fontSize: 15,
-    color: 'white',
+    alignSelf: 'center',
+    fontSize: 18,
   },
 })
