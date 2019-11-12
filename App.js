@@ -10,6 +10,7 @@ import AppNavigator from './navigation/AppNavigator'
 
 import { Sentry } from 'react-native-sentry'
 import { SENTRY_DSN } from 'babel-dotenv'
+import ErrorBoundary from './components/ErrorBoundary'
 
 console.disableYellowBox = true
 
@@ -17,7 +18,7 @@ function cacheFonts(fonts) {
   return fonts.map(font => Font.loadAsync(font))
 }
 
-export default class App extends React.Component {
+class App extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -44,11 +45,13 @@ export default class App extends React.Component {
     }
 
     return (
-      <Provider store={store}>
-        <View style={styles.container}>
-          <AppNavigator />
-        </View>
-      </Provider>
+      <ErrorBoundary>
+        <Provider store={store}>
+          <View style={styles.container}>
+            <AppNavigator />
+          </View>
+        </Provider>
+      </ErrorBoundary>
     )
   }
 }
@@ -68,3 +71,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 })
+
+// export default from './storybook';
+export default App;

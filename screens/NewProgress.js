@@ -18,7 +18,6 @@ import { Ionicons } from '@expo/vector-icons'
 import * as apis from '../apis'
 import Spinner from '../components/Spinner'
 import Colors from '../constants/Colors'
-import AndroidTopMargin from '../components/AndroidTopMargin'
 import i18n from '../i18n'
 
 class NewProgress extends React.Component {
@@ -63,7 +62,6 @@ class NewProgress extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={styles.container}>
-          <AndroidTopMargin />
           {this.state.loading && <Spinner overlay />}
           <View style={styles.headerContainer}>
             <TouchableWithoutFeedback

@@ -24,8 +24,6 @@ import {
 import SSO from '../screens/SSO'
 import AutoLogin from '../screens/AutoLogin'
 
-console.log(PermissionLoading)
-
 const MainNavigator = createStackNavigator(
   {
     Main: createStackNavigator(

@@ -7,7 +7,6 @@ import * as apis from '../apis'
 import { formatDate } from '../utils'
 import ProgressCard from '../components/ProgressCard'
 import Colors from '../constants/Colors'
-import AndroidTopMargin from '../components/AndroidTopMargin'
 
 export default class ProgressList extends React.Component {
   constructor() {
@@ -37,7 +36,6 @@ export default class ProgressList extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <AndroidTopMargin />
         <View>
           <View style={styles.headerContainer}>
             <Text style={styles.header}> Progress </Text>

@@ -18,7 +18,6 @@ import { Ionicons } from '@expo/vector-icons'
 import Spinner from '../components/Spinner'
 import * as apis from '../apis'
 import Colors from '../constants/Colors'
-import AndroidTopMargin from '../components/AndroidTopMargin'
 import i18n from '../i18n'
 
 class NewComment extends React.Component {
@@ -58,7 +57,6 @@ class NewComment extends React.Component {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <SafeAreaView style={styles.container}>
-            <AndroidTopMargin />
             {this.state.loading && <Spinner overlay />}
             <View style={styles.headerContainer}>
               <TouchableWithoutFeedback

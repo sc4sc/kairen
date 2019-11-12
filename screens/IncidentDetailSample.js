@@ -1,5 +1,12 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  StatusBar,
+} from 'react-native'
+import { SafeAreaView } from 'react-navigation'
 import { FlatList } from 'react-native-gesture-handler'
 import StateMarker from '../components/StateMarker'
 import CommentCard from '../components/CommentCard'
@@ -193,7 +200,8 @@ export default class IncidentDetailSample extends React.Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <View
+        <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
+        <SafeAreaView
           style={[
             styles.headerBack,
             {
@@ -204,18 +212,19 @@ export default class IncidentDetailSample extends React.Component {
                 ? 'rgba(0,0,0,0.1)'
                 : 'rgba(0,0,0,0)',
             },
-          ]}
-        />
-        <TouchableOpacity
-          style={styles.backWard}
-          onPress={() => {
-            this.props.navigation.goBack()
-          }}>
-          <Image source={require('../assets/images/back.png')} />
-          <Text style={{ marginLeft: 5, fontSize: 18, fontWeight: '800' }}>
-            {i18n.t('incident_list')}
-          </Text>
-        </TouchableOpacity>
+          ]}>
+          <TouchableOpacity
+            style={styles.backWard}
+            onPress={() => {
+              this.props.navigation.goBack()
+            }}>
+            <Image source={require('../assets/images/back.png')} />
+            <Text style={{ marginLeft: 5, fontSize: 18, fontWeight: '800' }}>
+              {i18n.t('incident_list')}
+            </Text>
+          </TouchableOpacity>
+        </SafeAreaView>
+
         <KeyboardAwareScrollView
           onScroll={this.checkHeaderOpacity}
           contentContainerStyle={styles.scrollingContainer}
@@ -266,13 +275,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 1,
     width: Layout.window.width,
-    height: statusBarHeight + 55,
+    height: 55,
     borderBottomWidth: 1,
+    justifyContent: 'center',
     borderColor: 'rgba(0,0,0,0.1)',
   },
   backWard: {
-    position: 'absolute',
-    top: statusBarHeight + (getBottomSpace() != 0 ? 20 : 15),
     marginLeft: 15,
     zIndex: 2,
     display: 'flex',
