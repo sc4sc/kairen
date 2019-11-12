@@ -64,11 +64,9 @@ class NewComment extends React.Component {
               <TouchableWithoutFeedback
                 onPress={() => {
                   this.props.navigation.goBack()
-                }}
-                className={styles.closeIcon}
-                >
+                }}>
                 <View>
-                  <Ionicons name="md-close" size={26} />
+                  <Ionicons name="md-close" size={20} />
                 </View>
               </TouchableWithoutFeedback>
               <Text style={styles.header}>{i18n.t('new_comment')}</Text>

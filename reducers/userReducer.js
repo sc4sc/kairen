@@ -10,7 +10,6 @@ const defaultState = {
   loginInProgress: false,
   data: {
     isTraining: false,
-    // isAdmin: true,
   },
 }
 

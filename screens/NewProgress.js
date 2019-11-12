@@ -66,15 +66,22 @@ class NewProgress extends React.Component {
           <AndroidTopMargin />
           {this.state.loading && <Spinner overlay />}
           <View style={styles.headerContainer}>
-            <Text style={styles.header}>{i18n.t('new_progress')}</Text>
             <TouchableWithoutFeedback
               onPress={() => {
                 this.props.navigation.goBack()
               }}>
-              <View style={{ width: 30, alignItems: 'center' }}>
-                <Ionicons name="md-close" size={26} />
+              <View>
+                <Ionicons name="md-close" size={20} />
               </View>
             </TouchableWithoutFeedback>
+            <Text style={styles.header}>{i18n.t('new_progress')}</Text>
+            <View
+              style={styles.buttonStyle}>
+              <TouchableOpacity
+                onPress={this.onButtonPress.bind(this)}>
+                <Text style={styles.buttonText}>{i18n.t('enroll')}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           <KeyboardAvoidingView
@@ -88,14 +95,6 @@ class NewProgress extends React.Component {
               multiline
               autoFocus
             />
-            <View
-              style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 25 }}>
-              <TouchableOpacity
-                style={styles.buttonStyle}
-                onPress={this.onButtonPress.bind(this)}>
-                <Text style={styles.buttonText}>{i18n.t('enroll')}</Text>
-              </TouchableOpacity>
-            </View>
           </KeyboardAvoidingView>
         </SafeAreaView>
       </TouchableWithoutFeedback>
@@ -106,15 +105,28 @@ class NewProgress extends React.Component {
 export default connect(state => ({}))(NewProgress)
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginVertical: 20,
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
-  header: { fontSize: 20, fontWeight: '800', color: Colors.defaultBlack },
-  contentContainer: { flex: 1, paddingHorizontal: 20 },
+  headerContainer: {
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    paddingHorizontal: 15,
+    marginVertical: 15,
+  },
+  header: {
+    alignSelf: 'center',
+    fontSize: 20,
+    fontWeight: '800',
+    color: Colors.defaultBlack,
+    marginTop: -20,
+  },
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: 15,
+  },
   textInputStyle: {
     padding: 10,
     height: Dimensions.get('window').height * 0.3,
@@ -122,20 +134,13 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   buttonStyle: {
+    marginTop: -20,
+    alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 13,
-    marginVertical: 20,
-    backgroundColor: Colors.buttonGrey,
-    borderRadius: 10,
-    shadowOffset: { width: 0, height: 2 },
-    shadowColor: 'black',
-    shadowOpacity: 0.22,
-    shadowRadius: 2,
-    elevation: 5,
   },
   buttonText: {
-    fontSize: 15,
-    color: 'white',
+    alignSelf: 'center',
+    fontSize: 18,
   },
 })
