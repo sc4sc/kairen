@@ -10,6 +10,7 @@ import AppNavigator from './navigation/AppNavigator'
 
 import { Sentry } from 'react-native-sentry'
 import { SENTRY_DSN } from 'babel-dotenv'
+import ErrorBoundary from './components/ErrorBoundary'
 
 console.disableYellowBox = true
 
@@ -44,11 +45,13 @@ export default class App extends React.Component {
     }
 
     return (
-      <Provider store={store}>
-        <View style={styles.container}>
-          <AppNavigator />
-        </View>
-      </Provider>
+      <ErrorBoundary>
+        <Provider store={store}>
+          <View style={styles.container}>
+            <AppNavigator />
+          </View>
+        </Provider>
+      </ErrorBoundary>
     )
   }
 }
