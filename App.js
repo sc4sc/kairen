@@ -72,4 +72,5 @@ const styles = StyleSheet.create({
   },
 })
 
+// export default from './storybook';
 export default App;
