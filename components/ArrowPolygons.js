@@ -87,29 +87,29 @@ const arrowSize = 8
 const styles = {
   chevronLeft: {
     width: (Layout.window.width / 3) + 5,
-    height: 40,
+    height: 45,
     marginBottom: 0,
   },
   chevronMiddle: {
     width: Layout.window.width / 3,
-    height: 40,
+    height: 45,
     marginBottom: 0,
   },
   chevronRight: {
     width: (Layout.window.width / 3) - 5,
-    height: 40,
+    height: 45,
     marginBottom: 0,
   },
   chevronMain: {
     width: Layout.window.width / 3,
-    height: 40,
+    height: 45,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   chevronMainLeft: {
     width: (Layout.window.width / 3) + 5,
-    height: 40,
+    height: 45,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
