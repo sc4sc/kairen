@@ -7,12 +7,23 @@ import {
 } from '../components/ArrowPolygons'
 
 const StateMarker = ({ children, selected, position }) => {
-  const { markerTextStyle, circleStyle } = styles
+  const { circleStyle } = styles
 
   let arrowColor = 'black'
-  let Chevron = ChevronMiddle
+  const Chevron = (() => {
+    switch (position) {
+      case 'left':
+        return ChevronLeft
+      case 'center':
+        return ChevronMiddle
+      case 'right':
+        return ChevronRight
+      default:
+        arrowColor = styles.defaultMarkerStyle
+    }
+  })()
   const chevronTextStyle = {
-    color: selected ? 'white' : '#eaeaea',
+    color: selected ? 'white' : '#cfcfcf',
     fontSize: 13,
   }
 
@@ -21,7 +32,7 @@ const StateMarker = ({ children, selected, position }) => {
       arrowColor = selected ? '#d62c2c' : 'white'
       break
     case 'center':
-      arrowColor = selected ? '#f5c234' : 'white'
+      arrowColor = selected ? '#f5c234' : '#f5f5f5'
       break
     case 'right':
       arrowColor = selected ? '#7ed321' : 'white'
@@ -35,7 +46,7 @@ const StateMarker = ({ children, selected, position }) => {
       <View
         style={[
           circleStyle,
-          { backgroundColor: selected ? 'white' : '#eaeaea' },
+          { backgroundColor: selected ? 'white' : '#cfcfcf' },
         ]}
       />
       <View style={{ width: 5 }} />
@@ -46,13 +57,10 @@ const StateMarker = ({ children, selected, position }) => {
 
 const styles = {
   circleStyle: {
-    marginLeft: 5,
     width: 7,
     height: 7,
     borderRadius: 50,
-    backgroundColor: 'white',
   },
-  markerTextStyle: {},
 }
 
 export default StateMarker

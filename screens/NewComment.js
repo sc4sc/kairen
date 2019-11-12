@@ -56,10 +56,8 @@ class NewComment extends React.Component {
 
   render() {
     return (
-      <View className={styles.container}>
-        <StatusBar barStyle={'dark-content'}/>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <SafeAreaView>
+          <SafeAreaView style={styles.container}>
             <AndroidTopMargin />
             {this.state.loading && <Spinner overlay />}
             <View style={styles.headerContainer}>
@@ -97,7 +95,6 @@ class NewComment extends React.Component {
             </KeyboardAvoidingView>
           </SafeAreaView>
         </TouchableWithoutFeedback>
-      </View>
     )
   }
 }
@@ -122,10 +119,6 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: Colors.defaultBlack,
     marginTop: -20,
-  },
-  closeIcon: {
-    alignSelf: 'flex-end',
-    width: 30,
   },
   contentContainer: {
     flex: 1,

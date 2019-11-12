@@ -273,6 +273,7 @@ class IncidentDetail extends React.Component {
           <Text style={{ fontWeight: 'bold' }}>{i18n.t('cannot_cancel')}</Text>
           {i18n.t('misreport_alert')}
         </Text>
+        <View style={{ height: 24 }} />
       </View>
     )
   }
@@ -281,7 +282,6 @@ class IncidentDetail extends React.Component {
     const { progressState } = this.state
     return (
       <View style={{ flex: 1 }}>
-        <Text style={styles.subheaderText}>{i18n.t('progress_status')}</Text>
         <View
           style={{
             flex: 1,
@@ -474,12 +474,16 @@ class IncidentDetail extends React.Component {
           {isSecureTeam && isTraining && (
             <DeleteIncident onPress={this.onDeletePress} />
           )}
+          <View style={{ marginTop: -30 }}>
+            {isSecureTeam
+              ? null
+              : this.renderClientStateBar()}
+          </View>
           <View
             style={{
               backgroundColor: '#ffffff',
               paddingVertical: 18,
               paddingHorizontal: 15,
-              marginTop: -30,
             }}>
             {this.renderHeader()}
             <View style={{ height: 28 }} />
@@ -489,8 +493,7 @@ class IncidentDetail extends React.Component {
             <View style={{ height: 24 }} />
             {isSecureTeam
               ? this.renderAdminStateBar()
-              : this.renderClientStateBar()}
-            <View style={{ height: 24 }} />
+              : null}
             {this.renderProgress()}
             <View style={{ height: 24 }} />
             <Text style={[styles.subheaderContainer, styles.subheaderText]}>

@@ -3,8 +3,8 @@ import { View } from 'react-native'
 import Layout from '../constants/Layout'
 
 const ChevronLeft = ({ children, color }) => (
-  <View style={styles.chevron}>
-    <View style={[styles.chevronMain, { backgroundColor: color }]}>
+  <View style={styles.chevronLeft}>
+    <View style={[styles.chevronMainLeft, { backgroundColor: color }]}>
       {children}
     </View>
     <View
@@ -25,7 +25,7 @@ const ChevronLeft = ({ children, color }) => (
 )
 
 const ChevronMiddle = ({ children, color }) => (
-  <View style={styles.chevron}>
+  <View style={styles.chevronMiddle}>
     <View style={[styles.chevronMain, { backgroundColor: color }]}>
       {children}
     </View>
@@ -61,7 +61,7 @@ const ChevronMiddle = ({ children, color }) => (
 )
 
 const ChevronRight = ({ children, color }) => (
-  <View style={styles.chevron}>
+  <View style={styles.chevronRight}>
     <View style={[styles.chevronMain, { backgroundColor: color }]}>
       {children}
     </View>
@@ -85,14 +85,30 @@ const ChevronRight = ({ children, color }) => (
 const arrowSize = 8
 
 const styles = {
-  chevron: {
-    width: Layout.window.width / 4,
+  chevronLeft: {
+    width: (Layout.window.width / 3) + 5,
     height: 40,
-    margin: 8,
+    marginBottom: 0,
+  },
+  chevronMiddle: {
+    width: Layout.window.width / 3,
+    height: 40,
+    marginBottom: 0,
+  },
+  chevronRight: {
+    width: (Layout.window.width / 3) - 5,
+    height: 40,
     marginBottom: 0,
   },
   chevronMain: {
-    width: Layout.window.width / 4,
+    width: Layout.window.width / 3,
+    height: 40,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  chevronMainLeft: {
+    width: (Layout.window.width / 3) + 5,
     height: 40,
     flexDirection: 'row',
     alignItems: 'center',
