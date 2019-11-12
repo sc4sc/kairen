@@ -501,7 +501,7 @@ class IncidentDetail extends React.Component {
                 this.props.navigation.navigate('NewComment', { incidentId })
               }}>
               <Text style={styles.commentButtonText}>
-                {i18n.t('new_comment')}
+                {i18n.t('upload_new_comment')}
               </Text>
             </TouchableOpacity>
 
