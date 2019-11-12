@@ -479,6 +479,7 @@ class IncidentDetail extends React.Component {
               backgroundColor: '#ffffff',
               paddingVertical: 18,
               paddingHorizontal: 15,
+              marginTop: -30,
             }}>
             {this.renderHeader()}
             <View style={{ height: 28 }} />
