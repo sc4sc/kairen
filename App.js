@@ -1,68 +1,59 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, AsyncStorage } from 'react-native'
+import AppIntroScreen from './screens/AppIntro'
 import { Provider } from 'react-redux'
-import { AppLoading } from 'expo'
-import * as Font from 'expo-font'
-import { FontAwesome, Ionicons } from '@expo/vector-icons'
-
 import store from './store'
 import AppNavigator from './navigation/AppNavigator'
-
 import { Sentry } from 'react-native-sentry'
 import { SENTRY_DSN } from 'babel-dotenv'
 import ErrorBoundary from './components/ErrorBoundary'
 
 console.disableYellowBox = true
 
-function cacheFonts(fonts) {
-  return fonts.map(font => Font.loadAsync(font))
+if (SENTRY_DSN) {
+  Sentry.config(SENTRY_DSN).install()
+  Sentry.setTagsContext({
+    environment: __DEV__ ? 'development' : 'production',
+    react: true,
+  })
 }
 
 class App extends React.Component {
   constructor() {
     super()
     this.state = {
-      isReady: false,
+      isReady: true,
     }
   }
 
-  async _loadAssetsAsync() {
-    const awesomeFont = cacheFonts([FontAwesome.font])
-    const iconFont = Font.loadAsync(Ionicons.font)
-    await Promise.all([awesomeFont, iconFont])
+  componentDidMount = () => {
+    AsyncStorage.getItem('intro').then(value => {
+      if (!value) {
+        this.setState({ isReady: false })
+      }
+    })
+  }
+
+  _onDone = () => {
+    AsyncStorage.setItem('intro', 'true')
+    this.setState({ isReady: true })
   }
 
   render() {
-    if (!this.state.isReady) {
-      return (
-        <AppLoading
-          autoHideSplash={false}
-          startAsync={this._loadAssetsAsync}
-          onFinish={() => this.setState({ isReady: true })}
-          onError={console.warn}
-        />
-      )
-    }
-
     return (
       <ErrorBoundary>
         <Provider store={store}>
-          <View style={styles.container}>
-            <AppNavigator />
-          </View>
+          {this.state.isReady ? (
+            <View style={styles.container}>
+              <AppNavigator />
+            </View>
+          ) : (
+            <AppIntroScreen onDone={this._onDone} />
+          )}
         </Provider>
       </ErrorBoundary>
     )
   }
-}
-
-if (SENTRY_DSN) {
-  Sentry.config(SENTRY_DSN).install()
-  // set the tag context
-  Sentry.setTagsContext({
-    environment: __DEV__ ? 'development' : 'production',
-    react: true,
-  })
 }
 
 const styles = StyleSheet.create({
@@ -73,4 +64,4 @@ const styles = StyleSheet.create({
 })
 
 // export default from './storybook';
-export default App;
+export default App
