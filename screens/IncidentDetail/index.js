@@ -349,7 +349,6 @@ class IncidentDetail extends React.Component {
     }
 
     return (
-      //style={{ alignItems: 'stretch' }}
       <View>
         <View
           style={[
@@ -478,9 +477,7 @@ class IncidentDetail extends React.Component {
             <DeleteIncident onPress={this.onDeletePress} />
           )}
           <View style={{ marginTop: -30 }}>
-            {isSecureTeam
-              ? null
-              : this.renderClientStateBar()}
+            {isSecureTeam ? null : this.renderClientStateBar()}
           </View>
           <View
             style={{
@@ -494,9 +491,7 @@ class IncidentDetail extends React.Component {
               ? this.renderCallToInformant(User.ku_kname, User.mobile)
               : this.renderProtocol()}
             <View style={{ height: 24 }} />
-            {isSecureTeam
-              ? this.renderAdminStateBar()
-              : null}
+            {isSecureTeam ? this.renderAdminStateBar() : null}
             {this.renderProgress()}
             <View style={{ height: 24 }} />
             <Text style={[styles.subheaderContainer, styles.subheaderText]}>
@@ -590,6 +585,7 @@ const styles = StyleSheet.create({
   commentButton: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginVertical: 10,
     padding: 13,
     backgroundColor: Colors.buttonGrey,
     borderRadius: 10,

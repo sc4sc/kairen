@@ -10,7 +10,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Dimensions,
-  StatusBar,
 } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -55,42 +54,39 @@ class NewComment extends React.Component {
 
   render() {
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <SafeAreaView style={styles.container}>
-            {this.state.loading && <Spinner overlay />}
-            <View style={styles.headerContainer}>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  this.props.navigation.goBack()
-                }}>
-                <View>
-                  <Ionicons name="md-close" size={20} />
-                </View>
-              </TouchableWithoutFeedback>
-              <Text style={styles.header}>{i18n.t('new_comment')}</Text>
-              <View
-                style={styles.buttonStyle}>
-                <TouchableOpacity
-                  onPress={this.onButtonPress.bind(this)}>
-                  <Text style={styles.buttonText}>{i18n.t('enroll')}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView style={styles.container}>
+          {this.state.loading && <Spinner overlay />}
 
-            <KeyboardAvoidingView
-              style={styles.contentContainer}
-              behavior="padding">
-              <TextInput
-                style={styles.textInputStyle}
-                placeholder={i18n.t('placeholder')}
-                onChangeText={text => this.setState({ text })}
-                value={this.state.text}
-                multiline
-                autoFocus
-              />
-            </KeyboardAvoidingView>
-          </SafeAreaView>
-        </TouchableWithoutFeedback>
+          <View style={styles.headerContainer}>
+            <View style={{ flex: 1 }}>
+              <TouchableWithoutFeedback
+                onPress={() => this.props.navigation.goBack()}>
+                <Ionicons name="md-close" size={20} />
+              </TouchableWithoutFeedback>
+            </View>
+            <Text style={styles.header}>{i18n.t('new_comment')}</Text>
+            <View style={styles.buttonStyle}>
+              <TouchableOpacity onPress={this.onButtonPress.bind(this)}>
+                <Text style={styles.buttonText}>{i18n.t('enroll')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <KeyboardAvoidingView
+            style={styles.contentContainer}
+            behavior="padding">
+            <TextInput
+              style={styles.textInputStyle}
+              placeholder={i18n.t('placeholder')}
+              onChangeText={text => this.setState({ text })}
+              value={this.state.text}
+              multiline
+              autoFocus
+            />
+          </KeyboardAvoidingView>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
     )
   }
 }
@@ -100,12 +96,13 @@ export default connect(state => ({}))(NewComment)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   headerContainer: {
     width: '100%',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 15,
     marginVertical: 15,
   },
@@ -114,7 +111,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '800',
     color: Colors.defaultBlack,
-    marginTop: -20,
+  },
+  buttonStyle: {
+    flex: 1,
+  },
+  buttonText: {
+    alignSelf: 'flex-end',
+    fontSize: 18,
   },
   contentContainer: {
     flex: 1,
@@ -125,15 +128,5 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height * 0.3,
     maxHeight: Dimensions.get('window').height * 0.3,
     textAlignVertical: 'top',
-  },
-  buttonStyle: {
-    marginTop: -20,
-    alignSelf: 'flex-end',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    alignSelf: 'center',
-    fontSize: 18,
   },
 })
